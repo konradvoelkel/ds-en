@@ -37,7 +37,7 @@
       "source": "explorative-analyse-beispiele.ipynb"
     },
     "expectation-maximization.ipynb": {
-      "translated": false,
+      "translated": true,
       "style_pass": false,
       "source": "expectation-maximization.ipynb"
     },

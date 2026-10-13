@@ -10,8 +10,9 @@ notebooks — in English. Slides, exercise sheets and exams are not mirrored.
 
 ## How this translation is maintained
 
-Translation is done by hand (with LLM assistance) and reviewed, not generated on the
-fly, so the English text can be written as English rather than as transposed German.
+All 30 chapters are translated. Translation is done chapter by chapter and reviewed, not
+generated on the fly, so the English text can be written as English rather than as
+transposed German.
 What *is* automated is noticing when the German original changes:
 
 * `sync/upstream.json` pins the ds-skript commit this edition corresponds to.
