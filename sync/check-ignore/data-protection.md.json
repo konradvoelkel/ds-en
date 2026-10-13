@@ -1,0 +1,10 @@
+{
+  "file": "data-protection.md",
+  "ignore": [
+    {
+      "block": "49",
+      "label": "German function word",
+      "reason": "the German documentary title *Democracy – Im Rausch der Daten* is quoted, not translated (TRANSLATION.md section 3: film titles stay German); the link is marked \"(in German)\" so the reader is not sent somewhere useless"
+    }
+  ]
+}

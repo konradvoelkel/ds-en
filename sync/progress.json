@@ -17,7 +17,7 @@
       "source": "data-cleaning.ipynb"
     },
     "data-protection.md": {
-      "translated": false,
+      "translated": true,
       "style_pass": false,
       "source": "datenschutz.md"
     },
@@ -112,7 +112,7 @@
       "source": "numpy.ipynb"
     },
     "pandas.ipynb": {
-      "translated": false,
+      "translated": true,
       "style_pass": false,
       "source": "pandas.ipynb"
     },
@@ -132,12 +132,12 @@
       "source": "relative-entropie.md"
     },
     "statistical-models.md": {
-      "translated": false,
+      "translated": true,
       "style_pass": false,
       "source": "statistische-modelle.md"
     },
     "statistical-tests.md": {
-      "translated": false,
+      "translated": true,
       "style_pass": false,
       "source": "statistische-tests.md"
     },

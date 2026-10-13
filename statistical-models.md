@@ -1,23 +1,21 @@
-# Statistische Modelle und Schätzer
+# Statistical models and estimators
 
-[Vorlesungsaufzeichnung Statistische Modelle und Maximum Likelihood (VL 17)](https://media.hhu.de/channel/video/data-science-vl-17-maximum-likelihood-2025/edefe4fe4cf095537fbe80bf1a401b21/167)
+In the data science process, the road from the data to a product (be it a report, a prediction or new and interesting data), we model the data. Strictly speaking we model partial aspects, sections of the data (just as the data themselves are only a section of reality).
+In doing so we may be interested in how the data came about, but we may equally be driven by the wish to be able to say something particular about them, or to do something particular with them. So it helps to be clear about what kind of information one wants to coax out of the data, and then to tune the models to that.
+Often several approaches are available for computing the same kind of information. The results may well differ, and frequently (in unsupervised learning) we cannot compare the computed results with the "right" result. All that is left then is to compare the information content of the models (to compute the entropy), to examine every model assumption for plausibility, and to develop general criteria for the quality of models. The last of these is what we now set about.
 
-Im Data Science Prozess, also dem Weg von den Daten zu einem Produkt (sei es ein Bericht, eine Vorhersage oder neue interessante Daten), modellieren wir die Daten. Genau genommen modellieren wir Teilaspekte, Ausschnitte der Daten (wie ja auch schon die Daten selbst nur ein Ausschnitt aus der Realität sind).
-Dabei können wir zum einen daran interessiert sein, wie die Daten entstanden sind, zum anderen aber auch geleitet sein von dem Wunsch, etwas bestimmtes darüber sagen bzw. damit machen zu können. Es ist also hilfreich, sich klar zu machen, welche Art von Information man den Daten entlocken möchte, und dann darauf Modelle abzustimmen.
-Oftmals ist es dabei möglich, verschiedene Ansätze zu wählen, um die gleiche Art von Information zu berechnen. Die Ergebnisse können sich dabei durchaus unterscheiden und häufig (im unsupervised learning) können wir die berechneten Ergebnisse nicht mit dem "richtigen" Ergebnis vergleichen. Es bleibt dann nur noch, den Informationsgehalt der Modelle zu vergleichen (die Entropie auszurechnen), alle Modell-Annahmen auf Plausibilität zu untersuchen und allgemeine Kriterien für die Güte von Modellen zu entwickeln. Letzteres wollen wir jetzt anpacken.
+The classical approach – classical in the sense of historically oldest – begins by formalising the models and the aspects one wants to compute from the data with them.
+One speaks of a **statistical model**, of a **statistic**, and of various **estimators** for a statistic which can then be compared with one another. One criterion is whether an estimator lands near the "right" result at least for very large samples. But hold on – if we do not know the right result, how can we say anything of the sort?
 
-Der klassische (also historisch älteste) Zugang beginnt mit der Formalisierung der Modelle und der Aspekte, die man damit aus den Daten berechnen möchte.
-Man spricht von einem **statistischen Modell**, einer **Statistik** und verschiedenen **Schätzern** für eine Statistik, die man vergleichen kann. Ein Kriterium ist dabei, ob ein Schätzer wenigstens für sehr große Stichproben in der Nähe des "richtigen" Ergebnisses liegt. Aber halt - wenn wir das richtige Ergebnis nicht kennen, wie können wir das dann überhaupt sagen?
+The solution is to restrict ourselves to those statistical models in which we can describe the rough structure of the right result for an estimator well enough that statements such as "in the limit this estimator estimates the expected value of that statistic on the data" become available after all. And then one can talk about how good the values look away from the limit, for somewhat smaller samples. Along the way we meet a notion that matters a great deal to data science and machine learning: the **maximum likelihood** principle.
 
-Die Lösung ist, sich auf solche statistischen Modelle einzuschränken, wo wir die grobe Struktur des richtigen Ergebnisses für einen Schätzer soweit beschreiben können, dass man eben doch zu Aussagen kommen kann wie "im Grenzwert schätzt dieser Schätzer den Erwartungswert jener Statistik auf den Daten". Und dann kann man darüber reden, wie gut die Werte abseits vom Grenzwert, für etwas kleinere Samples aussehen. Wir lernen dabei noch einen für die Data Science und das Maschinelle Lernen sehr wichtigen Begriff kennen: Das **Maximum Likelihood**-Prinzip.
-
-Ein sehr konkretes Beispiel vorab: Gegeben Daten, die als Vektor $x$ der Länge $n$ von reellen Zahlen ($\texttt{float}$) vorliegen, von denen wir wissen, dass sie als Stichprobe einer eindimensional normalverteilten Zufallsvariable $X$ mit Erwartungswert $\mu(X)$ und Varianz $\sigma^2(X)$ entstanden sind, wollen wir die Standardabweichung $\sigma(X)$ schätzen. Dazu findet man in den Büchern zwei verschiedene Formeln: $\sigma(x)$ und $\sigma^\ast(x)$, die sich nur durch den Nenner unterscheiden:
+A very concrete example first. Given data that come as a vector $x$ of length $n$ of real numbers ($\texttt{float}$), of which we know that they arose as a sample of a one-dimensional normally distributed random variable $X$ with expected value $\mu(X)$ and variance $\sigma^2(X)$, we want to estimate the standard deviation $\sigma(X)$. For this the books offer two different formulas, $\sigma(x)$ and $\sigma^\ast(x)$, which differ only in their denominator:
 
 $$
 \sigma(x)^2 = \dfrac{1}{n} \sum_{i=1}^n (x_i-\mu)^2,\qquad \sigma^\ast(x)^2 = \dfrac{1}{n-1} \sum_{i=1}^n (x_i-\mu)^2
 $$
 
-Ganz konkret, für eine Stichprobe von $n = 48$ Werten, die tatsächlich aus einer Normalverteilung gezogen wurden:
+Quite concretely, for a sample of $n = 48$ values that really were drawn from a normal distribution:
 
 ```python
 import numpy as np
@@ -30,252 +28,252 @@ x = np.array([6.5281, 3.8003, 4.9575, 7.4818, 6.7351, 1.0454, 4.9002, 2.6973,
               0.9029, 0.1600, -0.4125, 6.9016, 1.9807, 2.1239, 0.4944, 4.5550])
 
 print(np.mean(x))            # 3.3689...
-print(np.var(x))             # 5.0037...  Nenner n
-print(np.var(x, ddof=1))     # 5.1102...  Nenner n-1
+print(np.var(x))             # 5.0037...  denominator n
+print(np.var(x, ddof=1))     # 5.1102...  denominator n-1
 print(np.std(x))             # 2.2369...
 print(np.std(x, ddof=1))     # 2.2606...
 ```
 
-Die beiden Formeln liefern also merklich verschiedene Zahlen — gut zwei Prozent Unterschied in der Varianz, und das bei $n = 48$. Welche ist die richtige? Und nebenbei: Dass wir $\mu(X)$ überhaupt durch $\texttt{mean}(x)$ ersetzen dürfen, haben wir bisher nur für plausibel gehalten; die Rechtfertigung liefert das Beispiel „das Stichprobenmittel ist erwartungstreu“ im Abschnitt *Erwartungstreue* weiter unten.
+So the two formulas deliver noticeably different numbers – a good two per cent apart in the variance, and that at $n = 48$. Which is the right one? And in passing: that we may replace $\mu(X)$ by $\texttt{mean}(x)$ at all is something we have so far only taken to be plausible; the justification is the example "the sample mean is unbiased" in the section *Unbiasedness* below.
 
-In diesen Formeln muss man nun etwas aufpassen, wenn man das praktisch implementieren will - denn was ist $\mu$?
-In der Anwendung kenne ich $\mu(X)$ nicht, muss also $\mu(x)$ verwenden. Dann aber stellt sich heraus, dass die Information in $\{x_i-\mu(x)\}_{i=1}^{n-1}$ genügt, um $x_n - \mu(x)$ zu berechnen, denn nach Definition von $\mu(x)$ ist $x_n - \mu(x) = \sum_{i=1}^{n-1} (\mu(x) - x_i)$. Gewissermaßen gibt es also, wenn man $\mu(x)$ anstelle von $\mu(X)$ verwendet, einen Freiheitsgrad weniger als $n$. Wir werden gleich sehen, wie sich das auf die Eigenschaften dieser beiden Schätzer für $\sigma(X)$ auswirkt.
+With these formulas one has to be a little careful when implementing them in practice – because what is $\mu$?
+In an application I do not know $\mu(X)$ and must therefore use $\mu(x)$. But then it turns out that the information in $\{x_i-\mu(x)\}_{i=1}^{n-1}$ suffices to compute $x_n - \mu(x)$, since by the definition of $\mu(x)$ we have $x_n - \mu(x) = \sum_{i=1}^{n-1} (\mu(x) - x_i)$. In a sense, then, using $\mu(x)$ in place of $\mu(X)$ leaves us one degree of freedom fewer than $n$. We shall see in a moment how that affects the properties of these two estimators for $\sigma(X)$.
 
-Wenn man statistische Modelle formal definiert hat, kann man auch sehr gut über Konfidenzintervalle und Hypothesentests sprechen, was das Kapitel [Statistische Tests](statistical-tests.md) erledigt. Konfidenzintervalle erweitern des Ansatz des bloßen Schätzens einer Statistik um die Information, welchen Fehlerbereich man dieser Schätzung beimisst. Hypothesentests erweitern den Ansatz darum, schließlich zu Entscheidungen zu kommen. Bei der Diskussion um Hypothesentests ist es unvermeidlich, auch über den problematischen Begriff der **Signifikanz** zu sprechen. Aber eins nach dem anderen!
+Once statistical models have been defined formally, one can also talk very well about confidence intervals and hypothesis tests, which is what the chapter [Statistical tests](statistical-tests.md) does. Confidence intervals extend the bare estimation of a statistic by the information on what margin of error one attaches to that estimate. Hypothesis tests extend it by arriving at decisions in the end. In discussing hypothesis tests it is unavoidable to speak also about the problematic notion of **significance**. But one thing at a time!
 
-Als Landkarte für die folgenden Definitionen — links, worüber man redet, rechts, was es formal wird:
+As a map for the definitions that follow – on the left what one talks about, on the right what it formally becomes:
 
-| umgangssprachlich | formal |
+| in everyday terms | formally |
 |---|---|
-| eine Familie von Verteilungen, aus der wir eine auswählen wollen | **statistisches Modell** $(\mathcal{X}, P_\theta : \theta \in \Theta)$ |
-| die Größe, die wir schätzen wollen (etwa $\mu$ oder $\sigma$) | Abbildung $\tau \colon \Theta \to \Sigma$ |
-| die Stichprobe, die wir in der Hand halten | ein Element $x \in \mathcal{X}$ — bzw., solange sie noch nicht gezogen ist, eine Zufallsvariable mit Werten in $\mathcal{X}$ |
-| das Verfahren, mit dem wir aus der Stichprobe eine Zahl machen | **Statistik** bzw. **Schätzer** $T \colon \mathcal{X} \to \Sigma$ |
+| a family of distributions from which we want to pick one | **statistical model** $(\mathcal{X}, P_\theta : \theta \in \Theta)$ |
+| the quantity we want to estimate (say $\mu$ or $\sigma$) | map $\tau \colon \Theta \to \Sigma$ |
+| the sample we are holding in our hands | an element $x \in \mathcal{X}$ – or, as long as it has not been drawn yet, a random variable with values in $\mathcal{X}$ |
+| the procedure that turns the sample into a number | **statistic**, or **estimator**, $T \colon \mathcal{X} \to \Sigma$ |
 
-Der Stichprobenraum $\mathcal{X}$ ist dabei nicht der Raum eines einzelnen Messwerts, sondern der aller Stichproben: Bei $n$ reellen Messwerten ist $\mathcal{X} = \mathbb{R}^n$, eine Stichprobe also ein einziger Punkt in einem recht großen Raum.
+The sample space $\mathcal{X}$ here is not the space of a single measured value but the space of all samples: with $n$ real measurements $\mathcal{X} = \mathbb{R}^n$, so a sample is a single point in a fairly large space.
 
-Der entscheidende Kunstgriff steht in der letzten Zeile. Weil die Stichprobe eine Zufallsvariable ist und das Schätzverfahren eine Abbildung darauf, ist auch das Ergebnis des Schätzens wieder eine Zufallsvariable. Damit dürfen wir von ihrem Erwartungswert und ihrer Varianz sprechen — und genau das brauchen wir, um überhaupt sagen zu können, was ein *guter* Schätzer ist: Bias, Konsistenz und mittlerer quadratischer Fehler sind alle in dieser Sprache formuliert.
+The crucial move is in the last row. Because the sample is a random variable and the estimation procedure is a map on it, the result of estimating is again a random variable. That lets us speak of its expected value and its variance – and that is exactly what we need in order to be able to say at all what a *good* estimator is: bias, consistency and mean squared error are all formulated in this language.
 
-## Statistische Modelle
-
-:::{admonition} Definition
-Ein statistisches Modell ist ein Tripel $(\mathcal{X}, \mathcal{F}, P_\theta : \theta \in \Theta)$
-aus einem **Stichprobenraum** $\mathcal{X}$, einer $\sigma$-Algebra $\mathcal{F}$ auf $\mathcal{X}$ und einer Klasse $\{P_\theta\}_{\theta \in \Theta}$ von Wahrscheinlichkeitsmaßen auf $(\mathcal{X}, \mathcal{F})$, die mindestens zwei Elemente enthält, also $|\Theta| > 1$.
-Wir schreiben oft einfach $(\mathcal{X}, P_\theta : \theta \in \Theta)$.
-:::
-
-:::{admonition} Bemerkung
-Bei einem statistischen Modell handelt es sich also noch nicht um das 'fertige Modell' mit dem wir im Sinne der Data Science klassifizieren bzw. Vorhersagen machen wollen, sondern um eine ganze Klasse von Modellen, die mit der Menge $\Theta$ parametrisiert werden. Diese Menge $\Theta$ kann beliebig wild sein, nur sollen es wenigstens zwei Elemente sein, damit sich der Begriff nicht im Fall $\Theta = \{\theta\}$ reduziert auf 'der Stichprobenraum und ein Wahrscheinlichkeitsmaß drauf'.
-Wenn man im Kontext eines statistischen Modells von Erwartungswerten (also z.B. von Varianzen) spricht, muss man aufpassen und in der Notation am besten das $\theta$ mitführen, also $\mathbb{E}_\theta(Y)$ für den Erwartungswert einer Zufallsvariable $Y : \mathcal{X} \to \mathbb{R}$, denn dieser hängt von $\theta$ ab.
-:::
+## Statistical models
 
 :::{admonition} Definition
-Ein statistisches Modell heißt **parametrisches Modell**, wenn die Parametermenge $\Theta$ eine Teilmenge eines $\mathbb{R}^d$ ist für ein $d \in \mathbb{N}$. Für $d=1$ sagt man auch **einparametriges Modell**.
-
-Wenn die Stichprobenmenge $\mathcal{X}$ diskret ist (höchstens abzählbar), und $\mathcal{F} = \mathcal{P}(\mathcal{X})$, nennt man das Modell **diskret** und in dem Fall haben alle $P_\theta$ eine Zähldichte $p_\theta$, d.h. $p_\theta(x) = P_\theta(\{x\})$.
-
-Wenn die Stichprobenmenge $\mathcal{X}$ eine (Borel)-meßbare Teilmenge des $\mathbb{R}^n$ ist (z.B. eine offene Menge oder die Niveaumenge einer stetigen Funktion) und $\mathcal{F}$ eine Einschränkung der Borel-$\sigma$-Algebra von $\mathbb{R}^n$ ist, und außerdem jedes $P_\theta$ eine Dichtefunktion $f_\theta$ besitzt, dann heißt das statistische Modell ein **stetiges Modell**.
-
-Ein statistisches Modell, welches entweder diskret oder stetig ist, nennt man auch **Standardmodell**.
+A statistical model is a triple $(\mathcal{X}, \mathcal{F}, P_\theta : \theta \in \Theta)$
+consisting of a **sample space** $\mathcal{X}$, a $\sigma$-algebra $\mathcal{F}$ on $\mathcal{X}$ and a class $\{P_\theta\}_{\theta \in \Theta}$ of probability measures on $(\mathcal{X}, \mathcal{F})$ that contains at least two elements, that is $|\Theta| > 1$.
+We often simply write $(\mathcal{X}, P_\theta : \theta \in \Theta)$.
 :::
 
-:::{admonition} Bemerkung
-Den Stichprobenraum können wir uns in erster Näherung vorstellen wie die Menge der möglichen Ergebnisse bei Stichprobengröße $1$ (die Grundgesamtheit $\Omega$ lässt grüßen). Aber: man kann auch das mehrfache Wiederholen eines Experiments als eigentlich-ein-Experiment umetikettieren und eine Abfolge von Einzelergebnissen dann ein Ergebnis nennen, und so Stichprobengrößen größer $1$ modellieren. Zu jedem statistischen Modell lässt sich das **Produktmodell** konstruieren:
+:::{admonition} Remark
+A statistical model is therefore not yet the 'finished model' with which we want to classify or make predictions in the data science sense, but a whole class of models parametrised by the set $\Theta$. This set $\Theta$ may be as wild as you like; it should only have at least two elements, so that in the case $\Theta = \{\theta\}$ the notion does not shrink to 'the sample space with one probability measure on it'.
+When speaking of expected values (and hence, say, of variances) in the context of a statistical model, one has to be careful, and it is best to carry the $\theta$ along in the notation: $\mathbb{E}_\theta(Y)$ for the expected value of a random variable $Y : \mathcal{X} \to \mathbb{R}$, because that value depends on $\theta$.
+:::
+
+:::{admonition} Definition
+A statistical model is called a **parametric model** if the parameter set $\Theta$ is a subset of some $\mathbb{R}^d$ for a $d \in \mathbb{N}$. For $d=1$ one also says **one-parameter model**.
+
+If the sample space $\mathcal{X}$ is discrete (at most countable) and $\mathcal{F} = \mathcal{P}(\mathcal{X})$, the model is called **discrete**, and in that case every $P_\theta$ has a discrete density $p_\theta$, that is $p_\theta(x) = P_\theta(\{x\})$.
+
+If the sample space $\mathcal{X}$ is a (Borel) measurable subset of $\mathbb{R}^n$ (an open set, say, or the level set of a continuous function), if $\mathcal{F}$ is a restriction of the Borel $\sigma$-algebra of $\mathbb{R}^n$, and if moreover every $P_\theta$ has a density function $f_\theta$, then the statistical model is called a **continuous model**.
+
+A statistical model that is either discrete or continuous is also called a **standard model**.
+:::
+
+:::{admonition} Remark
+To a first approximation we can picture the sample space as the set of possible outcomes at sample size $1$ (the population $\Omega$ sends its regards). But: one can also relabel the repeated running of an experiment as really-one-experiment, call a sequence of individual outcomes a single outcome, and so model sample sizes greater than $1$. For every statistical model the **product model** can be constructed:
 
 $$
 (\mathcal{X}^N, \mathcal{F}^{\otimes N}, P_{\theta}^{\otimes N} : \theta \in \Theta).
 $$
 
-Die Projektionen $X_i \colon \mathcal{X}^N \to \mathcal{X}$ sind dann unabhängig identisch verteilte Zufallsvariablen bezüglich jeder Verteilung $P_\theta$. Die Notation $\mathcal{F}^{\otimes N}$ bezeichnet die offensichtliche Art, auf $\mathcal{X}^N$ eine $\sigma$-Algebra zu definieren (Sie dürfen das wie gewohnt ignorieren) und $P_\theta^{\otimes N}$ ordnet einem Ereignis in $\mathcal{X}^N$ von der Form $A_1 \times \cdots \times A_N$ das Produkt $\prod_{i=1}^N P_\theta(A_i)$ zu. Damit ist die $N$-fache Wiederholung modelliert.
+The projections $X_i \colon \mathcal{X}^N \to \mathcal{X}$ are then independent, identically distributed random variables with respect to every distribution $P_\theta$. The notation $\mathcal{F}^{\otimes N}$ denotes the obvious way of defining a $\sigma$-algebra on $\mathcal{X}^N$ (you may ignore it, as usual), and $P_\theta^{\otimes N}$ assigns to an event in $\mathcal{X}^N$ of the form $A_1 \times \cdots \times A_N$ the product $\prod_{i=1}^N P_\theta(A_i)$. With that the $N$-fold repetition is modelled.
 :::
 
-:::{admonition} Beispiel
-Wir modellieren einen Würfelwurf eines potentiell unfairen Würfels mit einem diskreten Modell: $\mathcal{X} = \{1,\dots,6\}$ und $\Theta = \Delta_6$, die Menge aller möglichen diskreten Verteilungen auf einer sechselementigen Menge (geschrieben als Wahrscheinlichkeitsvektoren in $\mathbb{R}^6$), und $P_\theta(k) = \theta_k$. Konkret für $\theta = (\theta_1,\dots,\theta_6)$ ist also die Wahrscheinlichkeit, eine $6$ zu werfen im Modell mit Parameter $\theta$ gegeben durch $P_\theta(6) = \theta_6$.
+:::{admonition} Example
+We model the throw of a potentially unfair die with a discrete model: $\mathcal{X} = \{1,\dots,6\}$ and $\Theta = \Delta_6$, the set of all possible discrete distributions on a six-element set (written as probability vectors in $\mathbb{R}^6$), with $P_\theta(k) = \theta_k$. Concretely, for $\theta = (\theta_1,\dots,\theta_6)$ the probability of throwing a $6$ in the model with parameter $\theta$ is given by $P_\theta(6) = \theta_6$.
 :::
 
-:::{admonition} Beispiel
-Den zweifach wiederholten Würfelwurf modellieren wir also mit $\mathcal{X}^2$ (Ergebnisse sind Paare von Würfelaugen) und $\Theta = \Delta_6$ (denn der zweite Würfelwurf soll ja identisch verteilt modelliert werden wie der erste). Dabei ist $P_\theta^{\otimes 2}(5,6) = P_\theta(5)P_\theta(6) = \theta_5\theta_6$, wie man es von unabhängigen Ereignissen erwartet.
+:::{admonition} Example
+The twice-repeated throw of the die we therefore model with $\mathcal{X}^2$ (outcomes are pairs of numbers of pips) and $\Theta = \Delta_6$ (since the second throw is to be modelled as identically distributed to the first). Here $P_\theta^{\otimes 2}(5,6) = P_\theta(5)P_\theta(6) = \theta_5\theta_6$, as one expects of independent events.
 :::
 
-:::{admonition} Beispiel
-Wir können auch modellieren, ob beim zweifachen Wurf ein Pasch gewürfelt wurde oder nicht - und somit $\mathcal{X} = \{\text{Pasch}, \text{Keinpasch}\}$ als Stichprobenraum betrachten.
-Dabei können wir einfach den Parameterraum $\Theta = \Delta_6$ beibehalten, das ist ein mögliches statistisches Modell.
-Wir sehen allerdings, dass $P_\theta^{\otimes 2}(k,k) = \theta_k^2$ ist, also ist $P_\theta(\text{Pasch}) = \sum_{k=1}^6 \theta_k^2$,
-also genügt uns eigentlich der Parameter $s = \sum_{k=1}^6 \theta_k^2$ und wir könnten uns also einen kleineren Parameterraum vorstellen.
-Dann stellt sich allerdings die Frage, welche Verteilung $P_s$ wir dem Parameter $s$ zuordnen wollen. Eine konkret sinnvolle Wahl ist dabei die Verteilung $\theta$ mit maximaler Entropie, also eine Verteilung möglichst nah an der Gleichverteilung. Das wird nicht eindeutig, weil Permutationen von $\{1,\dots,6\}$ den Parameter $s$ und die Entropie $H(\theta)$ nicht ändern. Will man trotzdem ein irgendwie kanonisches Modell wählen, kann man z.B. eine Anordnung auf den $\theta$ fordern, also $\theta_k \geq \theta_{k+1}$.
-Wir sehen hier also: ein 'zu großer' Parameterraum ist manchmal das einfachere Modell.
+:::{admonition} Example
+We can also model whether the two throws came up as doubles or not – and so take $\mathcal{X} = \{\text{doubles}, \text{no doubles}\}$ as the sample space.
+Here we can simply keep the parameter space $\Theta = \Delta_6$; that is one possible statistical model.
+We do see, though, that $P_\theta^{\otimes 2}(k,k) = \theta_k^2$, so that $P_\theta(\text{doubles}) = \sum_{k=1}^6 \theta_k^2$,
+and hence the parameter $s = \sum_{k=1}^6 \theta_k^2$ really suffices and we could imagine a smaller parameter space.
+But then the question arises which distribution $P_s$ we want to assign to the parameter $s$. One concretely sensible choice is the distribution $\theta$ with maximal entropy, that is, a distribution as close to the uniform distribution as possible. This does not become unique, because permutations of $\{1,\dots,6\}$ change neither the parameter $s$ nor the entropy $H(\theta)$. If one nevertheless wants to pick a model that is canonical in some way, one can for instance demand an ordering on the $\theta$, that is $\theta_k \geq \theta_{k+1}$.
+So we see here: a 'too large' parameter space is sometimes the simpler model.
 :::
 
-:::{admonition} Beispiel
-Stellen wir uns vor: Wir haben irgendwelche Daten $x$ in der Wildnis (lies: im WWW) gefunden, glauben nun, dass alle Instanzen $x_i$ Stichproben einer Zufallsvariablen $X$ mit Werten in $\Omega$ sind,
-und modellieren also mit $\mathcal{X} = \Omega^n$.
-Wenn wir merken, dass die Werte von $x$ irgendwelche `float`s sind, können wir uns das Histogramm anschauen. Vielleicht werden wir daraus nicht so schlau, und können nicht gut erkennen, ob es sich bei $X$ um eine auf $[-1,1]$ uniform verteilte Variable oder um eine Normalverteilung zentriert bei $0$ handelt oder gar um eine Exponentialverteilung. In der Realität könnte das z.B. der Fall sein, wenn $n$ sehr klein ist. Der Parameterraum wäre dann 
+:::{admonition} Example
+Imagine this. We have found some data $x$ in the wild (read: on the web), now believe that all instances $x_i$ are samples of a random variable $X$ with values in $\Omega$,
+and so model with $\mathcal{X} = \Omega^n$.
+If we notice that the values of $x$ are `float`s of some kind, we can look at the histogram. Perhaps we do not get much out of it and cannot really tell whether $X$ is a variable uniformly distributed on $[-1,1]$, or a normal distribution centred at $0$, or even an exponential distribution. In reality that could happen, for instance, when $n$ is very small. The parameter space would then be
 
 $$
 \Theta = \{\text{uni}\} \times \{0\} \cup \{\text{norm}\} \times \{\sigma > 0\} \cup \{\text{exp}\} \times \{\lambda > 0\}.
 $$
 
-Die erste Komponente von $\Theta$ ist die Art der Verteilung $\{\text{uni, norm, exp}\}$, die zweite dann ein möglicher Parameter. So ein Modell ist kein parametrisches Modell! Wir können aber auf unnatürliche Weise eins draus machen, indem wir die kategorielle Variable $\{\text{uni, norm, exp}\}$ als Zahlen $\{1,2,3\}$ kodieren, und damit $\Theta$ als Teilmenge von $\mathbb{R}^2$ darstellen.
+The first component of $\Theta$ is the type of the distribution, $\{\text{uni, norm, exp}\}$, the second then a possible parameter. Such a model is not a parametric model! We can, though, make one out of it in an unnatural way, by encoding the categorical variable $\{\text{uni, norm, exp}\}$ as the numbers $\{1,2,3\}$ and thus representing $\Theta$ as a subset of $\mathbb{R}^2$.
 :::
 
-:::{admonition} Beispiel
-$\mathcal{X}=\mathbb{R}^N$ mit $\Theta = \mathbb{R} \times \mathbb{R}_{> 0}$ und $P_{\theta}^{\otimes N} = P_{\mu,\sigma}^{\otimes N}$ eine univariate Normalverteilung ist das Standardmodell einer Stichprobe der Größe $N$ einer univariaten Zufallsvariable, die normalverteilt ist.
+:::{admonition} Example
+$\mathcal{X}=\mathbb{R}^N$ with $\Theta = \mathbb{R} \times \mathbb{R}_{> 0}$ and $P_{\theta}^{\otimes N} = P_{\mu,\sigma}^{\otimes N}$ a univariate normal distribution is the standard model of a sample of size $N$ of a univariate random variable that is normally distributed.
 :::
 
 :::{admonition} Definition
-Sei $(\mathcal{X}, P_\theta : \theta \in \Theta)$ ein statistisches Modell und $\Sigma$ ein weiterer Ereignisraum (d.h. eine Menge $\Sigma$ mit einer $\sigma$-Algebra darauf definiert). Dann heißt eine beliebige Zufallsvariable $S \colon \mathcal{X} \to \Sigma$ eine **Statistik** des statistischen Modells.
+Let $(\mathcal{X}, P_\theta : \theta \in \Theta)$ be a statistical model and $\Sigma$ a further event space (that is, a set $\Sigma$ with a $\sigma$-algebra defined on it). Then any random variable $S \colon \mathcal{X} \to \Sigma$ is called a **statistic** of the statistical model.
 :::
 
-:::{admonition} Bemerkung
-Wie auch beim Begriff der Zufallsvariablen selbst stellt sich die Frage, warum wir einen neuen Namen einführen, ist doch eine Statistik nichts anderes als eine Zufallsvariable, die wiederum nichts anderes ist als eine meßbare Abbildung, im diskreten Fall ist also Statistik = Zufallsvariable = Abbildung.
-Wir haben bisher sehr deutlich gesehen, dass wir mit Zufallsvariablen anders umgehen als mit Abbildungen, die wir Abbildung nennen. Genau so verhält es sich mit einer Statistik: wir verwenden eine Zufallsvariable anders, wenn wir diesen Begriff verwenden. Es ist wie ein API-Wrapper um die gleiche Datenstruktur, damit man leichter ohne Verwechslungsgefahr verschiedene Dinge damit tun kann. Denken Sie nur einmal daran, dass `String`s und `float`s ja auch irgendwie nur ein API-Wrapper um bitstrings sind. Das klappt so gut, dass wir das gleich nochmal tun wollen!
+:::{admonition} Remark
+As with the notion of a random variable itself, the question arises why we introduce a new name, given that a statistic is nothing but a random variable, which in turn is nothing but a measurable map – in the discrete case, then, statistic = random variable = map.
+We have seen very plainly by now that we handle random variables differently from maps we call maps. It is exactly the same with a statistic: we use a random variable differently when we use this word for it. It is like an API wrapper around the same data structure, so that one can more easily do different things with it without mixing them up. Just think how `String`s and `float`s are also, in a way, nothing but an API wrapper around bit strings. It works so well that we want to do it again straight away!
 :::
 
-## Schätzer
+## Estimators
 
 :::{admonition} Definition
-Sei $(\mathcal{X}, P_\theta : \theta \in \Theta)$ ein statistisches Modell und $\Sigma$ ein weiterer Ereignisraum.
-Sei $\tau \colon \Theta \to \Sigma$ eine beliebige Abbildung, die jedem $\theta \in \Theta$ eine Kenngröße $\tau(\theta) \in \Sigma$ zuordnet.
-Dann nennen wir jede Statistik $T \colon \mathcal{X} \to \Sigma$ einen **Schätzer** (auch **Punktschätzer**) für $\tau$.
+Let $(\mathcal{X}, P_\theta : \theta \in \Theta)$ be a statistical model and $\Sigma$ a further event space.
+Let $\tau \colon \Theta \to \Sigma$ be an arbitrary map that assigns to every $\theta \in \Theta$ a characteristic quantity $\tau(\theta) \in \Sigma$.
+Then we call every statistic $T \colon \mathcal{X} \to \Sigma$ an **estimator** (also a **point estimator**) for $\tau$.
 :::
 
-:::{admonition} Bemerkung
-Niemand hat gesagt, dass $T$ ein vernünftiger, guter Schätzer sein muss - tatsächlich muss $T$ erstmal nix mit $\tau$ zu tun haben außer dass Definitionsbereich und Wertebereich zum statistischen Modell bzw. $\tau$ passen müssen. Das gibt uns die Flexibilität, gute Schätzer und miserable Schätzer miteinander zu vergleichen. Als $\tau$ ist natürlich auch die Identität zulässig, also $\tau = id \colon \Theta \to \Theta$, $\tau(\theta)=\theta$ und die betrachteten Schätzer für $\tau$ sind dann Schätzer des Parameters $\theta \in \Theta$.
+:::{admonition} Remark
+Nobody said that $T$ has to be a sensible, good estimator – in fact $T$ need have nothing to do with $\tau$ at first, beyond domain and range having to fit the statistical model and $\tau$ respectively. That gives us the flexibility to compare good estimators with miserable ones. The identity is of course admissible as $\tau$, that is $\tau = id \colon \Theta \to \Theta$, $\tau(\theta)=\theta$, and the estimators for $\tau$ under consideration are then estimators of the parameter $\theta \in \Theta$.
 :::
 
-:::{admonition} Beispiel
-Im Standardmodell einer univariaten Normalverteilung mit Stichprobengröße $N$ ist die Projektion $\Theta \to \mathbb{R}$ auf die erste Komponente, also den Erwartungswert $\mu$ eine Abbildung $\tau$, deren Schätzer uns interessieren.
-Ein möglicher Schätzer ist die Statistik $c \colon \mathbb{R}^N \to \mathbb{R}$, die konstant $0$ ist (eine sehr konservative Schätzung).
-Ein anderer möglicher Schätzer ist das arithmetische Mittel $\texttt{mean} \colon \mathbb{R}^N \to \mathbb{R}$, für den tatsächlich gilt, dass $\texttt{mean}(x)$ für große $N$ beliebig nah an $\mu(X)$ herankommt, wenn $X$ die gesampelte normalverteilte Zufallsvariable ist.
+:::{admonition} Example
+In the standard model of a univariate normal distribution with sample size $N$, the projection $\Theta \to \mathbb{R}$ onto the first component, that is onto the expected value $\mu$, is a map $\tau$ whose estimators interest us.
+One possible estimator is the statistic $c \colon \mathbb{R}^N \to \mathbb{R}$ that is constantly $0$ (a very conservative estimate).
+Another possible estimator is the arithmetic mean $\texttt{mean} \colon \mathbb{R}^N \to \mathbb{R}$, for which it really does hold that $\texttt{mean}(x)$ comes arbitrarily close to $\mu(X)$ for large $N$, where $X$ is the normally distributed random variable that was sampled.
 :::
 
-:::{admonition} Beispiel
-In den meisten statistischen Modellen können wir die Abbildung $\sigma \colon \Theta \to \mathbb{R}_{\geq 0}$ betrachten, die einem Parameter $\theta$ die Standardabweichung $\sigma(P_\theta)$ der Verteilung $P_\theta$ zuordnet (es geht nur dann nicht, wenn das zweite Moment nicht existiert, also $\mathbb{V}(P_\theta)=\infty$ vorkommt). Dafür kennen wir die beiden Schätzer $\sigma,\ \sigma^\ast \colon \mathcal{X} \to \mathbb{R}_{\geq 0}$. Die beiden hängen über $\sigma^\ast(x) = \sqrt{\frac{n}{n-1}}\,\sigma(x)$ zusammen, gleichbedeutend $\sigma^\ast(x)^2 = \frac{n}{n-1}\,\sigma(x)^2$; dieser Faktor heißt **Bessel-Korrektur** (vgl. [Deskriptive Statistik](descriptive-statistics.md)). Welcher der beiden Schätzer der bessere ist, klärt der nächste Abschnitt.
+:::{admonition} Example
+In most statistical models we can consider the map $\sigma \colon \Theta \to \mathbb{R}_{\geq 0}$ that assigns to a parameter $\theta$ the standard deviation $\sigma(P_\theta)$ of the distribution $P_\theta$ (it only fails when the second moment does not exist, that is when $\mathbb{V}(P_\theta)=\infty$ occurs). For it we know the two estimators $\sigma,\ \sigma^\ast \colon \mathcal{X} \to \mathbb{R}_{\geq 0}$. The two are related by $\sigma^\ast(x) = \sqrt{\frac{n}{n-1}}\,\sigma(x)$, equivalently $\sigma^\ast(x)^2 = \frac{n}{n-1}\,\sigma(x)^2$; this factor is called the **Bessel correction** (cf. [Descriptive statistics](descriptive-statistics.md)). Which of the two estimators is the better one is settled by the next section.
 :::
 
-### Erwartungstreue
+### Unbiasedness
 
 :::{admonition} Definition
-Ein Schätzer $T \colon \mathcal{X} \to \Sigma$ für $\tau \colon \Theta \to \Sigma$ heißt **erwartungstreu** wenn $\mathbb{E}_{\theta}( T ) = \tau(\theta)$ für alle $\theta \in \Theta$ gilt. Gilt das nicht, heißt der Schätzer **verzerrt** (biased) und die Differenz ist der **bias** $\mathbb{B}_\theta(T) := \mathbb{E}_{\theta}( T ) - \tau(\theta)$.
+An estimator $T \colon \mathcal{X} \to \Sigma$ for $\tau \colon \Theta \to \Sigma$ is called **unbiased** if $\mathbb{E}_{\theta}( T ) = \tau(\theta)$ holds for all $\theta \in \Theta$. If it does not, the estimator is called **biased**, and the difference is the **bias** $\mathbb{B}_\theta(T) := \mathbb{E}_{\theta}( T ) - \tau(\theta)$.
 
-Der **mittlere quadratische Fehler** des Schätzers zum zu schätzenden Wert ist
+The **mean squared error** of the estimator against the value to be estimated is
 
 $$
 \texttt{mse}(T,\theta) := \mathbb{E}_\theta\left ( (T-\tau(\theta))^2 \right ) = \mathbb{V}_\theta(T) + (\mathbb{B}_\theta(T))^2
 $$
 
-Eine Folge von Schätzern $T_n \colon \mathcal{X}^n \to \Sigma$ für $\tau$ in $n$-fachen Produktmodellen heißt **konsistent** wenn für $n\to\infty$
-der Schätzer stochastisch gegen $\tau$ konvergiert: $T_n \xrightarrow{P_\theta} \tau(\theta)$. Stochastische Konvergenz (auch: Konvergenz in Wahrscheinlichkeit) heißt $\forall \epsilon > 0 : \lim_{n\to\infty} P(|T_n - \tau(\theta)| > \epsilon) = 0$.
+A sequence of estimators $T_n \colon \mathcal{X}^n \to \Sigma$ for $\tau$ in $n$-fold product models is called **consistent** if for $n\to\infty$
+the estimator converges to $\tau$ in probability: $T_n \xrightarrow{P_\theta} \tau(\theta)$. Convergence in probability means $\forall \epsilon > 0 : \lim_{n\to\infty} P(|T_n - \tau(\theta)| > \epsilon) = 0$.
 
-Die Folge $T_n$ heißt **asymptotisch erwartungstreu**, wenn $\lim_{n\to\infty} \mathbb{E}_{\theta}(T_n) = \tau(\theta)$.
+The sequence $T_n$ is called **asymptotically unbiased** if $\lim_{n\to\infty} \mathbb{E}_{\theta}(T_n) = \tau(\theta)$.
 :::
 
-:::{admonition} Beispiel
-Im Standardmodell einer $N$-fach wiederholten univariaten Normalverteilung ist das Stichprobenmittel $\texttt{mean}$ ein erwartungstreuer Schätzer für den Parameter $\mu$.
+:::{admonition} Example
+In the standard model of an $N$-fold repeated univariate normal distribution, the sample mean $\texttt{mean}$ is an unbiased estimator for the parameter $\mu$.
 :::
 
-:::{admonition} Beispiel
-Für die Varianz ist der Schätzer $\sigma_N^2 = \frac{1}{N} \sum_{i=1}^N (X_i - \texttt{mean}(X_j))^2$ nicht erwartungstreu, denn $\mathbb{E}(\sigma_N^2) = \frac{N-1}{N}\sigma^2(X)$. Der Bias ist also $-\frac{\sigma^2(X)}{N}$, was für $N\to\infty$ verschwindet. Damit ist der Schätzer asymptotisch erwartungstreu.
+:::{admonition} Example
+For the variance the estimator $\sigma_N^2 = \frac{1}{N} \sum_{i=1}^N (X_i - \texttt{mean}(X_j))^2$ is not unbiased, since $\mathbb{E}(\sigma_N^2) = \frac{N-1}{N}\sigma^2(X)$. The bias is therefore $-\frac{\sigma^2(X)}{N}$, which vanishes as $N\to\infty$. So the estimator is asymptotically unbiased.
 
-Der durch die *Bessel-Korrektur* angepasste Schätzer $\frac{N}{N-1} \sigma_N^2 = \frac{1}{N-1} \sum_{i=1}^N (X_i - \texttt{mean}(X_j))^2$ ist erwartungstreu. Wir sagen also: $\sigma_N^2$ ist asymptotisch erwartungstreu, der korrigierte Schätzer sogar erwartungstreu (frei von Bias).
+The estimator adjusted by the *Bessel correction*, $\frac{N}{N-1} \sigma_N^2 = \frac{1}{N-1} \sum_{i=1}^N (X_i - \texttt{mean}(X_j))^2$, is unbiased. So we say: $\sigma_N^2$ is asymptotically unbiased, the corrected estimator even unbiased (free of bias).
 
-Der Bias entsteht dabei ausschließlich dadurch, dass $\mu$ mitgeschätzt wird. Ist der Erwartungswert $\mu(X)$ bekannt, so ist bereits
+The bias arises solely from the fact that $\mu$ is estimated along with everything else. If the expected value $\mu(X)$ is known, then already
 
 $$
 \dfrac{1}{N} \sum_{i=1}^N {\left(X_i - \mu(X)\right)}^2
 $$
 
-erwartungstreu, denn $\mathbb{E}\left((X_i-\mu(X))^2\right) = \sigma^2(X)$ gilt für jedes einzelne $i$, und der Erwartungswert ist linear. Erst das Einsetzen von $\texttt{mean}(x)$ an Stelle von $\mu(X)$ kostet den Freiheitsgrad, von dem in der Einleitung dieses Kapitels die Rede war — und genau diesen einen Freiheitsgrad holt der Faktor $\frac{N}{N-1}$ zurück.
+is unbiased, since $\mathbb{E}\left((X_i-\mu(X))^2\right) = \sigma^2(X)$ holds for each individual $i$ and the expected value is linear. Only putting $\texttt{mean}(x)$ in place of $\mu(X)$ costs the degree of freedom that the introduction to this chapter spoke of – and it is exactly that one degree of freedom which the factor $\frac{N}{N-1}$ wins back.
 :::
 
 :::{admonition} Definition
-Ein zu einer zu schätzenden Funktion $\tau \colon \Theta \to \mathbb{R}$ erwartungstreuer Schätzer $S$ mit endlicher Varianz heißt **gleichmäßig bester erwartungstreuer Schätzer** für $\tau$, wenn für jeden weiteren erwartungstreuen Schätzer $T$ für $\tau$ mit endlicher Varianz für alle $\theta \in \Theta$ gilt:
+An estimator $S$ with finite variance that is unbiased for a function $\tau \colon \Theta \to \mathbb{R}$ to be estimated is called a **uniformly best unbiased estimator** for $\tau$ if for every further unbiased estimator $T$ for $\tau$ with finite variance and for all $\theta \in \Theta$:
 $\mathbb{V}_\theta(S) \leq \mathbb{V}_\theta(T)$
 :::
 
-Ein solcher Schätzer hat also minimale Streuung um den zu schätzenden Wert unter allen erwartungstreuen Schätzern.
+Such an estimator therefore has the smallest spread around the value to be estimated among all unbiased estimators.
 
 :::{note}
-**Ausblick (nicht klausurrelevant):** Die Cramér-Rao-Ungleichung und die Fisher-Information in diesem Abschnitt sind Hintergrund dafür, dass es überhaupt beste Schätzer geben kann. Sie werden im Kurs nicht benötigt, um die Ergebnisse zu benutzen.
+**Looking ahead (not part of the course proper):** the Cramér–Rao inequality and the Fisher information in this section are background for why best estimators can exist at all. They are not needed in the course in order to use the results.
 :::
 
-Im Allgemeinen ist es sehr schwer, gleichmäßig beste erwartungstreue Schätzer zu bestimmen (es gibt sie im Allgemeinen nicht). Ausblick: Die *Cramér-Rao-Ungleichung* für *reguläre* statistische Modelle liefert eine Abschätzung der Varianz eines Schätzers durch die *Fisher-Information* (eine Größe, die sich auch aus der relativen Entropie berechnen lässt) und erlaubt so, gleichmäßig beste Schätzer daran zu erkennen, dass sie diese Varianzschranke nicht überschreiten. Für einen erwartungstreuen Schätzer $T$ eines reellen Parameters $\theta$ lautet sie
+In general it is very hard to determine uniformly best unbiased estimators (in general there are none). Looking ahead: the *Cramér–Rao inequality* for *regular* statistical models bounds the variance of an estimator from below by the *Fisher information* (a quantity that can also be computed from the relative entropy), and so lets us recognise uniformly best estimators by the fact that they do not exceed this variance bound. For an unbiased estimator $T$ of a real parameter $\theta$ it reads
 
 $$
 \mathbb{V}_\theta(T) \geq \frac{1}{I(\theta)}, \qquad I(\theta) := \mathbb{E}_\theta\left[\left(\frac{\partial}{\partial\theta} \log p_\theta(X)\right)^2\right],
 $$
 
-wobei $I(\theta)$ die *Fisher-Information* ist. Ein erwartungstreuer Schätzer, der diese Schranke annimmt, ist also gleichmäßig bester Schätzer. Für Verteilungen aus einer sogenannten *Exponentialfamilie* (in gewissem Sinne eine gemeinsame Verallgemeinerung der Normalverteilung, Binomialverteilung, Gamma-Verteilung, etc.) lassen sich die gleichmäßig besten Schätzer damit direkt beschreiben.
+where $I(\theta)$ is the *Fisher information*. An unbiased estimator that attains this bound is therefore a uniformly best estimator. For distributions from a so-called *exponential family* (in a certain sense a common generalisation of the normal distribution, the binomial distribution, the gamma distribution and so on), the uniformly best estimators can be described directly in this way.
 
-Für viele praktisch wichtige Modelle gibt es aber gar keine geschlossene Formel für einen guten Schätzer — die [kontaminierte Normalverteilung](important-continuous-distributions.ipynb) ist das Beispiel, das uns im Kurs noch begegnet. Dann braucht man ein Prinzip, das statt einer Formel ein Optimierungsproblem liefert, dessen Lösung sich numerisch annähern lässt. Genau das leistet das Maximum-Likelihood-Prinzip, und das zugehörige Iterationsverfahren ist der [EM-Algorithmus](expectation-maximization.ipynb).
+For many models that matter in practice, though, there is no closed formula for a good estimator at all – the [contaminated normal distribution](important-continuous-distributions.ipynb) is the example that still awaits us in the course. What one needs then is a principle that yields, instead of a formula, an optimisation problem whose solution can be approximated numerically. That is exactly what the maximum likelihood principle does, and the iterative procedure that goes with it is the [EM algorithm](expectation-maximization.ipynb).
 
 
-### Maximum Likelihood
+### Maximum likelihood
 
 :::{admonition} Definition
-Gegeben ein statistisches Standardmodell $(\mathcal{X}, P_\theta : \theta \in \Theta)$ mit Dichte $f_\theta$ für $P_\theta$ heißt $\rho \colon \mathcal{X} \times \Theta \to \mathbb{R}_{\geq 0}$ mit $\rho(x, \theta) := L_x(\theta) := f_\theta(x)$ die **Likelihood-Funktion** und für festes $x$ heißt $L_x =\rho(x, \cdot) \colon \Theta \to \mathbb{R}_{\geq 0}$ die **Likelihood**-Funktion zum Beobachtungswert $x$.
+Given a statistical standard model $(\mathcal{X}, P_\theta : \theta \in \Theta)$ with density $f_\theta$ for $P_\theta$, the map $\rho \colon \mathcal{X} \times \Theta \to \mathbb{R}_{\geq 0}$ with $\rho(x, \theta) := L_x(\theta) := f_\theta(x)$ is called the **likelihood function**, and for fixed $x$ the map $L_x =\rho(x, \cdot) \colon \Theta \to \mathbb{R}_{\geq 0}$ is called the **likelihood** function for the observed value $x$.
 :::
 
-Wenn wir also Daten $x$ gegeben haben, drückt die Likelihood-Funktion zu $x$ für jeden Parameter $\theta$ aus, wie die Wahrscheinlichkeitsdichte an der Stelle $x$ von $P_\theta$ ausfällt. Ist die Dichte groß, so ist $x$ eine Beobachtung, die unter dem Parameter $\theta$ wahrscheinlich ist. Ist die Dichte klein, so ist $x$ unter $\theta$ unwahrscheinlich. Zur Erinnerung: Wenn wir die Hypothese $H = ( \theta$ ist der wahre Parameter $)$ haben, und $D=x$ (für Daten) schreiben, so ist $P(D|H) = L_x(\theta) = f_\theta(x)$ die Likelihood (vgl. den Satz von Bayes, Fassung 3, im Kapitel [Kovarianz und Abhängigkeit](covariance.md)).
+So if we are given data $x$, the likelihood function for $x$ expresses, for every parameter $\theta$, how the probability density of $P_\theta$ comes out at the point $x$. If the density is large, then $x$ is an observation that is probable under the parameter $\theta$. If the density is small, then $x$ is improbable under $\theta$. As a reminder: if we take the hypothesis $H = ( \theta$ is the true parameter $)$ and write $D=x$ (for data), then $P(D|H) = L_x(\theta) = f_\theta(x)$ is the likelihood (cf. Bayes' theorem, version 3, in the chapter [Covariance and dependence](covariance.md)).
 
 :::{admonition} Definition
-Ein Schätzer $T \colon \mathcal{X} \to \Theta$ für den Parameter $\theta$ heißt **Maximum-Likelihood-Schätzer** (maximum likelihood estimator, MLE), wenn für alle $x \in \mathcal{X}$ gilt:
+An estimator $T \colon \mathcal{X} \to \Theta$ for the parameter $\theta$ is called a **maximum likelihood estimator** (MLE) if for all $x \in \mathcal{X}$:
 
 $$
 L_x(T(x)) = \max_{\theta \in \Theta} L_x(\theta),
 $$
 
-wenn also $T(x)$ die Likelihood von $x$ maximiert, und zwar für jedes $x$. Dafür schreibt man auch
+that is, if $T(x)$ maximises the likelihood of $x$, and does so for every $x$. One also writes this as
 
 $$
 T(x) = \operatorname*{argmax}_{\theta \in \Theta} L_x(\theta).
 $$
 :::
 
-Ein erstes Beispiel dafür haben wir bereits gerechnet, ohne den Namen zu benutzen: Im Kapitel
-[Wichtigste diskrete Verteilungen](important-discrete-distributions.ipynb) haben wir zu $k$ Erfolgen
-in $n$ Versuchen dasjenige $p$ bestimmt, unter dem diese Beobachtung am wahrscheinlichsten ist, und
-$\hat p = \frac{k}{n}$ erhalten. In der Sprache dieses Kapitels ist das der Maximum-Likelihood-Schätzer
-im Binomialmodell $\mathcal{X} = \{0,\dots,n\}$, $\Theta = [0,1]$, $P_p = \operatorname{Bin}(n,p)$.
+We have already worked out a first example of this without using the name: in the chapter
+[The most important discrete distributions](important-discrete-distributions.ipynb) we determined, for $k$ successes
+in $n$ trials, the $p$ under which that observation is most probable, and obtained
+$\hat p = \frac{k}{n}$. In the language of this chapter that is the maximum likelihood estimator
+in the binomial model $\mathcal{X} = \{0,\dots,n\}$, $\Theta = [0,1]$, $P_p = \operatorname{Bin}(n,p)$.
 
-:::{admonition} Beispiel
-Im $N$-fachen univariat normalverteilten Modell ist $x \mapsto (\texttt{mean}(x), \sigma(x))$ ein Maximum-Likelihood-Schätzer für den Parameter $(\mu(X), \sigma(X))$. Der Schätzer $\sigma^\ast$ ist hingegen kein Maximum-Likelihood-Schätzer für $\sigma(X)$. Also können sich Erwartungstreue und Maximum-Likelihood-Prinzip gegenseitig ausschließen.
+:::{admonition} Example
+In the $N$-fold univariate normally distributed model, $x \mapsto (\texttt{mean}(x), \sigma(x))$ is a maximum likelihood estimator for the parameter $(\mu(X), \sigma(X))$. The estimator $\sigma^\ast$, on the other hand, is not a maximum likelihood estimator for $\sigma(X)$. So unbiasedness and the maximum likelihood principle can rule each other out.
 :::
 
-:::{admonition} Bemerkung
-Mit Hilfe der relativen Entropie lässt sich beweisen, dass unter schwachen Voraussetzungen ($\Theta$ ein Intervall, $P_\theta$ paarweise verschieden und eine etwas technische Bedingung) eine Folge von Maximum-Likelihood-Schätzern stets konsistent ist.
+:::{admonition} Remark
+With the help of the relative entropy one can prove that under weak assumptions ($\Theta$ an interval, the $P_\theta$ pairwise distinct, and a somewhat technical condition) a sequence of maximum likelihood estimators is always consistent.
 
-Das bedeutet: Schätzt man eine Verteilung so, dass die Wahrscheinlichkeit der Beobachtung unter der geschätzten Verteilung maximal ist (Maximum-Likelihood-Prinzip), so konvergiert der Schätzwert stochastisch gegen die tatsächliche Verteilung (mit wachsender Stichprobengröße).
+That means: if one estimates a distribution so that the probability of the observation under the estimated distribution is maximal (the maximum likelihood principle), then the estimate converges in probability to the actual distribution (as the sample size grows).
 :::
 
-:::{admonition} Bemerkung
-Wir sind also für eine Familie von Verteilungen $P_\theta$ mit Dichten $f_\theta$ daran interessiert, die Likelihood $f_\theta(x)$ einer Beobachtung $x$ in $\theta$ zu maximieren. Um Funktionen zu maximieren, betrachten wir gern die Ableitung (dazu sollte $f$ in $\theta$ differenzierbar sein). Schon am Beispiel der univariaten Normalverteilungsdichte $\phi_{\mu,\sigma}$ sehen wir, dass die Ableitung $\frac{d}{d\mu} \phi_{\mu,\sigma}(x) =\frac{(x-\mu)}{\sigma^2} \phi_{\mu,\sigma}(x)$ bei $x=\mu$ verschwindet. Damit ist $\hat\mu = x$ der Maximum-Likelihood-Schätzer für $\mu$ bei einer Stichprobe der Größe $1$ — was man auch ohne Rechnung glaubt: Beobachtet man genau einen Wert, so ist die Normalverteilung, unter der dieser Wert am wahrscheinlichsten ist, diejenige mit dem Erwartungswert an genau dieser Stelle. Dass es sich um ein Maximum und nicht um ein Minimum handelt, sieht man daran, dass $\phi_{\mu,\sigma}(x)$ für $\mu \to \pm\infty$ gegen $0$ geht.
-Im Allgemeinen ist die Likelihood allerdings schwerer zu berechnen (man betrachte ein $n$-faches Produktmodell!) und man kann sich mit einem einfachen Trick behelfen:
+:::{admonition} Remark
+So for a family of distributions $P_\theta$ with densities $f_\theta$ we are interested in maximising the likelihood $f_\theta(x)$ of an observation $x$ in $\theta$. To maximise functions we like to look at the derivative (for which $f$ should be differentiable in $\theta$). Already in the example of the univariate normal density $\phi_{\mu,\sigma}$ we see that the derivative $\frac{d}{d\mu} \phi_{\mu,\sigma}(x) =\frac{(x-\mu)}{\sigma^2} \phi_{\mu,\sigma}(x)$ vanishes at $x=\mu$. So $\hat\mu = x$ is the maximum likelihood estimator for $\mu$ for a sample of size $1$ – which one believes without any calculation: if you observe exactly one value, the normal distribution under which that value is most probable is the one whose expected value sits at exactly that point. That this is a maximum and not a minimum can be seen from the fact that $\phi_{\mu,\sigma}(x)$ tends to $0$ as $\mu \to \pm\infty$.
+In general, though, the likelihood is harder to compute (think of an $n$-fold product model!), and one can help oneself with a simple trick:
 :::
 
 **Trick**
 
-Anstatt die Likelihood von $x$ über alle möglichen $\theta$ zu maximieren, kann man auch den Logarithmus der Likelihood bilden, die sogenannte **log-Likelihood** $\log \rho(x,\theta)$ und diese maximieren. Weil der Logarithmus streng monoton wächst, haben Likelihood und log-Likelihood dieselben Maximalstellen.
+Instead of maximising the likelihood of $x$ over all possible $\theta$, one can also take the logarithm of the likelihood, the so-called **log-likelihood** $\log \rho(x,\theta)$, and maximise that. Because the logarithm is strictly increasing, likelihood and log-likelihood attain their maxima in the same places.
 
-Wenn z.B. $\rho$ die Form $e^{A}e^{B}$ hat (etwa bei einem $2$-fachen Produktmodell), hat $\log\rho$ die Form $A+B$ und Ableitungen gleich $0$ setzen wird deutlich einfacher. Auch mit diesem Trick lässt sich aber im Allgemeinen keine analytische geschlossene Lösung finden - also kann die Informatik mit Approximations-Algorithmen glänzen, wie z.B. den *Expectation Maximization Algorithmus*, den wir später in der Vorlesung noch behandeln.
+If, for instance, $\rho$ has the form $e^{A}e^{B}$ (as in a $2$-fold product model), then $\log\rho$ has the form $A+B$ and setting derivatives to $0$ becomes a great deal easier. Even with this trick, however, no closed analytic solution can be found in general – which is where computer science gets to shine with approximation algorithms, such as the *expectation maximization algorithm*, which we take up later in the course.
 
-:::{admonition} Beispiel
-**Maximum Likelihood für die Exponentialverteilung.**
-Wir beobachten $n$ unabhängige Wartezeiten $x_1,\dots,x_n \geq 0$ und modellieren sie als
-$\operatorname{Exp}(\lambda)$-verteilt, mit Dichte $f_\lambda(x) = \lambda e^{-\lambda x}$.
-Wegen der Unabhängigkeit ist die Likelihood das Produkt der Einzeldichten:
+:::{admonition} Example
+**Maximum likelihood for the exponential distribution.**
+We observe $n$ independent waiting times $x_1,\dots,x_n \geq 0$ and model them as
+$\operatorname{Exp}(\lambda)$-distributed, with density $f_\lambda(x) = \lambda e^{-\lambda x}$.
+Because of the independence the likelihood is the product of the individual densities:
 
 $$
 L(\lambda) = \prod_{i=1}^n \lambda e^{-\lambda x_i} = \lambda^n e^{-\lambda \sum_{i=1}^n x_i}.
 $$
 
-Hier lohnt sich der Trick sofort — aus dem Produkt wird eine Summe:
+Here the trick pays off at once – the product turns into a sum:
 
 $$
 \ell(\lambda) := \log L(\lambda) = n\log\lambda - \lambda \sum_{i=1}^n x_i.
 $$
 
-Ableiten und gleich $0$ setzen liefert
+Differentiating and setting equal to $0$ gives
 
 $$
 \ell'(\lambda) = \frac{n}{\lambda} - \sum_{i=1}^n x_i \overset{!}{=} 0
@@ -283,27 +281,27 @@ $$
 \hat\lambda = \frac{n}{\sum_{i=1}^n x_i} = \frac{1}{\texttt{mean}(x)}.
 $$
 
-Wegen $\ell''(\lambda) = -\frac{n}{\lambda^2} < 0$ ist das tatsächlich ein Maximum.
-Das Ergebnis ist wieder eingängig: Die Exponentialverteilung hat den Erwartungswert
-$\frac{1}{\lambda}$, also schätzen wir $\frac{1}{\lambda}$ durch das Stichprobenmittel.
-Für die Beobachtungen $1, 2, 3, 4$ etwa ist $\texttt{mean}(x) = 2{,}5$ und damit $\hat\lambda = 0{,}4$.
+Since $\ell''(\lambda) = -\frac{n}{\lambda^2} < 0$, this really is a maximum.
+The result is intuitive again: the exponential distribution has expected value
+$\frac{1}{\lambda}$, so we estimate $\frac{1}{\lambda}$ by the sample mean.
+For the observations $1, 2, 3, 4$, say, $\texttt{mean}(x) = 2.5$ and hence $\hat\lambda = 0.4$.
 :::
 
 :::{admonition} Proposition
-Wenn $\theta_0$ der 'wahre' Parameter für $X$ ist (mit dem $x$ gesampelt wurde), so konvergiert der Maximum-Likelihood-Schätzwert $\hat{\theta}$ für eine Stichprobe der Größe $n$ gegen den Wert $\theta$, für den die relative Entropie zwischen $P_{\theta_0}$ und $P_{\theta}$ minimiert wird (wenn das Modell gut aufgesetzt ist, ist dieses Minimum genau $0$). Um das einzusehen, benutzt man den zuvor erwähnten Trick und das Gesetz der großen Zahlen und den Zusammenhang, dass der Erwartungswert der log-Likelihood gleich der negativen Kreuzentropie $-H(P_{\theta_0}; P_\theta)$ ist.
+If $\theta_0$ is the 'true' parameter for $X$ (the one $x$ was sampled with), then the maximum likelihood estimate $\hat{\theta}$ for a sample of size $n$ converges to the value $\theta$ for which the relative entropy between $P_{\theta_0}$ and $P_{\theta}$ is minimised (if the model is set up well, that minimum is exactly $0$). To see this, one uses the trick just mentioned together with the law of large numbers and the fact that the expected value of the log-likelihood equals the negative cross-entropy $-H(P_{\theta_0}; P_\theta)$.
 :::
 
-:::{admonition} Beispiel
-**Anwendung: Server-Logfiles.** Aus den Zeitstempeln einer Web-Anwendung berechnen wir die Abstände zwischen zwei Aufrufen, also Wartezeiten $x_1,\dots,x_n$. Um zusammen mit der mittleren Laufzeit eines Aufrufs die zu erwartende Last abzuschätzen, modellieren wir sie als $\operatorname{Exp}(\lambda)$-verteilt und schätzen $\lambda$ wie im Beispiel oben: $\hat\lambda = 1/\texttt{mean}(x)$. Wir rechnen also mit einer mittleren Wartezeit von $\texttt{mean}(x)$ zwischen zwei Aufrufen, und für die Anzahl der Aufrufe je Zeiteinheit mit der Poissonverteilung zum selben $\lambda$ (Kapitel [Wichtigste diskrete Verteilungen](important-discrete-distributions.ipynb)).
+:::{admonition} Example
+**An application: server log files.** From the timestamps of a web application we compute the gaps between two requests, that is, waiting times $x_1,\dots,x_n$. In order to estimate the load to be expected, together with the mean running time of a request, we model them as $\operatorname{Exp}(\lambda)$-distributed and estimate $\lambda$ as in the example above: $\hat\lambda = 1/\texttt{mean}(x)$. So we reckon with a mean waiting time of $\texttt{mean}(x)$ between two requests, and for the number of requests per unit of time with the Poisson distribution for the same $\lambda$ (chapter [The most important discrete distributions](important-discrete-distributions.ipynb)).
 :::
 
-:::{admonition} Beispiel
-Der k-Means-Algorithmus (siehe das Kapitel [k-Means](kmeans.ipynb)) kann als Schätzer interpretiert werden:
-das statistische Modell ist $\mathcal{X} = \mathbb{R}^{nN}$, wenn $n$ die Dimension der Daten ist (also bei $4$ reellen Variablen, etwa im Iris-Datensatz, $n=4$) und $N$ die Stichprobengröße (bei Iris ist $N=150$).
+:::{admonition} Example
+The k-means algorithm (see the chapter [k-Means](kmeans.ipynb)) can be read as an estimator:
+the statistical model is $\mathcal{X} = \mathbb{R}^{nN}$, where $n$ is the dimension of the data (so with $4$ real variables, as in the Iris dataset, $n=4$) and $N$ the sample size (for Iris, $N=150$).
 
-Der Parameterraum ist $\mathbb{R}^{nk}$ und die Verteilung zu einem Parameter $\theta = (c_1,\dots,c_k) \in \mathbb{R}^{nk}$ (mit $c_i \in \mathbb{R}^n$) ist ein gemischtes Modell aus multivariaten Normalverteilungen mit Erwartungswert $c_i$ und der $n\times n$-Einheitsmatrix als Kovarianzmatrix.
+The parameter space is $\mathbb{R}^{nk}$, and the distribution belonging to a parameter $\theta = (c_1,\dots,c_k) \in \mathbb{R}^{nk}$ (with $c_i \in \mathbb{R}^n$) is a mixture model of multivariate normal distributions with expected value $c_i$ and the $n\times n$ identity matrix as covariance matrix.
 
-Die 'perfekte' k-Means-Lösung, also die Zentroide $(c_1,\dots,c_k)$, die der k-Means-Algorithmus versucht, zu bestimmen, sind diejenigen, für die die Summe der quadrierten euklidischen Abstände eines jeden Punktes $x_i$ eines Samples $x \in \mathcal{X}$ zu seinem nächsten Zentroid minimal ist. Das sind genau die Zentroide, für die die Likelihood der Daten unter der entsprechenden gemischten Verteilung maximal wird.
+The 'perfect' k-means solution, that is the centroids $(c_1,\dots,c_k)$ that the k-means algorithm tries to determine, are those for which the sum of the squared Euclidean distances from every point $x_i$ of a sample $x \in \mathcal{X}$ to its nearest centroid is minimal. These are exactly the centroids for which the likelihood of the data under the corresponding mixture distribution becomes maximal.
 :::
 
-Das führt uns auf eine offensichtliche Verallgemeinerung des k-Means-Verfahrens: wir könnten kompliziertere Kovarianzmatrizen erlauben, und damit die Likelihood weiter vergrößern. Das auftretende Problem ist dann allerdings, dass sich auch für die log-Likelihood keine geschlossene Form bestimmen lässt, und man sich einen neuen Algorithmus zur Schätzung überlegen muss!
+That leads us to an obvious generalisation of the k-means procedure: we could allow more complicated covariance matrices and so push the likelihood up further. The problem that then arises, however, is that no closed form can be determined for the log-likelihood either, and that one has to think up a new algorithm for the estimation!

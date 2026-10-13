@@ -22,546 +22,546 @@
    "de": "c1.0",
    "kind": "prose",
    "digest": "fcc20a38a543c5c4",
-   "en": "c0.1",
+   "en": "c1.0",
    "preview": "<!--- https://pbpython.com/categorical-encoding.html --->"
   },
   {
    "de": "c2.0",
    "kind": "heading",
    "digest": "49b298c7004a58d8",
-   "en": "c1.0",
+   "en": "c2.0",
    "preview": "## DataFrame und Series"
   },
   {
    "de": "c2.1",
    "kind": "prose",
    "digest": "2f17724c8eee1ea6",
-   "en": "c2.0",
+   "en": "c2.1",
    "preview": "Der **DataFrame** ist die Datenstruktur, um die sich alles in Pandas dre…"
   },
   {
    "de": "c2.2",
    "kind": "prose",
    "digest": "c5133176aa488921",
-   "en": "c2.1",
+   "en": "c2.2",
    "preview": "Anders als ein Numpy-Array ist ein DataFrame immer zweidimensional — es …"
   },
   {
    "de": "c3",
    "kind": "code",
    "digest": "e7a64828f7721e69",
-   "en": "c2.2",
+   "en": "c3",
    "preview": "import numpy as np import pandas as pd spalten = { \"spezies\": [\"setosa\",…"
   },
   {
    "de": "c4.0",
    "kind": "prose",
    "digest": "3b8edc2b8f0fb319",
-   "en": "c3",
+   "en": "c4.0",
    "preview": "Auf eine Spalte greift man auf zwei Arten zu, die dasselbe tun: mit ecki…"
   },
   {
    "de": "c5",
    "kind": "code",
    "digest": "20c735397cd58557",
-   "en": "c4.0",
+   "en": "c5",
    "preview": "print(df[\"kelchblattbreite\"]) print(df.kelchblattbreite) # dasselbe prin…"
   },
   {
    "de": "c6.0",
    "kind": "prose",
    "digest": "4d3213d9c1149ded",
-   "en": "c5",
+   "en": "c6.0",
    "preview": "Eine einzelne Spalte ist kein DataFrame, sondern die zweite Datenstruktu…"
   },
   {
    "de": "c6.1",
    "kind": "prose",
    "digest": "dd159ade45e992cf",
-   "en": "c6.0",
+   "en": "c6.1",
    "preview": "Der Weg auf die Platte und zurück geht mit `to_csv` und `read_csv`; letz…"
   },
   {
    "de": "c7",
    "kind": "code",
    "digest": "e64c705cffe52bff",
-   "en": "c6.1",
+   "en": "c7",
    "preview": "print(type(df[\"kelchblattbreite\"])) df.to_csv(\"beispiel.csv\", index=Fals…"
   },
   {
    "de": "c8.0",
    "kind": "prose",
    "digest": "95b55070490731fd",
-   "en": "c7",
+   "en": "c8.0",
    "preview": "Pandas hat eine der besten Dokumentationen im Python-Ökosystem, und es l…"
   },
   {
    "de": "c8.1",
    "kind": "prose",
    "digest": "91362a3b70cf1c32",
-   "en": "c8.0",
+   "en": "c8.1",
    "preview": "Denn das Typensystem von Pandas geht über die Numpy-Typen hinaus. Neben …"
   },
   {
    "de": "c8.2",
    "kind": "table",
    "digest": "85f47256dc4312a8",
-   "en": "c8.1",
+   "en": "c8.2",
    "preview": "| Art der Daten | pandas-Datentyp | Skalar | |---|---|---| | Zeitpunkt m…"
   },
   {
    "de": "c8.3",
    "kind": "prose",
    "digest": "74d831049bf01ddb",
-   "en": "c8.2",
+   "en": "c8.3",
    "preview": "Zwei davon begegnen uns wieder: `CategoricalDtype` beim One-Hot-Encoding…"
   },
   {
    "de": "c9.0",
    "kind": "heading",
    "digest": "7716cfc201cdd598",
-   "en": "c8.3",
+   "en": "c9.0",
    "preview": "## SQL und relationale Datenbanken"
   },
   {
    "de": "c9.1",
    "kind": "prose",
    "digest": "fc5333ba7c05ea90",
-   "en": "c9.0",
+   "en": "c9.1",
    "preview": "Mit DataFrames lässt sich alles ausdrücken, was man in SQL ausdrücken ka…"
   },
   {
    "de": "c9.2",
    "kind": "prose",
    "digest": "995e269553e55c41",
-   "en": "c9.1",
+   "en": "c9.2",
    "preview": "**SQL** ist die Standard-Abfragesprache für relationale Datenbanksysteme…"
   },
   {
    "de": "c9.3",
    "kind": "prose",
    "digest": "76b911dfbfc5b879",
-   "en": "c9.2",
+   "en": "c9.3",
    "preview": "Die wichtigsten Befehle, gruppiert nach dem, was sie anfassen:"
   },
   {
    "de": "c9.4",
    "kind": "table",
    "digest": "452b909963eefd06",
-   "en": "c9.3",
+   "en": "c9.4",
    "preview": "| Befehl | Wirkung | |---|---| | `SELECT` | Daten auswählen und ausgeben…"
   },
   {
    "de": "c9.5",
    "kind": "prose",
    "digest": "113f430c45ae23de",
-   "en": "c9.4",
+   "en": "c9.5",
    "preview": "Eine Abfrage sieht dann zum Beispiel so aus:"
   },
   {
    "de": "c9.6",
    "kind": "code",
    "digest": "59beb8dff06a4471",
-   "en": "c9.5",
+   "en": "c9.6",
    "preview": "```sql SELECT \"Petal.Width\" FROM iris; ```"
   },
   {
    "de": "c9.7",
    "kind": "prose",
    "digest": "b772b88e9dcf4483",
-   "en": "c9.6",
+   "en": "c9.7",
    "preview": "Die Vokabeln der relationalen Welt lohnen sich, weil sie einem in Dokume…"
   },
   {
    "de": "c9.8",
    "kind": "directive",
    "digest": "053400a7b7d2fc03",
-   "en": "c9.7",
+   "en": "c9.8",
    "preview": ":::{admonition} Definition"
   },
   {
    "de": "c9.9",
    "kind": "prose",
    "digest": "439628dd8bc70ef0",
-   "en": "c9.8",
+   "en": "c9.9",
    "preview": "Ein **Datenbankschema** ist eine endliche, nichtleere Menge von **Relati…"
   },
   {
    "de": "c9.10",
    "kind": "directive",
    "digest": "f1ae2a75ed1f9972",
-   "en": "c9.9",
+   "en": "c9.10",
    "preview": ":::"
   },
   {
    "de": "c9.11",
    "kind": "prose",
    "digest": "7535edbde08c9913",
-   "en": "c9.10",
+   "en": "c9.11",
    "preview": "Übersetzt in die Pandas-Welt:"
   },
   {
    "de": "c9.12",
    "kind": "table",
    "digest": "7d3f174d15844283",
-   "en": "c9.11",
+   "en": "c9.12",
    "preview": "| relational | Pandas | |---|---| | Relation / Tabelle | `DataFrame` | |…"
   },
   {
    "de": "c9.13",
    "kind": "prose",
    "digest": "dafa433e0b74a658",
-   "en": "c9.12",
+   "en": "c9.13",
    "preview": "Ein Unterschied bleibt: Eine Relation ist im mathematischen Sinn eine *M…"
   },
   {
    "de": "c10.0",
    "kind": "heading",
    "digest": "54efee92a4d88c6b",
-   "en": "c9.13",
+   "en": "c10.0",
    "preview": "## Von SQL zu Pandas"
   },
   {
    "de": "c10.1",
    "kind": "prose",
    "digest": "5f36ed8098dbd944",
-   "en": "c10.0",
+   "en": "c10.1",
    "preview": "Die folgende Gegenüberstellung folgt der [Pandas-Dokumentation, Abschnit…"
   },
   {
    "de": "c11",
    "kind": "code",
    "digest": "832b1fbe06a2838a",
-   "en": "c10.1",
+   "en": "c11",
    "preview": "import numpy as np import pandas as pd url = ( \"https://raw.github.com/p…"
   },
   {
    "de": "c12.0",
    "kind": "prose",
    "digest": "6dbed5d2ea490213",
-   "en": "c11",
+   "en": "c12.0",
    "preview": "Operationen auf Pandas DataFrames erzeugen Kopien, während der ursprüngl…"
   },
   {
    "de": "c13",
    "kind": "code",
    "digest": "20bf7db881c40140",
-   "en": "c12.0",
+   "en": "c13",
    "preview": "tips.sort_values(\"total_bill\") print(tips) print(\"\\nDas ist ja gar nicht…"
   },
   {
    "de": "c14.0",
    "kind": "prose",
    "digest": "a8f75bbfc3e6fcad",
-   "en": "c13",
+   "en": "c14.0",
    "preview": "Spalten auswählen ist `SELECT`:"
   },
   {
    "de": "c15",
    "kind": "code",
    "digest": "4e526821bb664054",
-   "en": "c14.0",
+   "en": "c15",
    "preview": "# SELECT total_bill, tip, smoker, time FROM tips; tips[[\"total_bill\", \"t…"
   },
   {
    "de": "c16.0",
    "kind": "prose",
    "digest": "ada07d56a101b4ca",
-   "en": "c15",
+   "en": "c16.0",
    "preview": "Man kann neue Spalten hinzufügen, die sich aus alten Spalten berechnen:"
   },
   {
    "de": "c17",
    "kind": "code",
    "digest": "b0137d6f84b0a4fb",
-   "en": "c16.0",
+   "en": "c17",
    "preview": "# SELECT *, tip/total_bill as tip_rate FROM tips; tips.assign(tip_rate=t…"
   },
   {
    "de": "c18.0",
    "kind": "prose",
    "digest": "5fb854e4f69a3050",
-   "en": "c17",
+   "en": "c18.0",
    "preview": "Daten filtern (nach Bedingungen Zeilen auswählen) mit `WHERE`"
   },
   {
    "de": "c19",
    "kind": "code",
    "digest": "6c3d26c92cee2e31",
-   "en": "c18.0",
+   "en": "c19",
    "preview": "# SELECT * FROM tips WHERE time = 'Dinner'; is_dinner = tips[\"time\"] == …"
   },
   {
    "de": "c20.0",
    "kind": "prose",
    "digest": "7b5e28df47e805eb",
-   "en": "c19",
+   "en": "c20.0",
    "preview": "Mehrere Bedingungen logisch verknüpfen mit `OR |` oder `AND &`:"
   },
   {
    "de": "c21",
    "kind": "code",
    "digest": "9a157954a6e3c70c",
-   "en": "c20.0",
+   "en": "c21",
    "preview": "# SELECT * FROM tips WHERE time = 'Dinner' AND tip > 6.00; tips[(tips[\"t…"
   },
   {
    "de": "c22",
    "kind": "code",
    "digest": "3330d40b378ee90a",
-   "en": "c21",
+   "en": "c22",
    "preview": "# SELECT * FROM tips WHERE size >= 6 OR total_bill > 45; tips[(tips[\"siz…"
   },
   {
    "de": "c23.0",
    "kind": "prose",
    "digest": "b0b4f96b7ab5a2de",
-   "en": "c22",
+   "en": "c23.0",
    "preview": "Daten in Gruppen aufspalten, aggregierte Statistiken ausrechnen, Gruppen…"
   },
   {
    "de": "c24",
    "kind": "code",
    "digest": "faf6f86a38a9a032",
-   "en": "c23.0",
+   "en": "c24",
    "preview": "# SELECT sex, count(*) FROM tips GROUP BY sex; tips.groupby(\"sex\").size(…"
   },
   {
    "de": "c25",
    "kind": "code",
    "digest": "cbb797749baba927",
-   "en": "c24",
+   "en": "c25",
    "preview": "# SELECT day, AVG(tip), COUNT(*) FROM tips GROUP BY day; tips.groupby(\"d…"
   },
   {
    "de": "c26.0",
    "kind": "prose",
    "digest": "c79fced8a37e179d",
-   "en": "c25",
+   "en": "c26.0",
    "preview": "Eine Falle, die beim Aggregieren immer wieder zuschnappt: **Der Mittelwe…"
   },
   {
    "de": "c27",
    "kind": "code",
    "digest": "281b9a1faaf121c6",
-   "en": "c26.0",
+   "en": "c27",
    "preview": "klein = pd.DataFrame({\"Gruppe\": [\"A\", \"A\", \"A\", \"B\", \"B\"], \"Wert\": [10, …"
   },
   {
    "de": "c28",
    "kind": "code",
    "digest": "3a0ba525638aace3",
-   "en": "c27",
+   "en": "c28",
    "preview": "# SELECT smoker, day, COUNT(*), AVG(tip) FROM tips GROUP BY smoker, day;…"
   },
   {
    "de": "c29.0",
    "kind": "prose",
    "digest": "35eccf54b04c566a",
-   "en": "c28",
+   "en": "c29.0",
    "preview": "Daten kommen selten in einer einzigen Tabelle. Angenommen, die Iris-Mess…"
   },
   {
    "de": "c29.1",
    "kind": "prose",
    "digest": "6d7411ccd5dda2de",
-   "en": "c29.0",
+   "en": "c29.1",
    "preview": "Deshalb bekommt jede Zeile eine Spalte, die sie eindeutig identifiziert:…"
   },
   {
    "de": "c30",
    "kind": "code",
    "digest": "d1e904c23eb11073",
-   "en": "c29.1",
+   "en": "c30",
    "preview": "import uuid spezies = pd.DataFrame({\"Nr\": [1, 51], \"spezies\": [\"setosa\",…"
   },
   {
    "de": "c31.0",
    "kind": "prose",
    "digest": "a1c74fd557c540b4",
-   "en": "c30",
+   "en": "c31.0",
    "preview": "Interessant wird es, wenn die Schlüssel nicht in beiden Tabellen dieselb…"
   },
   {
    "de": "c32",
    "kind": "code",
    "digest": "09e697bf3216c539",
-   "en": "c31.0",
+   "en": "c32",
    "preview": "df1 = pd.DataFrame({\"key\": [\"A\", \"B\", \"C\", \"D\"], \"value\": np.random.rand…"
   },
   {
    "de": "c33",
    "kind": "code",
    "digest": "92fc55b4959771db",
-   "en": "c32",
+   "en": "c33",
    "preview": "# SELECT * FROM df1 INNER JOIN df2 ON df1.key = df2.key; pd.merge(df1, d…"
   },
   {
    "de": "c34.0",
    "kind": "prose",
    "digest": "622c82eb7c905c82",
-   "en": "c33",
+   "en": "c34.0",
    "preview": "Der **Inner Join** behält nur Schlüssel, die in beiden Tabellen vorkomme…"
   },
   {
    "de": "c35",
    "kind": "code",
    "digest": "d05d7917231b9b28",
-   "en": "c34.0",
+   "en": "c35",
    "preview": "# SELECT * FROM df1 LEFT OUTER JOIN df2 ON df1.key = df2.key; pd.merge(d…"
   },
   {
    "de": "c36.0",
    "kind": "prose",
    "digest": "77e142372a2c5e30",
-   "en": "c35",
+   "en": "c36.0",
    "preview": "Der **Left Outer Join** behält alle Zeilen der linken Tabelle, auch die …"
   },
   {
    "de": "c37",
    "kind": "code",
    "digest": "c7156455e9773faf",
-   "en": "c36.0",
+   "en": "c37",
    "preview": "# SELECT * FROM df1 RIGHT OUTER JOIN df2 ON df1.key = df2.key; pd.merge(…"
   },
   {
    "de": "c38.0",
    "kind": "prose",
    "digest": "75c0ef23b0fc1e31",
-   "en": "c37",
+   "en": "c38.0",
    "preview": "Der **Right Outer Join** ist dasselbe mit vertauschten Rollen: alle Zeil…"
   },
   {
    "de": "c39",
    "kind": "code",
    "digest": "309eaa06075650b5",
-   "en": "c38.0",
+   "en": "c39",
    "preview": "# SELECT * FROM df1 FULL OUTER JOIN df2 ON df1.key = df2.key; pd.merge(d…"
   },
   {
    "de": "c40.0",
    "kind": "prose",
    "digest": "97c1afd0a84174bb",
-   "en": "c39",
+   "en": "c40.0",
    "preview": "Der **Full Outer Join** behält alles, `A` bis `E`, und füllt beide Seite…"
   },
   {
    "de": "c41.0",
    "kind": "prose",
    "digest": "1e3699935762cd5d",
-   "en": "c40.0",
+   "en": "c41.0",
    "preview": "Daten verändern geht in SQL mit `UPDATE`, in Pandas führen wir einfach P…"
   },
   {
    "de": "c42",
    "kind": "code",
    "digest": "10a17c90c1434347",
-   "en": "c41.0",
+   "en": "c42",
    "preview": "# Zustand vor der Änderung: tips.sort_values(\"tip\").head()"
   },
   {
    "de": "c43",
    "kind": "code",
    "digest": "78ddf672fa7c670b",
-   "en": "c42",
+   "en": "c43",
    "preview": "# UPDATE tips SET tip = tip*2 WHERE tip < 2; tips.loc[tips[\"tip\"] < 2, \"…"
   },
   {
    "de": "c44",
    "kind": "code",
    "digest": "e857f11ef4889729",
-   "en": "c43",
+   "en": "c44",
    "preview": "# Zustand vor der nächsten Änderung: tips.sort_values(\"tip\", ascending=F…"
   },
   {
    "de": "c45",
    "kind": "code",
    "digest": "79d9ebaedd0b1d2b",
-   "en": "c44",
+   "en": "c45",
    "preview": "# DELETE FROM tips WHERE tip > 9; tips = tips.loc[tips[\"tip\"] <= 9] tips…"
   },
   {
    "de": "c46.0",
    "kind": "heading",
    "digest": "23f66c94bc1904fe",
-   "en": "c45",
+   "en": "c46.0",
    "preview": "## Erster Blick auf einen Datensatz"
   },
   {
    "de": "c46.1",
    "kind": "prose",
    "digest": "a44b474c527c6faa",
-   "en": "c46.0",
+   "en": "c46.1",
    "preview": "Pandas bringt die Werkzeuge mit, die wir im Kapitel über deskriptive Sta…"
   },
   {
    "de": "c47",
    "kind": "code",
    "digest": "cb0e3bf14610d6ac",
-   "en": "c46.1",
+   "en": "c47",
    "preview": "titanic = pd.read_csv(\"titanic.csv\") titanic.info()"
   },
   {
    "de": "c48.0",
    "kind": "prose",
    "digest": "3df952c6130ee281",
-   "en": "c47",
+   "en": "c48.0",
    "preview": "`describe` liefert für jede numerische Spalte Anzahl, Mittelwert, Standa…"
   },
   {
    "de": "c49",
    "kind": "code",
    "digest": "d0191337c760afed",
-   "en": "c48.0",
+   "en": "c49",
    "preview": "titanic.describe()"
   },
   {
    "de": "c50.0",
    "kind": "prose",
    "digest": "8767bac440a4c783",
-   "en": "c49",
+   "en": "c50.0",
    "preview": "Für kategoriale Spalten zählt `value_counts` die Ausprägungen:"
   },
   {
    "de": "c51",
    "kind": "code",
    "digest": "cca2e89b763845b8",
-   "en": "c50.0",
+   "en": "c51",
    "preview": "print(titanic[\"Sex\"].value_counts()) print(titanic[\"Embarked\"].value_cou…"
   },
   {
    "de": "c52.0",
    "kind": "prose",
    "digest": "b1172730df169766",
-   "en": "c51",
+   "en": "c52.0",
    "preview": "Fehlende Werte erkennt man mit `isna`. Man kann sie verwerfen (`dropna`)…"
   },
   {
    "de": "c52.1",
    "kind": "prose",
    "digest": "eace7a4f773612d1",
-   "en": "c52.0",
+   "en": "c52.1",
    "preview": "Schiefe und Wölbung aus dem Kapitel über Erwartungswerte sind ebenfalls …"
   },
   {
    "de": "c53",
    "kind": "code",
    "digest": "ec6178de75dc9c58",
-   "en": "c52.1",
+   "en": "c53",
    "preview": "print(titanic.isna().sum()) alter = titanic[\"Age\"].fillna(titanic[\"Age\"]…"
   },
   {
    "de": "c54.0",
    "kind": "prose",
    "digest": "067b76583f05c8a0",
-   "en": "c53",
+   "en": "c54.0",
    "preview": "Gruppierte Kennzahlen bekommt man wie oben mit `groupby`:"
   },
   {
    "de": "c55",
    "kind": "code",
    "digest": "c3723b6980014431",
-   "en": "c54.0",
+   "en": "c55",
    "preview": "titanic.groupby(\"Pclass\")[\"Age\"].describe()"
   }
  ]

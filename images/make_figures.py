@@ -120,7 +120,45 @@ def colour_vision() -> None:
     plt.close(fig)
 
 
+# ------------------------------------------------------------- distribution families
+
+def _density_family(dists, title, filename, x, extra=None) -> None:
+    fig, ax = plt.subplots(figsize=(9.6, 11.4), dpi=100)
+    fig.suptitle(title, fontsize=13)
+    for label, pdf in dists:
+        ax.plot(x, pdf, label=label)
+    if extra:
+        label, pdf = extra
+        ax.plot(x, pdf, label=label)
+    ax.legend(loc="upper right")
+    fig.savefig(HERE / filename)
+    plt.close(fig)
+
+
+def chi_squared() -> None:
+    from scipy import stats
+    x = np.linspace(0, 30, 600)
+    _density_family(
+        [(f"{k} degrees of freedom", stats.chi2.pdf(x, k)) for k in (4, 8, 16)],
+        "$\\chi^2$ distributions with different parameters",
+        "chi-squared-distributions.png", x)
+
+
+def student_t() -> None:
+    from scipy import stats
+    x = np.linspace(-5, 5, 600)
+    _density_family(
+        [(f"{k} degrees of freedom", stats.t.pdf(x, k)) for k in (4, 8, 16)],
+        "Student t distributions with different parameters, and the standard normal "
+        "distribution",
+        "student-t-distributions.png", x,
+        extra=("standard normal distribution", stats.norm.pdf(x)))
+
+
 if __name__ == "__main__":
     simpson()
     colour_vision()
-    print("wrote simpson-paradox.png and colour-vision-simulation.png")
+    chi_squared()
+    student_t()
+    print("wrote simpson-paradox.png, colour-vision-simulation.png, "
+          "chi-squared-distributions.png and student-t-distributions.png")

@@ -110,6 +110,8 @@ the staleness report would then point at the wrong block.
 * **Address**: the German "Sie" becomes "you"; the German "wir" stays "we". The book's
   voice is a lecturer thinking alongside the reader, and that survives translation.
 * **Dates**: `25.09.2026` → `25 September 2026`.
+* **Money**: symbol first and the scale written out. German `35,3 Mio. €` → `€35.3 million`,
+  `1,2 Mrd. €` → `€1.2 billion` (short scale), `18.600 €` → `€18,600`.
 * **Per cent**: German `78 %` becomes `78%`, no space, in prose and in tables. Inside maths
   the thin space stays as the source has it (`$-0.1\,\%$`), because that is the convention
   in English typesetting too.
