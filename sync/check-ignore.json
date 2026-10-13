@@ -1,0 +1,9 @@
+{
+  "_comment": "Known, deliberate findings of tools/check_english.py. Each needs a reason: the point of the allowlist is that the check can then be strict (zero findings) in CI. Match is by file, block id and a prefix of the finding label.",
+  "ignore": {
+    "what-is-data-science.md": [
+      { "block": "6", "label": "German function word", "reason": "the German book title 'Vorlesungen über Informatik' is quoted, not translated" },
+      { "block": "17", "label": "German quotation marks", "reason": "typographic quotes inside the verbatim English quotation from DJ Patil" }
+    ]
+  }
+}
