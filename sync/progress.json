@@ -117,7 +117,7 @@
       "source": "pandas.ipynb"
     },
     "programming-stochastics.ipynb": {
-      "translated": false,
+      "translated": true,
       "style_pass": false,
       "source": "stochastik-programmieren.ipynb"
     },
