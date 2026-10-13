@@ -28,7 +28,7 @@ next to it, so the next change is an edit rather than an archaeology project.
 | `layers-zusammen.png` | descriptive-statistics | labels to check | to do |
 | `gute-palette.png` | descriptive-statistics | labels to check | to do |
 | `likelihood-scale.png` | statistical-models | labels to check | to do |
-| `normalmarginal.png` | covariance | labels to check | to do |
+| ~~`normalmarginal.png`~~ | covariance | none – inspected, no text at all | **clean** |
 
 "Labels to check" means the file has not been inspected yet; the chapter's translator
 inspects it and either redraws it or strikes the row.

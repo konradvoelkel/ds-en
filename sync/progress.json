@@ -7,7 +7,7 @@
       "source": "stetige-verteilungen.md"
     },
     "covariance.md": {
-      "translated": false,
+      "translated": true,
       "style_pass": false,
       "source": "kovarianz.md"
     },

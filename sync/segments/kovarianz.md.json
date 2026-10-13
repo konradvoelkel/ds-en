@@ -14,973 +14,974 @@
    "de": "1",
    "kind": "prose",
    "digest": "e114090b24773418",
-   "en": "1",
+   "en": null,
+   "dropped": "link to the German HHU lecture recording",
    "preview": "[Vorlesungsaufzeichnung Kovarianz und Korrelation (VL 11)](https://media…"
   },
   {
    "de": "2",
    "kind": "heading",
    "digest": "10dcda502649bd11",
-   "en": "2",
+   "en": "1",
    "preview": "## Gemeinsame Verteilung und Bayes"
   },
   {
    "de": "3",
    "kind": "directive",
    "digest": "053400a7b7d2fc03",
-   "en": "3",
+   "en": "2",
    "preview": ":::{admonition} Definition"
   },
   {
    "de": "4",
    "kind": "prose",
    "digest": "1d79883d6e490fd8",
-   "en": "4",
+   "en": "3",
    "preview": "Sind $X \\colon \\Omega_1 \\to \\mathbb{R}$ und $Y \\colon \\Omega_2 \\to \\math…"
   },
   {
    "de": "5",
    "kind": "math",
    "digest": "9570516434a6bb30",
-   "en": "5",
+   "en": "4",
    "preview": "$$ X \\times Y \\colon \\Omega_1 \\times \\Omega_2 \\to \\mathbb{R}^2,\\ (a,b) \\…"
   },
   {
    "de": "6",
    "kind": "directive",
    "digest": "f1ae2a75ed1f9972",
-   "en": "6",
+   "en": "5",
    "preview": ":::"
   },
   {
    "de": "7",
    "kind": "directive",
    "digest": "053400a7b7d2fc03",
-   "en": "7",
+   "en": "6",
    "preview": ":::{admonition} Definition"
   },
   {
    "de": "8",
    "kind": "prose",
    "digest": "2854c910ba6fc74e",
-   "en": "8",
+   "en": "7",
    "preview": "Wenn $X,Y \\colon \\Omega \\to \\mathbb{R}$ zwei Zufallsvariablen mit dem se…"
   },
   {
    "de": "9",
    "kind": "math",
    "digest": "f4ba820e97b2d651",
-   "en": "9",
+   "en": "8",
    "preview": "$$ (X, Y) := (X \\times Y) \\circ \\Delta \\colon \\Omega \\to \\mathbb{R}^2,\\ …"
   },
   {
    "de": "10",
    "kind": "prose",
    "digest": "d79a4f781875c0fb",
-   "en": "10",
+   "en": "9",
    "preview": "Dabei ist $\\Delta \\colon \\Omega \\to \\Omega \\times \\Omega$ die *Diagonala…"
   },
   {
    "de": "11",
    "kind": "directive",
    "digest": "f1ae2a75ed1f9972",
-   "en": "11",
+   "en": "10",
    "preview": ":::"
   },
   {
    "de": "12",
    "kind": "directive",
    "digest": "053400a7b7d2fc03",
-   "en": "12",
+   "en": "11",
    "preview": ":::{admonition} Definition"
   },
   {
    "de": "13",
    "kind": "prose",
    "digest": "50b30cbdedb3967a",
-   "en": "13",
+   "en": "12",
    "preview": "Zu einer Zufallsvariable $X \\colon \\Omega \\to \\mathbb{R}^n$ können wir $…"
   },
   {
    "de": "14",
    "kind": "directive",
    "digest": "f1ae2a75ed1f9972",
-   "en": "14",
+   "en": "13",
    "preview": ":::"
   },
   {
    "de": "15",
    "kind": "prose",
    "digest": "5f9d6c1a46f61678",
-   "en": "15",
+   "en": "14",
    "preview": "Allgemeiner wird auch z.B. $(X_1,X_3,X_9)$ als Marginalverteilung von $X…"
   },
   {
    "de": "16",
    "kind": "directive",
    "digest": "566676a32baee8ac",
-   "en": "16",
+   "en": "15",
    "preview": ":::{admonition} Bemerkung"
   },
   {
    "de": "17",
    "kind": "prose",
    "digest": "3c34ec9dcfa180a6",
-   "en": "17",
+   "en": "16",
    "preview": "Die Verteilung von $X_i$ ist $P(X_i \\in A) = P(X \\in \\pi_i^{-1}(A))$."
   },
   {
    "de": "18",
    "kind": "prose",
    "digest": "452d2704c5b19942",
-   "en": "18",
+   "en": "17",
    "preview": "Zu einer Zufallsvariable $(X,Y) \\colon \\Omega \\to \\mathbb{R}^2$ können w…"
   },
   {
    "de": "19",
    "kind": "directive",
    "digest": "f1ae2a75ed1f9972",
-   "en": "19",
+   "en": "18",
    "preview": ":::"
   },
   {
    "de": "20",
    "kind": "directive",
    "digest": "566676a32baee8ac",
-   "en": "20",
+   "en": "19",
    "preview": ":::{admonition} Bemerkung"
   },
   {
    "de": "21",
    "kind": "prose",
    "digest": "303b566dae83f852",
-   "en": "21",
+   "en": "20",
    "preview": "Zu einer Zufallsvariable $(X,Y) \\colon \\Omega \\to \\mathbb{R}^2$ ist"
   },
   {
    "de": "22",
    "kind": "math",
    "digest": "a7d748760721c7a7",
-   "en": "22",
+   "en": "21",
    "preview": "$$ P((X,Y) = (x,y)) = P(X = x, Y=y) = P(Y = y | X = x)P(X = x) $$"
   },
   {
    "de": "23",
    "kind": "prose",
    "digest": "2dc776a716f8ee81",
-   "en": "23",
+   "en": "22",
    "preview": "nach Definition der bedingten Wahrscheinlichkeit."
   },
   {
    "de": "24",
    "kind": "prose",
    "digest": "9b1683acc09f4a98",
-   "en": "24",
+   "en": "23",
    "preview": "In der Notation mit pmf schreiben wir auch"
   },
   {
    "de": "25",
    "kind": "math",
    "digest": "26a24eaa3393f30e",
-   "en": "25",
+   "en": "24",
    "preview": "$$ p(x,y) = p(y|x)p(x) $$"
   },
   {
    "de": "26",
    "kind": "prose",
    "digest": "09bf746947694f4c",
-   "en": "26",
+   "en": "25",
    "preview": "wobei das als Definition zu verstehen ist:"
   },
   {
    "de": "27",
    "kind": "math",
    "digest": "122856c6b3404958",
-   "en": "27",
+   "en": "26",
    "preview": "$$ p(y|x) = \\frac{p(x,y)}{p(x)} $$"
   },
   {
    "de": "28",
    "kind": "prose",
    "digest": "501eca6c46cc91a6",
-   "en": "28",
+   "en": "27",
    "preview": "Genauer schreibt man die Verteilungen mit ihren Zufallsvariablen im Inde…"
   },
   {
    "de": "29",
    "kind": "math",
    "digest": "b03feef5a1782b02",
-   "en": "29",
+   "en": "28",
    "preview": "$$ p_{X,Y}(x,y) = p_{Y|X}(y \\mid x)\\, p_X(x), $$"
   },
   {
    "de": "30",
    "kind": "prose",
    "digest": "f7f8eaa7bd9910e1",
-   "en": "30",
+   "en": "29",
    "preview": "wobei $p_{Y|X}(\\cdot \\mid x)$ für jedes feste $x$ mit $p_X(x) > 0$ die p…"
   },
   {
    "de": "31",
    "kind": "directive",
    "digest": "f1ae2a75ed1f9972",
-   "en": "31",
+   "en": "30",
    "preview": ":::"
   },
   {
    "de": "32",
    "kind": "directive",
    "digest": "d8a9d8fddee7e0b1",
-   "en": "32",
+   "en": "31",
    "preview": ":::{admonition} Proposition"
   },
   {
    "de": "33",
    "kind": "prose",
    "digest": "53645cfeedddcb82",
-   "en": "33",
+   "en": "32",
    "preview": "Seien $X, Y \\colon \\Omega \\to \\mathbb{R}$ diskrete Zufallsvariablen. Dan…"
   },
   {
    "de": "34",
    "kind": "prose",
    "digest": "8adf7cd597e05300",
-   "en": "34",
+   "en": "33",
    "preview": "1. $X$ und $Y$ sind unabhängig (im Sinne des Kapitels [Erwartungswert un…"
   },
   {
    "de": "35",
    "kind": "directive",
    "digest": "f1ae2a75ed1f9972",
-   "en": "35",
+   "en": "34",
    "preview": ":::"
   },
   {
    "de": "36",
    "kind": "directive",
    "digest": "d3c74271f8c77915",
-   "en": "36",
+   "en": "35",
    "preview": ":::{admonition} Beweis"
   },
   {
    "de": "37",
    "kind": "prose",
    "digest": "172730e6f88c2fcd",
-   "en": "37",
+   "en": "36",
    "preview": "Die Unabhängigkeit von $X$ und $Y$ bedeutet $P(X = x, Y = y) = P(X = x)\\…"
   },
   {
    "de": "38",
    "kind": "directive",
    "digest": "f1ae2a75ed1f9972",
-   "en": "38",
+   "en": "37",
    "preview": ":::"
   },
   {
    "de": "39",
    "kind": "prose",
    "digest": "44f57661a7c59cea",
-   "en": "39",
+   "en": "38",
    "preview": "Aussage 3 ist die Verallgemeinerung von $P(A \\mid B) = P(A)$ aus dem Kap…"
   },
   {
    "de": "40",
    "kind": "directive",
    "digest": "f964f8dc481b2d41",
-   "en": "40",
+   "en": "39",
    "preview": ":::{admonition} Satz"
   },
   {
    "de": "41",
    "kind": "prose",
    "digest": "51f4aeb0161c97a6",
-   "en": "41",
+   "en": "40",
    "preview": "**von Bayes:** Gegeben zwei Ereignisse $A,B \\subseteq \\Omega$ ist"
   },
   {
    "de": "42",
    "kind": "math",
    "digest": "f0d153937d439116",
-   "en": "42",
+   "en": "41",
    "preview": "$$ P(A|B) = \\dfrac{P(B|A)P(A)}{P(B)}. $$"
   },
   {
    "de": "43",
    "kind": "directive",
    "digest": "f1ae2a75ed1f9972",
-   "en": "43",
+   "en": "42",
    "preview": ":::"
   },
   {
    "de": "44",
    "kind": "directive",
    "digest": "0feec534fa43b536",
-   "en": "44",
+   "en": "43",
    "preview": ":::{admonition} Beispiel"
   },
   {
    "de": "45",
    "kind": "prose",
    "digest": "837b07b0558ff443",
-   "en": "45",
+   "en": "44",
    "preview": "**Warum die Basisrate zählt.** Ein Test erkennt eine seltene Krankheit z…"
   },
   {
    "de": "46",
    "kind": "math",
    "digest": "a0249a1d4f9cc195",
-   "en": "46",
+   "en": "45",
    "preview": "$$ P(A|B) = \\dfrac{0{,}99 \\cdot 0{,}001}{0{,}99 \\cdot 0{,}001 + 0{,}01 \\…"
   },
   {
    "de": "47",
    "kind": "prose",
    "digest": "0499efaff0995e95",
-   "en": "47",
+   "en": "46",
    "preview": "$P(A|B)$ ist eben nicht $P(B|A)$, sondern $P(B|A)$ *mal* das Verhältnis …"
   },
   {
    "de": "48",
    "kind": "directive",
    "digest": "f1ae2a75ed1f9972",
-   "en": "48",
+   "en": "47",
    "preview": ":::"
   },
   {
    "de": "49",
    "kind": "directive",
    "digest": "d3c74271f8c77915",
-   "en": "49",
+   "en": "48",
    "preview": ":::{admonition} Beweis"
   },
   {
    "de": "50",
    "kind": "prose",
    "digest": "eef4574e776256ae",
-   "en": "50",
+   "en": "49",
    "preview": "Die Definition der bedingten Wahrscheinlichkeit ist $P(A|B) = \\dfrac{P(A…"
   },
   {
    "de": "51",
    "kind": "directive",
    "digest": "f1ae2a75ed1f9972",
-   "en": "51",
+   "en": "50",
    "preview": ":::"
   },
   {
    "de": "52",
    "kind": "prose",
    "digest": "df49a85ebcc55079",
-   "en": "52",
+   "en": "51",
    "preview": "Um den Nenner $P(B)$ auszurechnen, hilft oft der folgende Satz:"
   },
   {
    "de": "53",
    "kind": "directive",
    "digest": "f964f8dc481b2d41",
-   "en": "53",
+   "en": "52",
    "preview": ":::{admonition} Satz"
   },
   {
    "de": "54",
    "kind": "prose",
    "digest": "3ed3dfe36d607094",
-   "en": "54",
+   "en": "53",
    "preview": "**von der totalen Wahrscheinlichkeit:** Ist $\\Omega = A_1 \\cup \\dots \\cu…"
   },
   {
    "de": "55",
    "kind": "math",
    "digest": "d4efaead1a1e4793",
-   "en": "55",
+   "en": "54",
    "preview": "$$ P(B) = \\sum_{i=1}^n P(B|A_i)\\,P(A_i). $$"
   },
   {
    "de": "56",
    "kind": "directive",
    "digest": "f1ae2a75ed1f9972",
-   "en": "56",
+   "en": "55",
    "preview": ":::"
   },
   {
    "de": "57",
    "kind": "directive",
    "digest": "d3c74271f8c77915",
-   "en": "57",
+   "en": "56",
    "preview": ":::{admonition} Beweis"
   },
   {
    "de": "58",
    "kind": "prose",
    "digest": "ad2612dcb1e55ef4",
-   "en": "58",
+   "en": "57",
    "preview": "Die Mengen $B \\cap A_i$ sind paarweise disjunkt und ihre Vereinigung ist…"
   },
   {
    "de": "59",
    "kind": "directive",
    "digest": "f1ae2a75ed1f9972",
-   "en": "59",
+   "en": "58",
    "preview": ":::"
   },
   {
    "de": "60",
    "kind": "prose",
    "digest": "152fdf9dacc315f3",
-   "en": "60",
+   "en": "59",
    "preview": "Im Satz von Bayes kann man den Nenner also durch $P(B) = P(B|A)P(A) + P(…"
   },
   {
    "de": "61",
    "kind": "directive",
    "digest": "f964f8dc481b2d41",
-   "en": "61",
+   "en": "60",
    "preview": ":::{admonition} Satz"
   },
   {
    "de": "62",
    "kind": "prose",
    "digest": "c8a26ae8a3c5279e",
-   "en": "62",
+   "en": "61",
    "preview": "**von Bayes, Fassung 2:** Gegeben zwei Zufallsvariablen $X,Y \\colon \\Ome…"
   },
   {
    "de": "63",
    "kind": "math",
    "digest": "866570c06f5909cf",
-   "en": "63",
+   "en": "62",
    "preview": "$$ P(X=x | Y=y) = \\dfrac{ P(Y=y|X=x)P(X=x) }{P(Y=y)}. $$"
   },
   {
    "de": "64",
    "kind": "directive",
    "digest": "f1ae2a75ed1f9972",
-   "en": "64",
+   "en": "63",
    "preview": ":::"
   },
   {
    "de": "65",
    "kind": "prose",
    "digest": "4901d19644a5b857",
-   "en": "65",
+   "en": "64",
    "preview": "Das wenden wir häufig so an: $Y$ ist 'bekannt' und $X$ ist das vorläufig…"
   },
   {
    "de": "66",
    "kind": "prose",
    "digest": "30d93588ecb15ee8",
-   "en": "66",
+   "en": "65",
    "preview": "Gegeben Daten und Hypothese erhalten wir so"
   },
   {
    "de": "67",
    "kind": "directive",
    "digest": "f964f8dc481b2d41",
-   "en": "67",
+   "en": "66",
    "preview": ":::{admonition} Satz"
   },
   {
    "de": "68",
    "kind": "prose",
    "digest": "85eebbfc781ae711",
-   "en": "68",
+   "en": "67",
    "preview": "**von Bayes, Fassung 3:**"
   },
   {
    "de": "69",
    "kind": "math",
    "digest": "aaaebd0f9165b6c6",
-   "en": "69",
+   "en": "68",
    "preview": "$$ P(H|D) = \\dfrac{ P(D|H) P(H) }{ P(D) } $$"
   },
   {
    "de": "70",
    "kind": "prose",
    "digest": "e006986de0cdbaa0",
-   "en": "70",
+   "en": "69",
    "preview": "Dabei heißt $P(H)$ der **Prior** (die a priori Wahrscheinlichkeit der Hy…"
   },
   {
    "de": "71",
    "kind": "directive",
    "digest": "f1ae2a75ed1f9972",
-   "en": "71",
+   "en": "70",
    "preview": ":::"
   },
   {
    "de": "72",
    "kind": "directive",
    "digest": "0feec534fa43b536",
-   "en": "72",
+   "en": "71",
    "preview": ":::{admonition} Beispiel"
   },
   {
    "de": "73",
    "kind": "prose",
    "digest": "e14dadd69f39ff4f",
-   "en": "73",
+   "en": "72",
    "preview": "**Wie man eine Likelihood ausrechnet.** Bisher waren $H$ und $D$ Ereigni…"
   },
   {
    "de": "74",
    "kind": "math",
    "digest": "a403375de877c3ac",
-   "en": "74",
+   "en": "73",
    "preview": "$$ P(D \\mid H) = \\prod_{i=1}^n p_{\\mu,\\sigma}(x_i) = \\prod_{i=1}^n \\dfra…"
   },
   {
    "de": "75",
    "kind": "prose",
    "digest": "874b7dfece9b05da",
-   "en": "75",
+   "en": "74",
    "preview": "Drei Rollen sind dabei sauber zu trennen: die *datenerzeugende Verteilun…"
   },
   {
    "de": "76",
    "kind": "directive",
    "digest": "f1ae2a75ed1f9972",
-   "en": "76",
+   "en": "75",
    "preview": ":::"
   },
   {
    "de": "77",
    "kind": "directive",
    "digest": "f964f8dc481b2d41",
-   "en": "77",
+   "en": "76",
    "preview": ":::{admonition} Satz"
   },
   {
    "de": "78",
    "kind": "prose",
    "digest": "525379377d16721e",
-   "en": "78",
+   "en": "77",
    "preview": "**von Bayes, Fassung 4:**"
   },
   {
    "de": "79",
    "kind": "math",
    "digest": "fa999c8148281944",
-   "en": "79",
+   "en": "78",
    "preview": "$$ \\text{Posterior} = \\dfrac{ \\text{Likelihood} \\cdot \\text{Prior} }{ \\t…"
   },
   {
    "de": "80",
    "kind": "directive",
    "digest": "f1ae2a75ed1f9972",
-   "en": "80",
+   "en": "79",
    "preview": ":::"
   },
   {
    "de": "81",
    "kind": "directive",
    "digest": "0feec534fa43b536",
-   "en": "81",
+   "en": "80",
    "preview": ":::{admonition} Beispiel"
   },
   {
    "de": "82",
    "kind": "prose",
    "digest": "d2fa7f6b2cc26c76",
-   "en": "82",
+   "en": "81",
    "preview": "**Bayessches Updaten.** Der Posterior von heute ist der Prior von morgen…"
   },
   {
    "de": "83",
    "kind": "math",
    "digest": "de6996dcfdc08271",
-   "en": "83",
+   "en": "82",
    "preview": "$$ P(H|D) = \\dfrac{0{,}99 \\cdot 0{,}09}{0{,}99 \\cdot 0{,}09 + 0{,}01 \\cd…"
   },
   {
    "de": "84",
    "kind": "prose",
    "digest": "b1701e00ca7b3b49",
-   "en": "84",
+   "en": "83",
    "preview": "Zwei positive Tests hintereinander machen aus einem Promille erst neun P…"
   },
   {
    "de": "85",
    "kind": "directive",
    "digest": "f1ae2a75ed1f9972",
-   "en": "85",
+   "en": "84",
    "preview": ":::"
   },
   {
    "de": "86",
    "kind": "heading",
    "digest": "46770eca3388647f",
-   "en": "86",
+   "en": "85",
    "preview": "## Kovarianz"
   },
   {
    "de": "87",
    "kind": "prose",
    "digest": "c3b7eb16987dd3c2",
-   "en": "87",
+   "en": "86",
    "preview": "Vorab eine Warnung, die wir schon aus dem Kapitel [Deskriptive Statistik…"
   },
   {
    "de": "88",
    "kind": "directive",
    "digest": "053400a7b7d2fc03",
-   "en": "88",
+   "en": "87",
    "preview": ":::{admonition} Definition"
   },
   {
    "de": "89",
    "kind": "prose",
    "digest": "fd51572365c4b679",
-   "en": "89",
+   "en": "88",
    "preview": "Gegeben zwei Zufallsvariablen $X,Y \\colon \\Omega \\to \\mathbb{R}$ ist die…"
   },
   {
    "de": "90",
    "kind": "math",
    "digest": "ccb8fd5c9b6baa34",
-   "en": "90",
+   "en": "89",
    "preview": "$$ \\operatorname{Cov}(X,Y) := \\mathbb{E}\\left( \\left( X - \\mathbb{E}X \\r…"
   },
   {
    "de": "91",
    "kind": "directive",
    "digest": "f1ae2a75ed1f9972",
-   "en": "91",
+   "en": "90",
    "preview": ":::"
   },
   {
    "de": "92",
    "kind": "prose",
    "digest": "c990cd031c8e0ff0",
-   "en": "92",
+   "en": "91",
    "preview": "Insbesondere ist $\\mathbb{V}(X) = \\operatorname{Cov}(X,X)$."
   },
   {
    "de": "93",
    "kind": "prose",
    "digest": "4c4891200c61c3ac",
-   "en": "93",
+   "en": "92",
    "preview": "Die Kovarianz hat die gleiche Krankheit wie die Varianz: sie ist skalena…"
   },
   {
    "de": "94",
    "kind": "directive",
    "digest": "053400a7b7d2fc03",
-   "en": "94",
+   "en": "93",
    "preview": ":::{admonition} Definition"
   },
   {
    "de": "95",
    "kind": "prose",
    "digest": "a12b5d28b98ace55",
-   "en": "95",
+   "en": "94",
    "preview": "Der (Pearsonsche) **Korrelationskoeffizient** ist"
   },
   {
    "de": "96",
    "kind": "math",
    "digest": "399a3d55a4ef7e16",
-   "en": "96",
+   "en": "95",
    "preview": "$$ \\rho(X,Y) := \\dfrac{\\operatorname{Cov}(X,Y)}{\\sigma(X)\\sigma(Y)}. $$"
   },
   {
    "de": "97",
    "kind": "prose",
    "digest": "c2ddccc62c8191b4",
-   "en": "97",
+   "en": "96",
    "preview": "Klar: $\\rho(X,Y)=0$ genau dann wenn $\\operatorname{Cov}(X,Y)=0$."
   },
   {
    "de": "98",
    "kind": "prose",
    "digest": "199caa720398b335",
-   "en": "98",
+   "en": "97",
    "preview": "Man sagt, $X$ und $Y$ sind **positiv korreliert**, wenn $\\rho(X,Y) > 0$ …"
   },
   {
    "de": "99",
    "kind": "directive",
    "digest": "f1ae2a75ed1f9972",
-   "en": "99",
+   "en": "98",
    "preview": ":::"
   },
   {
    "de": "100",
    "kind": "directive",
    "digest": "566676a32baee8ac",
-   "en": "100",
+   "en": "99",
    "preview": ":::{admonition} Bemerkung"
   },
   {
    "de": "101",
    "kind": "prose",
    "digest": "2d18ff116d714676",
-   "en": "101",
+   "en": "100",
    "preview": "**Für Daten.** Liegen $x, y \\in \\mathbb{R}^n$ als zwei Spalten einer Tab…"
   },
   {
    "de": "102",
    "kind": "math",
    "digest": "49c12a8d1dd7f2c8",
-   "en": "102",
+   "en": "101",
    "preview": "$$ \\operatorname{Cov}(x,y) := \\frac{1}{n} \\sum_{i=1}^n (x_i - \\bar x)(y_…"
   },
   {
    "de": "103",
    "kind": "prose",
    "digest": "e9f57b18a4f92e2f",
-   "en": "103",
+   "en": "102",
    "preview": "mit den zentrierten Vektoren $\\tilde x, \\tilde y$ aus dem Kapitel [Erwar…"
   },
   {
    "de": "104",
    "kind": "code",
    "digest": "cfde6990fabe30e0",
-   "en": "104",
+   "en": "103",
    "preview": "```python x = datasets.load_iris().data; y = datasets.load_iris().target…"
   },
   {
    "de": "105",
    "kind": "directive",
    "digest": "f1ae2a75ed1f9972",
-   "en": "105",
+   "en": "104",
    "preview": ":::"
   },
   {
    "de": "106",
    "kind": "directive",
    "digest": "d8a9d8fddee7e0b1",
-   "en": "106",
+   "en": "105",
    "preview": ":::{admonition} Proposition"
   },
   {
    "de": "107",
    "kind": "prose",
    "digest": "ced534224ea28ed8",
-   "en": "107",
+   "en": "106",
    "preview": "Die Kovarianz ist symmetrisch: $\\operatorname{Cov}(X,Y) = \\operatorname{…"
   },
   {
    "de": "108",
    "kind": "prose",
    "digest": "d0974c07a5018f9f",
-   "en": "108",
+   "en": "107",
    "preview": "Die Kovarianz ist bilinear: $\\operatorname{Cov}(aX+bY, Z) = a\\operatorna…"
   },
   {
    "de": "109",
    "kind": "prose",
    "digest": "5a181e2ebb0d4d62",
-   "en": "109",
+   "en": "108",
    "preview": "Die Kovarianz ist positiv (semi)definit: $\\operatorname{Cov}(X,X) = \\mat…"
   },
   {
    "de": "110",
    "kind": "directive",
    "digest": "f1ae2a75ed1f9972",
-   "en": "110",
+   "en": "109",
    "preview": ":::"
   },
   {
    "de": "111",
    "kind": "directive",
    "digest": "d3c74271f8c77915",
-   "en": "111",
+   "en": "110",
    "preview": ":::{admonition} Beweis"
   },
   {
    "de": "112",
    "kind": "prose",
    "digest": "93c19811059e9535",
-   "en": "112",
+   "en": "111",
    "preview": "Symmetrie und Semidefinitheit liest man direkt an der Definition ab ($\\o…"
   },
   {
    "de": "113",
    "kind": "directive",
    "digest": "f1ae2a75ed1f9972",
-   "en": "113",
+   "en": "112",
    "preview": ":::"
   },
   {
    "de": "114",
    "kind": "prose",
    "digest": "1cc133846da2169d",
-   "en": "114",
+   "en": "113",
    "preview": "Aus Symmetrie und Bilinearität folgen die Rechenregeln, die man in der P…"
   },
   {
    "de": "115",
    "kind": "directive",
    "digest": "d8a9d8fddee7e0b1",
-   "en": "115",
+   "en": "114",
    "preview": ":::{admonition} Proposition"
   },
   {
    "de": "116",
    "kind": "prose",
    "digest": "5773ad41e68f301e",
-   "en": "116",
+   "en": "115",
    "preview": "**Rechenregeln der Kovarianz.** Für Zufallsvariablen $X, Y$ und eine Kon…"
   },
   {
    "de": "117",
    "kind": "prose",
    "digest": "04495777062619f1",
-   "en": "117",
+   "en": "116",
    "preview": "1. $\\mathbb{V}(X+Y) = \\mathbb{V}(X) + \\mathbb{V}(Y) + 2\\operatorname{Cov…"
   },
   {
    "de": "118",
    "kind": "directive",
    "digest": "f1ae2a75ed1f9972",
-   "en": "118",
+   "en": "117",
    "preview": ":::"
   },
   {
    "de": "119",
    "kind": "directive",
    "digest": "d3c74271f8c77915",
-   "en": "119",
+   "en": "118",
    "preview": ":::{admonition} Beweis"
   },
   {
    "de": "120",
    "kind": "prose",
    "digest": "a55e8b12cfbb8bfe",
-   "en": "120",
+   "en": "119",
    "preview": "(1) $\\mathbb{V}(X+Y) = \\operatorname{Cov}(X+Y, X+Y) = \\operatorname{Cov}…"
   },
   {
    "de": "121",
    "kind": "math",
    "digest": "3fb556a9f0645480",
-   "en": "121",
+   "en": "120",
    "preview": "$$ \\mathbb{E}\\big(XY - X\\,\\mathbb{E}Y - Y\\,\\mathbb{E}X + \\mathbb{E}X\\,\\m…"
   },
   {
    "de": "122",
    "kind": "prose",
    "digest": "bd4752650e0af722",
-   "en": "122",
+   "en": "121",
    "preview": "Regel (4) ist das Gegenstück zur Formel $\\mathbb{V}(X) = \\mathbb{E}(X^2)…"
   },
   {
    "de": "123",
    "kind": "directive",
    "digest": "f1ae2a75ed1f9972",
-   "en": "123",
+   "en": "122",
    "preview": ":::"
   },
   {
    "de": "124",
    "kind": "directive",
    "digest": "f964f8dc481b2d41",
-   "en": "124",
+   "en": "123",
    "preview": ":::{admonition} Satz"
   },
   {
    "de": "125",
    "kind": "prose",
    "digest": "d4ea5ce8a78c0f94",
-   "en": "125",
+   "en": "124",
    "preview": "**Unabhängige Zufallsvariablen sind unkorreliert.** Sind $X$ und $Y$ una…"
   },
   {
    "de": "126",
    "kind": "directive",
    "digest": "f1ae2a75ed1f9972",
-   "en": "126",
+   "en": "125",
    "preview": ":::"
   },
   {
    "de": "127",
    "kind": "directive",
    "digest": "d3c74271f8c77915",
-   "en": "127",
+   "en": "126",
    "preview": ":::{admonition} Beweis"
   },
   {
    "de": "128",
    "kind": "prose",
    "digest": "c7b50aa1aebf35bb",
-   "en": "128",
+   "en": "127",
    "preview": "Im diskreten Fall ist die gemeinsame pmf wegen der Unabhängigkeit ein Pr…"
   },
   {
    "de": "129",
    "kind": "math",
    "digest": "d2d171eb5cad2f40",
-   "en": "129",
+   "en": "128",
    "preview": "$$ \\mathbb{E}(XY) = \\sum_{x}\\sum_{y} x\\,y\\,p_X(x)\\,p_Y(y) = \\Big(\\sum_x …"
   },
   {
    "de": "130",
    "kind": "prose",
    "digest": "4d60fc9d731a99e6",
-   "en": "130",
+   "en": "129",
    "preview": "Im stetigen Fall ersetzt man die Summen durch Integrale über die gemeins…"
   },
   {
    "de": "131",
    "kind": "directive",
    "digest": "f1ae2a75ed1f9972",
-   "en": "131",
+   "en": "130",
    "preview": ":::"
   },
   {
    "de": "132",
    "kind": "directive",
    "digest": "566676a32baee8ac",
-   "en": "132",
+   "en": "131",
    "preview": ":::{admonition} Bemerkung"
   },
   {
    "de": "133",
    "kind": "prose",
    "digest": "2a4057e2a8784804",
-   "en": "133",
+   "en": "132",
    "preview": "Die Umkehrung gilt nicht: Unkorrelierte Zufallsvariablen können abhängig…"
   },
   {
    "de": "134",
    "kind": "directive",
    "digest": "f1ae2a75ed1f9972",
-   "en": "134",
+   "en": "133",
    "preview": ":::"
   },
   {
    "de": "135",
    "kind": "prose",
    "digest": "50d5ca4dad485048",
-   "en": "135",
+   "en": "134",
    "preview": "Damit verhält sich die Kovarianz wie ein Skalarprodukt — allerdings nur …"
   },
   {
    "de": "136",
    "kind": "prose",
    "digest": "176275fac395a156",
-   "en": "136",
+   "en": "135",
    "preview": "Man kann etwas üben, in einem Scatterplot zweier Variablen den Korrelati…"
   },
   {
    "de": "137",
    "kind": "directive",
    "digest": "c469b1e32dc79a1c",
-   "en": "137",
+   "en": "136",
    "preview": "```{figure} images/normalmarginal.png :width: 480px :align: center :name…"
   },
   {
    "de": "138",
    "kind": "prose",
    "digest": "1f84ed5eb81b6e3f",
-   "en": "138",
+   "en": "137",
    "preview": "Das Bild zeigt, warum man die Korrelation nicht an den einzelnen Variabl…"
   },
   {
    "de": "139",
    "kind": "prose",
    "digest": "79ada8042a59ab61",
-   "en": "139",
+   "en": "138",
    "preview": "Was Kovarianz und Korrelation geometrisch bedeuten, sehen wir im nächste…"
   }
  ]

@@ -89,7 +89,14 @@ translations, no improvisation:
 | Grundsatz | Principle | | Ausblick | Looking ahead |
 | Faustregel | Rule of thumb | | Take-Home-Message | Take-home message |
 
-`:::{note}` keeps its meaning from the original: "optional, not examinable".
+`:::{note}` keeps its meaning from the original: "optional, not part of the course proper".
+
+Where the German splits a theorem's name between the admonition title and a bolded lead-in
+in the body – `:::{admonition} Satz` followed by `**von Bayes:**` – **keep it split the same
+way**: "Theorem" in the title, "**Bayes' theorem.**" in the body. The mild redundancy is the
+German's own. Do not move the name up into the title, however much tidier that looks: a name
+that migrates across a block boundary is exactly what block alignment exists to prevent, and
+the staleness report would then point at the wrong block.
 
 ## 6. Typography and conventions
 
