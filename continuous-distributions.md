@@ -1,196 +1,194 @@
-# Stetige Verteilungen
-
-[Vorlesungsaufzeichnung Stetige Verteilungen](https://media.hhu.de/channel/video/data-science-vl-7-stetige-verteilungen-2024/1c1abcd6741c7c428fb6aa67827a06a3/167)
+# Continuous distributions
 
 :::{admonition} Definition
-Sei $X \colon \Omega \to \mathbb{R}$ eine Zufallsvariable, d.h. $\Omega$ ein Wahrscheinlichkeitsraum (eine Menge $\Omega$ zusammen mit einem Wahrscheinlichkeitsmaß $P_\Omega$) und $X$ eine Abbildung, sodass $P(X \in A) := P_\Omega(X^{-1}(A))$ für alle Ereignisse $A \subseteq \mathbb{R}$ definiert ist.
+Let $X \colon \Omega \to \mathbb{R}$ be a random variable, that is, let $\Omega$ be a probability space (a set $\Omega$ together with a probability measure $P_\Omega$) and let $X$ be a map such that $P(X \in A) := P_\Omega(X^{-1}(A))$ is defined for all events $A \subseteq \mathbb{R}$.
 
-Wenn $\Omega$ kein diskreter Wahrscheinlichkeitsraum ist (z.B. weil $\Omega$ eine überabzählbar unendliche Menge ist, etwa $\Omega = \mathbb{R}^n$), und $X$ überabzählbar viele mögliche Werte annimmt, und wenn die Verteilung von $X$ eine *Dichte* besitzt (das definieren wir im nächsten Abschnitt), nennen wir $X$ eine *stetige Zufallsvariable*. Eine Zufallsvariable mit überabzählbar vielen Werten, aber ohne Dichte (etwa eine Mischung aus einer Dirac- und einer Normalverteilung), ist also weder diskret noch stetig.
+If $\Omega$ is not a discrete probability space (because $\Omega$ is an uncountably infinite set, say $\Omega = \mathbb{R}^n$), and $X$ takes uncountably many possible values, and if the distribution of $X$ has a *density* (which we define in the next section), then we call $X$ a *continuous random variable*. A random variable with uncountably many values but without a density – a mixture of a Dirac and a normal distribution, for instance – is therefore neither discrete nor continuous.
 :::
 
 :::{admonition} Definition
-Der *Träger* von $X$ ist die kleinste **abgeschlossene** Menge $A \subseteq \mathbb{R}$ mit $P(X \in A) = 1$,
+The *support* of $X$ is the smallest **closed** set $A \subseteq \mathbb{R}$ with $P(X \in A) = 1$,
 
 $$
-\operatorname{supp}(X) = \bigcap \{ A \subseteq \mathbb{R} \text{ abgeschlossen} : P(X \in A) = 1 \}.
+\operatorname{supp}(X) = \bigcap \{ A \subseteq \mathbb{R} \text{ closed} : P(X \in A) = 1 \}.
 $$
 :::
 
-Das Wort *abgeschlossen* ist dabei keine Dekoration. Ohne es wäre der Schnitt für jede Verteilung mit Dichte leer: Für $X \sim U([0,1])$ hat $[0,1] \setminus \{x\}$ für jedes einzelne $x$ noch Wahrscheinlichkeit $1$ (einzelne Punkte sind Nullmengen, dazu gleich mehr), also läge kein Punkt in allen diesen Mengen. Verlangt man abgeschlossene Mengen, kommt $[0,1]$ heraus, wie es sein soll. (Dass der Schnitt selbst wieder Wahrscheinlichkeit $1$ hat, weil man mit abzählbar vielen der $A$ auskommt, benutzen wir nicht weiter.)
+The word *closed* is not decoration here. Without it the intersection would be empty for every distribution with a density: for $X \sim U([0,1])$ the set $[0,1] \setminus \{x\}$ still has probability $1$ for each single $x$ (individual points are null sets, more on which shortly), so no point at all would lie in all of these sets. Insist on closed sets and $[0,1]$ comes out, as it should. (That the intersection itself again has probability $1$, because countably many of the $A$ already suffice, we will not use any further.)
 
 :::{admonition} Definition
-Eine Menge $M \subseteq \mathbb{R}^n$ heißt *abgeschlossen*, wenn sie die Grenzwerte ihrer eigenen konvergenten Folgen enthält: Liegt eine Folge $(x_k)$ ganz in $M$ und konvergiert gegen $x$, so ist auch $x \in M$.
+A set $M \subseteq \mathbb{R}^n$ is called *closed* if it contains the limits of its own convergent sequences: if a sequence $(x_k)$ lies entirely in $M$ and converges to $x$, then $x \in M$ as well.
 :::
 
-Abgeschlossen sind zum Beispiel jedes Intervall der Form $[a,b]$, ganz $\mathbb{R}$ und jede endliche Menge. Nicht abgeschlossen ist dagegen $(0,1]$: Die Folge $\frac1k$ liegt darin, ihr Grenzwert $0$ nicht. Der Abschluss von $(0,1]$ ist $[0,1]$.
+Closed sets are, for instance, every interval of the form $[a,b]$, all of $\mathbb{R}$, and every finite set. Not closed, by contrast, is $(0,1]$: the sequence $\frac1k$ lies in it, its limit $0$ does not. The closure of $(0,1]$ is $[0,1]$.
 
-Für eine diskrete Verteilung mit pmf $p$ und endlich vielen Werten vereinfacht sich der Träger zu
+For a discrete distribution with pmf $p$ and finitely many values, the support simplifies to
 
 $$
 \operatorname{supp}(X) = \{\, x \ \mid\ p(x) > 0 \,\},
 $$
 
-also zu der Menge der Werte, die überhaupt vorkommen können (bei unendlich vielen Werten kommen noch deren Häufungspunkte dazu, denn der Träger ist abgeschlossen).
+that is, to the set of values that can occur at all (with infinitely many values, their accumulation points come along too, since the support is closed).
 
-:::{admonition} Beispiel
-Die Gleichverteilung auf $\Omega = \{1,\dots,n\}$ hat als Verteilung *auf $\Omega$* den Träger $\Omega$ selbst — dort ist jedes Element möglich.
+:::{admonition} Example
+The uniform distribution on $\Omega = \{1,\dots,n\}$, read as a distribution *on $\Omega$*, has support $\Omega$ itself – every element there is possible.
 
-Dieselbe Verteilung lässt sich aber auch als Verteilung auf $\mathbb{R}$ auffassen, indem man alle übrigen reellen Zahlen mit Wahrscheinlichkeit $0$ versieht. Dann ist der Träger $\{1,\dots,n\} \subset \mathbb{R}$, eine endliche und damit abgeschlossene Teilmenge der reellen Zahlen. Der Träger hängt also nicht nur von der Verteilung ab, sondern auch davon, als Verteilung *worauf* man sie liest.
+The same distribution can also be read as a distribution on $\mathbb{R}$, by giving all the remaining real numbers probability $0$. Then the support is $\{1,\dots,n\} \subset \mathbb{R}$, a finite and hence closed subset of the reals. So the support depends not only on the distribution, but also on *what* you read it as a distribution on.
 :::
 
-Der Träger ist auch für diskrete reelle Zufallsvariablen definiert - der offensichtliche Unterschied ist, dass der Träger einer diskreten Zufallsvariable kein Intervall enthält.
+The support is defined for discrete real random variables too – the obvious difference being that the support of a discrete random variable contains no interval.
 
-## Dichtefunktionen
+## Density functions
 
 :::{admonition} Definition
-Sei $D \subseteq \mathbb{R}^n$ und $f \colon D \to [0,\infty)$ eine integrierbare Funktion (bezüglich des Lebesgue-Maßes auf $\mathbb{R}^n$, Riemann-integrierbar ist ein hinreichendes Kriterium) mit $\int_D f(x) dx = 1$. Dann ist auf $D$ ein Wahrscheinlichkeitsmaß definiert durch:
+Let $D \subseteq \mathbb{R}^n$ and let $f \colon D \to [0,\infty)$ be an integrable function (with respect to the Lebesgue measure on $\mathbb{R}^n$; Riemann integrability is a sufficient criterion) with $\int_D f(x) dx = 1$. Then a probability measure on $D$ is defined by:
 
 $$
-\text{für } A \subseteq D \text{ Ereignis } P(A) := \int_A f(x) dx
+\text{for an event } A \subseteq D \colon \quad P(A) := \int_A f(x) dx
 $$
 
-Wir nennen für jedes Wahrscheinlichkeitsmaß $P$, welches sich so schreiben lässt, die Funktion $f$ eine *Wahrscheinlichkeitsdichtefunktion* (probability density function, pdf) oder kurz *Dichte* (nicht zu verwechseln mit der Wahrscheinlichkeitsmassefunktion, pmf, aus dem diskreten Fall).
+For every probability measure $P$ that can be written in this way, we call the function $f$ a *probability density function* (pdf) or, for short, a *density* (not to be confused with the probability mass function, pmf, from the discrete case).
 :::
 
-Gegeben eine reelle Zufallsvariable $X \colon \Omega \to \mathbb{R}$, deren Verteilung $P_X$ durch eine Dichte $f$ gegeben ist, gilt also für $A \subseteq \mathbb{R}$
+So, given a real random variable $X \colon \Omega \to \mathbb{R}$ whose distribution $P_X$ is given by a density $f$, we have for $A \subseteq \mathbb{R}$
 
 $$
 \int_{X^{-1}(A)} dP(\omega) = P(X \in A) = P_X(A) = \int_A f(x) dx
 $$
 
-Dieses rechte Integral ist nun ein Integral im Wertebereich von $X$.
-Analog können wir auch den Erwartungswert und die Varianz berechnen:
+The integral on the right is now an integral over the range of $X$.
+In the same way we can also compute the expected value and the variance:
 
 :::{admonition} Definition
-Sei $X$ eine stetige Zufallsvariable, deren Verteilung durch eine Dichte $f \colon D \to [0,\infty)$ gegeben ist. Dann heißt
+Let $X$ be a continuous random variable whose distribution is given by a density $f \colon D \to [0,\infty)$. Then
 
 $$
 \mathbb{E}(X) = \int_\Omega X(\omega)\, dP(\omega) = \int_D x f(x) dx
 $$
 
-der *Erwartungswert* von $X$ und
+is called the *expected value* of $X$, and
 
 $$
 \mathbb{V}(X) = \int_\Omega \left(X(\omega)-\mathbb{E}(X)\right)^2 dP(\omega) = \int_D \left(x-\mathbb{E}(X)\right)^2 f(x) dx
 $$
 
-die *Varianz* von $X$, sofern diese Integrale existieren. Für $D = \mathbb{R}$ ist etwa $\mathbb{E}(X) = \int_{-\infty}^{\infty} x f(x) dx$.
+the *variance* of $X$, provided these integrals exist. For $D = \mathbb{R}$, for example, $\mathbb{E}(X) = \int_{-\infty}^{\infty} x f(x) dx$.
 :::
 
-Das ist das stetige Gegenstück zur Summe über die Wahrscheinlichkeitsmassefunktion im Kapitel [Erwartungswert und Varianz](expectation-variance.md): An die Stelle der pmf tritt die Dichte, an die Stelle der Summe das Integral. Dass wir auch andere Funktionen von $X$ auf diese Weise integrieren dürfen, sagt der folgende Satz.
+This is the continuous counterpart of the sum over the probability mass function in the chapter [Expected value and variance](expectation-variance.md): the density takes the place of the pmf, and the integral takes the place of the sum. That we are allowed to integrate other functions of $X$ in this way too is what the following theorem says.
 
-:::{admonition} Satz (Transformationsformel)
-Sei $X$ eine stetige Zufallsvariable mit Dichte $f \colon D \to [0,\infty)$ und $g \colon D \to \mathbb{R}$ eine (messbare) Funktion. Dann ist
+:::{admonition} Theorem (transformation formula)
+Let $X$ be a continuous random variable with density $f \colon D \to [0,\infty)$ and let $g \colon D \to \mathbb{R}$ be a (measurable) function. Then
 
 $$
 \mathbb{E}(g(X)) = \int_D g(x) f(x) dx,
 $$
 
-sofern das Integral existiert. Für eine diskrete Zufallsvariable mit pmf $p$ lautet dieselbe Aussage $\mathbb{E}(g(X)) = \sum_x g(x)\, p(x)$.
+provided the integral exists. For a discrete random variable with pmf $p$, the same statement reads $\mathbb{E}(g(X)) = \sum_x g(x)\, p(x)$.
 :::
 
-Wir beweisen den Satz nicht (er folgt aus dem Transformationssatz für Integrale), benutzen ihn aber ständig: Die Definition der Varianz ist gerade der Spezialfall $g(x) = (x - \mathbb{E}(X))^2$, und mit $g(x) = x^2$ erhalten wir wie im diskreten Fall
+We do not prove the theorem (it follows from the change-of-variables theorem for integrals), but we use it constantly: the definition of the variance is precisely the special case $g(x) = (x - \mathbb{E}(X))^2$, and with $g(x) = x^2$ we obtain, as in the discrete case,
 
 $$
 \mathbb{V}(X) = \mathbb{E}(X^2) - {\left( \mathbb{E}(X) \right)}^2 = \int_D x^2 f(x) dx - {\left( \mathbb{E}(X) \right)}^2.
 $$
 
-Allgemein heißt $\mathbb{E}(X^k) = \int_D x^k f(x) dx$ das *$k$-te Moment* von $X$.
+In general, $\mathbb{E}(X^k) = \int_D x^k f(x) dx$ is called the *$k$-th moment* of $X$.
 
-:::{admonition} Beispiel
-Seien $a < b \in \mathbb{R}$. Mit $D = \mathbb{R}$ und $f \colon \mathbb{R} \to [0,\infty)$ gegeben durch
+:::{admonition} Example
+Let $a < b \in \mathbb{R}$. With $D = \mathbb{R}$ and $f \colon \mathbb{R} \to [0,\infty)$ given by
 
 $$
-f(x) = \begin{cases} \frac{1}{b-a}, & \text{ wenn } x \in [a,b] \\ 0 & \text{ sonst} \end{cases}
+f(x) = \begin{cases} \frac{1}{b-a}, & \text{ if } x \in [a,b] \\ 0 & \text{ otherwise} \end{cases}
 $$
 
-ist ein Wahrscheinlichkeitsmaß auf $\mathbb{R}$ definiert, die *stetige Gleichverteilung* auf dem Intervall $[a,b]$.
-Sei $X$ eine Zufallsvariable mit dieser Verteilung, wir schreiben $X \sim U([a,b])$.
-Der Erwartungswert (wir nutzen $\int x dx = \frac{x^2}{2}$) ist $\mathbb{E}(X) =$
+a probability measure on $\mathbb{R}$ is defined, the *continuous uniform distribution* on the interval $[a,b]$.
+Let $X$ be a random variable with this distribution; we write $X \sim U([a,b])$.
+The expected value (using $\int x dx = \frac{x^2}{2}$) is $\mathbb{E}(X) =$
 
 $$
 \int_{-\infty}^{\infty} xf(x) dx = \int_a^b \frac{xdx}{b-a} = \frac{1}{b-a} \left[\frac{x^2}{2}\right]_a^b = \frac{b^2 -a^2}{2(b-a)} = \frac{(b+a)(b-a)}{2(b-a)} = \frac{a+b}{2}
 $$
 
-Das zweite Moment ist
+The second moment is
 
 $$
 \mathbb{E}(X^2) = \int_{-\infty}^\infty x^2 f(x)dx = \left[ \frac{x^3}{3(b-a)} \right]_a^b = \frac{b^3-a^3}{3(b-a)} = \frac{a^2+ab+b^2}{3}
 $$
 
-Die Varianz ist
+The variance is
 
 $$
 \mathbb{V}(X) = \mathbb{E}(X^2) - {\left(\mathbb{E}(X)\right)}^2 =  \frac{a^2+ab+b^2}{3} - \frac{(a+b)^2}{4} = \frac{(a-b)^2}{12}
 $$
 :::
 
-:::{admonition} Bemerkung
-**Nullmengen.** Für $X \sim U([a,b])$ und $a \leq c < d \leq b$ ist $P(c \leq X \leq d) = \int_c^d \frac{dx}{b-a} = \frac{d-c}{b-a}$, und dasselbe Integral ergibt sich für $P(c < X < d)$, $P(c \leq X < d)$ und $P(c < X \leq d)$: Ob die Intervallgrenzen dazugehören oder nicht, ändert am Integral nichts. Insbesondere ist $P(X = c) = \int_c^c f(x) dx = 0$ für jeden einzelnen Punkt $c$, obwohl $f(c) = \frac{1}{b-a} \neq 0$ ist.
+:::{admonition} Remark
+**Null sets.** For $X \sim U([a,b])$ and $a \leq c < d \leq b$ we have $P(c \leq X \leq d) = \int_c^d \frac{dx}{b-a} = \frac{d-c}{b-a}$, and the same integral comes out for $P(c < X < d)$, $P(c \leq X < d)$ and $P(c < X \leq d)$: whether the endpoints of the interval belong to it or not makes no difference to the integral. In particular $P(X = c) = \int_c^c f(x) dx = 0$ for every single point $c$, even though $f(c) = \frac{1}{b-a} \neq 0$.
 
-Das gilt für jede Verteilung mit Dichte: Einzelne Punkte haben Wahrscheinlichkeit $0$, wegen der endlichen Additivität also auch jede endliche Menge, und wegen der $\sigma$-Additivität aus dem Kapitel [Herleitung des mathematischen Formalismus der Stochastik](intro-stochastics.md) auch jede abzählbare Menge $A = \{a_1, a_2, \dots\}$, denn $P(X \in A) = \sum_{i} P(X = a_i) = 0$. Mengen mit Wahrscheinlichkeit $0$ nennt man *Nullmengen*. Ändert man eine Dichte $f$ auf einer Nullmenge ab (etwa an endlich vielen Stellen), so ändert sich kein einziges Integral $\int_A f(x) dx$, also auch nicht das zugehörige Wahrscheinlichkeitsmaß.
+This holds for every distribution with a density: individual points have probability $0$; by finite additivity so does every finite set; and by the $\sigma$-additivity from the chapter [Deriving the mathematical formalism of stochastics](intro-stochastics.md) so does every countable set $A = \{a_1, a_2, \dots\}$, since $P(X \in A) = \sum_{i} P(X = a_i) = 0$. Sets with probability $0$ are called *null sets*. Change a density $f$ on a null set (at finitely many points, say) and not a single integral $\int_A f(x) dx$ changes, and so neither does the probability measure belonging to it.
 :::
 
-:::{admonition} Beispiel
-Die Menge $\mathbb{Q} \cap [0,1]$ der rationalen Zahlen zwischen $0$ und $1$ ist abzählbar, also für $X \sim U([0,1])$ eine Nullmenge: Eine gleichverteilte Zufallszahl aus $[0,1]$ ist mit Wahrscheinlichkeit $1$ irrational. Knobelaufgabe: Gibt es überhaupt eine Verteilung auf $[0,1]$, die jedem einzelnen Punkt positive Wahrscheinlichkeit gibt? (Nein: Für jedes $k$ gibt es höchstens $k$ Punkte mit Wahrscheinlichkeit mindestens $\frac{1}{k}$, also insgesamt höchstens abzählbar viele Punkte mit positiver Wahrscheinlichkeit.)
+:::{admonition} Example
+The set $\mathbb{Q} \cap [0,1]$ of rational numbers between $0$ and $1$ is countable, and hence a null set for $X \sim U([0,1])$: a uniformly distributed random number from $[0,1]$ is irrational with probability $1$. A puzzle: is there any distribution on $[0,1]$ at all that gives every single point positive probability? (No: for each $k$ there are at most $k$ points with probability at least $\frac{1}{k}$, hence in all at most countably many points with positive probability.)
 :::
 
-:::{admonition} Beispiel
-Nicht jedes Wahrscheinlichkeitsmaß erlaubt eine Darstellung mit einer Dichte:
-Betrachte auf $\mathbb{R}$ die Verteilung mit
+:::{admonition} Example
+Not every probability measure admits a representation by a density:
+consider on $\mathbb{R}$ the distribution with
 
 $$
-P(A) = \begin{cases} 1 & \text{ wenn } 0 \in A \\ 0 & \text{ sonst} \end{cases}
+P(A) = \begin{cases} 1 & \text{ if } 0 \in A \\ 0 & \text{ otherwise} \end{cases}
 $$
 
-Diese Verteilung heißt *Dirac-Verteilung* mit Masse bei $0$. Eine Dichte $f$ kann es hier nicht geben: Die einpunktige Menge $\{0\}$ ist für jede Dichte eine Nullmenge, es wäre also $\int_{\{0\}} f(x) dx = 0 \neq 1 = P(\{0\})$. Dasselbe Argument trifft jede diskrete Verteilung auf $\mathbb{R}$: Sie konzentriert ihre gesamte Masse $1$ auf ihren abzählbaren Träger, und der ist für jede Dichte eine Nullmenge. Wenn man sich sehr viel Mühe gibt, so etwas ähnliches wie eine Dichte zu basteln, so muss man zur Theorie der Distributionen aus der Funktionalanalysis greifen (Physiker\*innen kennen das). Es gibt auch Verteilungen, da genügt auch keine Distribution.
+This distribution is called the *Dirac distribution* with mass at $0$. There can be no density $f$ for it: the one-point set $\{0\}$ is a null set for every density, so we would have $\int_{\{0\}} f(x) dx = 0 \neq 1 = P(\{0\})$. The same argument hits every discrete distribution on $\mathbb{R}$: it concentrates its whole mass $1$ on its countable support, and that is a null set for every density. If you take a great deal of trouble to build something density-like anyway, you have to reach for the theory of distributions – generalised functions – from functional analysis (physicists know them). And there are probability distributions for which not even a generalised function will do.
 :::
 
-:::{admonition} Beispiel
-Umgekehrt lässt sich aus einer diskreten Verteilung leicht eine stetige bauen. Sei $Y$ eine diskrete Zufallsvariable mit Werten in $\{5,6,7\}$ und $P(Y=5) = \frac{4}{7}$, $P(Y=6) = \frac{2}{7}$, $P(Y=7) = \frac{1}{7}$, und sei $Z \sim U([0,1))$ unabhängig von $Y$ (formal: $\Omega = \{5,6,7\} \times [0,1)$ mit dem Produktmaß, $X(y,z) = y + z$). Dann ist $X := Y + Z$ eine stetige Zufallsvariable mit Werten in $[5,8)$ und Dichte
+:::{admonition} Example
+Conversely, a continuous distribution is easily built out of a discrete one. Let $Y$ be a discrete random variable with values in $\{5,6,7\}$ and $P(Y=5) = \frac{4}{7}$, $P(Y=6) = \frac{2}{7}$, $P(Y=7) = \frac{1}{7}$, and let $Z \sim U([0,1))$ be independent of $Y$ (formally: $\Omega = \{5,6,7\} \times [0,1)$ with the product measure, $X(y,z) = y + z$). Then $X := Y + Z$ is a continuous random variable with values in $[5,8)$ and density
 
 $$
-f(x) = \begin{cases} \frac{4}{7}, & \text{ wenn } x \in [5,6) \\ \frac{2}{7}, & \text{ wenn } x \in [6,7) \\ \frac{1}{7}, & \text{ wenn } x \in [7,8) \\ 0 & \text{ sonst,} \end{cases}
+f(x) = \begin{cases} \frac{4}{7}, & \text{ if } x \in [5,6) \\ \frac{2}{7}, & \text{ if } x \in [6,7) \\ \frac{1}{7}, & \text{ if } x \in [7,8) \\ 0 & \text{ otherwise,} \end{cases}
 $$
 
-denn für $x \in [5,6)$ ist $P(5 \leq X \leq x) = P(Y = 5) \cdot P(Z \leq x - 5) = \frac{4}{7}(x-5)$, und entsprechend auf den beiden anderen Teilintervallen. Die Dichte integriert sich zu $\frac{4}{7} + \frac{2}{7} + \frac{1}{7} = 1$; welchen Wert $f$ an den Stellen $6$ und $7$ hat, spielt nach der Nullmengen-Bemerkung keine Rolle. Zum Beispiel ist $P(5 \leq X \leq 6) = \int_5^6 f(x) dx = \frac{4}{7}$ und $P(6 \leq X \leq 6{,}5) = \frac{2}{7} \cdot \frac{1}{2} = \frac{1}{7}$. Der Erwartungswert ist
+since for $x \in [5,6)$ we have $P(5 \leq X \leq x) = P(Y = 5) \cdot P(Z \leq x - 5) = \frac{4}{7}(x-5)$, and correspondingly on the other two subintervals. The density integrates to $\frac{4}{7} + \frac{2}{7} + \frac{1}{7} = 1$; what value $f$ takes at the points $6$ and $7$ does not matter, by the remark on null sets. For example $P(5 \leq X \leq 6) = \int_5^6 f(x) dx = \frac{4}{7}$ and $P(6 \leq X \leq 6.5) = \frac{2}{7} \cdot \frac{1}{2} = \frac{1}{7}$. The expected value is
 
 $$
 \mathbb{E}(X) = \int_5^8 x f(x) dx = \frac{4}{7} \cdot \frac{11}{2} + \frac{2}{7} \cdot \frac{13}{2} + \frac{1}{7} \cdot \frac{15}{2} = \frac{85}{14} = 6 + \frac{1}{14},
 $$
 
-denn auf jedem Teilintervall $[k, k+1)$ ist $\int_k^{k+1} x\, dx = k + \frac{1}{2}$ (dasselbe ergibt $\mathbb{E}(Y) + \mathbb{E}(Z) = \frac{39}{7} + \frac{1}{2}$). Eine solche Verteilung, bei der zuerst eine diskrete Wahl getroffen wird und dann innerhalb der gewählten Klasse eine stetige, nennt man *Mischverteilung*; ein weiteres Beispiel ist die kontaminierte Normalverteilung im Kapitel [Wichtigste stetige Verteilungen](important-continuous-distributions.ipynb), wo auch genau diese Verteilung auf $[5,8)$ simuliert wird.
+since on every subinterval $[k, k+1)$ we have $\int_k^{k+1} x\, dx = k + \frac{1}{2}$ (the same comes out of $\mathbb{E}(Y) + \mathbb{E}(Z) = \frac{39}{7} + \frac{1}{2}$). A distribution like this, where a discrete choice is made first and then a continuous one within the chosen class, is called a *mixture distribution*; another example is the contaminated normal distribution in the chapter [The most important continuous distributions](important-continuous-distributions.ipynb), where this very distribution on $[5,8)$ is simulated as well.
 :::
 
 :::{admonition} Definition
-Sei $(\Omega, P)$ ein Wahrscheinlichkeitsraum, dann nennen wir für eine Zufallsvariable $X \colon \Omega \to \mathbb{R}$ die Funktion
+Let $(\Omega, P)$ be a probability space. Then for a random variable $X \colon \Omega \to \mathbb{R}$ we call the function
 
 $$
 F \colon \mathbb{R} \to [0,1],\qquad x \mapsto P(X \leq x)
 $$
 
-die *kumulative Wahrscheinlichkeitsverteilungsfunktion* oder auch *Verteilungsfunktion* oder *cdf* (cumulative distribution function). Sie existiert immer, im Gegensatz zur Dichte (pdf).
+the *cumulative probability distribution function*, or *distribution function*, or *cdf* for short. Unlike the density (pdf), it always exists.
 :::
 
-:::{admonition} Beispiel
-Wenn $P_X$ eine Dichte $f \colon \mathbb{R} \to [0,\infty)$ hat,
-also $P(a \leq X \leq b) = \int_a^b f(x)dx$, so ist
+:::{admonition} Example
+If $P_X$ has a density $f \colon \mathbb{R} \to [0,\infty)$,
+so that $P(a \leq X \leq b) = \int_a^b f(x)dx$, then
 
 $$
 F(x) = \int_{-\infty}^{x} f(t)dt.
 $$
 
-Ob man hier $P(X \leq x)$ oder $P(X < x)$ schreibt, macht nach der Nullmengen-Bemerkung keinen Unterschied; manche Bücher definieren die cdf mit $P(X < x)$, für Verteilungen mit Dichte ist das dieselbe Funktion.
+Whether one writes $P(X \leq x)$ or $P(X < x)$ here makes no difference, by the remark on null sets; some books define the cdf with $P(X < x)$, and for distributions with a density that is the same function.
 :::
 
-:::{admonition} Satz
-Hat $P_X$ eine Dichte $f$, so ist die Verteilungsfunktion $F$ eine Stammfunktion von $f$: Nach dem Hauptsatz der Differential- und Integralrechnung ist $F$ an jeder Stelle $x$, an der $f$ stetig ist, differenzierbar mit $F'(x) = f(x)$. Für jede Zufallsvariable (mit oder ohne Dichte) liefert die cdf außerdem die Wahrscheinlichkeit von Intervallen,
+:::{admonition} Theorem
+If $P_X$ has a density $f$, then the distribution function $F$ is an antiderivative of $f$: by the fundamental theorem of calculus, $F$ is differentiable at every point $x$ at which $f$ is continuous, with $F'(x) = f(x)$. For every random variable (with or without a density) the cdf also gives the probability of intervals,
 
 $$
 P(a < X \leq b) = F(b) - F(a),
 $$
 
-und mit Dichte ist das gerade $\int_a^b f(t)dt$.
+and with a density that is precisely $\int_a^b f(t)dt$.
 :::
 
-Die cdf steigt also genau dort steil an, wo die Dichte groß ist. Im Kapitel [Wichtigste stetige Verteilungen](important-continuous-distributions.ipynb) werden pdf und cdf jeweils gemeinsam geplottet; beobachten Sie das dort.
+So the cdf rises steeply exactly where the density is large. In the chapter [The most important continuous distributions](important-continuous-distributions.ipynb) the pdf and the cdf are always plotted together; watch out for it there.

@@ -2,7 +2,7 @@
   "_comment": "Per-file progress of the English edition. 'translated' means the first Opus pass is in; 'style_pass' means the Fable pass has run over it. tools/check_english.py checks the translated ones by default.",
   "files": {
     "continuous-distributions.md": {
-      "translated": false,
+      "translated": true,
       "style_pass": false,
       "source": "stetige-verteilungen.md"
     },
