@@ -1,0 +1,10 @@
+{
+  "file": "eda-examples.ipynb",
+  "ignore": [
+    {
+      "block": "c24.2",
+      "label": "German function word",
+      "reason": "the DWD's own citation line for the CatRaRE dataset is quoted verbatim, German title included (*Starkregenereignisse Version 2021.01 mit Überschreitung der DWD-Warnstufe 3 für Unwetter basierend auf RADKLIM-RW Version 2017.002*). The data licence requires this citation to be given as published, and it is what the DOI 10.5676/DWD/CatRaRE_W3_Eta_v2021.01 resolves to; translating it would make the attribution unverifiable (TRANSLATION.md section 3, titles stay German). The surrounding link texts are translated and marked \"(in German)\"."
+    }
+  ]
+}

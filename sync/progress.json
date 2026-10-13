@@ -77,7 +77,7 @@
       "source": "kernel-methoden.ipynb"
     },
     "kmeans.ipynb": {
-      "translated": false,
+      "translated": true,
       "style_pass": false,
       "source": "kmeans.ipynb"
     },

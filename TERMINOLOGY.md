@@ -753,6 +753,12 @@ Recorded because a translator will otherwise think one of them is wrong:
 * *mittlere absolute / quadratische Abweichung* are the **mean absolute / squared error**,
   not "deviation", because the book's own code calls them `mae`, `mse` and `rmse`.
 
+* *Hauptachsentransformation*, *Hauptkomponentenanalyse* and *Hauptachsentheorem* are all
+  **principal component analysis** where the text means the method, which in this book it
+  always does. Two translators met the first word independently and rendered it "principal
+  axis transformation" and "principal component analysis"; the literal one names the
+  linear-algebra operation rather than the thing the sentence points the reader at.
+
 * *gleichmäßig bester Test* and *gleichmäßig bester erwartungstreuer Schätzer* stay literal
   (**uniformly best test**, **uniformly best unbiased estimator**) rather than becoming UMP
   and UMVUE. The German is un-abbreviated and spells out what "best" means; handing the
