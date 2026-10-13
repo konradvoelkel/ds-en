@@ -11,9 +11,9 @@ joblib==1.5.3
 kiwisolver==1.5.0
     # via matplotlib
 matplotlib==3.11.0
-    # via ds-skript
+    # via ds-en
 mystmd==1.10.1
-    # via ds-skript
+    # via ds-en
 narwhals==2.22.1
     # via scikit-learn
 nodeenv==1.9.1
@@ -21,7 +21,7 @@ nodeenv==1.9.1
 numpy==2.4.6
     # via
     #   contourpy
-    #   ds-skript
+    #   ds-en
     #   matplotlib
     #   pandas
     #   scikit-learn
@@ -29,7 +29,7 @@ numpy==2.4.6
 packaging==26.2
     # via matplotlib
 pandas==3.0.3
-    # via ds-skript
+    # via ds-en
 pillow==12.2.0
     # via matplotlib
 platformdirs==4.2.2
@@ -41,10 +41,10 @@ python-dateutil==2.9.0.post0
     #   matplotlib
     #   pandas
 scikit-learn==1.9.0
-    # via ds-skript
+    # via ds-en
 scipy==1.17.1
     # via
-    #   ds-skript
+    #   ds-en
     #   scikit-learn
 six==1.17.0
     # via python-dateutil

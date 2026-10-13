@@ -75,7 +75,7 @@ wheels = [
 ]
 
 [[package]]
-name = "ds-skript"
+name = "ds-en"
 version = "0.7.0"
 source = { virtual = "." }
 dependencies = [

@@ -4,11 +4,14 @@
 \usepackage{graphicx}
 \usepackage{natbib}
 \bibliographystyle{abbrvnat}
-% --- ds-skript additions to the MyST plain_latex template ---------------------
+% --- ds-en additions to the MyST plain_latex template ---------------------
 % amssymb: MyST 1.10 only auto-imports amsmath; the book uses \mathbb, \measuredangle
 \usepackage{amssymb}
-% German hyphenation and typographic conventions (texlive-lang-german is in the CI image)
-\usepackage[ngerman]{babel}
+% English hyphenation and typographic conventions. German terms still occur in the text
+% (legal vocabulary, quoted originals), so texlive-lang-german stays in the CI image.
+% last option is the main language, so English wins; ngerman stays available
+% for the occasional quoted German term.
+\usepackage[ngerman, english]{babel}
 % listings is loaded here (before the MyST imports, which load it again harmlessly) so
 % that the two dummy languages below can be defined. MyST 1.10 emits
 % \begin{lstlisting}[language=undefined] for code-cell *outputs* and language=null for

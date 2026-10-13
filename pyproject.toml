@@ -1,7 +1,7 @@
 [project]
-name = "ds-skript"
+name = "ds-en"
 version = "0.7.0"
-description = "Skript zur Vorlesung Data Science an der HHU (Sommer 2026)"
+description = "Data Science lecture notes, HHU (English edition of ds-skript)"
 authors = [{ name = "Konrad Völkel", email = "konrad.voelkel@hhu.de" }]
 readme = "README.md"
 requires-python = ">=3.13"

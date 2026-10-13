@@ -1,5 +1,5 @@
 jtex: v1
-title: ds-skript (plain_latex + amssymb, babel ngerman, listings fixes)
+title: ds-en (plain_latex + amssymb, babel english, listings fixes)
 description: A minimal template that only uses vanilla LaTeX commands and environments
 version: 1.0.0
 license: CC-BY-4.0

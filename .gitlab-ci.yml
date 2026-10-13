@@ -66,14 +66,14 @@ build-pdf:
   allow_failure: true
   artifacts:
     paths:
-      - exports/ds-skript.pdf
+      - exports/ds-en.pdf
 
 pages:
   stage: deploy
   image: busybox:latest
   script:
     - mv _build/html public
-    - cp exports/ds-skript.pdf public/ || echo "no PDF in this run"
+    - cp exports/ds-en.pdf public/ || echo "no PDF in this run"
   artifacts:
     paths:
       - public
