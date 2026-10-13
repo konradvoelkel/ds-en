@@ -112,3 +112,66 @@ My chapter references five images.
 11. **No check-ignore entries and no additions** were needed: `sync/check-ignore/` and
     `sync/additions/` have no file for this chapter. `sync/drops/erwartungswert.md.json` was used
     unchanged (blocks 1 and 235, both lecture-recording links).
+
+## Style pass
+
+Block structure untouched (341 blocks, `sync.py align` clean, `check_english.py` clean); every
+`$…$` / `$$…$$` string byte-identical before and after. 77 of the 172 prose blocks changed; the
+formal furniture (definitions, theorem statements, most proofs) was left alone except where a
+sentence of connective prose sat inside the admonition.
+
+Kinds of change:
+
+* **German sentence shape.** Fronted or split long subject–verb-separated sentences:
+  "If the random variable is not uniformly distributed, however, but on the numbers … follows,
+  say, the frequency …" → "Suppose instead that the random variable is not uniform but
+  follows … the frequency …, say. Then …"; the strong-law statement now has a full stop after
+  "satisfy a strong law of large numbers" and the apposition set off with dashes instead of
+  commas; the "rack our brains" paragraph split into two sentences at "Instead".
+* **Nominalisations and calques to verbs/idiom.** "the mean deviation is of interest" → "the
+  natural quantity to look at is the mean deviation"; "turn the direction of view around" →
+  "reverse the point of view"; "What can be recorded is this" → "What we can say is this";
+  "a popular source of error" → "a frequent source of errors"; "a question of the unit of
+  measurement and not of the matter itself" → "a question of units, not of substance";
+  "does not hang on" → "depends not on"; "the detour was not one" → "the detour was no detour";
+  "Substantively it is clear" / "That is right substantively too" → "Here it is obvious
+  anyway" / "That makes sense too"; "the goodness of a model" → "how good a model is".
+* **"one" → "you"/"we".** "one puts … and calls" → "we write … and call" (two adjacent
+  blocks, kept consistent); "One therefore extends … and agrees that" → "So we extend … and
+  set"; "to base $2$ one measures" → "you measure"; "one says that this sequence satisfies" →
+  "is said to satisfy"; "So one usually takes the square root" → passive.
+* **Connectives.** "From this we see:" → "So"; "Conversely, then," → "Put the other way
+  round:"; "The converse reads the same way:" → "Read the other way round:"; "Checking:" →
+  "Check:"; "In this connection another notion comes up" → "Another notion comes up … in this
+  connection"; "Anyone wanting to halve the error" → "To halve the error you".
+* **Padding cut.** "in the same way", "at all", "any more", "also", "only", "really" where they
+  carried nothing; "a single outcome only" → "just one outcome"; "the question of the minimum,
+  and it has, as we shall see in a moment," reordered so the parenthetical does not split the
+  verb from its object.
+* **Typography.** `'the' median` → `"the" median` (TRANSLATION.md §6, matches the definition
+  block just above). "It's not a bug, it's a feature" → "That is not a bug, it is a feature":
+  the chapter has no other contractions.
+
+Noticed but deliberately not touched:
+
+1. **`TERMINOLOGY.md` says "shift theorem" for *Verschiebungssatz*; the chapter says "Shortcut
+   formula"** (lemma and proposition lead-ins, and "shortcut formula" three times in prose).
+   One of the two has been changed since the translator's notes above were written. Terminology
+   is out of scope for the style pass; someone needs to decide which is right and fix the other.
+2. **"information (also the self-information)" vs. `TERMINOLOGY.md` row "Information,
+   Selbstinformation → surprisal"**, whose note says this chapter "defines it and has to
+   agree". It currently does not. Same remark: a terminology decision, not mine.
+3. **`$\sigma(X) := \sqrt{\mathbb{V}(X)}$ is called the *standard deviation* of X.`** – the
+   trailing X is bare, not `$X$`. Left as is because wrapping it adds a maths span; a one-key
+   fix for whoever edits the definition next.
+4. **"(independently of the pmfs in the discrete case)"** after "We have not yet explained what
+   *independent* means". The German is "(unabhängig von den pmf im diskreten Fall)", a pun on
+   *unabhängig* that does not survive and leaves the parenthesis opaque in both languages. Kept
+   verbatim; a human may want to drop or rephrase it upstream.
+5. **"the probability of deviations that large is roughly inversely proportional to the
+   square"** after Chebyshev. "Roughly" sits oddly next to an exact bound; the German has it, so
+   it stays.
+6. **"with $1$ for "a", $26$ for "z" and so on"** – "and so on" after the last item. German
+   habit; kept.
+7. The "expectantly" pun and the German-language entropy examples: see "Decisions and doubts"
+   above; nothing new.

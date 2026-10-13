@@ -288,3 +288,73 @@ snippets in a Markdown file, not notebook cells.
 worked example's twenty-odd values and the correlation coefficients in the Iris exercise.
 The percentages in the Simpson tables keep the German spacing (`78 %`) because that is
 what the table had and it is harmless; say the word if the edition wants `78%`.
+
+## Style pass
+
+Fable, 14 October 2026. 73 of the 145 blocks changed; the block count, the kind sequence,
+every inline maths expression, both fenced code blocks and every link text are byte-identical
+to the pre-pass file. `tools/sync.py align` and `tools/check_english.py` pass; the one
+entry in `sync/check-ignore/descriptive-statistics.md.json` (the German MyST target in
+block 42) is untouched.
+
+### Kinds of change
+
+* **Verb instead of nominalisation.** "is the computing of" → "means computing";
+  "computing the variance forms a sum, or an integral, over squares" → "means summing, or
+  integrating, over squares"; "How to do this … is shown by the chapter" → "The chapter …
+  shows how to do this".
+* **"One" and inverted existentials.** "one distinguishes … one says that" → passive and
+  "a feature is said to be"; "To be distinguished from the sample is the population" →
+  "Distinct from the sample is the population"; "To several of the measures … there belongs
+  … a measure of dispersion" → "Several of the measures … come with a measure of dispersion
+  of their own"; "to every measure of spread there belongs a measure of location" → "every
+  measure of spread has a measure of location that belongs to it".
+* **Calques replaced by the English idiom.** "give away the information" (*verschenken*) →
+  "throw away"; "infinitely often differentiable" → "infinitely differentiable";
+  "fall together" (*zusammenfallen*, of colour patches) → "merge"; "there are not simply
+  kidney stones" → "there is no such thing as simply "kidney stones""; "hangs on" (*hängt
+  an*) → "depends on", twice; "comes about like this" → "is drawn like this"; "what the most
+  suitable means of communication is always depends" → "which means of communication is
+  most suitable always depends".
+* **Lists de-clipped.** The grammar-of-graphics layer list ("Data – which are to be
+  visualised?" → "what is to be visualised?"; "Scales – scale the values? Nominal/ordinal?"
+  → "should the values be scaled? Nominal or ordinal?"), the Python-tools list, the
+  measures-of-spread list ("Range: largest value minus smallest value" → "the largest value
+  minus the smallest") and the boxplot/histogram/map-plot descriptions took articles and
+  finite verbs. The statistics-vs-ML correspondence list and the worked example were
+  left terse: the terseness is the point there.
+* **Sentence surgery.** The quartile definition (two parallel "is the value such that"
+  sentences) folded into one; the Datasaurus Dozen sentence lost its "out of it … a series
+  of … but that look"; the histogram definition's trailing participle ("obtained by summing
+  …") became a dash clause; the "Careful: two formulas" paragraph lost "This state of
+  affairs".
+* **Connectives and adverbs.** "just as much" → "just as readily"; "exactly when" →
+  "precisely when"; "where need be" → "where necessary"; "independently of the
+  parameters" → "whatever the parameters"; "First: … Second:" → "First, … Second,".
+* **One word changed for sense, checked against the German.** Block 80 had "a single
+  *figure* over all the data can say the opposite", which in a section about figures reads
+  as "a single plot". The German is *Eine Kennzahl über alle Daten*; it is now "a single
+  summary measure over all the data", the chapter's own term for *Maßzahl/Kennzahl*.
+
+### Noticed, deliberately not touched
+
+* **"the cloud of points on the right"** (block 65). The figure is *above* this paragraph in
+  the rendered page, not to its right. The German says *Punktwolke rechts* too, so it is the
+  original's own layout remark, probably from the slides. Author's call.
+* **"Dispersion, spread"** (block 27 heading) and "(see Dispersion)" in block 26: the
+  heading is the only place the book uses *dispersion* as a label, and the cross-reference
+  depends on it, so I left the word pair alone even though "spread" is the glossary's word.
+* **"a week plus a day"** (block 51): literal and slightly odd, but it is the author's joke
+  about eight values and I did not want to flatten it.
+* **`f (x) = x`** in the ggplot2 stat list (block 126) is set in plain text with a stray
+  space, not in maths. Cosmetic; it is like that in the German.
+* **Violin plot, "drawn in outline"** – still the translator's hedge for *ausschnittsweise*
+  (see *Decisions* above). Not a style matter; still wants the author's eye.
+* **"This is also known as the Bessel correction"** (block 31): strictly, the Bessel
+  correction is the $n-1$ denominator, not the existence of two formulas. The German
+  (*Dieser Sachverhalt heißt auch Bessel-Korrektur*) has the same looseness; I only
+  removed "state of affairs".
+* **The 78% / 83% spacing** in the Simpson tables is already closed up, so the earlier
+  translator's note about `78 %` is stale.
+* **"cardinal scale"** stays, per the translator's *Decisions*; nothing in this pass changes
+  the case for or against "metric".
