@@ -1,8 +1,8 @@
-"""Fashion-MNIST laden (gemeinsam genutzt von model-selection.ipynb und expectation-maximization.ipynb).
+"""Load Fashion-MNIST (shared by model-selection.ipynb and expectation-maximization.ipynb).
 
-Die vier Dateien werden nur beim ersten Aufruf heruntergeladen (per https vom
-GitHub-Repository von Zalando Research) und danach aus dem Arbeitsverzeichnis gelesen.
-Format: IDX, siehe https://github.com/zalandoresearch/fashion-mnist
+The four files are downloaded only on the first call (over https, from Zalando Research's
+GitHub repository) and read from the working directory afterwards.
+Format: IDX, see https://github.com/zalandoresearch/fashion-mnist
 """
 import gzip
 import os
@@ -30,7 +30,7 @@ def load_mnist_images(filename):
 
 
 def load_mnist(kind="train"):
-    """kind: 'train' (60000 Bilder) oder 't10k' (10000 Bilder). Gibt (images, labels) zurück."""
+    """kind: 'train' (60000 images) or 't10k' (10000 images). Returns (images, labels)."""
     labels = load_mnist_labels(_fetch(f"{kind}-labels-idx1-ubyte.gz"))
     images = load_mnist_images(_fetch(f"{kind}-images-idx3-ubyte.gz"))
     return images, labels

@@ -1,0 +1,10 @@
+{
+  "file": "expectation-maximization.ipynb",
+  "ignore": [
+    {
+      "block": "c25.2",
+      "label": "German function word",
+      "reason": "false positive: the licence name \"MIT\" in \"the data come under the MIT licence\" matches the German function word \"mit\" case-insensitively. Proper name, stays (TRANSLATION.md section 3); the German original says \"mit der MIT-Lizenz\""
+    }
+  ]
+}

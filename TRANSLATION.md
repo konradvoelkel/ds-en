@@ -101,8 +101,12 @@ the staleness report would then point at the wrong block.
 
 ## 6. Typography and conventions
 
-* **Decimal separator**: German `0,25` becomes `0.25`. This applies in prose, in maths and
-  in figure captions. Watch for thousands separators going the other way: `1.000` → `1,000`.
+* **Decimal separator**: German `0,25` becomes `0.25`, in prose, in maths and in figure
+  captions. In maths the German spelling is `0{,}25`; the LaTeX braces go with the comma.
+* **Thousands separator**: in prose, German `1.000` becomes `1,000`. **In maths it does not**:
+  the German writes `$178\,000$` with a thin space, which is the scientific convention in
+  English too, and `178{,}000` would reintroduce exactly the token the decimal rule exists to
+  remove. Thin space inside maths, comma in prose.
 * **Quotation marks**: `„…“`, `,,…''` and `»…«` all become plain `"…"`.
 * **Dashes**: the German parenthetical dash (`—`, ` - `) becomes a **spaced en dash** ` – `
   throughout the book. One rule, not a per-chapter choice, so that 31 files look like one book.

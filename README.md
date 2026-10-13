@@ -26,7 +26,9 @@ freely *within* a block, never across block boundaries. That invariant is what l
 staleness check point at an exact paragraph instead of a whole chapter.
 
 See `TRANSLATION.md` for the conventions and `TERMINOLOGY.md` for the glossary that
-keeps terms consistent across chapters.
+keeps terms consistent across chapters. `UPSTREAM-NOTES.md` collects what translating the
+book turned up *about the German original* — slips, a PDF export that silently drops
+figures, and housekeeping — none of it fixed here unless the entry says so.
 
 ## Build
 

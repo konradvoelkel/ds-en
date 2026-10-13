@@ -27,12 +27,12 @@
       "source": "deskriptive-statistik.md"
     },
     "dimensionality-reduction.ipynb": {
-      "translated": false,
+      "translated": true,
       "style_pass": false,
       "source": "dimensionsreduktion.ipynb"
     },
     "eda-examples.ipynb": {
-      "translated": false,
+      "translated": true,
       "style_pass": false,
       "source": "explorative-analyse-beispiele.ipynb"
     },
@@ -87,12 +87,12 @@
       "source": "landing-page.md"
     },
     "linear-regression.ipynb": {
-      "translated": false,
+      "translated": true,
       "style_pass": false,
       "source": "lineare-regression.ipynb"
     },
     "model-selection.ipynb": {
-      "translated": false,
+      "translated": true,
       "style_pass": false,
       "source": "model-selection.ipynb"
     },
