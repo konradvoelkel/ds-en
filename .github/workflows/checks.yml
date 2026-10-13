@@ -1,0 +1,45 @@
+name: checks
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  book:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      # The German original is public, so no secret is needed. A blobless clone keeps
+      # this to seconds; `git show` fetches the few files the checks actually read.
+      - name: Clone the German original
+        run: git clone --filter=blob:none https://gitlab.cs.uni-duesseldorf.de/voelkel/ds-skript.git ../ds-skript
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+
+      - name: Block alignment with the German original
+        run: python3 tools/sync.py align
+
+      - name: German left behind in the English text
+        run: python3 tools/check_english.py
+
+      - name: Notebook sources survive an export/import round-trip
+        run: for nb in *.ipynb; do python3 tools/nbtext.py check "$nb"; done
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Build the book
+        run: |
+          npm install -g mystmd
+          myst build --html
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: book-html
+          path: _build/html
+          retention-days: 14

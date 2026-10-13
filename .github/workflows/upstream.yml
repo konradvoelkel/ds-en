@@ -1,0 +1,52 @@
+name: upstream check
+
+# The German original is frozen until February 2027, so weekly is plenty; the point of
+# running it now is that the machinery is warm when the freeze lifts.
+on:
+  schedule:
+    - cron: '17 6 * * 1'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  stale:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: git clone --filter=blob:none https://gitlab.cs.uni-duesseldorf.de/voelkel/ds-skript.git ../ds-skript
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+
+      - name: What went stale?
+        id: check
+        run: |
+          set +e
+          python3 tools/sync.py check > /tmp/out.txt 2>&1
+          echo "status=$?" >> "$GITHUB_OUTPUT"
+          head -c 200000 /tmp/out.txt
+          echo "sha=$(git -C ../ds-skript rev-parse --short HEAD)" >> "$GITHUB_OUTPUT"
+
+      - name: Open an issue if anything needs re-translating
+        if: steps.check.outputs.status == '1'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          SHA: ${{ steps.check.outputs.sha }}
+        run: |
+          title="Upstream ds-skript moved to $SHA"
+          if gh issue list --state open --search "$title in:title" --json title \
+               | grep -q "$title"; then
+            echo "issue already open"; exit 0
+          fi
+          report=$(ls -t sync/reports/*.md | head -1)
+          # 60k keeps us well inside GitHub's issue body limit
+          { echo "\`tools/sync.py check\` found English passages whose German original has changed."
+            echo
+            echo "Re-translate the blocks below, then bump \`sync/upstream.json\` and run \`tools/sync.py manifest\`."
+            echo
+            head -c 60000 "$report"
+          } > /tmp/body.md
+          gh issue create --title "$title" --body-file /tmp/body.md --label upstream
