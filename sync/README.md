@@ -13,6 +13,7 @@ What keeps this edition tied to the German original.
 | `check-ignore/<english-file>.json` | deliberate findings of `tools/check_english.py` |
 | `notes/<english-file>.md` | what a chapter's translator wants merged: new glossary terms, figures to redraw, questions |
 | `reports/` | staleness reports from `tools/sync.py check` |
+| `style-pass-brief.md` | what the style pass may and may not change |
 
 One file per chapter on purpose: several translators work in parallel, and a shared JSON
 file would be a merge conflict waiting to happen.
