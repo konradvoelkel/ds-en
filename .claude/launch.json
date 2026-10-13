@@ -1,0 +1,6 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    { "name": "book", "runtimeExecutable": "myst", "runtimeArgs": ["start"], "port": 3000 }
+  ]
+}
