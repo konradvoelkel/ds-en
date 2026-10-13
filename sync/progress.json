@@ -142,7 +142,7 @@
       "source": "statistische-tests.md"
     },
     "titanic-eda-numpy.ipynb": {
-      "translated": false,
+      "translated": true,
       "style_pass": false,
       "source": "explorative-analyse-mit-numpy.ipynb"
     },
