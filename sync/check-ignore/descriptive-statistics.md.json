@@ -1,0 +1,10 @@
+{
+  "file": "descriptive-statistics.md",
+  "ignore": [
+    {
+      "block": "42",
+      "label": "German function word",
+      "reason": "the explicit MyST target (skalenniveau-und-zulaessige-masszahlen)= keeps its German spelling; TRANSLATION.md section 3 leaves link targets untranslated, and the heading above it is English"
+    }
+  ]
+}

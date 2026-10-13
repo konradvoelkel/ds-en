@@ -110,6 +110,9 @@ the staleness report would then point at the wrong block.
 * **Address**: the German "Sie" becomes "you"; the German "wir" stays "we". The book's
   voice is a lecturer thinking alongside the reader, and that survives translation.
 * **Dates**: `25.09.2026` → `25 September 2026`.
+* **Per cent**: German `78 %` becomes `78%`, no space, in prose and in tables. Inside maths
+  the thin space stays as the source has it (`$-0.1\,\%$`), because that is the convention
+  in English typesetting too.
 * **Spelling**: British or American, but one of them. This edition uses **British**
   spelling throughout, with `-ise` rather than `-ize`: `visualisation`, `normalisation`,
   `optimisation`, `generalise`, `behaviour`, `modelling`. American spellings that are part

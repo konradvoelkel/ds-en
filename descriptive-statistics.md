@@ -1,173 +1,169 @@
-# Deskriptive Statistik und Visualisierung
+# Descriptive statistics and visualisation
 
-[Vorlesungsaufzeichnung Deskriptive Statistik (VL 9, ab Minute 54)](https://media.hhu.de/channel/video/data-science-vl-9-stetige-verteilungen-2025/39016f5414ef3b8edd0dff941f802314/167?t=3244)
-[Vorlesungsaufzeichnung Skalenniveaus und Plots (VL 10, ab Minute 49)](https://media.hhu.de/channel/video/data-science-vl-10-skalenniveaus-2025/9b824315922a75d933e081f31c1da388/167?t=2940)
-[Vorlesungsaufzeichnung Simpson-Paradoxon (VL 12)](https://media.hhu.de/channel/video/data-science-vl-12-simpsons-und-pandas-2025/5a80e62a517e312ab8bf8f9155b91bf1/167)
-
-In {cite}`dds`, S.41 ist schematisch dargestellt, wie wir 'Data Science' betreiben:
+{cite}`dds`, p. 41 shows schematically how we go about 'data science':
 
 ```{figure} images/ds-process-oneill.png
 :width: 480px
 :align: center
 :name: ds-process
 
-Der "Data Science Prozess". Abbildung nach {cite}`dds`, S. 41 (Cathy O'Neil und Rachel Schutt, O'Reilly 2013).
+The "data science process". Figure after {cite}`dds`, p. 41 (Cathy O'Neil and Rachel Schutt, O'Reilly 2013).
 ```
 
-Fokus hier: Explorative Datenanalyse
+Our focus here: exploratory data analysis
 
-Wir werden noch einmal wiederholen und in einen neuen Zusammenhang stellen, was wir bisher zur deskriptiven Statistik gelernt haben, insbesondere über summarische (zusammenfassende) Statistik und Visualisierung. 
-
-
-Diese Wiederholung wird zugleich eine Vokabelstunde, denn wir wollen sowohl die Sprache der statistischen Datenanalyse als auch die des Machine Learning verstehen und übersetzen können.
-
-## Statistik vs. Machine Learning
-
-Es gibt zwei "Kulturen", die Statistik mit dem statistischen Lernen, und das Maschinelle Lernen mit dem vorhersagenden (prädiktiven) Modellieren.
-Maschinelles Lernen ist ein Teilgebiet der künstlichen Intelligenz, Statistik ein Teilgebiet der Mathematik.
-
-* Begriffskorrespondenz Statistik - maschinelles Lernen
-  * Modell - Modell (beim Einsatz von neuronalen Netzen auch: das Netz)
-  * Parameter - Gewichte
-  * Fitten - Lernen
-  * Testdatensatz-Performance - Generalisierung
-  * Regression, Klassifikation - Supervised Learning
-  * Dichteschätzung, Klassenbildung (clustering) - Unsupervised Learning
-  * Fehlerfunktion (Verlustfunktion) - Loss
-  * Schätzen der Parameter - Training
-  * Stichprobe - Trainingsdaten (Trainingsmenge); ein Durchlauf durch alle Trainingsdaten heißt Epoche
-
-Die rechte Spalte ist das Vokabular des Kurses „Einführung in Deep Learning“, der durchgehend damit arbeitet; wer die linke Spalte kennt, findet sich dort schnell zurecht.
-
-Die *explorative Datenanalyse* ist das Berechnen summarischer Statistik und Visualisierung (also deskriptiver Statistik), um eine bessere Einschätzung über die Informationen in einem Datensatz zu erlangen. Sie ist ein menschengesteuerter, iterativer Prozess und braucht Wissen über das Anwendungsgebiet — ohne eine Vorstellung davon, welche Werte plausibel sind und welche Fragen sich lohnen, produziert man Diagramme statt Erkenntnisse.
-Beim *Data Mining* geht es darum, diesen Arbeitsschritt in einem Data Science Projekt zu automatisieren, also die automatische Entdeckung von Mustern und Zusammenhängen, oft nach einem vorher festgelegten Schema.
-
-Man kann die verschiedenen Kulturen des Modellierens noch etwas feiner aufschlüsseln, wie es C. Molnar in dem Buch „Modeling Mindsets: The Many Cultures Of Learning From Data“ getan hat {cite}`molnarmindsets`; dazu ist es aber hilfreich, bereits den Maximum-Likelihood-Ansatz und den Satz von Bayes zu kennen.
+We will go over what we have learned about descriptive statistics so far and put it in a new context, summary statistics and visualisation in particular.
 
 
+This revision doubles as a vocabulary lesson, because we want to understand the language of statistical data analysis and the language of machine learning alike, and to be able to translate between them.
 
-## Deskriptive Statistik
+## Statistics vs. machine learning
 
-Die beschreibende (deskriptive) Statistik besteht aus den Datenanalysen, die *vor* der schließenden (inferentiellen) Statistik gemacht werden. Das besteht vor allem in der Beschreibung der Daten durch verschiedene Maßzahlen.
+There are two "cultures": statistics with statistical learning, and machine learning with predictive modelling.
+Machine learning is a subfield of artificial intelligence, statistics a subfield of mathematics.
 
-* Stichprobe = Sample, hat einen Umfang = Länge = Anzahl der Elemente / Zeilen / Instanzen / Ergebnisse (in Numpy ist das die Länge von Achse 0, siehe [Numpy](numpy.ipynb))
-  
-  Abzugrenzen von der Stichprobe ist die *Population*, das ist die Grundgesamtheit aller möglichen Ergebnisse, mit einer gewissen Verteilung.
-  
-* Bei tabellarischen Daten heißen die Spalten auch Variablen, Attribute, Merkmale, Features während die möglichen Werte *Ausprägungen* heißen.
-  Ein Datensatz mit $n$ Zeilen und $k$ Spalten hat also $n$ Samples und $k$ Features. Nicht jede Spalte ist aber ein Feature im statistischen Sinn: Eine laufende Nummer, eine Matrikelnummer oder ein Primärschlüssel aus einer Datenbank identifiziert die Zeile nur und trägt keine Information über das, was gemessen wurde — jede Analyse, die eine ID als Merkmal behandelt, findet darin bestenfalls Zufall und schlimmstenfalls die Reihenfolge, in der die Daten erhoben wurden. Ebenso ist die *Zielgröße*, die man vorhersagen will, zwar eine Spalte, zählt aber beim Zählen der Features nicht mit.
-  Je nach Art eines Merkmals unterscheidet man verschiedene *Skalenniveaus* (auch Skalenarten genannt); man sagt, ein Merkmal sei nominal-, ordinal- oder kardinalskaliert:
-  * Nominalskala: kategoriell, diskret, keine feste Reihenfolge (z.B. Geschlecht, Postleitzahl, Religionszugehörigkeit). Achtung: Mittelwert und Median ergeben hier keinen Sinn, Häufigkeiten schon. Die Postleitzahl ist der Klassiker für „sieht aus wie eine Zahl, ist aber nominal“ — ein `mean()` über eine PLZ-Spalte liefert eine Zahl, die nichts bedeutet.
-  * Ordinalskala: Werte können geordnet werden, aber ohne Abstandsmaß (z.B. Rangplätze im Sport, Dienstgrade, die Mohs-Härte von Mineralen). Achtung: Auch hier ergeben Mittelwerte keinen Sinn — die Mohs-Härte 5 liegt nicht „in der Mitte“ zwischen 4 und 6, sie ist nur härter als 4 und weicher als 6.
-  * Intervallskala (eine Kardinalskala): (diskrete oder stetige) Werte können geordnet und Abstände angegeben werden, der Nullpunkt ist aber willkürlich festgelegt (z.B. Temperatur in Grad Celsius, Datumsangaben, der Pegelstand des Rheins, Likert-Skalen wie „trifft gar nicht zu … trifft voll zu“). Differenzen sind sinnvoll, Verhältnisse nicht: $20\,^\circ\text{C}$ ist nicht „doppelt so warm“ wie $10\,^\circ\text{C}$.
-  * Verhältnisskala: Kardinalskala mit natürlichem Nullpunkt, sodass das Verhältnis zwischen zwei Werten eine sinnvolle Größe ist (z.B. Alter, Einkommen, Temperatur in Kelvin, Geschwindigkeit in km/h, Anzahl der Personen eines Haushalts). Hier darf man zu drei Werten $a,b,c$ die Verhältnisse $a:b$ und $a:c$ miteinander vergleichen.
+* Corresponding terms, statistics – machine learning
+  * model – model (where neural networks are used, also: the net)
+  * parameters – weights
+  * fitting – learning
+  * performance on the test set – generalisation
+  * regression, classification – supervised learning
+  * density estimation, clustering – unsupervised learning
+  * error function (loss function) – loss
+  * estimating the parameters – training
+  * sample – training data (training set); one pass through all the training data is called an epoch
 
-  Welche Maßzahlen und Rechenoperationen für ein Merkmal sinnvoll sind, hängt an seinem Skalenniveau — eine Zusammenfassung steht unten im Abschnitt [Skalenniveau und zulässige Maßzahlen](#skalenniveau-und-zulaessige-masszahlen).
-* Univariate Beschreibungen
+The right-hand column is the vocabulary of the course "Introduction to Deep Learning", which works with it throughout; anyone who knows the left-hand column will find their way around there quickly.
 
-  sind Maßzahlen, die sich auf eine einzelne Variable beziehen, nicht jedoch auf den Bezug der Variablen zueinander. Diese Maßzahlen lassen sich weiter einteilen:
-  * zentrale Tendenz (früher sagte man 'Mittelwerte')
-  
-    * Das arithmetische Mittel (unser Schätzwert für den Erwartungswert der zugrundeliegenden Verteilung)
-    * Der Median (die Hälfte der Datenpunkte liegt über dem Median, insofern ist es die Mitte)
-      Es gilt übrigens stets
+*Exploratory data analysis* is the computing of summary statistics and visualisations (that is, of descriptive statistics) in order to get a better sense of the information in a dataset. It is a human-driven, iterative process and it needs knowledge of the field of application – without some idea of which values are plausible and which questions are worth asking, you produce diagrams instead of insights.
+*Data mining* is about automating this step of a data science project: the automatic discovery of patterns and relationships, often following a scheme fixed in advance.
+
+The various cultures of modelling can be broken down more finely still, as C. Molnar does in the book "Modeling Mindsets: The Many Cultures Of Learning From Data" {cite}`molnarmindsets`; for that, though, it helps to know the maximum likelihood approach and Bayes' theorem already.
+
+
+
+## Descriptive statistics
+
+Descriptive statistics consists of the data analyses that are made *before* inferential statistics. Mostly that means describing the data by various summary measures.
+
+* A sample has a size = length = number of elements / rows / instances / outcomes (in Numpy that is the length of axis 0, see [Numpy](numpy.ipynb))
+
+  To be distinguished from the sample is the *population*, the totality of all possible outcomes, with some distribution.
+
+* With tabular data the columns are also called variables, attributes, characteristics or features, while the possible values are called *levels*.
+  A dataset with $n$ rows and $k$ columns therefore has $n$ samples and $k$ features. Not every column is a feature in the statistical sense, though: a serial number, a student number or a primary key from a database only identifies the row and carries no information about what was measured – any analysis that treats an ID as a feature will find chance in it at best, and at worst the order in which the data was collected. The *target variable* you want to predict is a column too, but it does not count when you count the features.
+  Depending on the kind of a feature, one distinguishes various *levels of measurement* (also called scale types); one says that a feature is measured on a nominal, an ordinal or a cardinal scale:
+  * Nominal scale: categorical, discrete, no fixed order (e.g. sex, postcode, religious affiliation). Careful: mean and median make no sense here, frequencies do. The postcode is the classic case of "looks like a number, but is nominal" – a `mean()` over a column of postcodes gives you a number that means nothing.
+  * Ordinal scale: values can be ordered, but with no measure of distance (e.g. rankings in sport, military ranks, the Mohs hardness of minerals). Careful: here too a mean makes no sense – Mohs hardness 5 does not lie "halfway" between 4 and 6, it is only harder than 4 and softer than 6.
+  * Interval scale (a cardinal scale): (discrete or continuous) values can be ordered and distances between them can be given, but the zero point is fixed arbitrarily (e.g. temperature in degrees Celsius, dates, the water level of the Rhine, Likert scales such as "does not apply at all … applies fully"). Differences are meaningful, ratios are not: $20\,^\circ\text{C}$ is not "twice as warm" as $10\,^\circ\text{C}$.
+  * Ratio scale: a cardinal scale with a natural zero point, so that the ratio of two values is a meaningful quantity (e.g. age, income, temperature in kelvin, speed in km/h, the number of people in a household). Here, for three values $a,b,c$, you may compare the ratios $a:b$ and $a:c$ with each other.
+
+  Which summary measures and which arithmetic make sense for a feature hangs on its level of measurement – there is a summary below, in the section [Level of measurement and permissible summary measures](#skalenniveau-und-zulaessige-masszahlen).
+* Univariate descriptions
+
+  are summary measures that refer to a single variable, but not to how the variables relate to each other. These measures can be divided up further:
+  * central tendency (one used to say 'averages')
+
+    * The arithmetic mean (our estimate of the expected value of the underlying distribution)
+    * The median (half the data points lie above the median, and in that sense it is the middle)
+      Incidentally, it always holds that
       $|\texttt{median}(x) - \texttt{mean}(x)| \leq \sigma$
-      Für eine Ordinalskala (wenn also Abstände zwischen den Werten nicht angegeben werden können) ist der Median eine sinnvolle Größe
-      
-    * Die Bereichsmitte (Mid-range) ist das arithmetische Mittel aus dem Maximum und dem Minimum.
-    
-    * Das geometrische Mittel
-    
-      ist $\sqrt[n]{x_1 \cdots x_n}$, also die $n$-te Wurzel aus dem Produkt der Werte (in Numpy `np.exp(np.mean(np.log(x)))`, in Scipy direkt `scipy.stats.gmean`). Es ist das passende Mittel, wenn sich die Werte multiplikativ zusammensetzen — bei Wachstumsraten etwa ist das geometrische Mittel der jährlichen Faktoren derjenige konstante Faktor, der nach $n$ Jahren zum selben Ergebnis führt. Es setzt eine Verhältnisskala voraus, denn es braucht einen natürlichen Nullpunkt: Das geometrische Mittel von $10\,^\circ\text{C}$ und $20\,^\circ\text{C}$ ist $\sqrt{200} \approx 14{,}14\,^\circ\text{C}$, rechnet man dieselben Temperaturen dagegen in Kelvin, kommt $\sqrt{283{,}15 \cdot 293{,}15} \approx 288{,}11\,\text{K} \approx 14{,}96\,^\circ\text{C}$ heraus — zwei verschiedene Antworten auf dieselbe Frage. Bei negativen Werten ist es gar nicht definiert.
-    
-    * Der Modus
-    
-      ist definiert als häufigster Wert. Der Begriff selbst ist wenig nützlich, wird aber häufig in dem Sinne verwendet, dass eine Verteilung unimodal oder bimodal ist. Unimodal bedeutet, dass es einen klar erkennbaren Modus gibt, der die Verteilung gut beschreibt. Bimodal bedeutet, dass die Verteilung eine gemischte Verteilung ist, deren zwei Komponenten verschiedene Moden haben. Das erkennt man dann an zwei Hochpunkten. Im Allgemeinen ist nicht klar, ob man einen Datensatz als unimodal oder bimodal (oder multimodal) verteilt ansehen sollte.
-      
-      Für Variablen auf einer Nominalskala ist der Modus ein sinnvoller Lageparameter
-      
-    * Zu mehreren Maßen der zentralen Tendenz gehört gewissermaßen ein Dispersionsmaß (siehe Dispersion), was man sich merken kann mit "dispersion precedes location". Dazu ist [der englische Wikipedia-Artikel 'Central tendency'](https://en.wikipedia.org/wiki/Central_tendency) zu empfehlen.
-    
-  * Dispersion, Spread (Streuung)
-  
-    Streumaße charakterisieren, inwiefern die Daten um einen Lageparameter streuen, d.h. davon mehr oder weniger stark abweichen. Da dies auch bedeutet, zu charakterisieren, inwiefern jeder einzelne Datenpunkt von den anderen abweicht, lassen sich Streumaße ohne direkten Bezug auf einen Lageparameter definieren.
-    
-    * Spannweite: maximaler Wert minus minimaler Wert
-    * Variationsverhältnis (auch *nicht-Modus-Anteil*): Anteil der Stichprobe, dessen Wert nicht der Modus ist
-    * Quartile: analog zum Median ist das untere Quartil $Q1$ der Wert, sodass genau ein Viertel der Daten einen geringeren Wert hat. Das obere Quartil $Q3$ ist entsprechend der Wert, sodass genau ein Viertel der Daten einen höheren Wert hat. Der Median entspricht $Q2$. Analog definiert man Perzentile. Die Differenz $Q3 - Q1$ heißt **Interquartilsabstand** (interquartile range, IQR); sie ist das Streuungsmaß, das zum Median gehört, und im Gegensatz zur Spannweite unempfindlich gegen Ausreißer — genau deshalb zeichnet ein Boxplot den Kasten von $Q1$ bis $Q3$.
-    * Stichprobenvarianz: mittlere quadratische Abweichung vom Mittelwert
-    * Stichprobenstandardabweichung
-    
-      Wenn wir mit Einheiten rechnen, sehen wir ein Problem mit der Varianz: ist eine Zufallsvariable $X$ oder ein Vektor $x$ (etwa eine Spalte einer Tabelle) in der Einheit Meter (eine Verhältnisskala), so wird beim Berechnen der Varianz eine Summe bzw. ein Integral über Quadrate gebildet, somit ist die Varianz in der Einheit Quadratmeter. Man sieht daran auch, dass die Varianz generell skalenabhängig ist, d.h. beim Vergleich zweier Variablen, die eine in Meter, die andere in Zentimeter, ist die Varianz kein guter Vergleich. Daraus die Wurzel zu ziehen korrigiert den ersten Fehler, und liefert mit der Standardabweichung ein Maß in der gleichen Einheit wie den Erwartungswert.
-      
-      Achtung: es gibt zwei Formeln mit dem Namen "Stichprobenstandardabweichung", einmal mit $n$ im Nenner, einmal mit $n-1$. Diesen Umstand nennt man auch *Bessel-Korrektur* und wir befassen uns im Rahmen der Schätztheorie noch damit. In diesem Skript ist ohne weiteren Hinweis die $n$-Version gemeint (so rechnet auch `numpy.std`); pandas (`DataFrame.std`) und `scipy.stats` teilen dagegen standardmäßig durch $n-1$ (`ddof=1`).
-      
-    * Variationskoeffizient
-    
-      Die Standardabweichung hat dieselbe Einheit wie die Daten, hilft beim Vergleich zweier verschiedener Merkmale aber noch nicht: Ist eine Streuung von $3$ Stunden viel? Der **Variationskoeffizient** $\frac{\sigma}{\mu}$ ist einheitenlos und beantwortet die Frage als Anteil des Mittelwerts (in Numpy `np.std(x)/np.mean(x)`, in Scipy `scipy.stats.variation`). Er ist nur auf einer Verhältnisskala sinnvoll, denn er hängt vom Nullpunkt ab: In Celsius gerechnet kann er negativ oder unendlich werden, in Kelvin nicht. Sein Kehrwert $\frac{\mu}{\sigma}$ heißt **Signal-to-Noise-Ratio** und wird in den Ingenieurwissenschaften genauso benutzt — je größer, desto deutlicher hebt sich das Signal vom Rauschen ab.
-      
-    * dispersion precedes location: Zu jedem Streuungsmaß gehört ein Lagemaß, nämlich der Wert, der dieses Streuungsmaß minimiert — je nachdem, mit welcher Norm man den Fehler misst:
-      
-      * Der Modus minimiert das Variationsverhältnis ($L_0$)
-      * Der Median minimiert die mittlere absolute Abweichung ($L_1$)
-      * Der Mittelwert minimiert die mittlere quadratische Abweichung ($L_2$)
-      * Die Bereichsmitte minimiert die maximale absolute Abweichung ($L_\infty$)
-      
-      Die beiden mittleren Aussagen sind im Kapitel [Erwartungswert und Varianz](expectation-variance.md), Abschnitt „Abweichung quantifizieren“, bewiesen.
-      
-  
-  * Form (Shape)
-  
-    * Schiefe (skewness) ist das dritte zentrale Moment, normiert auf die Standardabweichung ($\mu_3 / \sigma^3$)
-    * Wölbung (kurtosis) ist das vierte zentrale Moment, normiert auf die Standardabweichung ($\mu_4/\sigma^4$)
-    * Exzess ist die Differenz der Wölbung zur Wölbung einer Normalverteilung -- die unabhängig von den Parametern genau $3$ ist
-  
-* multivariate Beschreibungen:
-  * Korrelationen
-  
-    Mit Kovarianz und Korrelation werden wir uns bald beschäftigen müssen. Die Kovarianz verhält sich zur Varianz wie ein Skalarprodukt zu einer Norm. Der (Pearson)-Korrelationskoeffizient wird so normiert, dass er skaleninvariant ist.
+      On an ordinal scale (that is, when distances between the values cannot be given) the median is a meaningful quantity
 
-[Für eine kurze lockere Übersicht über einen Teil der Frage „Was sind eigentlich Daten“, insb. der Frage der Skalen, gibt es ein Video vom HeiCAD-Programm „KI für Alle“](https://www.youtube.com/watch?v=hJVOudzjnEI).
-    
+    * The mid-range is the arithmetic mean of the maximum and the minimum.
+
+    * The geometric mean
+
+      is $\sqrt[n]{x_1 \cdots x_n}$, the $n$-th root of the product of the values (in Numpy `np.exp(np.mean(np.log(x)))`, in Scipy directly `scipy.stats.gmean`). It is the right mean when the values compound multiplicatively – for growth rates, say, the geometric mean of the yearly factors is the constant factor that leads to the same result after $n$ years. It presupposes a ratio scale, because it needs a natural zero point: the geometric mean of $10\,^\circ\text{C}$ and $20\,^\circ\text{C}$ is $\sqrt{200} \approx 14.14\,^\circ\text{C}$, but convert the same two temperatures to kelvin and $\sqrt{283.15 \cdot 293.15} \approx 288.11\,\text{K} \approx 14.96\,^\circ\text{C}$ comes out – two different answers to the same question. For negative values it is not defined at all.
+
+    * The mode
+
+      is defined as the most frequent value. The term itself is not very useful, but it is often used in the sense that a distribution is unimodal or bimodal. Unimodal means that there is one clearly recognisable mode which describes the distribution well. Bimodal means that the distribution is a mixture distribution whose two components have different modes. You then see that in two peaks. In general it is not clear whether a dataset should be regarded as unimodally or bimodally (or multimodally) distributed.
+
+      For variables on a nominal scale the mode is a meaningful measure of location
+
+    * To several of the measures of central tendency there belongs, in a sense, a measure of dispersion (see Dispersion), which you can remember as "dispersion precedes location". [The Wikipedia article 'Central tendency'](https://en.wikipedia.org/wiki/Central_tendency) is recommended on this.
+
+  * Dispersion, spread
+
+    Measures of spread characterise how far the data scatters around a measure of location, that is, how strongly it deviates from it. Since this also amounts to characterising how far each individual data point deviates from the others, measures of spread can be defined without direct reference to a measure of location.
+
+    * Range: largest value minus smallest value
+    * Variation ratio (also the *non-modal proportion*): the fraction of the sample whose value is not the mode
+    * Quartiles: analogously to the median, the lower quartile $Q1$ is the value such that exactly a quarter of the data has a smaller value. The upper quartile $Q3$ is correspondingly the value such that exactly a quarter of the data has a larger value. The median is $Q2$. Percentiles are defined analogously. The difference $Q3 - Q1$ is called the **interquartile range** (IQR); it is the measure of spread that belongs to the median, and unlike the range it is insensitive to outliers – which is exactly why a boxplot draws the box from $Q1$ to $Q3$.
+    * Sample variance: mean squared deviation from the mean
+    * Sample standard deviation
+
+      Once we calculate with units, we see a problem with the variance: if a random variable $X$ or a vector $x$ (a column of a table, say) is in metres (a ratio scale), then computing the variance forms a sum, or an integral, over squares, so the variance is in square metres. You can also see from this that the variance is scale-dependent in general, i.e. when comparing two variables, one in metres and the other in centimetres, the variance is no good comparison. Taking the square root corrects the first problem and yields, in the standard deviation, a measure in the same unit as the expected value.
+
+      Careful: there are two formulas going by the name "sample standard deviation", one with $n$ in the denominator, one with $n-1$. This state of affairs is also called the *Bessel correction*, and we will come back to it as part of estimation theory. In these notes the $n$-version is meant unless something else is said (this is how `numpy.std` calculates too); pandas (`DataFrame.std`) and `scipy.stats`, by contrast, divide by $n-1$ by default (`ddof=1`).
+
+    * Coefficient of variation
+
+      The standard deviation has the same unit as the data, but it does not yet help when comparing two different features: is a spread of $3$ hours a lot? The **coefficient of variation** $\frac{\sigma}{\mu}$ is unitless and answers that question as a fraction of the mean (in Numpy `np.std(x)/np.mean(x)`, in Scipy `scipy.stats.variation`). It only makes sense on a ratio scale, because it depends on the zero point: computed in Celsius it can turn negative or infinite, in kelvin it cannot. Its reciprocal $\frac{\mu}{\sigma}$ is called the **signal-to-noise ratio** and is used in exactly the same way in engineering – the larger it is, the more clearly the signal stands out from the noise.
+
+    * dispersion precedes location: to every measure of spread there belongs a measure of location, namely the value that minimises that measure of spread – depending on which norm you use to measure the error:
+
+      * The mode minimises the variation ratio ($L_0$)
+      * The median minimises the mean absolute deviation ($L_1$)
+      * The mean minimises the mean squared deviation ($L_2$)
+      * The mid-range minimises the maximum absolute deviation ($L_\infty$)
+
+      The two middle statements are proved in the chapter [Expected value and variance](expectation-variance.md), section "Quantifying deviation".
+
+
+  * Shape
+
+    * Skewness is the third central moment, normalised by the standard deviation ($\mu_3 / \sigma^3$)
+    * Kurtosis is the fourth central moment, normalised by the standard deviation ($\mu_4/\sigma^4$)
+    * Excess kurtosis is the difference between the kurtosis and the kurtosis of a normal distribution – which, independently of the parameters, is exactly $3$
+
+* Multivariate descriptions:
+  * Correlations
+
+    We will have to occupy ourselves with covariance and correlation soon. Covariance is to variance as an inner product is to a norm. The (Pearson) correlation coefficient is normalised so that it is scale-invariant.
+
+[For a short and relaxed overview of part of the question "what actually are data", and of the question of scales in particular, there is a video from the HeiCAD programme "KI für Alle"](https://www.youtube.com/watch?v=hJVOudzjnEI) (in German).
+
 (skalenniveau-und-zulaessige-masszahlen)=
-### Skalenniveau und zulässige Maßzahlen
+### Level of measurement and permissible summary measures
 
-Die Maßzahlen oben sind nicht für jedes Merkmal sinnvoll. Ein Mittelwert über Postleitzahlen ist eine Zahl, aber keine Information; eine Standardabweichung über Schulnoten setzt voraus, dass der Abstand zwischen „gut“ und „sehr gut“ derselbe ist wie zwischen „ausreichend“ und „mangelhaft“. Was erlaubt ist, entscheidet das Skalenniveau:
+The summary measures above do not make sense for every feature. A mean over postcodes is a number, but not information; a standard deviation over school grades presupposes that the distance between "good" and "very good" is the same as the distance between "sufficient" and "deficient". What is allowed is decided by the level of measurement:
 
-| Skalenniveau | Beispiel | sinnvolle Vergleiche | Lagemaß | Streuungsmaß |
+| Level of measurement | Example | Meaningful comparisons | Measure of location | Measure of spread |
 |---|---|---|---|---|
-| nominal | Studiengang, Farbe, Postleitzahl | gleich / ungleich | Modus | Variationsverhältnis (nicht-Modus-Anteil) |
-| ordinal | Schulnote, Mohs-Härte, Rangplatz | zusätzlich: kleiner / größer | Median, Quartile | Spannweite, Interquartilsabstand |
-| Intervallskala | Temperatur in °C, Datum, Likert-Skala | zusätzlich: Differenzen | arithmetisches Mittel, Bereichsmitte | Varianz, Standardabweichung |
-| Verhältnisskala | Alter, Preis, Temperatur in K | zusätzlich: Quotienten | zusätzlich: geometrisches Mittel | zusätzlich: Variationskoeffizient |
+| nominal | degree programme, colour, postcode | equal / not equal | mode | variation ratio (non-modal proportion) |
+| ordinal | school grade, Mohs hardness, rank | additionally: smaller / larger | median, quartiles | range, interquartile range |
+| interval | temperature in °C, date, Likert scale | additionally: differences | arithmetic mean, mid-range | variance, standard deviation |
+| ratio | age, price, temperature in K | additionally: quotients | additionally: geometric mean | additionally: coefficient of variation |
 
-Jedes Skalenniveau erlaubt zusätzlich alle Maßzahlen der Zeilen darüber: Für ein kardinales Merkmal darf man auch Median und Modus angeben, für ein ordinales auch den Modus. Umgekehrt geht es nicht — Mittelwert und Varianz einer nominalen Variablen sind bedeutungslos, auch wenn die Ausprägungen als Zahlen gespeichert sind. Eine Spalte mit dem Datentyp `int` ist also noch lange nicht kardinalskaliert: Eine ID ist nominal, eine Schulnote ordinal.
+Every level of measurement also allows all the summary measures of the rows above it: for a cardinal feature you may give the median and the mode as well, for an ordinal one the mode. The other way round does not work – mean and variance of a nominal variable are meaningless, even when the levels are stored as numbers. A column of data type `int` is therefore a long way from being on a cardinal scale: an ID is nominal, a school grade ordinal.
 
-**Zwei nominale Merkmale.** Für den Zusammenhang zweier nominaler Merkmale gibt es keinen Korrelationskoeffizienten, aber eine ebenso einfache Maßzahl: die **Kreuztabelle** (Kontingenztafel), die für jede Kombination von Ausprägungen zählt, wie oft sie vorkommt. Eine Kreuztabelle aus Ground Truth und Vorhersage heißt Konfusionsmatrix; das Kapitel [Titanic EDA](titanic-eda-numpy.ipynb) liest daraus die Güte eines Klassifikators ab, und pandas erzeugt sie mit `pd.crosstab`.
+**Two nominal features.** For the relationship between two nominal features there is no correlation coefficient, but there is an equally simple summary measure: the **cross-tabulation** (contingency table), which counts for every combination of levels how often it occurs. A cross-tabulation of ground truth against prediction is called a confusion matrix; the chapter [Titanic EDA](titanic-eda-numpy.ipynb) reads the quality of a classifier off one, and pandas produces it with `pd.crosstab`.
 
-**Kodierung kategorialer Merkmale.** Die meisten Verfahren des maschinellen Lernens (etwa die lineare Regression) rechnen mit Zahlen, und die Frage, wie man ein nominales oder ordinales Merkmal in Zahlen übersetzt, hängt an derselben Tabelle:
+**Encoding categorical features.** Most machine learning methods (linear regression, say) calculate with numbers, and the question of how to translate a nominal or an ordinal feature into numbers hangs on the same table:
 
-* Ein **ordinales** Merkmal darf man als ganze Zahlen entlang seiner Ordnung kodieren („niedrig“ $= 1$, „mittel“ $= 2$, „hoch“ $= 3$; *Integer-* oder *Ordinal-Encoding*). Die Ordnung ist echt, nur die gleichen Abstände sind eine Modellannahme, die man im Blick behalten sollte.
-* Ein **nominales** Merkmal darf man das *nicht*: Kodiert man Studiengänge als $1, 2, 3$, erfindet man eine Reihenfolge und Abstände, die es nicht gibt, und ein lineares Modell würde damit rechnen. Stattdessen legt man je Ausprägung eine eigene Spalte an, die $1$ ist, wenn die Ausprägung vorliegt, und sonst $0$ (*One-Hot-Encoding*, die Spalten heißen auch *Dummy-Variablen*). Aus einer Spalte „Studiengang“ mit drei Ausprägungen werden so drei Spalten mit Nullen und Einsen.
+* An **ordinal** feature may be encoded as integers along its order ("low" $= 1$, "medium" $= 2$, "high" $= 3$; *integer* or *ordinal encoding*). The order is real; only the equal spacing is a modelling assumption, and one to keep an eye on.
+* A **nominal** feature may *not* be: encode degree programmes as $1, 2, 3$ and you invent an order and distances that do not exist, and a linear model would calculate with them. Instead you give every level a column of its own, which is $1$ when that level is present and $0$ otherwise (*one-hot encoding*; the columns are also called *dummy variables*). A single column "degree programme" with three levels thus becomes three columns of zeros and ones.
 
-Wie man das mit pandas macht und was es für eine Regression bedeutet, zeigt das Kapitel [Lineare Regression](linear-regression.ipynb) am Melbourne-Datensatz. Wie man unterschiedliche Schreibweisen einer Kategorie vorher vereinheitlicht, steht im Kapitel [Daten putzen](data-cleaning.ipynb).
+How to do this with pandas, and what it means for a regression, is shown by the chapter [Linear regression](linear-regression.ipynb) on the Melbourne dataset. How to unify different spellings of a category beforehand is in the chapter [Data cleaning](data-cleaning.ipynb).
 
-### Durchgerechnetes Beispiel
+### A worked example
 
-Nehmen wir die $n = 8$ Werte $x = (7,\ 2,\ 9,\ 4,\ 4,\ 12,\ 5,\ 3)$, etwa: Anzahl E-Mails pro Tag in einer Woche plus einem Tag.
+Take the $n = 8$ values $x = (7,\ 2,\ 9,\ 4,\ 4,\ 12,\ 5,\ 3)$ – the number of emails per day over a week plus a day, say.
 
-* **Sortieren**: $(2,\ 3,\ 4,\ 4,\ 5,\ 7,\ 9,\ 12)$.
-* **Modus**: $4$, der einzige Wert, der mehrfach vorkommt.
-* **Median**: $n$ ist gerade, also das Mittel der beiden mittleren Werte $4$ und $5$: $\texttt{median}(x) = 4{,}5$.
-* **Quartile**: Die untere Hälfte $(2,3,4,4)$ hat den Median $Q_1 = 3{,}5$, die obere Hälfte $(5,7,9,12)$ den Median $Q_3 = 8$; der Interquartilsabstand ist $Q_3 - Q_1 = 4{,}5$. Achtung: Für Quartile gibt es mehrere Konventionen. `numpy.percentile` interpoliert standardmäßig linear zwischen den sortierten Werten und liefert hier $Q_1 = 3{,}75$ und $Q_3 = 7{,}5$.
-* **Spannweite**: $12 - 2 = 10$. **Bereichsmitte**: $(12 + 2)/2 = 7$.
-* **Mittelwert**: $\texttt{mean}(x) = \frac{7+2+9+4+4+12+5+3}{8} = \frac{46}{8} = 5{,}75$.
-* **Varianz** ($n$-Version): Die Abweichungen vom Mittelwert sind $(1{,}25,\ -3{,}75,\ 3{,}25,\ -1{,}75,\ -1{,}75,\ 6{,}25,\ -0{,}75,\ -2{,}75)$, ihre Quadrate $(1{,}5625,\ 14{,}0625,\ 10{,}5625,\ 3{,}0625,\ 3{,}0625,\ 39{,}0625,\ 0{,}5625,\ 7{,}5625)$ summieren sich zu $79{,}5$, also $\sigma^2 = 79{,}5 / 8 = 9{,}9375$.
-* **Standardabweichung**: $\sigma = \sqrt{9{,}9375} \approx 3{,}15$. Mit Bessel-Korrektur: $\sqrt{79{,}5 / 7} \approx 3{,}37$.
-* **Variationskoeffizient**: $\sigma / \texttt{mean}(x) = 3{,}15 / 5{,}75 \approx 0{,}55$ — die Streuung beträgt gut die Hälfte des Mittelwerts, die Tage sind also sehr ungleich. **Geometrisches Mittel**: $\sqrt[8]{7 \cdot 2 \cdot 9 \cdot 4 \cdot 4 \cdot 12 \cdot 5 \cdot 3} \approx 4{,}95$, kleiner als das arithmetische Mittel $5{,}75$ (das ist kein Zufall: das geometrische Mittel ist nie größer als das arithmetische).
-* Probe: $|\texttt{median}(x) - \texttt{mean}(x)| = 1{,}25 \leq \sigma$. Der Mittelwert liegt über dem Median, weil der Ausreißer $12$ ihn nach oben zieht: die Verteilung ist rechtsschief.
+* **Sorting**: $(2,\ 3,\ 4,\ 4,\ 5,\ 7,\ 9,\ 12)$.
+* **Mode**: $4$, the only value that occurs more than once.
+* **Median**: $n$ is even, so the mean of the two middle values $4$ and $5$: $\texttt{median}(x) = 4.5$.
+* **Quartiles**: the lower half $(2,3,4,4)$ has median $Q_1 = 3.5$, the upper half $(5,7,9,12)$ has median $Q_3 = 8$; the interquartile range is $Q_3 - Q_1 = 4.5$. Careful: there are several conventions for quartiles. `numpy.percentile` interpolates linearly between the sorted values by default and gives $Q_1 = 3.75$ and $Q_3 = 7.5$ here.
+* **Range**: $12 - 2 = 10$. **Mid-range**: $(12 + 2)/2 = 7$.
+* **Mean**: $\texttt{mean}(x) = \frac{7+2+9+4+4+12+5+3}{8} = \frac{46}{8} = 5.75$.
+* **Variance** ($n$-version): the deviations from the mean are $(1.25,\ -3.75,\ 3.25,\ -1.75,\ -1.75,\ 6.25,\ -0.75,\ -2.75)$, their squares $(1.5625,\ 14.0625,\ 10.5625,\ 3.0625,\ 3.0625,\ 39.0625,\ 0.5625,\ 7.5625)$ add up to $79.5$, so $\sigma^2 = 79.5 / 8 = 9.9375$.
+* **Standard deviation**: $\sigma = \sqrt{9.9375} \approx 3.15$. With the Bessel correction: $\sqrt{79.5 / 7} \approx 3.37$.
+* **Coefficient of variation**: $\sigma / \texttt{mean}(x) = 3.15 / 5.75 \approx 0.55$ – the spread amounts to a good half of the mean, so the days are very uneven. **Geometric mean**: $\sqrt[8]{7 \cdot 2 \cdot 9 \cdot 4 \cdot 4 \cdot 12 \cdot 5 \cdot 3} \approx 4.95$, smaller than the arithmetic mean $5.75$ (which is no accident: the geometric mean is never larger than the arithmetic one).
+* Check: $|\texttt{median}(x) - \texttt{mean}(x)| = 1.25 \leq \sigma$. The mean lies above the median because the outlier $12$ pulls it up: the distribution is skewed to the right.
 
-Dasselbe in Numpy (die Quartile mit der linearen Interpolation von `numpy.percentile`):
+The same in Numpy (the quartiles with the linear interpolation of `numpy.percentile`):
 
 ```python
 import numpy as np
@@ -175,251 +171,251 @@ x = np.array([7, 2, 9, 4, 4, 12, 5, 3])
 print(np.median(x))            # 4.5
 print(np.percentile(x, [25, 75]))  # [3.75 7.5 ]
 print(np.mean(x), np.var(x))   # 5.75 9.9375
-print(np.std(x))               # 3.1524... (n-Version)
-print(np.std(x, ddof=1))       # 3.3701... (Bessel-Korrektur, n-1)
-print(np.std(x) / np.mean(x))  # 0.5482... Variationskoeffizient
-print(np.exp(np.mean(np.log(x))))  # 4.9542... geometrisches Mittel
+print(np.std(x))               # 3.1524... (n-version)
+print(np.std(x, ddof=1))       # 3.3701... (Bessel correction, n-1)
+print(np.std(x) / np.mean(x))  # 0.5482... coefficient of variation
+print(np.exp(np.mean(np.log(x))))  # 4.9542... geometric mean
 ```
 
-## Das Simpson-Paradoxon
+## Simpson's paradox
 
-Bevor wir zu den Bildern kommen, eine Warnung vor dem Aggregieren, für die man nur Prozentrechnung braucht und die trotzdem zeigt, warum Datenanalyse mehr ist als Ausrechnen. Es stammt aus einer medizinischen Studie über zwei Behandlungen von Nierensteinen {cite}`charig1986`; wir nennen die Behandlungen einfach A und B. Beide wurden an je 350 Patient\*innen angewendet, und "Erfolg" ist das, was die Mediziner\*innen als Erfolg definiert haben.
+Before we come to the pictures, a warning about aggregating that needs nothing but percentages and still shows why data analysis is more than calculating. It comes from a medical study of two treatments for kidney stones {cite}`charig1986`; we will simply call the treatments A and B. Each was applied to 350 patients, and "success" is whatever the clinicians defined as success.
 
-| Behandlung | Patient\*innen | Erfolge | Erfolgsquote |
+| Treatment | Patients | Successes | Success rate |
 |---|---|---|---|
-| A | 350 | 273 | 78 % |
-| B | 350 | 289 | 83 % |
+| A | 350 | 273 | 78% |
+| B | 350 | 289 | 83% |
 
-Stellen Sie sich vor, Sie haben Nierensteine. Welche Behandlung wählen Sie? Die meisten sagen B.
+Imagine you have kidney stones. Which treatment do you choose? Most people say B.
 
-Nun gibt es aber nicht einfach Nierensteine, sondern kleine und große. Teilen wir die Tabelle danach auf:
+But there are not simply kidney stones; there are small ones and large ones. Let us split the table along that line:
 
-| Behandlung | kleine Steine | große Steine |
+| Treatment | small stones | large stones |
 |---|---|---|
-| A | 81 von 87, also 93 % | 192 von 263, also 73 % |
-| B | 234 von 270, also 87 % | 55 von 80, also 69 % |
+| A | 81 of 87, so 93% | 192 of 263, so 73% |
+| B | 234 of 270, so 87% | 55 of 80, so 69% |
 
-Bei kleinen Steinen ist A besser, bei großen Steinen ist A besser. Wenn Sie kleine Steine haben, wollen Sie A; wenn Sie große Steine haben, wollen Sie A. Nur wenn Sie nicht wissen, wie groß Ihre Steine sind, wollen Sie B? Das kann nicht stimmen, denn Ihre Steine sind entweder klein oder groß.
+For small stones A is better, for large stones A is better. If you have small stones you want A; if you have large stones you want A. Only if you do not know how large your stones are do you want B? That cannot be right, because your stones are either small or large.
 
-Die Auflösung steckt in den absoluten Zahlen, nicht in den Prozenten. Behandlung A wurde fast nur bei großen Steinen eingesetzt (263 von 350), Behandlung B fast nur bei kleinen (270 von 350). Große Steine sind schwerer zu behandeln, also zieht die große Gruppe der schweren Fälle die Gesamtquote von A nach unten, während B von der großen Gruppe der leichten Fälle profitiert. Die Ärzt\*innen haben die Therapie nach der Steingröße gewählt, und die Steingröße bestimmt den Erfolg. Eine solche Variable, die sowohl die Gruppenzugehörigkeit als auch das Ergebnis beeinflusst, heißt **Confounder** (Störvariable). Die Pointe: B sollte man nur wählen, wenn man sich damit aussuchen darf, kleine Steine zu haben.
+The resolution is in the absolute numbers, not in the percentages. Treatment A was used almost only on large stones (263 of 350), treatment B almost only on small ones (270 of 350). Large stones are harder to treat, so the large group of difficult cases drags A's overall rate down, while B profits from the large group of easy ones. The doctors chose the therapy by stone size, and stone size determines success. A variable like this, which influences both which group you are in and the outcome, is called a **confounder**. The punchline: you should only choose B if it also lets you choose to have small stones.
 
-Dieses Phänomen heißt **Simpson-Paradoxon**: Ein Zusammenhang, der in der Gesamtheit gilt, kann sich in jeder einzelnen Untergruppe umkehren. Es tritt nicht nur bei Tabellen mit Prozenten auf, sondern genauso bei stetigen Merkmalen:
+This phenomenon is called **Simpson's paradox**: a relationship that holds overall can reverse in every single subgroup. It occurs not only in tables of percentages, but just as much with continuous features:
 
-```{figure} images/simpson-paradoxon.png
+```{figure} images/simpson-paradox.png
 :width: 560px
 :align: center
 :name: simpson-paradoxon
 
-Simpson-Paradoxon mit stetigen Merkmalen: Innerhalb jeder Gruppe steigt $y$ mit $x$, über alle Punkte zusammen fällt der Trend.
+Simpson's paradox with continuous features: within each group $y$ rises with $x$, over all the points together the trend falls.
 ```
 
-Im Nierenstein-Beispiel kannten wir die Steingröße. Oft ist die Variable, die die Gruppen erzeugt, aber gar nicht in der Tabelle: Dann sehen wir nur die Punktwolke rechts, ohne Farben, und der fallende Trend sieht völlig überzeugend aus. Eine solche nicht beobachtete Variable heißt **latente Variable**. An dem Wort ist nichts Geheimnisvolles, es heißt nur "nicht beobachtet". Die Gesamtverteilung ist dann eine **Mischung** aus zwei Gruppenverteilungen, und die Frage, ob sich eine Punktwolke in solche Gruppen zerlegen lässt, begegnet uns im ganzen Buch: bei der [kontaminierten Normalverteilung](important-continuous-distributions.ipynb), beim [Clustering mit k-Means](kmeans.ipynb) und schließlich bei den [gemischten Gaußschen Modellen](expectation-maximization.ipynb). Dass Kovarianz und Korrelation genau in diese Falle laufen, sehen wir im Kapitel [Kovarianz](covariance.md).
+In the kidney stone example we knew the stone size. Often, though, the variable that creates the groups is not in the table at all: then we see only the cloud of points on the right, without the colours, and the falling trend looks entirely convincing. Such an unobserved variable is called a **latent variable**. There is nothing mysterious about the word, it only means "not observed". The overall distribution is then a **mixture** of two group distributions, and the question of whether a cloud of points can be decomposed into such groups meets us throughout this book: with the [contaminated normal distribution](important-continuous-distributions.ipynb), with [clustering by k-means](kmeans.ipynb), and finally with [Gaussian mixture models](expectation-maximization.ipynb). That covariance and correlation walk straight into this trap is something we see in the chapter [Covariance](covariance.md).
 
-:::{admonition} Take-Home-Message
-Bevor Sie eine Tabelle aggregieren oder einen Trend ablesen, fragen Sie, ob die Daten heimlich aus mehreren Stichproben zusammengesetzt sind. Wenn ja, rechnen Sie je Gruppe. Und rechnen Sie mit absoluten Zahlen nach, nicht nur mit Prozenten.
+:::{admonition} Take-home message
+Before you aggregate a table or read a trend off it, ask whether the data is secretly put together from several samples. If it is, calculate group by group. And check with the absolute numbers, not only with the percentages.
 :::
 
-:::{admonition} Aufgabe: Simpson im Iris-Datensatz
+:::{admonition} Exercise: Simpson in the Iris dataset
 :class: tip
-Der Iris-Datensatz (den wir ab dem Kapitel [Iris](iris.ipynb) oft benutzen) enthält für 150 Pflanzen aus drei Spezies unter anderem Kelchblattlänge und Kelchblattbreite. Bestimmen Sie den Zusammenhang zwischen den beiden Maßen einmal über alle 150 Pflanzen und einmal je Spezies. Was beobachten Sie?
+The Iris dataset (which we use often from the chapter [Iris](iris.ipynb) onwards) contains, among other things, sepal length and sepal width for 150 plants from three species. Determine the relationship between the two measurements once over all 150 plants and once per species. What do you observe?
 :::
 
-:::{admonition} Lösung
+:::{admonition} Solution
 :class: dropdown
-Über alle Pflanzen hinweg ist der Zusammenhang schwach negativ (Korrelationskoeffizient etwa $-0{,}12$): breitere Kelchblätter gehen mit kürzeren einher. Innerhalb jeder Spezies ist er deutlich positiv (setosa etwa $0{,}74$, versicolor $0{,}53$, virginica $0{,}46$). Die Spezies ist der Confounder: *setosa* hat kurze, breite Kelchblätter, die anderen beiden lange, schmale. Wer die Spezies nicht kennt, sieht einen Trend, der in keiner Gruppe gilt. Wie man die Zahlen berechnet, steht in der Bemerkung *Für Daten* im Kapitel [Kovarianz](covariance.md).
+Across all the plants the relationship is weakly negative (correlation coefficient about $-0.12$): wider sepals go together with shorter ones. Within each species it is clearly positive (setosa about $0.74$, versicolor $0.53$, virginica $0.46$). The species is the confounder: *setosa* has short, wide sepals, the other two long, narrow ones. Anyone who does not know the species sees a trend that holds in no group at all. How the numbers are computed is in the remark *For data* in the chapter [Covariance](covariance.md).
 :::
 
-## Visualisierung
+## Visualisation
 
-Wozu visualisieren? Der erste Grund: Zusammenfassende Zahlen können lügen, ohne dass man es ihnen ansieht. [Alberto Cairo hat den 'Datasaurus' erfunden](http://www.thefunctionalart.com/2016/08/download-datasaurus-never-trust-summary.html) um auf den Unterschied zwischen zusammenfassender Statistik und Visualisierung hinzuweisen:
+Why visualise? The first reason: summary numbers can lie without letting it show. [Alberto Cairo invented the 'Datasaurus'](http://www.thefunctionalart.com/2016/08/download-datasaurus-never-trust-summary.html) to point out the difference between summary statistics and visualisation:
 
 > Never trust summary statistics alone; always visualize your data.
 >
 > Alberto Cairo, 2016
 
-Justin Matejka und George Fitzmaurice haben daraus die 'Datasaurus Dozen' entwickelt {cite}`matejka2017`, eine Reihe von zwölf Datensätzen, die allesamt gleiche zusammenfassende Statistiken aufweisen (auf zwei Nachkommastellen dieselben Mittelwerte und Standardabweichungen von $x$ und $y$, und auch denselben Korrelationskoeffizienten von etwa $-0{,}06$; was der misst, kommt im Kapitel [Kovarianz und Abhängigkeit](covariance.md)), aber visuell sehr deutliche Unterschiede zeigen.
+Justin Matejka and George Fitzmaurice developed the 'Datasaurus Dozen' out of it {cite}`matejka2017`, a series of twelve datasets that all have the same summary statistics (to two decimal places the same means and standard deviations of $x$ and $y$, and the same correlation coefficient of about $-0.06$ as well; what that measures comes in the chapter [Covariance and dependence](covariance.md)) but that look very different indeed.
 
 ```{figure} images/AllDinosGrey_1.png
 :width: 480px
 :align: center
 :name: datasaurus-dozen
 
-The Datasaurus Dozen, inspiriert von Anscombe's Quartett. Abbildung: Justin Matejka und George Fitzmaurice, Autodesk Research 2017 {cite}`matejka2017`.
+The Datasaurus Dozen, inspired by Anscombe's quartet. Figure: Justin Matejka and George Fitzmaurice, Autodesk Research 2017 {cite}`matejka2017`.
 ```
 
-Der zweite Grund, immer zu plotten, ist das Simpson-Paradoxon von oben: Eine Kennzahl über alle Daten kann das Gegenteil von dem sagen, was in jeder Gruppe gilt, und im Plot sieht man die Gruppen.
+The second reason always to plot is Simpson's paradox from above: a single figure over all the data can say the opposite of what holds in every group, and in a plot you see the groups.
 
-* Wichtigste Arten von Plots
+* The most important kinds of plot
 
-  * Histogramme
-  
-    Um die Häufigkeitsverteilung kardinal skalierter Merkmale zu visualisieren, kann man das Merkmal auf der x-Achse auftragen und nebeneinander liegende Rechtecke, deren Flächeninhalt der Häufigkeit einer Klasse darstellen, die durch Aufsummieren der Häufigkeit über das zugrunde liegende Intervall auf der x-Achse zustande kommen. Die Intervalllänge heißt Eimergröße (bucket size), binsize oder Klassengröße. Die Wahl der richtigen binsize ist eine Wissenschaft für sich und es gibt verschiedene Algorithmen zur Berechnung einer "guten" binsize.
-    
-    Histogramme sind also spezielle Bar charts / Column charts. Für nominal skalierte Merkmale lässt sich direkt der entsprechende Bar chart betrachten, der gleich breite Rechtecke mit Höhe entsprechend der Häufigkeit einer Ausprägung enthält. Dazu muss noch eine willkürliche Anordnung der Ausprägungen gewählt werden.
+  * Histograms
 
-    Willkürlich ist die Anordnung allerdings nur bei *nominalen* Merkmalen; bei einem ordinalen Merkmal sollte die $x$-Achse der Ordnung folgen, sonst verschenkt man die Information, die in ihr steckt. Will man mehrere Gruppen im selben Diagramm zeigen, stapelt man die Balken übereinander (`plt.bar(..., bottom=...)`) — ein *stacked bar chart*. Das ist genau dann sinnvoll, wenn die Summe der Gruppen selbst eine Bedeutung hat; sonst sind nebeneinandergestellte Balken leichter zu vergleichen, weil sie alle auf derselben Grundlinie stehen. Ein einfaches Beispiel mit `plt.bar` steht im Kapitel [Titanic EDA](titanic-eda-numpy.ipynb).
-    
-    Ein Histogramm besteht also eigentlich aus einer statistischen Transformation von stetigen (kardinal skalierten) Daten in diskrete Daten, die dann gebarchartet werden.
-    
-    Empfehlenswert: [der Artikel „Histogramm“ in der deutschen Wikipedia](https://de.wikipedia.org/wiki/Histogramm), ohne Code, und [die Histogramm-Beispiele in der Matplotlib-Dokumentation](https://matplotlib.org/stable/gallery/statistics/hist.html), mit Code
+    To visualise the frequency distribution of features on a cardinal scale, you can put the feature on the x-axis and draw rectangles side by side whose area represents the frequency of a class, obtained by summing the frequencies over the underlying interval on the x-axis. The interval length is called the bucket size, bin size or class width. Choosing the right bin size is a science of its own, and there are various algorithms for computing a "good" bin size.
 
-  * Scatterplot
-  
-    Eine Menge von Vektoren in $\mathbb{R}^2$ lässt sich darstellen indem an den Koordinaten ein Symbol dargestellt wird, etwa ein gefüllter Kreis.
-    Typischerweise werden bei tabellarischen Daten zwei Variablen ausgewählt, je eine für x- und y-Achse.
+    Histograms are thus special bar charts / column charts. For features on a nominal scale you can look at the corresponding bar chart directly, which has rectangles of equal width with heights according to the frequency of a level. For that, an arbitrary ordering of the levels has to be chosen as well.
 
-    In Matplotlib ist das eine Zeile, und wenn die Daten schon als $(N,2)$-Array vorliegen, sind es die beiden Spalten:
+    The ordering is arbitrary only for *nominal* features, though; for an ordinal feature the $x$-axis should follow the order, otherwise you give away the information that is in it. If you want to show several groups in the same diagram, you stack the bars on top of each other (`plt.bar(..., bottom=...)`) – a *stacked bar chart*. That makes sense exactly when the sum of the groups means something in itself; otherwise bars placed side by side are easier to compare, because they all stand on the same baseline. A simple example with `plt.bar` is in the chapter [Titanic EDA](titanic-eda-numpy.ipynb).
+
+    So a histogram really consists of a statistical transformation of continuous (cardinally scaled) data into discrete data, which is then bar-charted.
+
+    Recommended: [the article "Histogram" on Wikipedia](https://en.wikipedia.org/wiki/Histogram), without code, and [the histogram examples in the Matplotlib documentation](https://matplotlib.org/stable/gallery/statistics/hist.html), with code
+
+  * Scatter plot
+
+    A set of vectors in $\mathbb{R}^2$ can be displayed by drawing a symbol at the coordinates, a filled circle for instance.
+    With tabular data, two variables are typically picked out, one each for the x- and the y-axis.
+
+    In Matplotlib that is one line, and if the data is already an $(N,2)$ array, it is the two columns:
 
     ```python
     plt.scatter(x, y, marker="o")
-    plt.scatter(daten[:, 0], daten[:, 1])                  # dasselbe für ein (N,2)-Array
-    plt.scatter(daten[:, 0], daten[:, 1], c=daten[:, 2])   # dritte Spalte als Farbe
+    plt.scatter(data[:, 0], data[:, 1])                  # the same for an (N,2) array
+    plt.scatter(data[:, 0], data[:, 1], c=data[:, 2])    # third column as colour
     ```
 
-    Die dritte Zeile ist der Trick, mit dem ein Scatterplot eine dritte Variable unterbringt: `c=` färbt jeden Punkt nach seinem Wert, und `cmap=` bestimmt, welche Farbskala dafür benutzt wird. Für ein kategoriales Merkmal mit wenigen Ausprägungen ergibt das Gruppen in verschiedenen Farben — so eingefärbt ist der Iris-Scatterplot im Kapitel [Iris](iris.ipynb) (dort mit `cmap=plt.cm.cividis_r`), und im Kapitel [Explorative Analyse: Beispiele](eda-examples.ipynb) trägt die Farbe im Wein-Datensatz die Rebsorte.
-    
-  * Boxplot, auch Box-and-Whiskers-plot
-  
-    Zeigt Median, Quartile und Ausreißer einer Verteilung in einem Bild: Der Kasten reicht von $Q_1$ bis $Q_3$, die „Whiskers“ bis zum letzten Wert innerhalb von $1{,}5$ Interquartilsabständen, alles dahinter wird als einzelner Punkt gezeichnet. In Matplotlib `plt.boxplot(x)`; das Kapitel [Daten putzen](data-cleaning.ipynb) benutzt dieselbe Regel für Ausreißer.
-    
-  * Linienplot
-  
-    Wenn man eine oder mehrere Funktionsgraphen plottet (so wie wir es mit den PDF getan haben), sind das Linienplots. Man kann ebenso Daten auf Kardinalskalen mit einem Linienplot darstellen, aber das Verbinden von Punkten suggeriert eine Datenfülle, die nicht unbedingt vorliegt.
+    The third line is the trick by which a scatter plot accommodates a third variable: `c=` colours every point according to its value, and `cmap=` decides which colour scale is used for that. For a categorical feature with few levels this gives groups in different colours – that is how the Iris scatter plot in the chapter [Iris](iris.ipynb) is coloured (there with `cmap=plt.cm.cividis_r`), and in the chapter [Exploratory analysis: examples](eda-examples.ipynb) the colour carries the grape variety in the wine dataset.
 
-    Umgekehrt ist der Linienplot genau das richtige Werkzeug, wenn die Daten tatsächlich von einer Kurve stammen: Man sampelt Punkte entlang der Kurve und verbindet sie. Ein Kreis etwa entsteht so:
+  * Boxplot, also box-and-whiskers plot
+
+    Shows median, quartiles and outliers of a distribution in one picture: the box runs from $Q_1$ to $Q_3$, the "whiskers" to the last value within $1.5$ interquartile ranges, and everything beyond that is drawn as an individual point. In Matplotlib `plt.boxplot(x)`; the chapter [Data cleaning](data-cleaning.ipynb) uses the same rule for outliers.
+
+  * Line plot
+
+    When you plot one or several graphs of functions (as we did with the PDFs), those are line plots. You can display data on cardinal scales with a line plot just as well, but connecting the points suggests a wealth of data that is not necessarily there.
+
+    Conversely, the line plot is exactly the right tool when the data really does come from a curve: you sample points along the curve and connect them. A circle, for instance, comes about like this:
 
     ```python
-    winkel = np.linspace(0, 2 * np.pi, 360)
-    plt.plot(np.cos(winkel), np.sin(winkel), linewidth=2)
-    plt.axis("equal")    # sonst wird aus dem Kreis eine Ellipse
+    angle = np.linspace(0, 2 * np.pi, 360)
+    plt.plot(np.cos(angle), np.sin(angle), linewidth=2)
+    plt.axis("equal")    # otherwise the circle turns into an ellipse
     ```
 
-    Dasselbe Prinzip steckt hinter jedem Dichteplot in diesem Buch: Die Dichtefunktion wird an einigen hundert Stellen ausgewertet und die Werte werden verbunden.
-    
-  * Tortendiagramm
-  
-    Generell gilt: Wo ein Tortendiagramm geht, geht auch ein Balkendiagramm, und das ist lesbarer. Tortendiagramme haben daher vor allem einen Wert, wenn man einen Text auflockern will, ohne wesentlich auf die dargestellte Statistik einzugehen. Grundsätzlich geeignet sind nominal- oder ordinalskalierte Merkmale, denn die Torte stellt die Anteile der einzelnen Ausprägungen an einem Ganzen dar — sie ist ein ungewöhnlich gezeichnetes Balkendiagramm.
-    
-  * Violinenplot
-  
-    Ähnlich einem Boxplot, aber anstelle eines Rechtecks wird die Dichteverteilung ausschnittsweise dargestellt. Ein Nachteil ist ihre seltene Verwendung, wodurch Leser\*innen diesen Plottyp nicht gewohnt sind.
-    
-  * Kartendarstellung
-  
-    Mit einem Bild einer Landkarte (oder anderer Karte, z.B. Netzwerktopologien) im Hintergrund lassen sich Merkmale räumlich darstellen, etwa als Farbe einer umgrenzten Fläche. Das ist ähnlich zu einem Histogramm, denn anstelle eines Scatterplots werden zweidimensionale Bereiche (anstatt Intervalle) zusammengefasst, bevor eine Darstellung der aggregierten Daten vorgenommen wird. Ein Spezialfall ist eine "Landkarte" die aus einem Raster besteht, in das nun Häufigkeiten aufgetragen werden, ein zweidimensionales Histogramm.
-    
-  * unzählige weitere, seltener gebrauchte oder nicht in diesem Schema kategorisierbare Visualisierungen - es kommt immer auf den Anwendungsfall an, was das geeignetste Kommunikationsmittel ist.
+    The same principle is behind every density plot in this book: the density function is evaluated at a few hundred points and the values are connected.
+
+  * Pie chart
+
+    As a rule: wherever a pie chart will do, a bar chart will do too, and it is easier to read. Pie charts therefore have their value above all when you want to lighten up a text without going into the statistic shown in any detail. Features on a nominal or an ordinal scale are in principle suited to them, since the pie shows the shares of the individual levels in a whole – it is a bar chart drawn in an unusual way.
+
+  * Violin plot
+
+    Similar to a boxplot, but in place of a rectangle the density is drawn in outline. A disadvantage is how rarely it is used, which leaves readers unaccustomed to this kind of plot.
+
+  * Map plot
+
+    With the image of a map (or another kind of map, e.g. a network topology) in the background, features can be displayed spatially, as the colour of a bounded area for instance. This is similar to a histogram, since instead of a scatter plot two-dimensional regions (rather than intervals) are aggregated before the aggregated data is displayed. A special case is a "map" consisting of a grid onto which frequencies are plotted, a two-dimensional histogram.
+
+  * countless others, used more rarely or not classifiable in this scheme – what the most suitable means of communication is always depends on the case at hand.
 
 
-* Wichtigste Werkzeuge zum Plotten mit Python
+* The most important tools for plotting with Python
 
-  * `matplotlib` - das verwenden wir, es ist das am häufigsten verwendete Paket für Python
-  * Das objektorientierte Interface von `matplotlib` - empfohlen von den Entwickler\*innen
-  * Seaborn - eine Schicht über `matplotlib`, die weitreichende Annahmen trifft, was gut aussehen könnte, mit einem Fokus auf Nutzerfreundlichkeit
-  * Plotnine - eine Implementierung der Grammatik der Grafiken in Python, analog zu R's `ggplot2`
-  * Bokeh - Interaktive Web-plots, z.B. [Demo zum IMDB-Datensatz](https://demo.bokeh.org/movies)
-  * Pygal - generiert SVG-Dateien, die mit HTML5 ebenfalls für Animationen verwendet werden können.
+  * `matplotlib` – this is what we use, it is the most widely used package for Python
+  * The object-oriented interface of `matplotlib` – recommended by the developers
+  * Seaborn – a layer on top of `matplotlib` that makes far-reaching assumptions about what might look good, with a focus on ease of use
+  * Plotnine – an implementation of the grammar of graphics in Python, analogous to R's `ggplot2`
+  * Bokeh – interactive web plots, e.g. the [demo on the IMDB dataset](https://demo.bokeh.org/movies)
+  * Pygal – generates SVG files, which with HTML5 can also be used for animations.
 
-* Die Grammatik der Grafiken
+* The grammar of graphics
 
-  * Geschichte
-    
+  * History
+
     1983: Bertin: Semiology of Graphics
-    
+
     2000: Wilkinson, Anand, Grossman: The Grammar of Graphics
-    
-    2005: Wickham: `ggplot2` R Paket
-    
+
+    2005: Wickham: `ggplot2` R package
+
     2010: Wickham: A Layered Grammar of Graphics
-    
-  * Schichten (Layer) der Grammatik
-  
-    * Daten -- Welche sollen visualisiert werden?
-    * Ästhetik -- Achsen, Dimensionen
-    * Skalen -- Werte skalieren? Nominal/Ordinal?
-    * Geometrie -- Punkte, Linien, Polygone
-    * Statistik -- z.B. Mittelwerte
-    * Facetten -- Subplots
-    * Koordinatensysteme -- kartesisch oder polar oder logarithmisch
-    
-  * Kombination der Teile:
-  
-    ![Einzeln](images/layers-einzeln.png) $\to$ ![Zusammen](images/layers-zusammen.png)
 
-  * Eine Schicht besteht aus
-  
-    * Daten und ästhetische Zuordnungen (aes)
-    * Statistischen Transformationen (stat)
-    * Geometrischen Objekten (geom)
-    * Positionsbestimmungen
-    
-  * Ein Plot besteht aus
-  
-    * Einem default-Datensatz und Zuordnungen von Variablen darin auf Ästhetiken
-    * Ein oder mehrere Schichten (nicht notwendig mit zusätzlichen Daten)
-    * Eine Skala pro Ästhetik-Zuordnung
-    * Koordinatensystem
-    * Facettenspezifikation
-    
-  * Eine statistische Transformation ist typischerweise eine *Zusammenfassung* von Daten.
-  
-    Beispiel: Glättung, die auf einer Menge von Punkten eine Kurve macht, die glatt (unendlich oft differenzierbar) ist.
-    
-    Die wichtigsten statistischen Transformationen, die in ggplot2 implementiert sind, haben wir teilweise schon kennen gelernt:
-    
-    * bin: Teile stetigen Bereich in Bins (Klassen) und zähle Punkte in jeder Klasse.
-    * boxplot: Berechne Statistik für Boxplot
-    * contour: Berechne Konturlinien
-    * density: Berechne eindimensionale Dichteschätzung
-    * identity: Identitätsabbildung, f (x) = x
-    * jitter: Verändere jeden Wert mit einem kleinen Zufallswert
-    * smooth: Geglätteter Mittelwert von y, gegeben x
-    * summary: Summierte Werte von y für jedes x
-    * unique: Entferne Duplikate
+  * Layers of the grammar
 
-  * Eine Skala im Sinne der Grammatik der Grafiken kontrolliert die Zuordnung von Daten zu den ästhetischen Attributen.
-  
-    Beispiel: eine reelle Variable zwischen $0$ und $1$ lässt sich als Farbänderung von Blau zu Rot darstellen. Die Skala ist die Zuordnung aller Werte von $[0,1]$ auf Farbwerte. Die Umkehrfunktion dieser Zuordnung lässt sich zur Darstellung einer *Legende* nutzen.
-    
-    Beispiel: eine faktorielle Variable (etwa die Spezies im Iris-Datensatz) wird mit verschiedenen Symbolen dargestellt (etwa in einem Scatterplot). Die Zuordnung Ausprägung zu Symbol ist die Skala.
-    
-    Man kann auch mehrere Variablen auf eine Ästhetik abbilden, wenn man etwa im HSV-Farbmodell auf Saturation und Hue verschiedene Werte abbildet.
-    
-  * Farben
-  
-    Bei der Wahl von Farbskalen muss man auf die Unterscheidbarkeit achten, aber auch auf die späteren Betrachter\*innen der Plots. Zwei Gründe, Farbe nie als einziges Unterscheidungsmerkmal einzusetzen:
+    * Data – which are to be visualised?
+    * Aesthetics – axes, dimensions
+    * Scales – scale the values? Nominal/ordinal?
+    * Geometry – points, lines, polygons
+    * Statistics – means, for example
+    * Facets – subplots
+    * Coordinate systems – Cartesian or polar or logarithmic
 
-    Erstens die Umstände. Ein Plot wird im Sonnenlicht auf einem Laptop angesehen, über einen schlecht kalibrierten Beamer projiziert oder ausgedruckt — früher regelmäßig in Graustufen. Was bleibt, ist die Helligkeit. Eine Farbskala sollte also auch dann noch funktionieren, wenn man ihr die Farbe wegnimmt, und Kurven unterscheidet man zusätzlich über den Linienstil (`linestyle="--"`, gepunktet, verschiedene Strichstärken) oder über Marker (`marker="x"`, Kreise, Dreiecke).
+  * Combining the parts:
 
-    Zweitens die Betrachter\*innen selbst: Etwa jeder zwölfte Mann und jede zweihundertste Frau nimmt Farben anders wahr als die Mehrheit, am häufigsten Rot und Grün. In einer Vorlesung mit zweihundert Zuhörenden sitzen also typischerweise mehrere Menschen, für die eine Rot-Grün-Skala keine Skala ist. Das ist häufig genug, um es zur Gewohnheit zu machen und nicht zur Ausnahme.
+    ![Separately](images/layers-einzeln.png) $\to$ ![Together](images/layers-zusammen.png)
 
-Eine Farbpalette, die auch bei eingeschränkter Farbwahrnehmung gut funktioniert, ist diese:
+  * A layer consists of
 
-![Gute Palette](images/gute-palette.png)
+    * Data and aesthetic mappings (aes)
+    * Statistical transformations (stat)
+    * Geometric objects (geom)
+    * Position adjustments
 
-Dass sie funktioniert, kann man nachrechnen: Farbsehschwächen lassen sich als lineare Abbildung im Farbraum simulieren, und angewandt auf die acht Farben oben sieht das so aus.
+  * A plot consists of
 
-```{figure} images/farbwahrnehmung-simulation.png
+    * A default dataset and mappings of the variables in it to aesthetics
+    * One or more layers (not necessarily with additional data)
+    * One scale per aesthetic mapping
+    * A coordinate system
+    * A facet specification
+
+  * A statistical transformation is typically a *summary* of data.
+
+    Example: smoothing, which turns a set of points into a curve that is smooth (infinitely often differentiable).
+
+    Some of the most important statistical transformations implemented in ggplot2 we have already met:
+
+    * bin: divide a continuous range into bins (classes) and count the points in each class.
+    * boxplot: compute the statistics for a boxplot
+    * contour: compute contour lines
+    * density: compute a one-dimensional density estimate
+    * identity: the identity map, f (x) = x
+    * jitter: change every value by a small random amount
+    * smooth: smoothed mean of y given x
+    * summary: summed values of y for each x
+    * unique: remove duplicates
+
+  * A scale in the sense of the grammar of graphics controls the mapping of data to the aesthetic attributes.
+
+    Example: a real variable between $0$ and $1$ can be displayed as a change of colour from blue to red. The scale is the mapping of all values of $[0,1]$ to colour values. The inverse of this mapping can be used to draw a *legend*.
+
+    Example: a factor variable (the species in the Iris dataset, say) is displayed with different symbols (in a scatter plot, say). The mapping from level to symbol is the scale.
+
+    You can also map several variables onto one aesthetic, by mapping different values onto saturation and hue in the HSV colour model, for instance.
+
+  * Colours
+
+    When choosing colour scales you have to watch out for distinguishability, but also for the people who will look at the plots later. Two reasons never to use colour as the only distinguishing feature:
+
+    First, the circumstances. A plot is looked at in sunlight on a laptop, projected through a badly calibrated beamer, or printed out – in the past regularly in greyscale. What remains is the lightness. A colour scale should therefore still work when you take the colour away from it, and curves are told apart additionally by line style (`linestyle="--"`, dotted, different line widths) or by markers (`marker="x"`, circles, triangles).
+
+    Second, the viewers themselves. About one man in twelve and one woman in two hundred perceives colours differently from the majority, red and green most often of all. In a lecture with two hundred listeners there are therefore typically several people for whom a red-green scale is no scale. That is often enough to make it a habit and not an exception.
+
+A colour palette that also works well with restricted colour perception is this one:
+
+![A good palette](images/gute-palette.png)
+
+That it works can be checked by calculation: colour vision deficiencies can be simulated as a linear map in colour space, and applied to the eight colours above it looks like this.
+
+```{figure} images/colour-vision-simulation.png
 :width: 560px
 :align: center
 :name: color-friendly
 
-Dieselbe Palette, simuliert für Normalsicht und die drei Arten der Dichromasie (Verfahren nach Viénot, Brettel und Mollon 1999). Die Farben bleiben in allen vier Feldern unterscheidbar — das ist die Eigenschaft, auf die es ankommt.
+The same palette, simulated for normal colour vision and for the three kinds of dichromacy (method after Viénot, Brettel and Mollon 1999). The colours stay distinguishable in all four panels – that is the property that matters.
 ```
 
-Zwei Dinge sieht man daran. Erstens: Die Palette verliert zwar ihre Buntheit, aber keine zwei Felder fallen zusammen — jede Farbe behält eine eigene Helligkeit. Zweitens: Eine Palette, die Rot und Grün gegeneinanderstellt, würde hier zusammenfallen, und genau das passiert bei der verbreiteten Ampel-Kodierung.
+Two things can be seen from it. First: the palette does lose its colourfulness, but no two patches fall together – every colour keeps a lightness of its own. Second: a palette that sets red against green would fall together here, and that is exactly what happens with the widespread traffic-light coding.
 
-Die Forschung über gut geeignete Farbpaletten ist nicht beendet - so gab es etwa auf der SciPy Konferenz 2022 den Vortrag [Development of Accessible, Aesthetically-Pleasing Color Sequences von Matthew Petroff](https://www.youtube.com/watch?v=Gapv8wR5DYU), dessen [Ergebnisse im Dezember 2024 in Matplotlib Version 3.10.0 eingeflossen sind](https://matplotlib.org/stable/users/prev_whats_new/whats_new_3.10.0.html#new-more-accessible-color-cycle).
+Research into well-suited colour palettes is not finished – at the SciPy conference in 2022, for instance, there was the talk [Development of Accessible, Aesthetically-Pleasing Color Sequences by Matthew Petroff](https://www.youtube.com/watch?v=Gapv8wR5DYU), whose [results went into Matplotlib version 3.10.0 in December 2024](https://matplotlib.org/stable/users/prev_whats_new/whats_new_3.10.0.html#new-more-accessible-color-cycle).
 
 
-## Explorative Datenanalyse als Prozess
+## Exploratory data analysis as a process
 
-Die Werkzeuge dieses Kapitels — Skalenniveaus, Lage- und Streuungsmaße, Visualisierung — sind Mittel zum Zweck. Der Zweck heißt *explorative Datenanalyse* (EDA): sich einen Datensatz Schritt für Schritt zu erschließen und am Ende etwas darüber sagen zu können. „Schritt für Schritt“ ist dabei wörtlich zu nehmen, und vor allem: im Kreis. Man durchläuft die folgenden fünf Schritte nicht einmal, sondern immer wieder, weil jeder Durchgang neue Fragen aufwirft.
+The tools of this chapter – levels of measurement, measures of location and spread, visualisation – are means to an end. The end is called *exploratory data analysis* (EDA): opening a dataset up step by step and being able to say something about it at the end. "Step by step" is to be taken literally here, and above all: in a circle. You go through the following five steps not once but again and again, because every pass throws up new questions.
 
-1. **Forschungsfragen formulieren.** Was will man eigentlich wissen? Welche Skalenniveaus haben die Merkmale, welche Verteilungen erwartet man, welche Zusammenhänge hält man für plausibel? Ohne diesen Schritt produziert man Diagramme statt Erkenntnisse. Im Kapitel [Explorative Analyse: Beispiele](eda-examples.ipynb) steht dieser Schritt ausdrücklich am Anfang.
-2. **Daten visualisieren.** Der schnellste Weg, eine Verteilung, einen Ausreißer oder einen Zusammenhang zu sehen, ist ein Bild — das ist der Inhalt des vorigen Abschnitts, und der Datasaurus hat gezeigt, warum zusammenfassende Zahlen allein nicht reichen.
-3. **Daten putzen.** Ausreißer prüfen und gegebenenfalls entfernen, fehlende Werte imputieren oder interpolieren, Fehler in der Codierung beheben. Im Kapitel [Titanic EDA](titanic-eda-numpy.ipynb) werden fehlende Altersangaben durch den Median ersetzt; das Kapitel [Daten putzen](data-cleaning.ipynb) macht daraus ein eigenes Programm.
-4. **Daten transformieren.** Teilmengen auswählen, Merkmale umskalieren, neue Merkmale bilden — etwa Altersgruppen aus dem Alter (*Binning*) oder eine Fläche aus Länge und Breite. Solche neuen Merkmale heißen **Features**, und sie zu finden ist oft der eigentliche Erkenntnisgewinn.
-5. **Daten modellieren.** Ein statistisches Modell wählen und an die Daten anpassen, etwa eine Normalverteilung oder eine Regressionsgerade. Damit beschäftigen sich die folgenden Kapitel.
+1. **Formulate the research questions.** What do you actually want to know? What levels of measurement do the features have, what distributions do you expect, which relationships do you consider plausible? Without this step you produce diagrams instead of insights. In the chapter [Exploratory analysis: examples](eda-examples.ipynb) this step stands expressly at the beginning.
+2. **Visualise the data.** The quickest way to see a distribution, an outlier or a relationship is a picture – that is the content of the previous section, and the Datasaurus has shown why summary numbers alone are not enough.
+3. **Clean the data.** Check outliers and remove them where need be, impute or interpolate missing values, repair errors in the coding. In the chapter [Titanic EDA](titanic-eda-numpy.ipynb) missing ages are replaced by the median; the chapter [Data cleaning](data-cleaning.ipynb) makes a programme of its own out of that.
+4. **Transform the data.** Select subsets, rescale features, build new features – age groups out of age (*binning*), say, or an area out of length and width. Such new columns are features as well, and finding them is often where the real insight is gained.
+5. **Model the data.** Choose a statistical model and fit it to the data, a normal distribution or a regression line for instance. The chapters that follow are about that.
 
-Die fünf Schritte sind die feinere Auflösung dessen, was {numref}`ds-process` am Kapitelanfang als Gesamtbild zeigt. Und weil sie im Kreis laufen, ist auch klar, warum EDA nicht automatisierbar ist: Schritt 1 braucht jemanden mit einer Frage und Schritt 3 jemanden, der weiß, welche Werte in diesem Anwendungsgebiet unplausibel sind. Das üben wir in den folgenden Kapiteln an mehreren Datensätzen.
+The five steps are the finer resolution of what {numref}`ds-process` shows as the whole picture at the start of the chapter. And because they run in a circle, it is also clear why EDA cannot be automated: step 1 needs somebody with a question, and step 3 somebody who knows which values are implausible in this field of application. We practise that in the chapters that follow, on several datasets.
