@@ -91,7 +91,7 @@ Descriptive statistics consists of the data analyses that are made *before* infe
     * Range: largest value minus smallest value
     * Variation ratio (also the *non-modal proportion*): the fraction of the sample whose value is not the mode
     * Quartiles: analogously to the median, the lower quartile $Q1$ is the value such that exactly a quarter of the data has a smaller value. The upper quartile $Q3$ is correspondingly the value such that exactly a quarter of the data has a larger value. The median is $Q2$. Percentiles are defined analogously. The difference $Q3 - Q1$ is called the **interquartile range** (IQR); it is the measure of spread that belongs to the median, and unlike the range it is insensitive to outliers – which is exactly why a boxplot draws the box from $Q1$ to $Q3$.
-    * Sample variance: mean squared deviation from the mean
+    * Sample variance: mean squared error about the mean
     * Sample standard deviation
 
       Once we calculate with units, we see a problem with the variance: if a random variable $X$ or a vector $x$ (a column of a table, say) is in metres (a ratio scale), then computing the variance forms a sum, or an integral, over squares, so the variance is in square metres. You can also see from this that the variance is scale-dependent in general, i.e. when comparing two variables, one in metres and the other in centimetres, the variance is no good comparison. Taking the square root corrects the first problem and yields, in the standard deviation, a measure in the same unit as the expected value.
@@ -105,8 +105,8 @@ Descriptive statistics consists of the data analyses that are made *before* infe
     * dispersion precedes location: to every measure of spread there belongs a measure of location, namely the value that minimises that measure of spread – depending on which norm you use to measure the error:
 
       * The mode minimises the variation ratio ($L_0$)
-      * The median minimises the mean absolute deviation ($L_1$)
-      * The mean minimises the mean squared deviation ($L_2$)
+      * The median minimises the mean absolute error ($L_1$)
+      * The mean minimises the mean squared error ($L_2$)
       * The mid-range minimises the maximum absolute deviation ($L_\infty$)
 
       The two middle statements are proved in the chapter [Expected value and variance](expectation-variance.md), section "Quantifying deviation".

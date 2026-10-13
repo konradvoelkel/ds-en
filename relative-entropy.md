@@ -2,7 +2,7 @@
 
 ## Logarithms
 
-The elementary properties of the logarithm – definition, change of base, bit and nat – are in the digression in the chapter [Expectation and variance](expectation-variance.md). Here we are after a different question: why it is the logarithm, of all functions, that turns up in information theory, and nothing else.
+The elementary properties of the logarithm – definition, change of base, bit and nat – are in the digression in the chapter [Expected value and variance](expectation-variance.md). Here we are after a different question: why it is the logarithm, of all functions, that turns up in information theory, and nothing else.
 
 :::{admonition} Lemma
 Let $l \colon \{1,\dots\} = \mathbb{N}_{>0} \to \mathbb{R}$ be a function with
@@ -73,7 +73,7 @@ The function $g(x) := F(x)/x$ satisfies $g(xy) = g(x) + g(y)$ and is monotonic b
 :::
 
 :::{admonition} Remark
-So we see that the entropy contribution $-p\log(p)$ of an outcome with probability $p$ is a very natural quantity. (The *surprisal* $I(x) = -\log P(\{x\})$ from the chapter [Expectation and variance](expectation-variance.md) is the factor behind the $p$.)
+So we see that the entropy contribution $-p\log(p)$ of an outcome with probability $p$ is a very natural quantity. (The *self-information* $I(x) = -\log P(\{x\})$ from the chapter [Expected value and variance](expectation-variance.md) is the factor behind the $p$.)
 :::
 
 :::{admonition} Lemma

@@ -42,7 +42,7 @@
       "source": "expectation-maximization.ipynb"
     },
     "expectation-variance.md": {
-      "translated": false,
+      "translated": true,
       "style_pass": false,
       "source": "erwartungswert.md"
     },

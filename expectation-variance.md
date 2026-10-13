@@ -1,86 +1,83 @@
-# Erwartungswert und Varianz
+# Expected value and variance
 
-[Vorlesungsaufzeichnung Erwartungswert und Varianz](https://media.hhu.de/channel/video/data-science-vl-3-erwartungswert-varianz-2025/a9c845841d79aa3c9d893280bbf7b5a7/167)
-[Vorlesungsaufzeichnung Unabhängigkeit und Gesetz der großen Zahlen](https://media.hhu.de/channel/video/data-science-vl-4-grosse-zahlen-2025/83a373228e9c6999642f74ab85762b27/167) 
+## Quantifying deviation
 
-## Abweichung quantifizieren
+At the end of the previous chapter two distributions stood side by side: the distribution of the data and the model distribution. The question now facing us is how to capture their difference in a single number. The exact answer is the relative entropy, and we are saving that for a later chapter. But there is a much more direct route: instead of comparing the distributions, we compare the data themselves with what the model predicts – the real data against synthetic data, in data space, point by point. That is the route this chapter takes, and because it involves forming distances between numbers, from here on we work with real-valued data.
 
-Am Ende des vorigen Kapitels standen zwei Verteilungen nebeneinander: die Verteilung der Daten und die Modellverteilung. Die Frage, die jetzt ansteht, ist, wie man ihren Unterschied in eine Zahl fasst. Die genaue Antwort ist die relative Entropie, und die heben wir uns für ein späteres Kapitel auf. Es gibt aber einen viel direkteren Weg: Statt die Verteilungen zu vergleichen, vergleichen wir die Daten selbst mit dem, was das Modell vorhersagt — also die echten Daten mit synthetischen Daten, im Datenraum, Punkt für Punkt. Das ist der Weg, den dieses Kapitel geht, und weil man dabei Abstände zwischen Zahlen bildet, arbeiten wir ab hier mit reellen Daten.
+Given two vectors $v,w \in \mathbb{R}^n$ (picture it as: $v$ is our data, $w$ is what we expect),
+the mean deviation is of interest: $\sum_{i=1}^n \frac{v_i - w_i}{n}$.
+One problem with this quantity is that positive and negative deviations cancel each other out.
 
-Gegeben zwei Vektoren $v,w \in \mathbb{R}^n$ (wir stellen uns vor: $v$ sind unsere Daten, $w$ das, was wir erwarten),
-ist die mittlere Abweichung interessant: $\sum_{i=1}^n \frac{v_i - w_i}{n}$.
-Ein Problem dieser Größe ist, dass sich positive mit negativen Abweichungen herauskürzen.
-
-### Absolute Abweichung
+### Absolute deviation
 
 :::{admonition} Definition
-Die *mittlere absolute Abweichung* (mean absolute error) ist
+The *mean absolute error* is
 $\texttt{mae}(v,w) := \sum_{i=1}^n \dfrac{\left| v_i - w_i \right|}{n}$.
 
-Für eine Zahl $c \in \mathbb{R}$ schreiben wir auch $\texttt{mae}(v,c):=\texttt{mae}(v,(c)_{i=1}^n)$.
+For a number $c \in \mathbb{R}$ we also write $\texttt{mae}(v,c):=\texttt{mae}(v,(c)_{i=1}^n)$.
 :::
 
-:::{admonition} Beispiel
-Wenn $v = (1,2,3,4)$ und $c=2$, so ist $\texttt{mae}(v,c) = \sum_{i=1}^4 \dfrac{|i-2|}{4} = \dfrac{4}{4} = 1$.
+:::{admonition} Example
+If $v = (1,2,3,4)$ and $c=2$, then $\texttt{mae}(v,c) = \sum_{i=1}^4 \dfrac{|i-2|}{4} = \dfrac{4}{4} = 1$.
 :::
 
-Die Summe ohne den Faktor $\frac1n$ ist die $1$-Norm der Differenz,
+The sum without the factor $\frac1n$ is the $1$-norm of the difference,
 
 $$
 d_1(v,w) := \sum_{i=1}^n \left| v_i - w_i \right| = \left\| v - w \right\|_1 = n \cdot \texttt{mae}(v,w),
 $$
 
-und der Faktor $\frac1n$ in der Definition ist genau das, was $\texttt{mae}$ von der Länge des Vektors unabhängig macht: $d_1$ wächst mit $n$, auch wenn das Modell gleich gut bleibt, $\texttt{mae}$ nicht. Vergleichen will man fast immer, also nimmt man fast immer den Mittelwert. (Zur Rolle der verschiedenen Normen siehe auch die Bemerkung zu $L_0$, $L_1$ und $L_2$ im Kapitel [Deskriptive Statistik](descriptive-statistics.md) sowie die L1- und L2-Regularisierung im Kapitel [Regressionsanalyse](linear-regression.ipynb).)
+and the factor $\frac1n$ in the definition is exactly what makes $\texttt{mae}$ independent of the length of the vector: $d_1$ grows with $n$ even when the model stays equally good, $\texttt{mae}$ does not. Comparing is almost always what we are after, so we almost always take the mean. (On the role of the various norms see also the remark on $L_0$, $L_1$ and $L_2$ in the chapter [Descriptive statistics](descriptive-statistics.md), as well as L1 and L2 regularisation in the chapter [Regression analysis](linear-regression.ipynb).)
 
-:::{admonition} Beispiel
-Bis hierher war $w$ konstant. Es muss aber nicht konstant sein: Seien $v$ vier gemessene Körpergrößen in Zentimetern und $w$ das, was ein Modell für dieselben vier Personen vorhergesagt hat.
+:::{admonition} Example
+So far $w$ has been constant. It need not be: let $v$ be four measured heights in centimetres and $w$ what a model predicted for those same four people.
 
 | $i$ | 1 | 2 | 3 | 4 |
 |---|---|---|---|---|
-| $v_i$ (gemessen) | 178 | 160 | 155 | 174 |
-| $w_i$ (vorhergesagt) | 178 | 155 | 150 | 180 |
+| $v_i$ (measured) | 178 | 160 | 155 | 174 |
+| $w_i$ (predicted) | 178 | 155 | 150 | 180 |
 | $v_i - w_i$ | 0 | 5 | 5 | −6 |
 
-Es ist $d_1(v,w) = 0 + 5 + 5 + 6 = 16$ und damit $\texttt{mae}(v,w) = \frac{16}{4} = 4$: Im Mittel liegt das Modell um vier Zentimeter daneben.
+Here $d_1(v,w) = 0 + 5 + 5 + 6 = 16$ and hence $\texttt{mae}(v,w) = \frac{16}{4} = 4$: on average the model is four centimetres off.
 
-Die mittlere Abweichung *ohne* Betrag, mit der wir diesen Abschnitt begonnen haben, ergibt dagegen $\frac{0 + 5 + 5 - 6}{4} = 1$ — trügerisch gering, weil sich die Fehler bei Person 4 gegen die bei den Personen 2 und 3 wegkürzen. Genau deshalb steht der Betrag da.
+The mean deviation *without* the absolute value, the one we began this section with, gives $\frac{0 + 5 + 5 - 6}{4} = 1$ instead – deceptively small, because the error on person 4 cancels against those on persons 2 and 3. That is exactly why the absolute value is there.
 :::
 
-Es ist natürlich sofort für einen Vektor $v$ interessant, welcher Vektor $w$ die geringste mittlere absolute Abweichung hat. Wenn man an $w$ jedoch keine weiteren Bedingungen stellt, ist mit $w=v$ das Minimum schnell gefunden. Wir werden dieser Frage später wieder begegnen und begnügen uns jetzt damit, zu fragen, welches $c \in \mathbb{R}$ den Ausdruck $\texttt{mae}(v,c)$ minimiert. Graphisch können wir uns vorstellen, als $x$-Achse die Zahlen von $1$ bis $n$ zu verwenden, und dort jeweils die Werte $v_i$ aufzutragen. Dann entspricht die Wahl eines $c \in \mathbb{R}$ einer horizontalen Gerade, und wir fragen uns, welche solche Gerade den geringsten gemeinsamen Abstand zu allen Punkten hat.
+The obvious next question for a vector $v$ is which vector $w$ has the smallest mean absolute error. If no further conditions are placed on $w$, though, the minimum is found at once with $w=v$. We will meet this question again later and content ourselves for now with asking which $c \in \mathbb{R}$ minimises the expression $\texttt{mae}(v,c)$. Graphically we can picture using the numbers from $1$ to $n$ as the $x$-axis and plotting the values $v_i$ above them. The choice of a $c \in \mathbb{R}$ then corresponds to a horizontal line, and we are asking which such line has the smallest combined distance to all the points.
 
-:::{admonition} Beispiel
-Nehmen wir für die Körpergrößen $v = (178, 160, 155, 174)$ das konstante Modell $c = 165$, also die Behauptung „alle sind 165 cm groß“. Die Abweichungen sind $v_i - c = (13, -5, -10, 9)$, also
+:::{admonition} Example
+Take the constant model $c = 165$ for the heights $v = (178, 160, 155, 174)$, that is, the claim "everybody is 165 cm tall". The deviations are $v_i - c = (13, -5, -10, 9)$, so
 
 $$
-d_1(v,165) = 13 + 5 + 10 + 9 = 37, \qquad \texttt{mae}(v,165) = \dfrac{37}{4} = 9{,}25.
+d_1(v,165) = 13 + 5 + 10 + 9 = 37, \qquad \texttt{mae}(v,165) = \dfrac{37}{4} = 9.25.
 $$
 
-Ist $165$ die beste Wahl? Das ist genau die Frage nach dem Minimum, und sie hat, wie wir gleich sehen, eine überraschend einfache Antwort.
+Is $165$ the best choice? That is precisely the question of the minimum, and it has, as we shall see in a moment, a surprisingly simple answer.
 :::
 
 :::{admonition} Definition
-$\texttt{median}(v) := \arg\min_{c \in \mathbb{R}} \texttt{mae}(v,c)$ ist „der“ *Median* von $v$.
+$\texttt{median}(v) := \arg\min_{c \in \mathbb{R}} \texttt{mae}(v,c)$ is "the" *median* of $v$.
 :::
 
-Das bedeutet also, der Median ist definiert als eine Zahl $c \in \mathbb{R}$ mit der Eigenschaft, dass die Zahl $\texttt{mae}(v,c)$ minimal wird.
-Das bedeutet, für alle $c$ gilt $\texttt{mae}(v,c) \geq \texttt{mae}(v,\texttt{median}(v))$.
-Achtung: So definiert können mehrere Zahlen 'der' Median sein. It's not a bug, it's a feature.
+So the median is defined as a number $c \in \mathbb{R}$ with the property that the number $\texttt{mae}(v,c)$ becomes minimal.
+That is, for all $c$ we have $\texttt{mae}(v,c) \geq \texttt{mae}(v,\texttt{median}(v))$.
+Careful: defined this way, several numbers can be 'the' median. It's not a bug, it's a feature.
 
-Diese Definition mag ungewohnt sein, aber sie erfüllt die folgende Eigenschaft:
+This definition may be unfamiliar, but it has the following property:
 
 :::{admonition} Proposition
-Wenn $n \geq 3$ und $v \in \mathbb{R}^n$ sortiert ist, also $v_i < v_j$ für $i < j$, dann ist mit $v' := (v_2,\dots,v_{n-1}) \in \mathbb{R}^{n-2}$ ein neuer (kürzerer) Vektor definiert, sodass für alle $c \in \mathbb{R}$ mit $v_1 \leq c \leq v_n$ gilt:
+If $n \geq 3$ and $v \in \mathbb{R}^n$ is sorted, that is $v_i < v_j$ for $i < j$, then $v' := (v_2,\dots,v_{n-1}) \in \mathbb{R}^{n-2}$ defines a new (shorter) vector such that for all $c \in \mathbb{R}$ with $v_1 \leq c \leq v_n$:
 
 $\texttt{mae}(v,c) = \texttt{mae}(v',c) + \dfrac{v_n - v_1}{n}$.
 :::
 
-Da der zweite Summand nicht von $c$ abhängt, ist er für die Bestimmung des Minimums unerheblich.
-Durch induktive Anwendung dieser Erkenntnis bleibt uns nur noch, $\texttt{mae}(v,c)$ für Vektoren der Länge $1$ und $2$ zu bestimmen.
-Es ist $\texttt{mae}((v_1),c) = |v_1 - c|$, was für $c = v_1$ minimal wird,
-und $\texttt{mae}((v_1,v_2),c) = \frac{v_2 - v_1}{2}$, was für jedes $c$ zwischen $v_1$ und $v_2$ minimal wird. Also hängt der Median (einer sortierten Liste) nur vom mittleren / von den zwei mittleren Werten ab. Man definiert meist den Median so, dass in diesem Fall die Wahl $\texttt{median}((v_1,v_2)) = \dfrac{v_1+v_2}{2}$ getroffen wird (und so wollen wir es im Folgenden auch handhaben).
-Überlegen Sie sich dazu, dass für jedes $c$ mit $a \leq c \leq b$ der mittlere Abstand zu $(a,b)$ stets $\frac{b-a}{2}$ ist, es also viele Mediane für den Vektor $v = (a,b)$ gibt.
+Since the second summand does not depend on $c$, it is irrelevant for finding the minimum.
+Applying this insight inductively, all that is left is to determine $\texttt{mae}(v,c)$ for vectors of length $1$ and $2$.
+We have $\texttt{mae}((v_1),c) = |v_1 - c|$, which is minimal for $c = v_1$,
+and $\texttt{mae}((v_1,v_2),c) = \frac{v_2 - v_1}{2}$, which is minimal for every $c$ between $v_1$ and $v_2$. So the median (of a sorted list) depends only on the middle value, or on the two middle values. The median is usually defined so that in this case the choice $\texttt{median}((v_1,v_2)) = \dfrac{v_1+v_2}{2}$ is made (and that is how we will handle it in what follows).
+Convince yourself that for every $c$ with $a \leq c \leq b$ the mean distance to $(a,b)$ is always $\frac{b-a}{2}$, so that the vector $v = (a,b)$ has many medians.
 
-:::{admonition} Beweis
+:::{admonition} Proof
 $$
 \begin{aligned}
 \texttt{mae}(v,c) &= \phantom{\dfrac{|v_1 - c|}{n} +\ } \sum_{i=1}^{n} \dfrac{|v_i -c |}{n} \\
@@ -91,38 +88,38 @@ $$
 $$
 :::
 
-Da der Median also relativ schlecht die Daten widerspiegelt (von den meisten Daten ist er völlig unabhängig!), brauchen wir ein besseres Maß.
-*Idee*: wir quadrieren die individuellen Fehlerterme in der Summe, damit große Fehler einen größeren Teil zur Summe beitragen. Praktisch: durch das Quadrieren muss man nicht mehr explizit den Absolutbetrag nehmen (das geschieht automatisch).
+Since the median therefore reflects the data rather poorly (it is completely independent of most of them!), we need a better measure.
+*Idea*: we square the individual error terms in the sum, so that large errors contribute a larger share of it. Conveniently, squaring means we no longer have to take the absolute value explicitly (it happens automatically).
 
-### Quadratische Abweichung
+### Squared deviation
 
 :::{admonition} Definition
-Für Vektoren $v,w \in \mathbb{R}^n$ ist die *mittlere quadratische Abweichung* (mean squared error) definiert als
+For vectors $v,w \in \mathbb{R}^n$ the *mean squared error* is defined as
 
 $$
 \texttt{mse}(v,w) := \sum_{i=1}^n \dfrac{{\left(v_i - w_i\right)}^2}{n}
 $$
 
-und für $c \in \mathbb{R}$ schreiben wir $\texttt{mse}(v,c) := \texttt{mse}(v, (c)_{i=1}^n)$.
+and for $c \in \mathbb{R}$ we write $\texttt{mse}(v,c) := \texttt{mse}(v, (c)_{i=1}^n)$.
 :::
 
-Wie bei der absoluten Abweichung ist die Summe ohne $\frac1n$ eine Norm, diesmal die quadrierte $2$-Norm:
+As with the absolute deviation, the sum without $\frac1n$ is a norm, this time the squared $2$-norm:
 
 $$
 d_2(v,w)^2 := \sum_{i=1}^n {\left( v_i - w_i \right)}^2 = \left\| v - w \right\|_2^2 = n \cdot \texttt{mse}(v,w).
 $$
 
-Der $\texttt{mse}$ hat gegenüber dem $\texttt{mae}$ die Einheit zum Quadrat — bei Körpergrößen in Zentimetern also Quadratzentimeter, was sich schlecht interpretieren lässt. Deshalb zieht man am Ende meist die Wurzel; für das konstante Modell $w = \texttt{mean}(v)$ ist das die Sample-Standardabweichung im nächsten Unterabschnitt.
+Compared with $\texttt{mae}$, the $\texttt{mse}$ carries the square of the unit – for heights in centimetres that is square centimetres, which is hard to interpret. So one usually takes the square root at the end; for the constant model $w = \texttt{mean}(v)$ that is the sample standard deviation of the next subsection.
 
 :::{admonition} Proposition
-Für einen Vektor $v \in \mathbb{R}^n$ minimiert der (arithmetische) *Mittelwert* von $v$ die mittlere quadratische Abweichung:
+For a vector $v \in \mathbb{R}^n$, the (arithmetic) *mean* of $v$ minimises the mean squared error:
 
 $\texttt{mean}(v) := \sum_{i=1}^n \dfrac{v_i}{n} = \arg\min_{c \in \mathbb{R}} \texttt{mse}(v,c)$.
 :::
 
-:::{admonition} Beweis
-Wir schreiben ein beliebiges $c \in \mathbb{R}$ als $c = \texttt{mean}(v) + \delta$ und zeigen dann, dass $\texttt{mse}(v,c)$ minimal wird für $\delta = 0$.
-Dazu faktorisieren wir aus: $(v_i - \texttt{mean}(v) - \delta)^2 = (v_i - \texttt{mean}(v))^2 - 2\delta (v_i - \texttt{mean}(v)) + \delta^2$ und teilen die Summe entsprechend auf:
+:::{admonition} Proof
+We write an arbitrary $c \in \mathbb{R}$ as $c = \texttt{mean}(v) + \delta$ and then show that $\texttt{mse}(v,c)$ becomes minimal for $\delta = 0$.
+To that end we expand: $(v_i - \texttt{mean}(v) - \delta)^2 = (v_i - \texttt{mean}(v))^2 - 2\delta (v_i - \texttt{mean}(v)) + \delta^2$ and split the sum accordingly:
 
 $$
 \begin{aligned}
@@ -134,54 +131,54 @@ $$
 \end{aligned}
 $$
 
-und dieser Ausdruck wird nur für $\delta=0$ minimal, weil $\delta^2 \geq 0$.
+and this expression is minimal only for $\delta=0$, because $\delta^2 \geq 0$.
 :::
 
-:::{admonition} Beispiel
-Dieselben vier Körpergrößen, jetzt quadratisch gemessen. Für die Modellvorhersagen $w = (178, 155, 150, 180)$ ist
+:::{admonition} Example
+The same four heights, now measured with squares. For the model predictions $w = (178, 155, 150, 180)$,
 
 $$
-d_2(v,w)^2 = 0^2 + 5^2 + 5^2 + (-6)^2 = 86, \qquad \texttt{mse}(v,w) = \dfrac{86}{4} = 21{,}5.
+d_2(v,w)^2 = 0^2 + 5^2 + 5^2 + (-6)^2 = 86, \qquad \texttt{mse}(v,w) = \dfrac{86}{4} = 21.5.
 $$
 
-Interessanter ist der Vergleich der konstanten Modelle. Der Mittelwert ist $\texttt{mean}(v) = \frac{667}{4} = 166{,}75$. Sortiert lautet der Vektor $(155, 160, 174, 178)$, und nach der Überlegung oben ist jede Zahl zwischen $160$ und $174$ ein Median; die übliche Konvention wählt die Mitte, also $\texttt{median}(v) = 167$. Die beiden Fehlermaße küren tatsächlich verschiedene Sieger:
+More interesting is the comparison of the constant models. The mean is $\texttt{mean}(v) = \frac{667}{4} = 166.75$. Sorted, the vector reads $(155, 160, 174, 178)$, and by the argument above every number between $160$ and $174$ is a median; the usual convention picks the middle, so $\texttt{median}(v) = 167$. The two error measures really do crown different winners:
 
 | $c$ | $\texttt{mae}(v,c)$ | $\texttt{mse}(v,c)$ |
 |---|---|---|
-| $165$ | $9{,}25$ | $93{,}75$ |
-| $\texttt{median}(v) = 167$ | $9{,}25$ | $90{,}75$ |
-| $\texttt{mean}(v) = 166{,}75$ | $9{,}25$ | $\mathbf{90{,}6875}$ |
+| $165$ | $9.25$ | $93.75$ |
+| $\texttt{median}(v) = 167$ | $9.25$ | $90.75$ |
+| $\texttt{mean}(v) = 166.75$ | $9.25$ | $\mathbf{90.6875}$ |
 
-In der mittleren Spalte steht dreimal dasselbe: Jede Zahl zwischen $160$ und $174$ minimiert den $\texttt{mae}$, auch die $165$ — der Median ist eben nicht eindeutig. In der rechten Spalte gewinnt dagegen genau eine Zahl, und das ist der Mittelwert. Ein Fehlermaß auszuwählen heißt also, sich ein bestes Modell auszusuchen.
+The middle column says the same thing three times: every number between $160$ and $174$ minimises the $\texttt{mae}$, $165$ included – the median simply is not unique. In the right-hand column, by contrast, exactly one number wins, and that is the mean. Choosing an error measure therefore means choosing a best model.
 :::
 
 
-### Sample-Standardabweichung
+### Sample standard deviation
 
 :::{admonition} Definition
-Sei $v \in \mathbb{R}^n$. Die Quadratwurzel der mittleren quadratischen Abweichung (root mean squared error) vom Mittelwert nennen wir $\texttt{rmse}$ (oder auch Sample-Standardabweichung):
+Let $v \in \mathbb{R}^n$. We call the square root of the mean squared error about the mean the $\texttt{rmse}$ (root mean squared error, also the sample standard deviation):
 
 $\texttt{rmse}(v) = \sqrt{\texttt{mse}\left( v, \texttt{mean}(v) \right)}$.
 
-Man schreibt dafür auch $\sigma(v)$, die *Standardabweichung* des Samples $v$. Die Schreibweise passt zu $\sigma(X)$ für Zufallsvariablen weiter unten.
+It is also written $\sigma(v)$, the *standard deviation* of the sample $v$. The notation matches $\sigma(X)$ for random variables further down.
 :::
 
-Zum Ausrechnen ist die Definition unpraktisch, weil man erst den Mittelwert bestimmen und dann noch einmal über alle Einträge gehen muss. Die folgende Umformung braucht nur die Summe der Einträge und die Summe ihrer Quadrate:
+For computing, the definition is awkward, because you first have to determine the mean and then go over all the entries a second time. The following rearrangement needs only the sum of the entries and the sum of their squares:
 
 :::{admonition} Lemma
-**(Verschiebungssatz)**
+**(Shortcut formula)**
 
-Für $v \in \mathbb{R}^n$ ist
+For $v \in \mathbb{R}^n$,
 
 $$
 \texttt{rmse}(v)^2 = \texttt{mse}\left( v, \texttt{mean}(v) \right) = \texttt{mean}(v^2) - \texttt{mean}(v)^2,
 $$
 
-wobei $v^2 := {\left( v_i^2 \right)}_{i=1}^n$ komponentenweise zu lesen ist.
+where $v^2 := {\left( v_i^2 \right)}_{i=1}^n$ is to be read componentwise.
 :::
 
-:::{admonition} Beweis
-Mit $m := \texttt{mean}(v)$ ist
+:::{admonition} Proof
+With $m := \texttt{mean}(v)$,
 
 $$
 \texttt{mse}(v, m) = \dfrac{1}{n} \sum_{i=1}^n \left( v_i^2 - 2 m v_i + m^2 \right) = \texttt{mean}(v^2) - 2m \cdot \texttt{mean}(v) + m^2 = \texttt{mean}(v^2) - m^2.
@@ -189,183 +186,183 @@ $$
 :::
 
 :::{admonition} Proposition
-Für $v \in \mathbb{R}^n$, $v \neq 0$, mit $\texttt{mean}(v)=0$ (ein *zentriertes* Sample, etwa $v := w - (\texttt{mean}(w))_{i=1}^n$ für ein beliebiges $w \in \mathbb{R}^n$) 
-ist $\texttt{rmse}(v)^2 = \texttt{mse}(v,0) = \frac{1}{n} \sum_{i=1}^n v_i^2$ und der Vektor $v' := {\left( \dfrac{v_i}{\texttt{rmse}(v)} \right)}_{i=1}^n$ erfüllt $\texttt{mean}(v')=0$ und $\texttt{rmse}(v')=1$ (ein *normiertes* Sample).
+For $v \in \mathbb{R}^n$, $v \neq 0$, with $\texttt{mean}(v)=0$ (a *centred* sample, for instance $v := w - (\texttt{mean}(w))_{i=1}^n$ for an arbitrary $w \in \mathbb{R}^n$)
+we have $\texttt{rmse}(v)^2 = \texttt{mse}(v,0) = \frac{1}{n} \sum_{i=1}^n v_i^2$, and the vector $v' := {\left( \dfrac{v_i}{\texttt{rmse}(v)} \right)}_{i=1}^n$ satisfies $\texttt{mean}(v')=0$ and $\texttt{rmse}(v')=1$ (a *normalised* sample).
 :::
 
-:::{admonition} Beweis
-Das rechnet man direkt nach. Dass das zentrierte $v = w - (\texttt{mean}(w))_{i=1}^n$ wirklich Mittelwert $0$ hat, ist die Linearität des Mittelwerts: $\texttt{mean}(v) = \texttt{mean}(w) - \texttt{mean}(w) = 0$.
-Wegen $\texttt{mean}(v) = 0$ ist $\texttt{rmse}(v)^2 = \texttt{mse}(v, \texttt{mean}(v)) = \texttt{mse}(v, 0) = \frac{1}{n} \sum_{i=1}^n v_i^2$, das ist der Verschiebungssatz mit $m = 0$.
-Für $v'$ sei $s := \texttt{rmse}(v)$, und $s > 0$ wegen $v \neq 0$. Dann ist $\texttt{mean}(v') = \frac{1}{n} \sum_{i=1}^n \frac{v_i}{s} = \frac{\texttt{mean}(v)}{s} = 0$ und daher
+:::{admonition} Proof
+This is a direct calculation. That the centred $v = w - (\texttt{mean}(w))_{i=1}^n$ really has mean $0$ is the linearity of the mean: $\texttt{mean}(v) = \texttt{mean}(w) - \texttt{mean}(w) = 0$.
+Since $\texttt{mean}(v) = 0$, we have $\texttt{rmse}(v)^2 = \texttt{mse}(v, \texttt{mean}(v)) = \texttt{mse}(v, 0) = \frac{1}{n} \sum_{i=1}^n v_i^2$, which is the shortcut formula with $m = 0$.
+For $v'$ put $s := \texttt{rmse}(v)$, and $s > 0$ because $v \neq 0$. Then $\texttt{mean}(v') = \frac{1}{n} \sum_{i=1}^n \frac{v_i}{s} = \frac{\texttt{mean}(v)}{s} = 0$ and therefore
 $\texttt{rmse}(v')^2 = \texttt{mse}(v', 0) = \frac{1}{n} \sum_{i=1}^n \frac{v_i^2}{s^2} = \frac{\texttt{rmse}(v)^2}{s^2} = 1$.
 :::
 
-:::{admonition} Bemerkung
-Das Zentrieren lohnt eine eigene Schreibweise. Für $v \in \mathbb{R}^n$ setzt man
+:::{admonition} Remark
+Centring is worth a notation of its own. For $v \in \mathbb{R}^n$ one puts
 
 $$
-\tilde{v} := v - \left( \texttt{mean}(v) \right)_{i=1}^n, \qquad \text{also } \tilde{v}_i = v_i - \texttt{mean}(v),
+\tilde{v} := v - \left( \texttt{mean}(v) \right)_{i=1}^n, \qquad \text{that is, } \tilde{v}_i = v_i - \texttt{mean}(v),
 $$
 
-und nennt $\tilde{v}$ das *zentrierte* $v$. Mit dem Verschiebungssatz von oben lassen sich Sample-Standardabweichung und Varianz dann ohne Summenzeichen hinschreiben:
+and calls $\tilde{v}$ the *centred* $v$. With the shortcut formula from above, the sample standard deviation and the variance can then be written down without a summation sign:
 
 $$
 \sigma(v) = \texttt{rmse}(v) = \dfrac{1}{\sqrt{n}} \left\| \tilde{v} \right\|, \qquad
 \sigma(v)^2 = \dfrac{1}{n}\, \tilde{v} \cdot \tilde{v} = \dfrac{1}{n}\, \tilde{v}^\top \tilde{v}.
 $$
 
-In der Sprache der linearen Algebra ist die Sample-Standardabweichung also nichts anderes als die euklidische Länge des zentrierten Vektors, geteilt durch $\sqrt{n}$, und die Varianz das Skalarprodukt dieses Vektors mit sich selbst, geteilt durch $n$.
+In the language of linear algebra, then, the sample standard deviation is nothing but the Euclidean length of the centred vector divided by $\sqrt{n}$, and the variance is the inner product of that vector with itself divided by $n$.
 :::
 
-Diese Sichtweise trägt weiter, als sie zunächst aussieht. Im Kapitel [Kovarianz und Abhängigkeit](covariance.md) stellt sich heraus, dass die Kovarianz zweier Zufallsvariablen sich genau wie ein Skalarprodukt verhält — die Varianz ist dann der Spezialfall „Vektor mit sich selbst“, und der Korrelationskoeffizient wird zum Kosinus des Winkels zwischen zwei zentrierten Vektoren.
+This view carries further than it first appears. In the chapter [Covariance and dependence](covariance.md) it turns out that the covariance of two random variables behaves exactly like an inner product – the variance is then the special case "vector with itself", and the correlation coefficient becomes the cosine of the angle between two centred vectors.
 
-### Informationsgehalt
+### Information content
 
-Ob ein Vektor $v \in \mathbb{R}^n$ für uns Informationen enthält, hängt davon ab, wie viel wir über $v$ bereits wissen.
-Wenn wir z.B. wissen, dass $v$ ein Sample einer auf $\{0,1\}$ gleichverteilten Zufallsvariablen ist, wird uns nicht überraschen, wenn $v$ auch so aussieht. Jeder Eintrag von $v$ entspricht genau einem Bit Information. Wenn aber die Zufallsvariable nicht gleichverteilt ist, sondern z.B. auf den Zahlen $\{1,\dots, 26\}$ der Verteilungshäufigkeit der Buchstaben in der deutschen Sprache entspricht (mit $1$ für "a", $26$ für "z" usw.), so enthält ein Eintrag von $v$ potentiell weniger Informationen. Das "e" ist so häufig, dass wir wenig überrascht sind, wenn wir eins sehen. Ein "x" hingegen würde uns sehr überraschen, aber das kommt ja auch nicht so oft vor. Der mittlere Informationsgehalt ist also geringer als bei einer Gleichverteilung.
+Whether a vector $v \in \mathbb{R}^n$ carries information for us depends on how much we already know about $v$.
+If we know, for example, that $v$ is a sample of a random variable uniformly distributed on $\{0,1\}$, we will not be surprised when $v$ looks like one. Every entry of $v$ corresponds to exactly one bit of information. If the random variable is not uniformly distributed, however, but on the numbers $\{1,\dots, 26\}$ follows, say, the frequency of the letters of the German language (with $1$ for "a", $26$ for "z" and so on), then an entry of $v$ potentially carries less information. The "e" is so frequent that we are hardly surprised to see one. An "x", on the other hand, would surprise us a great deal – but then it does not come up very often either. The average information content is therefore lower than for a uniform distribution.
 
-### Lagemaße zentraler Tendenz
+### Measures of central tendency
 
-Zu Median und Mittelwert gehört traditionell noch der **Modus**, der häufigste Wert. Er passt in dasselbe Muster: Der Median ist das beste konstante Modell für den absoluten Fehler, der Mittelwert für den quadratischen, und der Modus für den *Zählfehler*, der jede Abweichung gleich zählt, egal wie groß sie ist. Für ein nominales Merkmal, etwa die Spalte `Survived` der Titanic-Liste, ist das der einzige Fehler, der Sinn ergibt; das beste konstante Modell ist dann die häufigste Klasse, und der Anteil, in dem es richtig liegt, ist seine *Accuracy* (siehe [Titanic EDA](titanic-eda-numpy.ipynb)).
-[Hier gibt es ein kurzes Erklärvideo (auf Englisch) vom Crash Course Statistics zu Mean, Median und Mode](https://www.youtube.com/watch?v=kn83BA7cRNM&list=PL8dPuuaLjXtNM_Y-bUAhblSAdWRnmBUcr). [Das in der Playlist folgende Video diskutiert die damit zusammenhängenden Begriffe für Streuung von Daten](https://www.youtube.com/watch?v=R4yfNi_8Kqw) (die Abweichung, mit der wir angefangen haben).
+Median and mean traditionally come with the **mode**, the most frequent value. It fits the same pattern: the median is the best constant model for the absolute error, the mean for the squared one, and the mode for the *counting error*, which counts every deviation the same, however large it is. For a nominal feature, say the `Survived` column of the Titanic list, that is the only error that makes sense; the best constant model is then the most frequent class, and the proportion of the time it is right is its *accuracy* (see [Titanic EDA](titanic-eda-numpy.ipynb)).
+[Here is a short explainer video from Crash Course Statistics on mean, median and mode](https://www.youtube.com/watch?v=kn83BA7cRNM&list=PL8dPuuaLjXtNM_Y-bUAhblSAdWRnmBUcr). [The video that follows it in the playlist discusses the related notions for the spread of data](https://www.youtube.com/watch?v=R4yfNi_8Kqw) (the deviation we started with).
 
 
 
-## Momente einer Zufallsvariable
+## Moments of a random variable
 
-### Vom Mittelwert zum Erwartungswert
+### From the mean to the expected value
 
-Bis hierher haben wir mit Samples gerechnet: $\texttt{mean}(v)$ ist eine Zahl, die aus $n$ konkreten Messwerten entsteht. Jetzt drehen wir die Blickrichtung um und fragen, welche Zahl zu einer *Verteilung* gehört, also zu dem Modell, aus dem die Daten stammen könnten. Der Weg dahin ist kurz, und er erklärt, warum der Erwartungswert genau so aussieht, wie er aussieht.
+Up to here we have computed with samples: $\texttt{mean}(v)$ is a number that arises from $n$ concrete measurements. Now we turn the direction of view around and ask which number belongs to a *distribution*, that is, to the model the data might have come from. The way there is short, and it explains why the expected value looks exactly the way it does.
 
-Sei $X$ eine Zufallsvariable mit endlich vielen Werten $y_1,\dots,y_k$ und der Verteilung $p = (p_1,\dots,p_k)$, also $p_j = P(X = y_j)$. Nehmen wir für einen Moment an, die $p_j$ seien rationale Zahlen mit gemeinsamem Nenner $N$, sagen wir $p_j = \frac{a_j}{N}$ mit $a_1 + \dots + a_k = N$. Dann gibt es eine Stichprobe der Größe $N$, die diese Verteilung *exakt* trifft: die, in der der Wert $y_j$ genau $a_j$-mal vorkommt. Wir nennen sie das **idealisierte Sample** $\tilde{D}$ zu $p$ — die Stichprobe, die man bekäme, wenn der Zufall sich ein einziges Mal vollkommen an die Wahrscheinlichkeiten hielte.
+Let $X$ be a random variable with finitely many values $y_1,\dots,y_k$ and distribution $p = (p_1,\dots,p_k)$, so $p_j = P(X = y_j)$. Suppose for a moment that the $p_j$ are rational numbers with a common denominator $N$, say $p_j = \frac{a_j}{N}$ with $a_1 + \dots + a_k = N$. Then there is a sample of size $N$ that hits this distribution *exactly*: the one in which the value $y_j$ occurs precisely $a_j$ times. We call it the **idealised sample** $\tilde{D}$ for $p$ – the sample you would get if chance kept to the probabilities perfectly, just once.
 
-Den Mittelwert dieses idealisierten Samples können wir direkt hinschreiben, denn wir wissen ja, wie oft jeder Wert vorkommt:
+We can write down the mean of this idealised sample directly, since we know how often each value occurs:
 
 $$
 \texttt{mean}(\tilde{D}) = \dfrac{1}{N} \sum_{j=1}^k a_j y_j = \sum_{j=1}^k \dfrac{a_j}{N} y_j = \sum_{j=1}^k p_j y_j.
 $$
 
-Rechts steht keine Stichprobe mehr, sondern nur noch die Verteilung. Damit ist auch die Annahme überflüssig geworden, dass die $p_j$ rational sein müssen: Die rechte Seite ergibt für jede Verteilung Sinn, und der Umweg über $\tilde{D}$ hat nur dazu gedient, die Formel zu finden. Genau diese Größe nennen wir den Erwartungswert von $X$.
+On the right there is no sample any more, only the distribution. With that, the assumption that the $p_j$ have to be rational has become superfluous too: the right-hand side makes sense for every distribution, and the detour through $\tilde{D}$ served only to find the formula. This quantity is exactly what we call the expected value of $X$.
 
-:::{admonition} Beispiel
-Ein fairer Würfel hat $p = \left(\frac16,\dots,\frac16\right)$, also $N = 6$ und $a_j = 1$ für alle $j$. Das idealisierte Sample ist $\tilde{D} = (1,2,3,4,5,6)$ — jede Augenzahl genau einmal — mit
+:::{admonition} Example
+A fair die has $p = \left(\frac16,\dots,\frac16\right)$, so $N = 6$ and $a_j = 1$ for all $j$. The idealised sample is $\tilde{D} = (1,2,3,4,5,6)$ – every face exactly once – with
 
-$$\texttt{mean}(\tilde{D}) = \dfrac{1+2+3+4+5+6}{6} = \dfrac{21}{6} = 3{,}5.$$
+$$\texttt{mean}(\tilde{D}) = \dfrac{1+2+3+4+5+6}{6} = \dfrac{21}{6} = 3.5.$$
 
-Der Erwartungswert eines fairen Würfels ist also $3{,}5$, eine Zahl, die der Würfel selbst nie zeigt.
+So the expected value of a fair die is $3.5$, a number the die itself never shows.
 
-Ein gezinkter Würfel mit $p = \left(\frac{1}{10},\frac{1}{10},\frac{1}{10},\frac{1}{10},\frac{1}{10},\frac{5}{10}\right)$ hat $N = 10$, das idealisierte Sample $(1,2,3,4,5,6,6,6,6,6)$ und damit den Erwartungswert $\frac{45}{10} = 4{,}5$.
+A loaded die with $p = \left(\frac{1}{10},\frac{1}{10},\frac{1}{10},\frac{1}{10},\frac{1}{10},\frac{5}{10}\right)$ has $N = 10$, the idealised sample $(1,2,3,4,5,6,6,6,6,6)$ and hence the expected value $\frac{45}{10} = 4.5$.
 :::
 
-Der Spezialfall $k = 1$ ist die Probe aufs Exempel: Eine Verteilung, die einen einzigen Wert $y_1$ mit Wahrscheinlichkeit $1$ annimmt — das Dirac-Maß $\delta_{y_1}$ aus dem Kapitel [Formalismus der Stochastik](intro-stochastics.md) — hat das idealisierte Sample $(y_1,\dots,y_1)$ und folglich den Erwartungswert $y_1$. Ein konstantes Modell und der Wert, den es vorhersagt, sind dasselbe. In der Sprache des vorigen Abschnitts: Das beste konstante Modell für den quadratischen Fehler war der Mittelwert der Daten, und als Verteilung gelesen ist ein konstantes Modell ein Dirac-Maß.
+The special case $k = 1$ is the acid test: a distribution that takes a single value $y_1$ with probability $1$ – the Dirac measure $\delta_{y_1}$ from the chapter [The formalism of stochastics](intro-stochastics.md) – has the idealised sample $(y_1,\dots,y_1)$ and consequently the expected value $y_1$. A constant model and the value it predicts are the same thing. In the language of the previous section: the best constant model for the squared error was the mean of the data, and read as a distribution, a constant model is a Dirac measure.
 
-:::{admonition} Beispiel
-Auf $\Omega = \{0,1,\dots,n-1\}$ — genau das, was `range(n)` in Python aufzählt — sei $P$ die Gleichverteilung. Für $Y(\omega) := \omega$ ist
+:::{admonition} Example
+On $\Omega = \{0,1,\dots,n-1\}$ – exactly what `range(n)` enumerates in Python – let $P$ be the uniform distribution. For $Y(\omega) := \omega$,
 
 $$\mathbb{E}(Y) = \sum_{\omega=0}^{n-1} \dfrac{\omega}{n} = \dfrac{1}{n}\cdot\dfrac{(n-1)n}{2} = \dfrac{n-1}{2},$$
 
-für $X(\omega) := \omega + 1$ dagegen $\mathbb{E}(X) = \mathbb{E}(Y) + 1 = \frac{n+1}{2}$ (das ist die Linearität weiter unten). Für $n = 6$ sind das $2{,}5$ und $3{,}5$: Ob man die Würfelseiten bei $0$ oder bei $1$ zu zählen beginnt, macht genau einen Punkt aus. In Simulationen ist das die häufigste Quelle von Off-by-one-Fehlern.
+whereas for $X(\omega) := \omega + 1$ we get $\mathbb{E}(X) = \mathbb{E}(Y) + 1 = \frac{n+1}{2}$ (that is the linearity further down). For $n = 6$ these are $2.5$ and $3.5$: whether you start counting the faces of a die at $0$ or at $1$ makes exactly one pip of difference. In simulations this is the most common source of off-by-one errors.
 :::
 
-Damit können wir die Formel als Definition festhalten. Sie funktioniert wörtlich genauso, wenn $\Omega$ abzählbar unendlich ist; aus der endlichen Summe wird dann eine Reihe, und die muss nicht mehr konvergieren.
+With that we can record the formula as a definition. It works word for word in the same way when $\Omega$ is countably infinite; the finite sum then becomes a series, and that need no longer converge.
 
-### Erwartungswert, diskret
+### Expected value, discrete
 
 :::{admonition} Definition
-Sei $X \colon \Omega \to \mathbb{R}$ eine diskrete reelle Zufallsvariable (also $\Omega$ ein diskreter Wahrscheinlichkeitsraum, höchstens abzählbar). Dann ist der *Erwartungswert* von $X$ definiert als
+Let $X \colon \Omega \to \mathbb{R}$ be a discrete real random variable (so $\Omega$ a discrete probability space, at most countable). Then the *expected value* of $X$ is defined as
 
 $$
 \mathbb{E}X := \mathbb{E}(X) := \sum_{\omega \in \Omega} X(\omega) P(\{\omega\}).
 $$
 
-Wenn man nicht "in $\Omega$" arbeiten möchte, kann man diese Summe auch umstellen und über alle Werte $\{x_i\}_{i\in I}$ summieren, die $X$ annimmt:
+If you would rather not work "in $\Omega$", you can rearrange this sum and sum over all the values $\{x_i\}_{i\in I}$ that $X$ takes:
 $\mathbb{E}(X) = \sum_{i \in I} x_i P(X = x_i)$.
 :::
 
-Der Erwartungswert ist also das mit den Wahrscheinlichkeiten gewichtete Mittel der Werte von $X$.
+So the expected value is the mean of the values of $X$, weighted by the probabilities.
 
-Für endliches $\Omega$ ist die Summe endlich und existiert immer. Ist $\Omega$ abzählbar unendlich, so ist die Summe eine Reihe, und die muss nicht konvergieren: Es gibt Zufallsvariablen, für die sich kein Erwartungswert bestimmen lässt. Ein Beispiel: Auf $\Omega = \{1, 2, 3, \dots\}$ ist durch $P(\{k\}) := \frac{6}{\pi^2 k^2}$ ein Wahrscheinlichkeitsmaß gegeben (weil $\sum_{k \geq 1} \frac{1}{k^2} = \frac{\pi^2}{6}$), und für $X(k) := k$ wird die Reihe $\sum_{k \geq 1} k \cdot \frac{6}{\pi^2 k^2} = \frac{6}{\pi^2} \sum_{k \geq 1} \frac{1}{k}$ zur harmonischen Reihe, die divergiert. Diese Zufallsvariable hat keinen Erwartungswert.
+For finite $\Omega$ the sum is finite and always exists. If $\Omega$ is countably infinite, the sum is a series, and that need not converge: there are random variables for which no expected value can be determined. An example: on $\Omega = \{1, 2, 3, \dots\}$, $P(\{k\}) := \frac{6}{\pi^2 k^2}$ defines a probability measure (because $\sum_{k \geq 1} \frac{1}{k^2} = \frac{\pi^2}{6}$), and for $X(k) := k$ the series $\sum_{k \geq 1} k \cdot \frac{6}{\pi^2 k^2} = \frac{6}{\pi^2} \sum_{k \geq 1} \frac{1}{k}$ becomes the harmonic series, which diverges. This random variable has no expected value.
 
-Festhalten lässt sich: Nimmt $X$ nur endlich viele Werte an, so existieren nicht nur der Erwartungswert, sondern auch alle höheren Momente $\mathbb{E}(X^k)$ — es sind endliche Summen, und die konvergieren immer. Bei abzählbar unendlich vielen Werten muss man dagegen jedes Mal hinsehen. Ein Beispiel, das nicht nur ein mathematisches Kuriosum ist: Beim *St.-Petersburg-Paradoxon* wird so lange eine Münze geworfen, bis zum ersten Mal Kopf fällt, und bei $k$ Würfen $2^k$ Euro ausgezahlt. Die Wahrscheinlichkeit dafür ist $2^{-k}$, der Erwartungswert also $\sum_{k \geq 1} 2^k \cdot 2^{-k} = \sum_{k \geq 1} 1 = \infty$. Ein Spiel mit unendlichem Erwartungswert — und trotzdem würde niemand einen hohen Einsatz dafür zahlen.
+What can be recorded is this: if $X$ takes only finitely many values, then not only the expected value exists but all the higher moments $\mathbb{E}(X^k)$ as well – they are finite sums, and those always converge. With countably infinitely many values, by contrast, you have to look each time. An example that is more than a mathematical curiosity: in the *St Petersburg paradox* a coin is tossed until heads comes up for the first time, and after $k$ tosses $2^k$ euros are paid out. The probability of that is $2^{-k}$, so the expected value is $\sum_{k \geq 1} 2^k \cdot 2^{-k} = \sum_{k \geq 1} 1 = \infty$. A game with infinite expected value – and yet nobody would pay a high stake for it.
 
-Für stetige Zufallsvariablen, die überabzählbar viele Werte annehmen, tritt an die Stelle der Summe ein Integral über eine Dichte $f$: $\mathbb{E}(X) = \int x f(x)\,dx$. Diese Definition geben wir im Kapitel [Stetige Verteilungen](continuous-distributions.md), sobald wir Dichten kennen. Alles, was wir in diesem Kapitel über den Erwartungswert festhalten, gilt für stetige Zufallsvariablen genauso, mit Integralen an Stelle von Summen.
+For continuous random variables, which take uncountably many values, an integral over a density $f$ takes the place of the sum: $\mathbb{E}(X) = \int x f(x)\,dx$. We give this definition in the chapter [Continuous distributions](continuous-distributions.md), once we know about densities. Everything we record about the expected value in this chapter holds for continuous random variables in just the same way, with integrals in place of sums.
 
-### Exkurs: Erwartungswert allgemein
+### Digression: the expected value in general
 
 ::::{note}
-**Exkurs (nicht klausurrelevant):** Summe und Dichte-Integral sind zwei Spezialfälle einer einzigen Definition, die für beliebige Zufallsvariablen funktioniert.
+**Digression (not part of the course proper):** the sum and the density integral are two special cases of a single definition that works for arbitrary random variables.
 
 :::{admonition} Definition
-Sei $X \colon \Omega \to \mathbb{R}$ eine reelle Zufallsvariable, dann ist der *Erwartungswert* definiert als
+Let $X \colon \Omega \to \mathbb{R}$ be a real random variable; then the *expected value* is defined as
 
 $\mathbb{E}X := \mathbb{E}(X) := \int_{\Omega} X dP = \int_{\Omega} X(\omega) d P(\omega) \in \mathbb{R}$
 
-also als das Integral der Abbildung $X$ bezüglich des Maßes $P$.
+that is, as the integral of the map $X$ with respect to the measure $P$.
 :::
 
-Dieses Integral (das Lebesgue-Integral bezüglich $P$) existiert im Allgemeinen nicht, d.h. es gibt Zufallsvariablen, für die sich kein Erwartungswert bestimmen lässt. Für diskretes $\Omega$ vereinfacht sich das Integral zur Summe $\sum_{\omega \in \Omega} X(\omega) P(\{\omega\})$ von oben, und hat $X$ eine Dichte $f$, so wird daraus das Integral $\int x f(x)\,dx$. Mit dieser allgemeinen Definition lassen sich die Rechenregeln unten für alle Zufallsvariablen auf einmal beweisen; das ist der Grund, warum sie in der Maßtheorie so gewählt wird.
+This integral (the Lebesgue integral with respect to $P$) does not exist in general, meaning that there are random variables for which no expected value can be determined. For discrete $\Omega$ the integral simplifies to the sum $\sum_{\omega \in \Omega} X(\omega) P(\{\omega\})$ from above, and if $X$ has a density $f$ it becomes the integral $\int x f(x)\,dx$. With this general definition the rules of calculation below can be proved for all random variables at once; that is why measure theory chooses it this way.
 ::::
 
-Es gibt einen inneren Zusammenhang zwischen dem Erwartungswert und den Stichproben einer Zufallsvariable:
+There is an intrinsic connection between the expected value and the samples of a random variable:
 
-:::{admonition} Satz
-**Gesetz der großen Zahlen**
+:::{admonition} Theorem
+**Law of large numbers**
 
-Ist eine unendliche Folge $(X_i)_{i \in \mathbb{N}}$ von Zufallsvariablen $\Omega \to \mathbb{R}$ gegeben, so sagt man, dass diese Folge einem *starken Gesetz der großen Zahlen* genügt, wenn die Mittelwert-Abweichungs-Zufallsvariablen $\overline{X_n^\ast} := \dfrac{1}{n} \sum_{i=1}^n \left( X_i - \mathbb{E}(X_i) \right)$ gegen $0$ konvergieren, und zwar $P$-fast sicher (d.h. $P(\lim_{n\to\infty} \overline{X_n^\ast} = 0) = 1$).
+Given an infinite sequence $(X_i)_{i \in \mathbb{N}}$ of random variables $\Omega \to \mathbb{R}$, one says that this sequence satisfies a *strong law of large numbers* if the mean-deviation random variables $\overline{X_n^\ast} := \dfrac{1}{n} \sum_{i=1}^n \left( X_i - \mathbb{E}(X_i) \right)$ converge to $0$, and do so $P$-almost surely (that is, $P(\lim_{n\to\infty} \overline{X_n^\ast} = 0) = 1$).
 
-Wenn die $X_i$ nun unabhängig und identisch verteilt sind (kurz *iid*: jedes $X_i$ hat dieselbe Verteilung wie ein festes $X$, wir schreiben $X_i \sim X$) mit existierendem Erwartungswert $\mathbb{E}(X)$,
-dann genügen die $X_i$ einem starken Gesetz der großen Zahlen, d.h.
-dann konvergiert $\overline{X_n^\ast} = \overline{X_n} - \mathbb{E}X$, die Abweichung des arithmetischen Mittels einer Stichprobe von $X$ der Größe $n$ vom Erwartungswert, $P$-fast sicher gegen $0$.
-Das bedeutet umgekehrt auch: Die Wahrscheinlichkeit, dass das Stichprobenmittel für beliebig große $n$ vom Erwartungswert abweicht, ist $0$.
+If the $X_i$ are now independent and identically distributed (*iid* for short: every $X_i$ has the same distribution as a fixed $X$, and we write $X_i \sim X$) with an expected value $\mathbb{E}(X)$ that exists,
+then the $X_i$ satisfy a strong law of large numbers, that is,
+$\overline{X_n^\ast} = \overline{X_n} - \mathbb{E}X$, the deviation from the expected value of the arithmetic mean of a sample of $X$ of size $n$, converges $P$-almost surely to $0$.
+Read the other way round this also means: the probability that the sample mean deviates from the expected value for arbitrarily large $n$ is $0$.
 :::
 
-Aus der $P$-fast sicheren Konvergenz folgt auch die stochastische Konvergenz:
-$\lim_{n\to\infty} P\left(|\overline{X_n^\ast}| \geq \epsilon \right) = \lim_{n\to\infty} P\left(|\overline{X_n} - \mathbb{E}X| \geq \epsilon \right) = 0$ für jedes $\epsilon > 0$.
+$P$-almost sure convergence also implies convergence in probability:
+$\lim_{n\to\infty} P\left(|\overline{X_n^\ast}| \geq \epsilon \right) = \lim_{n\to\infty} P\left(|\overline{X_n} - \mathbb{E}X| \geq \epsilon \right) = 0$ for every $\epsilon > 0$.
 
-Wir wollen uns im Folgenden nicht mehr über Konvergenzbegriffe der Stochastik den Kopf zerbrechen (das kann man bei Bedarf immer noch nachholen und das lohnt sich auch je nach Anwendung), sondern in gewohnter Tradition das gute Gefühl mitnehmen, dass der Erwartungswert eine geeignete Größe ist, um erwartungsvoll eine Stichprobe zu analysieren. Je größer die Stichprobe, desto geringer dürfte die Abweichung des Stichprobenmittels vom Erwartungswert sein - so will es das Gesetz. Umgekehrt findet man also zu jeder vorgegebenen Schranke $\epsilon > 0$ eine Stichprobengröße $n$ sodass das Stichprobenmittel einer zufällig gezogenen Stichprobe fast immer um weniger als $\epsilon$ vom Erwartungswert abweicht.
+In what follows we do not want to rack our brains over notions of convergence in stochastics any longer (that can always be made up for later, and depending on the application it is worth doing), but rather, in the usual tradition, to take away the good feeling that the expected value is a suitable quantity for analysing a sample expectantly. The larger the sample, the smaller the deviation of the sample mean from the expected value should be – so the law would have it. Conversely, then, for every prescribed bound $\epsilon > 0$ there is a sample size $n$ such that the sample mean of a randomly drawn sample almost always deviates from the expected value by less than $\epsilon$.
 
-Damit schließt sich der Kreis zum idealisierten Sample vom Anfang des Abschnitts: Dort haben wir so getan, als hielte sich eine Stichprobe exakt an die Wahrscheinlichkeiten, um überhaupt auf die Formel zu kommen. Das Gesetz der großen Zahlen sagt, dass echte Stichproben das für große $n$ beliebig gut tun — der Umweg war also keiner.
+That closes the circle back to the idealised sample at the start of the section: there we pretended a sample kept to the probabilities exactly, just to arrive at the formula at all. The law of large numbers says that real samples do so arbitrarily well for large $n$ – so the detour was not one.
 
 
 :::{admonition} Lemma
-**Rechenregeln für den Erwartungswert:**
+**Rules of calculation for the expected value:**
 
-1. Linearität: Der Erwartungswert ist linear in $X$, also für $\alpha,\beta \in \mathbb{R}$ und $X,Y \colon \Omega \to \mathbb{R}$ Zufallsvariable ist
+1. Linearity: the expected value is linear in $X$, so for $\alpha,\beta \in \mathbb{R}$ and random variables $X,Y \colon \Omega \to \mathbb{R}$,
 
 $$
 \mathbb{E}\left( \alpha X + \beta Y \right) = \alpha \mathbb{E} X + \beta \mathbb{E}Y.
 $$
 
-2. Monotonie: Der Erwartungswert ist monoton in $X$, also für $X \leq Y$ ist $\mathbb{E}X \leq \mathbb{E}Y$.
+2. Monotonicity: the expected value is monotone in $X$, so for $X \leq Y$ we have $\mathbb{E}X \leq \mathbb{E}Y$.
 
-3. $\sigma$-Additivität: für eine Folge $X_i \geq 0$ ist $\mathbb{E}(\sum_{i \geq 1} X_i) = \sum_{i \geq 1} \mathbb{E}(X_i)$.
+3. $\sigma$-additivity: for a sequence $X_i \geq 0$ we have $\mathbb{E}(\sum_{i \geq 1} X_i) = \sum_{i \geq 1} \mathbb{E}(X_i)$.
 
-4. Produktregel: Sind $X$ und $Y$ unabhängig, so ist $\mathbb{E}(XY) = \mathbb{E}(X)\mathbb{E}(Y)$.
+4. Product rule: if $X$ and $Y$ are independent, then $\mathbb{E}(XY) = \mathbb{E}(X)\mathbb{E}(Y)$.
 
-**Ohne Beweis**
+**Without proof**
 :::
 
-Dabei haben wir noch nicht erklärt, was *unabhängig* bedeutet (unabhängig von den pmf im diskreten Fall), und werden das auch erst weiter unten behandeln.
+We have not yet explained what *independent* means (independently of the pmfs in the discrete case), and will only deal with it further down.
 
 
 
 
-### Varianz
+### Variance
 
 :::{admonition} Definition
-Sei $X \colon \Omega \to \mathbb{R}$ eine Zufallsvariable. Dann heißt
+Let $X \colon \Omega \to \mathbb{R}$ be a random variable. Then
 
-$\mathbb{V}X := \mathbb{V}(X) := Var(X) := \mathbb{E}\left( {\left(X - \mathbb{E}X\right)}^2 \right)$ die *Varianz* von $X$.
+$\mathbb{V}X := \mathbb{V}(X) := Var(X) := \mathbb{E}\left( {\left(X - \mathbb{E}X\right)}^2 \right)$ is called the *variance* of $X$.
 :::
 
 :::{admonition} Proposition
-**(Verschiebungssatz)**
+**(Shortcut formula)**
 
-Es ist $\mathbb{V}(X) = \mathbb{E}\left( X^2 \right) - {\left(\mathbb{E}X\right)}^2$.
+We have $\mathbb{V}(X) = \mathbb{E}\left( X^2 \right) - {\left(\mathbb{E}X\right)}^2$.
 :::
 
-:::{admonition} Beweis
-Es ist ${\left(X - \mathbb{E}X\right)}^2 = X^2 - 2X\mathbb{E}X + {\left(\mathbb{E}X\right)}^2$ und mit der Linearität des Erwartungswerts also
+:::{admonition} Proof
+We have ${\left(X - \mathbb{E}X\right)}^2 = X^2 - 2X\mathbb{E}X + {\left(\mathbb{E}X\right)}^2$, and so by the linearity of the expected value
 
 $$
 \begin{aligned}
@@ -376,150 +373,148 @@ $$
 $$
 :::
 
-Das ist das Gegenstück zum Verschiebungssatz $\texttt{rmse}(v)^2 = \texttt{mean}(v^2) - \texttt{mean}(v)^2$ für Samples von oben.
-Für eine zentrierte Zufallsvariable, d.h. mit $\mathbb{E}(X) = 0$, ist offensichtlich $\mathbb{V}(X) = \mathbb{E}(X^2)$.
+This is the counterpart of the shortcut formula $\texttt{rmse}(v)^2 = \texttt{mean}(v^2) - \texttt{mean}(v)^2$ for samples above.
+For a centred random variable, one with $\mathbb{E}(X) = 0$, we obviously have $\mathbb{V}(X) = \mathbb{E}(X^2)$.
 
 :::{admonition} Definition
-Man nennt allgemein auch $\mathbb{E}(X^n)$ das $n$-te *Moment* und $\mathbb{E}((X - \mathbb{E}X)^n)$ das $n$-te *zentrale Moment*.
-Der Erwartungswert ist also das erste Moment und die Varianz das zweite zentrale Moment.
-Das dritte zentrale Moment, geteilt durch $\sigma^3$, heißt *Schiefe* (skewness), das vierte, geteilt durch $\sigma^4$, *Wölbung* (kurtosis); durch das Teilen werden beide einheitenlos und skalenunabhängig.
-Die Schiefe ist ein Maß dafür, wie symmetrisch die Verteilung um den Erwartungswert ist.
-Man nennt $\sigma(X) := \sqrt{\mathbb{V}(X)}$ die *Standardabweichung* von X.
+More generally, $\mathbb{E}(X^n)$ is called the $n$-th *moment* and $\mathbb{E}((X - \mathbb{E}X)^n)$ the $n$-th *central moment*.
+So the expected value is the first moment and the variance the second central moment.
+The third central moment, divided by $\sigma^3$, is the *skewness*, the fourth, divided by $\sigma^4$, the *kurtosis*; dividing makes both of them unit-free and scale-independent.
+The skewness measures how symmetric the distribution is about the expected value.
+$\sigma(X) := \sqrt{\mathbb{V}(X)}$ is called the *standard deviation* of X.
 :::
 
-Die Varianz hilft uns bei der Einschätzung, wie wahrscheinlich gewisse Abweichungen vom Erwartungswert sind. Der Schlüssel dazu ist eine Ungleichung, die zunächst nur den Erwartungswert benutzt:
+The variance helps us judge how probable certain deviations from the expected value are. The key to that is an inequality which at first uses only the expected value:
 
-:::{admonition} Satz
-**(Markov-Ungleichung)**
+:::{admonition} Theorem
+**(Markov's inequality)**
 
-Für $X$ eine reelle Zufallsvariable mit $X \geq 0$ und $c > 0$ ist
+For $X$ a real random variable with $X \geq 0$, and $c > 0$,
 
 $$
 P\left( X \geq c \right) \leq \dfrac{\mathbb{E}X}{c}.
 $$
 :::
 
-:::{admonition} Beweis
-Sei $1_{\{X \geq c\}} \colon \Omega \to \{0,1\}$ die Indikatorfunktion des Ereignisses $\{X \geq c\}$, also $1$ auf $\{X \geq c\}$ und $0$ sonst. Dann gilt punktweise $c \cdot 1_{\{X \geq c\}} \leq X$: Wo der Indikator $1$ ist, ist $X \geq c$, und wo er $0$ ist, ist $X \geq 0$ nach Voraussetzung. Der Erwartungswert einer Indikatorfunktion ist die Wahrscheinlichkeit des Ereignisses, im diskreten Fall $\mathbb{E}(1_A) = \sum_{\omega \in A} P(\{\omega\}) = P(A)$. Mit der Linearität und der Monotonie des Erwartungswerts (Rechenregeln oben) folgt
+:::{admonition} Proof
+Let $1_{\{X \geq c\}} \colon \Omega \to \{0,1\}$ be the indicator function of the event $\{X \geq c\}$, so $1$ on $\{X \geq c\}$ and $0$ elsewhere. Then $c \cdot 1_{\{X \geq c\}} \leq X$ holds pointwise: where the indicator is $1$ we have $X \geq c$, and where it is $0$ we have $X \geq 0$ by assumption. The expected value of an indicator function is the probability of the event, in the discrete case $\mathbb{E}(1_A) = \sum_{\omega \in A} P(\{\omega\}) = P(A)$. By the linearity and the monotonicity of the expected value (rules of calculation above) it follows that
 
 $$
 c \cdot P(X \geq c) = \mathbb{E}\left( c \cdot 1_{\{X \geq c\}} \right) \leq \mathbb{E}X,
 $$
 
-und Teilen durch $c > 0$ liefert die Behauptung.
+and dividing by $c > 0$ gives the claim.
 :::
 
-Die Markov-Ungleichung ist grob, aber sie liefert sofort die Ungleichung, die wir eigentlich wollen:
+Markov's inequality is crude, but it immediately yields the inequality we actually want:
 
-:::{admonition} Satz
-**(Tschebyscheff-Ungleichung)**
+:::{admonition} Theorem
+**(Chebyshev's inequality)**
 
-Für $X$ eine reelle Zufallsvariable, $c > 0$ ist
+For $X$ a real random variable and $c > 0$,
 
 $$
 P\left( | X - \mathbb{E} X | \geq c \right) \leq \dfrac{\mathbb{V}X}{c^2}.
 $$
 :::
 
-:::{admonition} Beweis
-Die Zufallsvariable $Y := {\left( X - \mathbb{E}X \right)}^2$ ist nichtnegativ, und nach Definition der Varianz ist $\mathbb{E}Y = \mathbb{V}X$. Die Markov-Ungleichung für $Y$ mit der Schranke $c^2 > 0$ ergibt
+:::{admonition} Proof
+The random variable $Y := {\left( X - \mathbb{E}X \right)}^2$ is non-negative, and by the definition of the variance $\mathbb{E}Y = \mathbb{V}X$. Markov's inequality for $Y$ with the bound $c^2 > 0$ gives
 
 $$
 P\left( {\left( X - \mathbb{E}X \right)}^2 \geq c^2 \right) \leq \dfrac{\mathbb{E}Y}{c^2} = \dfrac{\mathbb{V}X}{c^2}.
 $$
 
-Weil $c > 0$ ist, gilt ${\left( X - \mathbb{E}X \right)}^2 \geq c^2$ genau dann, wenn $|X - \mathbb{E}X| \geq c$. Die beiden Ereignisse sind also gleich, und das ist die Behauptung.
+Because $c > 0$, we have ${\left( X - \mathbb{E}X \right)}^2 \geq c^2$ exactly when $|X - \mathbb{E}X| \geq c$. The two events are therefore the same, and that is the claim.
 :::
 
-Dabei ist der Spezialfall $c=\sigma$ trivial, weil auf der rechten Seite nur $1$ steht, und jede Wahrscheinlichkeit $\leq 1$ ist.
-Der Spezialfall $c = k\sigma$ mit $k \in \mathbb{N}$ vereinfacht sich allerdings zu
+The special case $c=\sigma$ is trivial, because the right-hand side is just $1$ and every probability is $\leq 1$.
+The special case $c = k\sigma$ with $k \in \mathbb{N}$, however, simplifies to
 
 $$
 P\left( | X - \mathbb{E} X | \geq k\sigma \right) \leq \dfrac{1}{k^2}.
 $$
 
-Daran sehen wir: Abweichungen von $2\sigma$ haben eine Wahrscheinlichkeit $\leq \frac{1}{4}$, und Abweichungen von $3\sigma$ bereits nur noch $\leq \frac{1}{9}$. Wenn wir also Abweichungen in Vielfachen von $\sigma$ messen, so ist die Wahrscheinlichkeit für so große Abweichungen näherungsweise umgekehrt quadratisch proportional (so steht's ja oben schon in der Ungleichung). Damit haben wir auch ein Kriterium zur Hand, um in Daten fehlerhafte Datenpunkte auszusortieren - wenn Abweichungen größer $k\sigma$ mit $k > 1$ häufiger als erwartet zu sehen sind, dann gehören diese Datenpunkte zumindest nicht zu der Verteilung, die man erwartet.
+From this we see: deviations of $2\sigma$ have probability $\leq \frac{1}{4}$, and deviations of $3\sigma$ only $\leq \frac{1}{9}$. So if we measure deviations in multiples of $\sigma$, the probability of deviations that large is roughly inversely proportional to the square (which is what the inequality above says already). That also gives us a criterion for sorting faulty data points out of a dataset – if deviations larger than $k\sigma$ with $k > 1$ turn up more often than expected, then those data points at least do not belong to the distribution we expect.
 
-Die wichtigste Anwendung der Ungleichung ist das Stichprobenmittel selbst. Damit können wir das Gesetz der großen Zahlen von oben in einer schwächeren Form tatsächlich beweisen, und zwar genau mit den Werkzeugen, die wir jetzt haben:
+The most important application of the inequality is the sample mean itself. With it we can actually prove the law of large numbers from above in a weaker form, and with exactly the tools we now have:
 
-:::{admonition} Satz
-**(Schwaches Gesetz der großen Zahlen)**
+:::{admonition} Theorem
+**(Weak law of large numbers)**
 
-Seien $X_1, \dots, X_n$ unabhängig und identisch verteilt wie $X$ (kurz: iid; jedes $X_i$ hat dieselbe Verteilung wie $X$), und $X$ habe endliche Varianz. Für das Stichprobenmittel $\overline{X_n} := \frac{1}{n} \sum_{i=1}^n X_i$ gilt dann für jedes $c > 0$
+Let $X_1, \dots, X_n$ be independent and identically distributed like $X$ (iid for short; every $X_i$ has the same distribution as $X$), and let $X$ have finite variance. Then for the sample mean $\overline{X_n} := \frac{1}{n} \sum_{i=1}^n X_i$ and every $c > 0$
 
 $$
 P\left( | \overline{X_n} - \mathbb{E} X | \geq c \right) \leq \dfrac{\mathbb{V}X}{n c^2} \xrightarrow{n \to \infty} 0.
 $$
 :::
 
-:::{admonition} Beweis
-Nach der Linearität des Erwartungswerts ist $\mathbb{E}\overline{X_n} = \frac{1}{n} \sum_{i=1}^n \mathbb{E}X_i = \mathbb{E}X$, denn jedes $X_i$ hat denselben Erwartungswert wie $X$.
-Nach den Rechenregeln für die Varianz (Abschnitt *Rechenregeln für die Varianz* weiter unten: $\mathbb{V}(aY) = a^2\,\mathbb{V}Y$, und die Varianz einer Summe unabhängiger Zufallsvariablen ist die Summe der Varianzen) ist
+:::{admonition} Proof
+By the linearity of the expected value, $\mathbb{E}\overline{X_n} = \frac{1}{n} \sum_{i=1}^n \mathbb{E}X_i = \mathbb{E}X$, since every $X_i$ has the same expected value as $X$.
+By the rules of calculation for the variance (section *Rules of calculation for the variance* further down: $\mathbb{V}(aY) = a^2\,\mathbb{V}Y$, and the variance of a sum of independent random variables is the sum of the variances),
 
 $$
 \mathbb{V}\overline{X_n} = \dfrac{1}{n^2} \mathbb{V}\left( \sum_{i=1}^n X_i \right) = \dfrac{1}{n^2} \sum_{i=1}^n \mathbb{V}X_i = \dfrac{n\,\mathbb{V}X}{n^2} = \dfrac{\mathbb{V}X}{n}.
 $$
 
-Die Tschebyscheff-Ungleichung für $\overline{X_n}$ liefert nun $P(|\overline{X_n} - \mathbb{E}X| \geq c) \leq \mathbb{V}\overline{X_n} / c^2 = \mathbb{V}X / (n c^2)$, und dieser Ausdruck geht für $n \to \infty$ gegen $0$.
+Chebyshev's inequality for $\overline{X_n}$ now gives $P(|\overline{X_n} - \mathbb{E}X| \geq c) \leq \mathbb{V}\overline{X_n} / c^2 = \mathbb{V}X / (n c^2)$, and this expression tends to $0$ as $n \to \infty$.
 :::
 
-Das ist genau die stochastische Konvergenz, die wir oben aus dem (unbewiesenen) starken Gesetz der großen Zahlen gefolgert hatten: Das schwache Gesetz ist die Form, die wir mit unseren Mitteln beweisen können; das starke Gesetz mit seiner fast sicheren Konvergenz braucht mehr Werkzeug, kommt dafür aber ohne die Voraussetzung endlicher Varianz aus.
+This is exactly the convergence in probability that we deduced above from the (unproved) strong law of large numbers: the weak law is the form we can prove with our means; the strong law, with its almost sure convergence, needs more tools but gets by without the assumption of finite variance.
 
-Das schwache Gesetz ist außerdem das Gesetz der großen Zahlen mit einer Zahl dran: Die Wahrscheinlichkeit einer Abweichung um mehr als $c$ fällt wie $1/n$, oder anders gelesen, der typische Fehler des Stichprobenmittels schrumpft wie $1/\sqrt{n}$. Wer den Fehler halbieren will, braucht die vierfache Stichprobe. Die Schranke ist grob; das Kapitel [Normalverteilung](normal-distribution.ipynb) liefert mit dem zentralen Grenzwertsatz eine schärfere, und das Kapitel [Statistische Tests](statistical-tests.md) macht daraus das Rezept, mit dem man von der Stichprobe auf die Population schließt.
+The weak law is also the law of large numbers with a number attached: the probability of a deviation by more than $c$ falls like $1/n$, or read differently, the typical error of the sample mean shrinks like $1/\sqrt{n}$. Anyone wanting to halve the error needs four times the sample. The bound is crude; the chapter [The normal distribution](normal-distribution.ipynb) supplies a sharper one with the central limit theorem, and the chapter [Statistical tests](statistical-tests.md) turns that into the recipe for inferring from the sample to the population.
 
-:::{admonition} Bemerkung
-Im Deep Learning ist der wahre Loss eines Modells der Erwartungswert der Loss-Funktion über die Verteilung der Daten, und den kann man nicht ausrechnen, weil man diese Verteilung nicht kennt. Ein Mini-Batch aus wenigen Datenpunkten liefert stattdessen ein Stichprobenmittel des Loss: billig, aber mit hoher Varianz, also genau die Situation des schwachen Gesetzes der großen Zahlen, und $\mathbb{V}X / n$ sagt, wie viel Rauschen ein Batch der Größe $n$ mitbringt. Die Vorlesung *Einführung in Deep Learning* baut darauf auf (stochastischer Gradientenabstieg).
+:::{admonition} Remark
+In deep learning the true loss of a model is the expected value of the loss function over the distribution of the data, and it cannot be computed, because that distribution is unknown. A mini-batch of a few data points supplies a sample mean of the loss instead: cheap, but with high variance, which is exactly the situation of the weak law of large numbers, and $\mathbb{V}X / n$ says how much noise a batch of size $n$ brings with it. The course *Introduction to Deep Learning* builds on this (stochastic gradient descent).
 :::
 
-Wendet man das Gesetz der großen Zahlen auf die Zufallsvariable ${\left(X-\mathbb{E}(X)\right)}^2$ an, so sieht man, dass auch die Sample-Standardabweichung gegen die Standardabweichung konvergiert. Damit ist also die Sample-Standardabweichung ein guter Ersatz, wenn sich die wahre Varianz der Zufallsvariable nicht bestimmen lässt.
+Applying the law of large numbers to the random variable ${\left(X-\mathbb{E}(X)\right)}^2$ shows that the sample standard deviation converges to the standard deviation as well. So the sample standard deviation is a good substitute when the true variance of the random variable cannot be determined.
 
 
-### Einschub: Logarithmus
+### Interlude: the logarithm
 
-Der nächste Abschnitt rechnet durchgehend mit Logarithmen. Weil die aus der Schule oft eine Weile her sind, hier das Nötige auf einer halben Seite.
+The next section computes with logarithms throughout. Since school is often a while ago, here is what is needed, on half a page.
 
 :::{admonition} Definition
-Für $b > 0$, $b \neq 1$, ist der *Logarithmus zur Basis $b$* die Umkehrung des Potenzierens: Aus $b^x = y$ folgt $x = \log_b(y)$, und umgekehrt. Er ist für $y > 0$ definiert.
+For $b > 0$, $b \neq 1$, the *logarithm to base $b$* is the inverse of exponentiation: from $b^x = y$ it follows that $x = \log_b(y)$, and conversely. It is defined for $y > 0$.
 
-Drei Basen haben eigene Namen: $\ln := \log_e$ (der *natürliche* Logarithmus, zur Basis $e \approx 2{,}718$), $\operatorname{lb} := \log_2$ (der *binäre* Logarithmus, auch $\operatorname{ld}$ geschrieben) und $\log_{10}$ (der *dekadische*).
+Three bases have names of their own: $\ln := \log_e$ (the *natural* logarithm, to base $e \approx 2.718$), $\operatorname{lb} := \log_2$ (the *binary* logarithm, also written $\operatorname{ld}$) and $\log_{10}$ (the *common* one).
 :::
 
-Der Logarithmus zählt Größenordnungen. Zur Basis $10$ kann man das direkt ablesen: $\log_{10}(100) = 2$ und $\log_{10}(1000) = 3$, und weil der Logarithmus streng monoton wächst, liegt $\log_{10}(y)$ für jede Zahl $y$ zwischen $100$ und $1000$ zwischen $2$ und $3$. Die Anzahl der Dezimalstellen einer natürlichen Zahl $y$ ist damit $\lfloor \log_{10}(y) \rfloor + 1$ — und zur Basis $2$ entsprechend die Anzahl der Binärstellen.
+The logarithm counts orders of magnitude. To base $10$ you can read that off directly: $\log_{10}(100) = 2$ and $\log_{10}(1000) = 3$, and because the logarithm is strictly increasing, $\log_{10}(y)$ lies between $2$ and $3$ for every number $y$ between $100$ and $1000$. The number of decimal digits of a natural number $y$ is therefore $\lfloor \log_{10}(y) \rfloor + 1$ – and to base $2$, correspondingly, the number of binary digits.
 
-Die Rechenregeln folgen alle aus $e^{\ln(y)} = y$ und $\ln(e^x) = x$ sowie dem Potenzgesetz $(e^u)^v = e^{uv}$:
+The rules of calculation all follow from $e^{\ln(y)} = y$ and $\ln(e^x) = x$ together with the power law $(e^u)^v = e^{uv}$:
 
 $$
 \begin{aligned}
 b^x &= \left( e^{\ln b} \right)^x = e^{\ln(b)\, x}, \\
 \ln\left( b^x \right) &= x \ln(b), \\
 \ln(y) &= \ln\left( b^{\log_b(y)} \right) = \ln(b) \log_b(y), \\
-\text{also}\quad \log_b(y) &= \dfrac{\ln(y)}{\ln(b)}.
+\text{so}\quad \log_b(y) &= \dfrac{\ln(y)}{\ln(b)}.
 \end{aligned}
 $$
 
-Die letzte Zeile ist die *Basiswechselformel*: Logarithmen zu verschiedenen Basen unterscheiden sich nur um einen konstanten Faktor. Deshalb ist die Wahl der Basis bei der Entropie eine Frage der Maßeinheit und nicht der Sache — zur Basis $2$ misst man in **bit**, zur Basis $e$ in **nat**, und zwischen beiden liegt der Faktor $\ln(2) \approx 0{,}693$.
+The last line is the *change-of-base formula*: logarithms to different bases differ only by a constant factor. That is why the choice of base for the entropy is a question of the unit of measurement and not of the matter itself – to base $2$ one measures in **bits**, to base $e$ in **nats**, and between the two lies the factor $\ln(2) \approx 0.693$.
 
-:::{admonition} Beispiel
-Die Zahl $77$ ist binär $1001101_2$, also $64 + 8 + 4 + 1$, und braucht damit $7$ Binärstellen. Nachgerechnet: $\log_2(77) = \frac{\ln 77}{\ln 2} \approx 6{,}27$, und $\lfloor 6{,}27 \rfloor + 1$ sind die erwarteten $7$ Stellen. Die Umkehrung liest man genauso: Mit $7$ bit lassen sich $2^7 = 128$ verschiedene Dinge unterscheiden, mit $6$ bit nur $64$ — zu wenig für $77$.
+:::{admonition} Example
+The number $77$ is $1001101_2$ in binary, that is $64 + 8 + 4 + 1$, and so needs $7$ binary digits. Checking: $\log_2(77) = \frac{\ln 77}{\ln 2} \approx 6.27$, and $\lfloor 6.27 \rfloor + 1$ gives the expected $7$ digits. The converse reads the same way: with $7$ bits you can distinguish $2^7 = 128$ different things, with $6$ bits only $64$ – too few for $77$.
 :::
 
-In Numpy heißen die drei Funktionen `np.log` (natürlich, *nicht* dekadisch — eine beliebte Fehlerquelle), `np.log2` und `np.log10`.
+In numpy the three functions are called `np.log` (natural, *not* common – a popular source of error), `np.log2` and `np.log10`.
 
-## Entropie
-
-[Vorlesungsaufzeichnung Entropie](https://media.hhu.de/channel/video/data-science-vl-5-entropie-2024/8f216336cc82cdd8015ddb7a6c59c252/167)
+## Entropy
 
 ::::{note}
-**Ausblick (nicht klausurrelevant): Woher das Wort kommt.** Der Begriff Entropie stammt aus der Thermodynamik, und die physikalische Anschauung erklärt gut, warum die Formel unten so aussieht, wie sie aussieht. Für den Kurs braucht man diesen Abschnitt nicht.
+**Looking ahead (not part of the course proper): where the word comes from.** The notion of entropy comes from thermodynamics, and the physical picture explains well why the formula below looks the way it does. For the course you do not need this section.
 
-Denken Sie sich zwei baugleiche Behälter mit derselben Anzahl Gasteilchen darin. Im ersten sind die Teilchen gleichmäßig verteilt, im zweiten hocken sie alle in einer Ecke.
+Picture two identical containers with the same number of gas particles in them. In the first the particles are evenly distributed, in the second they are all huddled in one corner.
 
 ```{figure} images/entropie-gas-hoch.png
 :width: 360px
 :align: center
 :name: entropie-gas-hoch
 
-Gleichmäßig verteilte Teilchen: hohe Entropie.
+Evenly distributed particles: high entropy.
 ```
 
 ```{figure} images/entropie-gas-niedrig.png
@@ -527,25 +522,25 @@ Gleichmäßig verteilte Teilchen: hohe Entropie.
 :align: center
 :name: entropie-gas-niedrig
 
-Alle Teilchen in einer Ecke: niedrige Entropie.
+All the particles in one corner: low entropy.
 ```
 
-Der zweite Zustand überrascht uns, der erste nicht. Und wir wissen auch, in welche Richtung die Geschichte weitergeht: Der zweite Behälter wird nach kurzer Zeit aussehen wie der erste, der erste dagegen nie wie der zweite. Das ist der **zweite Hauptsatz der Thermodynamik**: In einem abgeschlossenen System kann die Entropie nicht abnehmen. Ein Spiegelei lässt sich nicht in ein rohes Ei zurückverwandeln.
+The second state surprises us, the first does not. And we also know which way the story goes on: before long the second container will look like the first, while the first will never look like the second. That is the **second law of thermodynamics**: in a closed system the entropy cannot decrease. A fried egg cannot be turned back into a raw one.
 
-Naheliegend, aber irreführend ist die Übersetzung „Entropie = Unordnung“. Genauer ist die Unterscheidung zwischen *Makrozustand* und *Mikrozustand*. Der Makrozustand ist das, was man messen kann — Temperatur, Druck, „alle Teilchen links“ —, der Mikrozustand die vollständige Angabe, wo jedes einzelne Teilchen sitzt. Zu einem Makrozustand gehören meist ungeheuer viele Mikrozustände, und genau deren Anzahl ist das Maß: Zum Makrozustand „gleichmäßig verteilt“ gehören unvorstellbar viel mehr Anordnungen als zum Makrozustand „alle in der linken oberen Ecke“. Ludwig Boltzmann hat das in die Formel
+The obvious but misleading gloss is "entropy = disorder". More precise is the distinction between *macrostate* and *microstate*. The macrostate is what can be measured – temperature, pressure, "all the particles on the left" – and the microstate is the complete specification of where every single particle sits. A macrostate usually comprises an enormous number of microstates, and it is exactly that number which is the measure: the macrostate "evenly distributed" comprises unimaginably more arrangements than the macrostate "all in the top left corner". Ludwig Boltzmann cast this into the formula
 
 $$
 S = k_B \ln W
 $$
 
-gegossen, wobei $W$ die Anzahl der Mikrozustände zum gegebenen Makrozustand ist und $k_B$ eine Naturkonstante, die nur die Einheit richtig stellt. Zieht man in beide Behälter eine Trennwand ein, wird der Unterschied handgreiflich:
+in which $W$ is the number of microstates belonging to the given macrostate and $k_B$ a physical constant that only gets the unit right. Put a partition into both containers and the difference becomes tangible:
 
 ```{figure} images/entropie-gas-hoch-geteilt.png
 :width: 360px
 :align: center
 :name: entropie-gas-hoch-geteilt
 
-Mit Trennwand: Links und rechts ist ungefähr gleich viel Gas — dieser Makrozustand lässt sich auf sehr viele Arten herstellen.
+With a partition: there is roughly the same amount of gas on the left and on the right – this macrostate can be produced in a great many ways.
 ```
 
 ```{figure} images/entropie-gas-niedrig-geteilt.png
@@ -553,28 +548,28 @@ Mit Trennwand: Links und rechts ist ungefähr gleich viel Gas — dieser Makrozu
 :align: center
 :name: entropie-gas-niedrig-geteilt
 
-Mit Trennwand: Alles Gas ist links — dieser Makrozustand lässt nur wenige Anordnungen zu.
+With a partition: all the gas is on the left – this macrostate admits only a few arrangements.
 ```
 
-:::{admonition} Merke
-Entropie ist immer *relativ zu einem Makrozustand* definiert. Wir zählen die Möglichkeiten, die mit unserem Wissen verträglich sind, und nehmen dann den Logarithmus.
+:::{admonition} Remember
+Entropy is always defined *relative to a macrostate*. We count the possibilities compatible with what we know, and then take the logarithm.
 :::
 
-Diesen Satz können Sie unverändert mitnehmen, wenn Sie gleich die Definition für Zufallsvariablen lesen: Der Makrozustand ist dort die Verteilung, die wir kennen, und gezählt (genauer: gewichtet) wird über die Ergebnisse, die sie zulässt. Der Logarithmus bleibt.
+You can carry that sentence over unchanged when you read the definition for random variables in a moment: there the macrostate is the distribution we know, and what is counted (more precisely: weighted) are the outcomes it allows. The logarithm stays.
 ::::
 
-Von der Physik in die Nachrichtentechnik gebracht hat den Begriff Claude Shannon (1916–2001) in seiner Arbeit *A Mathematical Theory of Communication* {cite}`shannon1948`, mit der 1948 die Informationstheorie als eigenes Gebiet begann. Shannon fragte, wie viele Bits man mindestens braucht, um eine Nachricht zu übertragen, und fand dieselbe Größe wieder, die Boltzmann für Gasteilchen aufgeschrieben hatte. Sie heißt ihm zu Ehren auch *Shannon-Entropie*.
+The notion was carried from physics into communications engineering by Claude Shannon (1916–2001) in his paper *A Mathematical Theory of Communication* {cite}`shannon1948`, with which information theory began as a field of its own in 1948. Shannon asked how many bits one needs at least in order to transmit a message, and found again the same quantity Boltzmann had written down for gas particles. In his honour it is also called the *Shannon entropy*.
 
 :::{admonition} Definition
-Bei einem diskreten Wahrscheinlichkeitsraum $\Omega$ nennen wir für $x \in \Omega$ die *Information* (auch *Selbstinformation*) von $x$
+For a discrete probability space $\Omega$ and $x \in \Omega$ we call the *information* (also the *self-information*) of $x$
 
 $$
 I(x) := -\log_b(P(\{x\})).
 $$
 
-Dabei ist die Basis $b$ des Logarithmus in der Regel $2$, aber letztlich nicht so wichtig.
-Für eine Zufallsvariable $X \colon \Omega' \to \Omega$ können wir nun die Verkettung $I \circ X \colon \Omega' \to \mathbb{R}$ betrachten,
-eine reelle Zufallsvariable. Ihr Erwartungswert ist die mittlere Information von $X$, wir sagen auch *Entropie*
+The base $b$ of the logarithm is usually $2$, but in the end it does not matter much.
+For a random variable $X \colon \Omega' \to \Omega$ we can now consider the composition $I \circ X \colon \Omega' \to \mathbb{R}$,
+a real random variable. Its expected value is the average information of $X$, which we also call the *entropy*
 
 $$
 \begin{aligned}
@@ -584,184 +579,184 @@ H(X) := \mathbb{E}\left( I(X) \right) &= \sum_{\omega' \in \Omega'} -\log_b\big(
 $$
 :::
 
-:::{admonition} Bemerkung
-In der Summe für $H(X)$ steht ein Problem: Für $P(\{\omega\}) = 0$ ist $\log_b(0)$ nicht definiert. Man setzt deshalb die Funktion $x \mapsto x\log x$ an der Stelle $0$ durch ihren Grenzwert fort,
+:::{admonition} Remark
+There is a problem in the sum for $H(X)$: for $P(\{\omega\}) = 0$, $\log_b(0)$ is undefined. One therefore extends the function $x \mapsto x\log x$ at $0$ by its limit,
 
 $$
 \lim_{x \to 0^+} x \log x = 0
 $$
 
-(mit l'Hospital auf $\frac{\log x}{1/x}$), und vereinbart $0 \log 0 := 0$. Summanden zu unmöglichen Ergebnissen tragen also nichts bei, und die Summe läuft effektiv nur über die $\omega$ mit $P(\{\omega\}) > 0$. Das ist die Konvention, mit der im Kapitel [Relative Entropie](relative-entropy.md) die Summen „über $p_i \neq 0$“ geschrieben werden.
+(l'Hôpital applied to $\frac{\log x}{1/x}$), and agrees that $0 \log 0 := 0$. Summands belonging to impossible outcomes therefore contribute nothing, and the sum effectively runs only over the $\omega$ with $P(\{\omega\}) > 0$. That is the convention behind the sums written "over $p_i \neq 0$" in the chapter [Relative entropy](relative-entropy.md).
 :::
 
-:::{admonition} Beispiel
-Bei einer Gleichverteilung auf $\Omega = \{1,\dots,n\}$ ist für $x\in\Omega$ stets $P(\{x\}) = \frac{1}{n}$,
-also $I(x) = -\log_2(P(\{x\})) = -\log_2\frac{1}{n} = \log_2(n)$ und somit
+:::{admonition} Example
+For a uniform distribution on $\Omega = \{1,\dots,n\}$ we always have $P(\{x\}) = \frac{1}{n}$ for $x\in\Omega$,
+so $I(x) = -\log_2(P(\{x\})) = -\log_2\frac{1}{n} = \log_2(n)$ and hence
 $H(X) = \sum_{i=1}^n \frac{\log_2(n)}{n} = \log_2(n)$.
-Diese Zahl verrät uns, dass wir im Mittel $\log_2(n)$ bit brauchen, um ein einzelnes Ergebnis von $X$ mitzuteilen, wenn Sender und Empfänger die Verteilung kennen; ein Sample der Größe $N$ kostet dann $N \log_2(n)$ bit. Es gibt andere Verteilungen, bei denen im Mittel weniger Information je Ergebnis genügt. Genau genommen sogar jede, denn die Gleichverteilung hat maximale Entropie unter allen diskreten Verteilungen. Sie korrespondiert dazu, dass wir maximal wenig wissen und daher alle Ergebnisse als gleich wahrscheinlich annehmen.
+This number tells us that on average we need $\log_2(n)$ bits to communicate a single outcome of $X$, provided sender and receiver know the distribution; a sample of size $N$ then costs $N \log_2(n)$ bits. There are other distributions for which less information per outcome suffices on average. Strictly speaking every one of them, in fact, since the uniform distribution has maximal entropy among all discrete distributions. It corresponds to our knowing as little as possible and therefore taking all outcomes to be equally probable.
 :::
 
-:::{admonition} Beispiel
-**Wie viel Information steckt in einem Buchstaben?** Zählt man die Häufigkeiten der Buchstaben in deutschen Texten und setzt sie in die Formel ein, so kommt eine Entropie von etwa $4{,}06$ bit je Zeichen heraus {cite}`fox2008`. Zum Vergleich: Wären alle $26$ Buchstaben gleich wahrscheinlich, wären es $\log_2(26) \approx 4{,}70$ bit. Der Unterschied ist genau das, was die ungleiche Häufigkeit von „e“ und „x“ einspart.
+:::{admonition} Example
+**How much information is there in a letter?** Count the frequencies of the letters in German texts, put them into the formula, and an entropy of about $4.06$ bits per character comes out {cite}`fox2008`. For comparison: if all $26$ letters were equally probable it would be $\log_2(26) \approx 4.70$ bits. The difference is exactly what the unequal frequency of "e" and "x" saves.
 
-Berücksichtigt man zusätzlich, welche Buchstaben *vorangegangen* sind, sinkt der Wert auf etwa $1{,}5$ bit je Buchstabe — nach „sch“ ist der nächste Buchstabe kaum noch eine Überraschung. Sprache ist also hochgradig redundant, und das ist der Grund, warum sich Text so gut komprimieren lässt und warum man einen Satz auch dann noch versteht, wenn die Hälfte fehlt.
+Take into account which letters have *gone before* as well, and the value sinks to about $1.5$ bits per letter – after "sch" the next letter is hardly a surprise any more. Language is thus highly redundant, and that is why text compresses so well and why you can still understand a sentence when half of it is missing.
 
-Was das praktisch bedeutet, sieht man am Raten. Eine zufällige Zeichenkette der Länge $10$ über dem Alphabet, etwa `pashglwnmv`, trägt $10 \cdot 4{,}70 \approx 47$ bit — wer sie erraten will, braucht in der Größenordnung von $2^{47}$ Versuchen. Weiß der Ratende dagegen, dass es sich um ein deutsches Wort handelt, etwa `kabelkanal`, so sind es nur noch $10 \cdot 1{,}5 = 15$ bit, also $2^{15} = 32\,768$ Versuche. Das ist der Unterschied zwischen „praktisch unmöglich“ und „in einer Sekunde erledigt“, und er liegt nicht an der Länge der Zeichenkette, sondern an dem, was der Ratende über sie weiß.
+What that means in practice can be seen in guessing. A random string of length $10$ over the alphabet, say `pashglwnmv`, carries $10 \cdot 4.70 \approx 47$ bits – guessing it takes on the order of $2^{47}$ attempts. If the guesser knows instead that it is a German word, say `kabelkanal`, it is only $10 \cdot 1.5 = 15$ bits, that is $2^{15} = 32{,}768$ attempts. That is the difference between "practically impossible" and "done in a second", and it is not down to the length of the string but to what the guesser knows about it.
 :::
 
-Genau diese Überlegung ist der Kern eines der bekanntesten Comics zum Thema Sicherheit:
+This very argument is the core of one of the best-known comics on the subject of security:
 
 ```{figure} images/xkcd-password-strength.png
 :width: 480px
 :align: center
 :name: xkcd-password
 
-Randall Munroe, [xkcd 936 „Password Strength“](https://xkcd.com/936/) (CC BY-NC 2.5)
+Randall Munroe, [xkcd 936 "Password Strength"](https://xkcd.com/936/) (CC BY-NC 2.5)
 ```
 
-Das Passwort `Tr0ub4dor&3` sieht kompliziert aus, ist aber nach einem Verfahren gebaut, das ein Angreifer kennt (ein Wort, ein paar übliche Ersetzungen, eine Ziffer, ein Sonderzeichen) — es trägt rund $28$ bit. Vier zufällig gewählte Wörter wie `correct horse battery staple` tragen rund $44$ bit, sind also etwa $2^{16} \approx 65\,000$-mal schwerer zu raten, und zusätzlich leichter zu merken.
+The password `Tr0ub4dor&3` looks complicated, but it is built by a procedure an attacker knows (a word, a few usual substitutions, a digit, a special character) – it carries around $28$ bits. Four randomly chosen words such as `correct horse battery staple` carry around $44$ bits, so they are about $2^{16} \approx 65{,}000$ times harder to guess, and easier to remember into the bargain.
 
-Die Lehre ist dieselbe wie beim Beispiel davor: Die Entropie hängt nicht am Aussehen des Ergebnisses, sondern am **Verfahren, das es erzeugt hat**. Ein Passwort ist nicht sicher, weil es kryptisch aussieht, sondern weil die Menge der Passwörter, aus denen es hätte stammen können, groß ist. Deshalb ist die Frage „wie stark ist dieses Passwort?“ für ein einzelnes Passwort streng genommen gar nicht zu beantworten — beantworten lässt sich nur, wie stark das Verfahren ist.
+The lesson is the same as in the example before: entropy does not hang on how the outcome looks but on the **procedure that produced it**. A password is not secure because it looks cryptic, but because the set of passwords it could have come from is large. That is why the question "how strong is this password?" strictly speaking cannot be answered at all for a single password – all that can be answered is how strong the procedure is.
 
-Am anderen Ende der Skala steht die Dirac-Verteilung: Ist $P(\{\xi\}) = 1$ für ein einziges $\xi \in \Omega$
-und $P(\{\omega\}) = 0$ für alle anderen, so ist $I(\xi) = -\log_2(1) = 0$ und damit $H(X) = 0$
-(für die Summanden mit $P(\{\omega\}) = 0$ greift die Konvention $0\log 0 = 0$ von oben).
-Das ist der kleinstmögliche Wert, denn $H(X)$ ist eine Summe nichtnegativer Terme.
-Auf einer endlichen Menge $\Omega$ gilt also stets $0 \leq H(X) \leq \log_2|\Omega|$,
-wobei das Minimum genau von den Dirac-Verteilungen angenommen wird (davon gibt es $|\Omega|$ Stück, eine je Element)
-und das Maximum ausschließlich von der Gleichverteilung.
+At the other end of the scale stands the Dirac distribution: if $P(\{\xi\}) = 1$ for a single $\xi \in \Omega$
+and $P(\{\omega\}) = 0$ for all the others, then $I(\xi) = -\log_2(1) = 0$ and hence $H(X) = 0$
+(for the summands with $P(\{\omega\}) = 0$ the convention $0\log 0 = 0$ from above applies).
+That is the smallest possible value, since $H(X)$ is a sum of non-negative terms.
+On a finite set $\Omega$ we therefore always have $0 \leq H(X) \leq \log_2|\Omega|$,
+the minimum being attained exactly by the Dirac distributions (there are $|\Omega|$ of them, one per element)
+and the maximum solely by the uniform distribution.
 
-Am besten versteht man die Entropie als eine relative Größe, und das werden wir später noch tun. Im weiteren Verlauf des Kurses begegnet sie uns an zwei Stellen: beim Aufstellen statistischer Modelle — das Maximum-Entropie-Prinzip im Kapitel [Normalverteilung](normal-distribution.ipynb) und das eng verwandte Maximum-Likelihood-Prinzip im Kapitel [Statistische Modelle und Schätzer](statistical-models.md) — und bei der Bewertung der Modellgüte, wo Kreuzentropie und relative Entropie im Kapitel [Relative Entropie](relative-entropy.md) die Werkzeuge sind.
+Entropy is best understood as a relative quantity, and that is what we shall do later on. In the rest of the course we meet it in two places: in setting up statistical models – the maximum entropy principle in the chapter [The normal distribution](normal-distribution.ipynb) and the closely related maximum likelihood principle in the chapter [Statistical models and estimators](statistical-models.md) – and in assessing the goodness of a model, where cross-entropy and relative entropy in the chapter [Relative entropy](relative-entropy.md) are the tools.
 
 
-## Unabhängigkeit
+## Independence
 
 :::{admonition} Definition
-Sei $\Omega$ ein Wahrscheinlichkeitsraum. Ereignisse $A,B \subseteq \Omega$ heißen *voneinander unabhängig*, wenn
+Let $\Omega$ be a probability space. Events $A,B \subseteq \Omega$ are called *independent of each other* if
 
 $$
 P(A\cap B) = P(A) \cdot P(B).
 $$
 
-Allgemeiner heißt eine Familie $(A_i)_{i\in I}$, $A_i \subseteq \Omega$ von Ereignissen *unabhängig*, wenn
-für jede endliche Teilindexmenge $J \subseteq I$ gilt:
+More generally, a family $(A_i)_{i\in I}$, $A_i \subseteq \Omega$, of events is called *independent* if
+for every finite subset $J \subseteq I$ of indices:
 
 $$
 P\left( \bigcap_{j \in J} A_j \right) = \prod_{j\in J} P(A_j).
 $$
 :::
 
-Dabei macht es im Allgemeinen einen echten Unterschied, ob eine Familie unabhängig oder nur paarweise unabhängig ist, daher ist die Definition mit Familien wichtig.
+In general it makes a real difference whether a family is independent or only pairwise independent, which is why the definition in terms of families matters.
 
-:::{admonition} Beispiel
-**Unabhängig: zwei Würfel.** Wir werfen zwei faire sechsseitige Würfel. Als Wahrscheinlichkeitsraum nehmen wir $\Omega = \{1,\dots,6\}^2$ mit der Gleichverteilung, also $36$ gleich wahrscheinliche Ergebnisse $(i,j)$. Sei $A$ das Ereignis „der erste Würfel zeigt eine gerade Zahl“ und $B$ das Ereignis „der zweite Würfel zeigt eine Sechs“. Dann ist
+:::{admonition} Example
+**Independent: two dice.** We throw two fair six-sided dice. As the probability space we take $\Omega = \{1,\dots,6\}^2$ with the uniform distribution, so $36$ equally probable outcomes $(i,j)$. Let $A$ be the event "the first die shows an even number" and $B$ the event "the second die shows a six". Then
 
 $$
 P(A) = \dfrac{18}{36} = \dfrac{1}{2}, \qquad P(B) = \dfrac{6}{36} = \dfrac{1}{6}.
 $$
 
-Für den Schnitt zählen wir aus, statt eine Formel zu benutzen: $A \cap B = \{(2,6),(4,6),(6,6)\}$, also $P(A \cap B) = \frac{3}{36} = \frac{1}{12}$. Und tatsächlich ist $\frac12 \cdot \frac16 = \frac{1}{12}$, die beiden Ereignisse sind also unabhängig.
+For the intersection we count rather than use a formula: $A \cap B = \{(2,6),(4,6),(6,6)\}$, so $P(A \cap B) = \frac{3}{36} = \frac{1}{12}$. And indeed $\frac12 \cdot \frac16 = \frac{1}{12}$, so the two events are independent.
 
-Dass wir ausgezählt haben, ist wichtig: Hätten wir $P(A\cap B)$ gleich als Produkt berechnet, hätten wir die Unabhängigkeit vorausgesetzt statt sie zu prüfen. Inhaltlich ist sie hier klar, weil sich $A$ und $B$ auf verschiedene Würfel beziehen.
+That we counted matters: had we computed $P(A\cap B)$ as a product straight away, we would have assumed independence instead of checking it. Substantively it is clear here, because $A$ and $B$ refer to different dice.
 :::
 
-:::{admonition} Beispiel
-**Abhängig: Bonbons ohne Zurücklegen.** In einer Tüte liegen drei Bonbons: ein rotes, ein grünes, ein blaues. Wir ziehen zwei davon nacheinander heraus, ohne das erste zurückzulegen. Der Wahrscheinlichkeitsraum ist die Menge der $6$ geordneten Paare verschiedener Farben,
+:::{admonition} Example
+**Dependent: sweets without replacement.** There are three sweets in a bag: a red one, a green one, a blue one. We draw two of them one after the other, without putting the first back. The probability space is the set of the $6$ ordered pairs of different colours,
 
 $$
 \Omega = \{(r,g),(r,b),(g,r),(g,b),(b,r),(b,g)\},
 $$
 
-wieder mit der Gleichverteilung. Sei $A$ das Ereignis „das erste Bonbon ist rot“ und $B$ das Ereignis „das zweite Bonbon ist grün“. Dann ist $A = \{(r,g),(r,b)\}$ mit $P(A) = \frac{2}{6} = \frac13$ und $B = \{(r,g),(b,g)\}$ mit $P(B) = \frac{2}{6} = \frac13$. Der Schnitt enthält nur ein einziges Ergebnis, $A \cap B = \{(r,g)\}$, also
+again with the uniform distribution. Let $A$ be the event "the first sweet is red" and $B$ the event "the second sweet is green". Then $A = \{(r,g),(r,b)\}$ with $P(A) = \frac{2}{6} = \frac13$ and $B = \{(r,g),(b,g)\}$ with $P(B) = \frac{2}{6} = \frac13$. The intersection contains a single outcome only, $A \cap B = \{(r,g)\}$, so
 
 $$
 P(A \cap B) = \dfrac{1}{6} \neq \dfrac{1}{9} = P(A)\,P(B).
 $$
 
-Die beiden Ereignisse sind also *nicht* unabhängig. Das ist auch inhaltlich richtig: Wenn zuerst das rote Bonbon gezogen wurde, bleiben nur noch grün und blau übrig, und grün ist im zweiten Zug auf einmal wahrscheinlicher geworden — von $\frac13$ auf $\frac12$. Genau diese Zahl bekommt weiter unten einen Namen, sie ist die bedingte Wahrscheinlichkeit $P(B \mid A)$.
+The two events are therefore *not* independent. That is right substantively too: if the red sweet was drawn first, only green and blue are left, and green has suddenly become more probable on the second draw – up from $\frac13$ to $\frac12$. That number gets a name further down: it is the conditional probability $P(B \mid A)$.
 
-Ziehen ohne Zurücklegen ist in Python `random.sample`, Ziehen mit Zurücklegen `random.choices` (siehe [Stochastik programmieren](programming-stochastics.ipynb)) — der Unterschied zwischen den beiden Funktionen ist genau der Unterschied zwischen abhängig und unabhängig.
+Drawing without replacement is `random.sample` in Python, drawing with replacement `random.choices` (see [Programming with stochastics](programming-stochastics.ipynb)) – the difference between the two functions is exactly the difference between dependent and independent.
 :::
 
 :::{admonition} Definition
-Sei $\Omega$ ein Wahrscheinlichkeitsraum.
-Eine Familie von Zufallsvariablen $(Y_i)_{i \in I}$, $Y_i \colon \Omega \to \Omega_i$ heißt *unabhängig*, wenn
-für beliebige Ereignisse $B_i \subseteq \Omega_i$ die Familie $\left( \{Y_i \in B_i\} \right)_{i \in I}$ unabhängig in $\Omega$ ist.
+Let $\Omega$ be a probability space.
+A family of random variables $(Y_i)_{i \in I}$, $Y_i \colon \Omega \to \Omega_i$, is called *independent* if
+for arbitrary events $B_i \subseteq \Omega_i$ the family $\left( \{Y_i \in B_i\} \right)_{i \in I}$ is independent in $\Omega$.
 :::
 
-:::{admonition} Bemerkung
-Für zwei Zufallsvariablen $X, Y \colon \Omega \to \mathbb{R}$ liest sich das so: $X$ und $Y$ sind genau dann unabhängig, wenn
+:::{admonition} Remark
+For two random variables $X, Y \colon \Omega \to \mathbb{R}$ this reads as follows: $X$ and $Y$ are independent exactly when
 
 $$
 P(X \in A,\ Y \in B) = P(X \in A)\,P(Y \in B)
 $$
 
-für alle Ereignisse $A, B$ gilt. Die linke Seite ist dabei eine Abkürzung für $P\left( (X,Y) \in A \times B \right)$ — sie handelt also nicht von $X$ und $Y$ einzeln, sondern von dem Paar $(X,Y)$, aufgefasst als *eine* Zufallsvariable mit Werten in $\mathbb{R}^2$. Deren Verteilung heißt die **gemeinsame Verteilung** von $X$ und $Y$; formal definieren wir sie im Kapitel [Kovarianz und Abhängigkeit](covariance.md).
+holds for all events $A, B$. The left-hand side is shorthand for $P\left( (X,Y) \in A \times B \right)$ – so it is not about $X$ and $Y$ separately but about the pair $(X,Y)$, understood as *one* random variable with values in $\mathbb{R}^2$. Its distribution is called the **joint distribution** of $X$ and $Y$; we define it formally in the chapter [Covariance and dependence](covariance.md).
 
-Wichtig ist die Reihenfolge: Die gemeinsame Verteilung ist die eigentliche Information, und die Verteilungen von $X$ und $Y$ einzeln ergeben sich daraus. Umgekehrt geht es *nicht* — aus den Einzelverteilungen allein lässt sich die gemeinsame im Allgemeinen nicht rekonstruieren. Genau das ist der Inhalt der Unabhängigkeit: Sie ist die Zusatzannahme, unter der das Produkt $p(x)q(y)$ der beiden pmf die gemeinsame pmf ist.
+The order matters: the joint distribution is the real information, and the distributions of $X$ and $Y$ separately follow from it. The other way round does *not* work – from the individual distributions alone the joint one generally cannot be reconstructed. That is exactly what independence says: it is the extra assumption under which the product $p(x)q(y)$ of the two pmfs is the joint pmf.
 :::
 
-:::{admonition} Beispiel
-Für $I = \{1,\dots,n\}$ und $\Omega_i$ jeweils diskret ist $Y_1,\dots,Y_n$ unabhängig genau dann wenn für alle Ergebnisse $\omega_i \in \Omega_i$ gilt:
+:::{admonition} Example
+For $I = \{1,\dots,n\}$ and each $\Omega_i$ discrete, $Y_1,\dots,Y_n$ are independent exactly when for all outcomes $\omega_i \in \Omega_i$:
 
 $$
 P(Y_1=\omega_1, \dots, Y_n=\omega_n) = \prod_{i=1}^n P(Y_i = \omega_i).
 $$
 :::
 
-In diesem Zusammenhang taucht auch sehr oft ein weiterer Begriff auf:
+In this connection another notion comes up very often:
 
 :::{admonition} Definition
-Sei $\Omega$ ein Wahrscheinlichkeitsraum. Für Ereignisse $A,B \subseteq \Omega$ heißt
+Let $\Omega$ be a probability space. For events $A,B \subseteq \Omega$,
 
 $$
 P(A | B) := \dfrac{P(A\cap B)}{P(B)}
 $$
 
-die *bedingte Wahrscheinlichkeit* von $A$ bedingt $B$.
+is called the *conditional probability* of $A$ given $B$.
 :::
 
-Klar: Für $P(B) > 0$ sind $A$ und $B$ unabhängig voneinander genau dann, wenn $P(A | B) = P(A)$.
-Im Bonbon-Beispiel oben ist $P(B \mid A) = \frac{P(A \cap B)}{P(A)} = \frac{1/6}{1/3} = \frac12$, und das ist nicht $P(B) = \frac13$ — so sieht Abhängigkeit in Zahlen aus.
-Bedingte Wahrscheinlichkeiten treten also stets dann auf (bzw. sind besonders interessant), wenn zwei Ereignisse (bzw. Zufallsvariablen) nicht unabhängig sind.
+Clearly: for $P(B) > 0$, $A$ and $B$ are independent of each other exactly when $P(A | B) = P(A)$.
+In the sweets example above, $P(B \mid A) = \frac{P(A \cap B)}{P(A)} = \frac{1/6}{1/3} = \frac12$, and that is not $P(B) = \frac13$ – this is what dependence looks like in numbers.
+Conditional probabilities therefore always arise (or rather, are especially interesting) when two events, or two random variables, are not independent.
 
-:::{admonition} Ausblick
-Unabhängigkeit ist eine Alles-oder-nichts-Eigenschaft; in echten Daten ist die interessantere Frage, *wie stark* zwei Größen zusammenhängen. Dafür lernen wir zwei Maße kennen, und es lohnt sich, sie von Anfang an auseinanderzuhalten.
+:::{admonition} Looking ahead
+Independence is an all-or-nothing property; in real data the more interesting question is *how strongly* two quantities are related. We will meet two measures for that, and it is worth keeping them apart from the start.
 
-Das erste ist die **Kovarianz** und der aus ihr gebildete Korrelationskoeffizient (Kapitel [Kovarianz und Abhängigkeit](covariance.md)). Sie misst *lineare* Zusammenhänge. Aus Unabhängigkeit folgt, dass die Kovarianz $0$ ist — aber nicht umgekehrt: Zwei Größen können perfekt voneinander abhängen und trotzdem unkorreliert sein, etwa $X$ und $X^2$ bei symmetrisch verteiltem $X$. „Korreliert“ ist also eine stärkere Aussage als „abhängig“, und „unkorreliert“ eine schwächere als „unabhängig“.
+The first is the **covariance** and the correlation coefficient formed from it (chapter [Covariance and dependence](covariance.md)). It measures *linear* relationships. Independence implies that the covariance is $0$ – but not conversely: two quantities can depend on each other perfectly and still be uncorrelated, for instance $X$ and $X^2$ for symmetrically distributed $X$. So "correlated" is a stronger statement than "dependent", and "uncorrelated" a weaker one than "independent".
 
-Das zweite Maß erfasst Abhängigkeit beliebiger Form: die **relative Entropie** zwischen der gemeinsamen Verteilung und dem Produkt der Einzelverteilungen, auch *Transinformation* oder *gemeinsame Information* $I(X;Y)$ genannt (Kapitel [Relative Entropie](relative-entropy.md)). Sie ist genau dann $0$, wenn die beiden Zufallsvariablen unabhängig sind — sie misst also wirklich Abhängigkeit und nicht nur ihren linearen Anteil. Der Preis dafür: Man braucht die gemeinsame Verteilung, und die zu schätzen ist deutlich aufwendiger, als eine Kovarianz auszurechnen.
+The second measure captures dependence of any shape: the **relative entropy** between the joint distribution and the product of the individual distributions, also called *transinformation* or *mutual information* $I(X;Y)$ (chapter [Relative entropy](relative-entropy.md)). It is $0$ exactly when the two random variables are independent – so it really does measure dependence and not just its linear part. The price: you need the joint distribution, and estimating that is considerably more work than computing a covariance.
 :::
 
-### Rechenregeln für die Varianz
+### Rules of calculation for the variance
 
-Der Erwartungswert ist linear, die Varianz ist es nicht. Stattdessen gelten die folgenden beiden Regeln,
-die wir im nächsten Kapitel ständig brauchen werden.
+The expected value is linear, the variance is not. Instead the following two rules hold,
+and we will need them constantly in the next chapter.
 
 :::{admonition} Lemma
-Sei $X \colon \Omega \to \mathbb{R}$ eine Zufallsvariable mit endlicher Varianz.
+Let $X \colon \Omega \to \mathbb{R}$ be a random variable with finite variance.
 
-1. Für $a,b \in \mathbb{R}$ ist $\mathbb{V}(aX+b) = a^2\,\mathbb{V}(X)$.
+1. For $a,b \in \mathbb{R}$, $\mathbb{V}(aX+b) = a^2\,\mathbb{V}(X)$.
 
-2. Sind $X$ und $Y$ unabhängig, so ist $\mathbb{V}(X+Y) = \mathbb{V}(X) + \mathbb{V}(Y)$.
-   Allgemeiner ist für paarweise unabhängige $X_1,\dots,X_n$
+2. If $X$ and $Y$ are independent, then $\mathbb{V}(X+Y) = \mathbb{V}(X) + \mathbb{V}(Y)$.
+   More generally, for pairwise independent $X_1,\dots,X_n$,
 
 $$
 \mathbb{V}\left( \sum_{i=1}^n X_i \right) = \sum_{i=1}^n \mathbb{V}(X_i).
 $$
 :::
 
-:::{admonition} Beweis
-(1) Nach der Linearität des Erwartungswerts ist $\mathbb{E}(aX+b) = a\,\mathbb{E}X + b$, also
+:::{admonition} Proof
+(1) By the linearity of the expected value, $\mathbb{E}(aX+b) = a\,\mathbb{E}X + b$, so
 
 $$
 aX + b - \mathbb{E}(aX+b) = a\left( X - \mathbb{E}X \right)
 $$
 
-und damit $\mathbb{V}(aX+b) = \mathbb{E}\left( a^2 {\left( X - \mathbb{E}X \right)}^2 \right) = a^2\,\mathbb{V}(X)$.
-Insbesondere ändert eine Verschiebung um $b$ die Varianz nicht.
+and hence $\mathbb{V}(aX+b) = \mathbb{E}\left( a^2 {\left( X - \mathbb{E}X \right)}^2 \right) = a^2\,\mathbb{V}(X)$.
+In particular, a shift by $b$ does not change the variance.
 
-(2) Wir multiplizieren aus und nutzen die Linearität:
+(2) We expand and use linearity:
 
 $$
 \begin{aligned}
@@ -772,16 +767,16 @@ $$
 \end{aligned}
 $$
 
-Sind $X$ und $Y$ unabhängig, so ist der Klammerausdruck nach der Produktregel gleich $0$.
-Der allgemeine Fall folgt genauso durch Ausmultiplizieren: Alle gemischten Terme $\mathbb{E}(X_iX_j) - \mathbb{E}X_i\,\mathbb{E}X_j$ mit $i \neq j$ verschwinden, und dafür genügt paarweise Unabhängigkeit (Kapitel [Kovarianz](covariance.md)).
+If $X$ and $Y$ are independent, the bracketed expression equals $0$ by the product rule.
+The general case follows in the same way by expanding: all the mixed terms $\mathbb{E}(X_iX_j) - \mathbb{E}X_i\,\mathbb{E}X_j$ with $i \neq j$ vanish, and pairwise independence is enough for that (chapter [Covariance](covariance.md)).
 :::
 
-Der Term $\mathbb{E}(XY) - \mathbb{E}(X)\mathbb{E}(Y)$, der hier gerade verschwindet, ist eine eigene interessante Größe:
-Er heißt *Kovarianz* von $X$ und $Y$ und misst, wie stark die beiden Variablen linear zusammenhängen.
-Im Kapitel [Kovarianz](covariance.md) nehmen wir ihn genauer unter die Lupe und beweisen die Regel dort noch einmal
-in der allgemeinen Fassung, ohne die Voraussetzung der Unabhängigkeit.
+The term $\mathbb{E}(XY) - \mathbb{E}(X)\mathbb{E}(Y)$, which has just vanished here, is an interesting quantity in its own right:
+it is called the *covariance* of $X$ and $Y$ and measures how strongly the two variables are linearly related.
+In the chapter [Covariance](covariance.md) we put it under the microscope and prove the rule there once more
+in its general form, without the assumption of independence.
 
-Regel (2) ist der Grund dafür, dass sich die Varianz einer Summe unabhängiger Wiederholungen desselben Experiments
-so einfach ausrechnen lässt — das nutzen wir im Kapitel
-[Wichtigste diskrete Verteilungen](important-discrete-distributions.ipynb)
-bei der Binomialverteilung.
+Rule (2) is the reason why the variance of a sum of independent repetitions of the same experiment
+is so easy to compute – we use that in the chapter
+[The most important discrete distributions](important-discrete-distributions.ipynb)
+for the binomial distribution.
