@@ -3,152 +3,152 @@
   "files": {
     "continuous-distributions.md": {
       "translated": true,
-      "style_pass": false,
+      "style_pass": true,
       "source": "stetige-verteilungen.md"
     },
     "covariance.md": {
       "translated": true,
-      "style_pass": false,
+      "style_pass": true,
       "source": "kovarianz.md"
     },
     "data-cleaning.ipynb": {
       "translated": true,
-      "style_pass": false,
+      "style_pass": true,
       "source": "data-cleaning.ipynb"
     },
     "data-protection.md": {
       "translated": true,
-      "style_pass": false,
+      "style_pass": true,
       "source": "datenschutz.md"
     },
     "descriptive-statistics.md": {
       "translated": true,
-      "style_pass": false,
+      "style_pass": true,
       "source": "deskriptive-statistik.md"
     },
     "dimensionality-reduction.ipynb": {
       "translated": true,
-      "style_pass": false,
+      "style_pass": true,
       "source": "dimensionsreduktion.ipynb"
     },
     "eda-examples.ipynb": {
       "translated": true,
-      "style_pass": false,
+      "style_pass": true,
       "source": "explorative-analyse-beispiele.ipynb"
     },
     "expectation-maximization.ipynb": {
       "translated": true,
-      "style_pass": false,
+      "style_pass": true,
       "source": "expectation-maximization.ipynb"
     },
     "expectation-variance.md": {
       "translated": true,
-      "style_pass": false,
+      "style_pass": true,
       "source": "erwartungswert.md"
     },
     "important-continuous-distributions.ipynb": {
       "translated": true,
-      "style_pass": false,
+      "style_pass": true,
       "source": "wichtigste-stetige-verteilungen.ipynb"
     },
     "important-discrete-distributions.ipynb": {
       "translated": true,
-      "style_pass": false,
+      "style_pass": true,
       "source": "wichtigste-diskrete-verteilungen.ipynb"
     },
     "intro-python.ipynb": {
       "translated": true,
-      "style_pass": false,
+      "style_pass": true,
       "source": "intro-python.ipynb"
     },
     "intro-stochastics.md": {
       "translated": true,
-      "style_pass": false,
+      "style_pass": true,
       "source": "intro-stochastik.md"
     },
     "iris.ipynb": {
       "translated": true,
-      "style_pass": false,
+      "style_pass": true,
       "source": "iris.ipynb"
     },
     "kernel-methods.ipynb": {
       "translated": true,
-      "style_pass": false,
+      "style_pass": true,
       "source": "kernel-methoden.ipynb"
     },
     "kmeans.ipynb": {
       "translated": true,
-      "style_pass": false,
+      "style_pass": true,
       "source": "kmeans.ipynb"
     },
     "landing-page.md": {
       "translated": true,
-      "style_pass": false,
+      "style_pass": true,
       "source": "landing-page.md"
     },
     "linear-regression.ipynb": {
       "translated": true,
-      "style_pass": false,
+      "style_pass": true,
       "source": "lineare-regression.ipynb"
     },
     "model-selection.ipynb": {
       "translated": true,
-      "style_pass": false,
+      "style_pass": true,
       "source": "model-selection.ipynb"
     },
     "multivariate-normal.ipynb": {
       "translated": true,
-      "style_pass": false,
+      "style_pass": true,
       "source": "multivariate-normalverteilung.ipynb"
     },
     "normal-distribution.ipynb": {
       "translated": true,
-      "style_pass": false,
+      "style_pass": true,
       "source": "normalverteilung.ipynb"
     },
     "numpy.ipynb": {
       "translated": true,
-      "style_pass": false,
+      "style_pass": true,
       "source": "numpy.ipynb"
     },
     "pandas.ipynb": {
       "translated": true,
-      "style_pass": false,
+      "style_pass": true,
       "source": "pandas.ipynb"
     },
     "programming-stochastics.ipynb": {
       "translated": true,
-      "style_pass": false,
+      "style_pass": true,
       "source": "stochastik-programmieren.ipynb"
     },
     "random-variables-distributions.md": {
       "translated": true,
-      "style_pass": false,
+      "style_pass": true,
       "source": "zufallsvariablen-verteilungen.md"
     },
     "relative-entropy.md": {
       "translated": true,
-      "style_pass": false,
+      "style_pass": true,
       "source": "relative-entropie.md"
     },
     "statistical-models.md": {
       "translated": true,
-      "style_pass": false,
+      "style_pass": true,
       "source": "statistische-modelle.md"
     },
     "statistical-tests.md": {
       "translated": true,
-      "style_pass": false,
+      "style_pass": true,
       "source": "statistische-tests.md"
     },
     "titanic-eda-numpy.ipynb": {
       "translated": true,
-      "style_pass": false,
+      "style_pass": true,
       "source": "explorative-analyse-mit-numpy.ipynb"
     },
     "what-is-data-science.md": {
       "translated": true,
-      "style_pass": false,
+      "style_pass": true,
       "source": "was-ist-data-science.md"
     }
   }
