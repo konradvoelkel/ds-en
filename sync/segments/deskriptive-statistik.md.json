@@ -14,1015 +14,1016 @@
    "de": "1",
    "kind": "prose",
    "digest": "f543a61bc0b6a8e6",
-   "en": "1",
+   "en": null,
+   "dropped": "link to the German HHU lecture recording",
    "preview": "[Vorlesungsaufzeichnung Deskriptive Statistik (VL 9, ab Minute 54)](http…"
   },
   {
    "de": "2",
    "kind": "prose",
    "digest": "3e234268de3ad147",
-   "en": "2",
+   "en": "1",
    "preview": "In {cite}`dds`, S.41 ist schematisch dargestellt, wie wir 'Data Science'…"
   },
   {
    "de": "3",
    "kind": "directive",
    "digest": "1d0507a4eaa84f79",
-   "en": "3",
+   "en": "2",
    "preview": "```{figure} images/ds-process-oneill.png :width: 480px :align: center :n…"
   },
   {
    "de": "4",
    "kind": "prose",
    "digest": "17881393076674fc",
-   "en": "4",
+   "en": "3",
    "preview": "Fokus hier: Explorative Datenanalyse"
   },
   {
    "de": "5",
    "kind": "prose",
    "digest": "d07007b11a530b51",
-   "en": "5",
+   "en": "4",
    "preview": "Wir werden noch einmal wiederholen und in einen neuen Zusammenhang stell…"
   },
   {
    "de": "6",
    "kind": "prose",
    "digest": "d850bb892a67addb",
-   "en": "6",
+   "en": "5",
    "preview": "Diese Wiederholung wird zugleich eine Vokabelstunde, denn wir wollen sow…"
   },
   {
    "de": "7",
    "kind": "heading",
    "digest": "f6c6a593aa38174c",
-   "en": "7",
+   "en": "6",
    "preview": "## Statistik vs. Machine Learning"
   },
   {
    "de": "8",
    "kind": "prose",
    "digest": "51d5d8d844137958",
-   "en": "8",
+   "en": "7",
    "preview": "Es gibt zwei \"Kulturen\", die Statistik mit dem statistischen Lernen, und…"
   },
   {
    "de": "9",
    "kind": "prose",
    "digest": "2895fcef8202dd96",
-   "en": "9",
+   "en": "8",
    "preview": "* Begriffskorrespondenz Statistik - maschinelles Lernen * Modell - Model…"
   },
   {
    "de": "10",
    "kind": "prose",
    "digest": "575e4a34204e3c35",
-   "en": "10",
+   "en": "9",
    "preview": "Die rechte Spalte ist das Vokabular des Kurses „Einführung in Deep Learn…"
   },
   {
    "de": "11",
    "kind": "prose",
    "digest": "b9ebe7bb13ee2678",
-   "en": "11",
+   "en": "10",
    "preview": "Die *explorative Datenanalyse* ist das Berechnen summarischer Statistik …"
   },
   {
    "de": "12",
    "kind": "prose",
    "digest": "82d630862581fea7",
-   "en": "12",
+   "en": "11",
    "preview": "Man kann die verschiedenen Kulturen des Modellierens noch etwas feiner a…"
   },
   {
    "de": "13",
    "kind": "heading",
    "digest": "6d6fe54b10758a10",
-   "en": "13",
+   "en": "12",
    "preview": "## Deskriptive Statistik"
   },
   {
    "de": "14",
    "kind": "prose",
    "digest": "c7c046664750e554",
-   "en": "14",
+   "en": "13",
    "preview": "Die beschreibende (deskriptive) Statistik besteht aus den Datenanalysen,…"
   },
   {
    "de": "15",
    "kind": "prose",
    "digest": "109868c82be2813a",
-   "en": "15",
+   "en": "14",
    "preview": "* Stichprobe = Sample, hat einen Umfang = Länge = Anzahl der Elemente / …"
   },
   {
    "de": "16",
    "kind": "prose",
    "digest": "3f76b0f16ad3f4a2",
-   "en": "16",
+   "en": "15",
    "preview": "Abzugrenzen von der Stichprobe ist die *Population*, das ist die Grundge…"
   },
   {
    "de": "17",
    "kind": "prose",
    "digest": "4bd23c6078dba7db",
-   "en": "17",
+   "en": "16",
    "preview": "* Bei tabellarischen Daten heißen die Spalten auch Variablen, Attribute,…"
   },
   {
    "de": "18",
    "kind": "prose",
    "digest": "997677582d9be7b4",
-   "en": "18",
+   "en": "17",
    "preview": "Welche Maßzahlen und Rechenoperationen für ein Merkmal sinnvoll sind, hä…"
   },
   {
    "de": "19",
    "kind": "prose",
    "digest": "105b9ac9315f08c6",
-   "en": "19",
+   "en": "18",
    "preview": "sind Maßzahlen, die sich auf eine einzelne Variable beziehen, nicht jedo…"
   },
   {
    "de": "20",
    "kind": "prose",
    "digest": "2011c1c4651f2d85",
-   "en": "20",
+   "en": "19",
    "preview": "* Das arithmetische Mittel (unser Schätzwert für den Erwartungswert der …"
   },
   {
    "de": "21",
    "kind": "prose",
    "digest": "3dd1f3947fe4de9e",
-   "en": "21",
+   "en": "20",
    "preview": "* Die Bereichsmitte (Mid-range) ist das arithmetische Mittel aus dem Max…"
   },
   {
    "de": "22",
    "kind": "prose",
    "digest": "57fb4e3197d97658",
-   "en": "22",
+   "en": "21",
    "preview": "* Das geometrische Mittel"
   },
   {
    "de": "23",
    "kind": "prose",
    "digest": "9c7acc1cd1ee4050",
-   "en": "23",
+   "en": "22",
    "preview": "ist $\\sqrt[n]{x_1 \\cdots x_n}$, also die $n$-te Wurzel aus dem Produkt d…"
   },
   {
    "de": "24",
    "kind": "prose",
    "digest": "7cb3765559d87c18",
-   "en": "24",
+   "en": "23",
    "preview": "* Der Modus"
   },
   {
    "de": "25",
    "kind": "prose",
    "digest": "469d7cac6b785a1c",
-   "en": "25",
+   "en": "24",
    "preview": "ist definiert als häufigster Wert. Der Begriff selbst ist wenig nützlich…"
   },
   {
    "de": "26",
    "kind": "prose",
    "digest": "1e597b71378c6e00",
-   "en": "26",
+   "en": "25",
    "preview": "Für Variablen auf einer Nominalskala ist der Modus ein sinnvoller Lagepa…"
   },
   {
    "de": "27",
    "kind": "prose",
    "digest": "7f0fcb512c8e1e82",
-   "en": "27",
+   "en": "26",
    "preview": "* Zu mehreren Maßen der zentralen Tendenz gehört gewissermaßen ein Dispe…"
   },
   {
    "de": "28",
    "kind": "prose",
    "digest": "1c0fd3800c6358d8",
-   "en": "28",
+   "en": "27",
    "preview": "* Dispersion, Spread (Streuung)"
   },
   {
    "de": "29",
    "kind": "prose",
    "digest": "7191788360013352",
-   "en": "29",
+   "en": "28",
    "preview": "Streumaße charakterisieren, inwiefern die Daten um einen Lageparameter s…"
   },
   {
    "de": "30",
    "kind": "prose",
    "digest": "7d0fd8fbce6ace43",
-   "en": "30",
+   "en": "29",
    "preview": "* Spannweite: maximaler Wert minus minimaler Wert * Variationsverhältnis…"
   },
   {
    "de": "31",
    "kind": "prose",
    "digest": "0e90797686714235",
-   "en": "31",
+   "en": "30",
    "preview": "Wenn wir mit Einheiten rechnen, sehen wir ein Problem mit der Varianz: i…"
   },
   {
    "de": "32",
    "kind": "prose",
    "digest": "c0a73aad8e3642c6",
-   "en": "32",
+   "en": "31",
    "preview": "Achtung: es gibt zwei Formeln mit dem Namen \"Stichprobenstandardabweichu…"
   },
   {
    "de": "33",
    "kind": "prose",
    "digest": "59b22e68c9be5867",
-   "en": "33",
+   "en": "32",
    "preview": "* Variationskoeffizient"
   },
   {
    "de": "34",
    "kind": "prose",
    "digest": "9e653b14d3112216",
-   "en": "34",
+   "en": "33",
    "preview": "Die Standardabweichung hat dieselbe Einheit wie die Daten, hilft beim Ve…"
   },
   {
    "de": "35",
    "kind": "prose",
    "digest": "0bb6c0ba49c2e678",
-   "en": "35",
+   "en": "34",
    "preview": "* dispersion precedes location: Zu jedem Streuungsmaß gehört ein Lagemaß…"
   },
   {
    "de": "36",
    "kind": "prose",
    "digest": "254d6f9b9cdbbe93",
-   "en": "36",
+   "en": "35",
    "preview": "* Der Modus minimiert das Variationsverhältnis ($L_0$) * Der Median mini…"
   },
   {
    "de": "37",
    "kind": "prose",
    "digest": "24fa6a25f82f4637",
-   "en": "37",
+   "en": "36",
    "preview": "Die beiden mittleren Aussagen sind im Kapitel [Erwartungswert und Varian…"
   },
   {
    "de": "38",
    "kind": "prose",
    "digest": "593c7c1026ed724b",
-   "en": "38",
+   "en": "37",
    "preview": "* Form (Shape)"
   },
   {
    "de": "39",
    "kind": "prose",
    "digest": "f8b06a5214e3a2c5",
-   "en": "39",
+   "en": "38",
    "preview": "* Schiefe (skewness) ist das dritte zentrale Moment, normiert auf die St…"
   },
   {
    "de": "40",
    "kind": "prose",
    "digest": "7033cce9288c2774",
-   "en": "40",
+   "en": "39",
    "preview": "* multivariate Beschreibungen: * Korrelationen"
   },
   {
    "de": "41",
    "kind": "prose",
    "digest": "4128c4797b26cf1e",
-   "en": "41",
+   "en": "40",
    "preview": "Mit Kovarianz und Korrelation werden wir uns bald beschäftigen müssen. D…"
   },
   {
    "de": "42",
    "kind": "prose",
    "digest": "b7893d797ef6aaae",
-   "en": "42",
+   "en": "41",
    "preview": "[Für eine kurze lockere Übersicht über einen Teil der Frage „Was sind ei…"
   },
   {
    "de": "43",
    "kind": "prose",
    "digest": "bec8c2dcd886b345",
-   "en": "43",
+   "en": "42",
    "preview": "(skalenniveau-und-zulaessige-masszahlen)= ### Skalenniveau und zulässige…"
   },
   {
    "de": "44",
    "kind": "prose",
    "digest": "3e89ca36afc9372c",
-   "en": "44",
+   "en": "43",
    "preview": "Die Maßzahlen oben sind nicht für jedes Merkmal sinnvoll. Ein Mittelwert…"
   },
   {
    "de": "45",
    "kind": "table",
    "digest": "1c7db7e976195e0c",
-   "en": "45",
+   "en": "44",
    "preview": "| Skalenniveau | Beispiel | sinnvolle Vergleiche | Lagemaß | Streuungsma…"
   },
   {
    "de": "46",
    "kind": "prose",
    "digest": "226ea9b35d5a62dd",
-   "en": "46",
+   "en": "45",
    "preview": "Jedes Skalenniveau erlaubt zusätzlich alle Maßzahlen der Zeilen darüber:…"
   },
   {
    "de": "47",
    "kind": "prose",
    "digest": "0de21f726693b613",
-   "en": "47",
+   "en": "46",
    "preview": "**Zwei nominale Merkmale.** Für den Zusammenhang zweier nominaler Merkma…"
   },
   {
    "de": "48",
    "kind": "prose",
    "digest": "0291792f9222c3cc",
-   "en": "48",
+   "en": "47",
    "preview": "**Kodierung kategorialer Merkmale.** Die meisten Verfahren des maschinel…"
   },
   {
    "de": "49",
    "kind": "prose",
    "digest": "a5860c5c18747eda",
-   "en": "49",
+   "en": "48",
    "preview": "* Ein **ordinales** Merkmal darf man als ganze Zahlen entlang seiner Ord…"
   },
   {
    "de": "50",
    "kind": "prose",
    "digest": "98db38a65ac835cf",
-   "en": "50",
+   "en": "49",
    "preview": "Wie man das mit pandas macht und was es für eine Regression bedeutet, ze…"
   },
   {
    "de": "51",
    "kind": "heading",
    "digest": "1e94dc8a9af5b0cf",
-   "en": "51",
+   "en": "50",
    "preview": "### Durchgerechnetes Beispiel"
   },
   {
    "de": "52",
    "kind": "prose",
    "digest": "41f65b4e13c022ef",
-   "en": "52",
+   "en": "51",
    "preview": "Nehmen wir die $n = 8$ Werte $x = (7,\\ 2,\\ 9,\\ 4,\\ 4,\\ 12,\\ 5,\\ 3)$, etw…"
   },
   {
    "de": "53",
    "kind": "prose",
    "digest": "f611bb14a2d1bb6c",
-   "en": "53",
+   "en": "52",
    "preview": "* **Sortieren**: $(2,\\ 3,\\ 4,\\ 4,\\ 5,\\ 7,\\ 9,\\ 12)$. * **Modus**: $4$, d…"
   },
   {
    "de": "54",
    "kind": "prose",
    "digest": "984959e28dc01ccf",
-   "en": "54",
+   "en": "53",
    "preview": "Dasselbe in Numpy (die Quartile mit der linearen Interpolation von `nump…"
   },
   {
    "de": "55",
    "kind": "code",
    "digest": "4d7d796b8bcf3dc5",
-   "en": "55",
+   "en": "54",
    "preview": "```python import numpy as np x = np.array([7, 2, 9, 4, 4, 12, 5, 3]) pri…"
   },
   {
    "de": "56",
    "kind": "heading",
    "digest": "815aaa200426b07a",
-   "en": "56",
+   "en": "55",
    "preview": "## Das Simpson-Paradoxon"
   },
   {
    "de": "57",
    "kind": "prose",
    "digest": "32e81ab94585cef4",
-   "en": "57",
+   "en": "56",
    "preview": "Bevor wir zu den Bildern kommen, eine Warnung vor dem Aggregieren, für d…"
   },
   {
    "de": "58",
    "kind": "table",
    "digest": "2677d105a60c0c82",
-   "en": "58",
+   "en": "57",
    "preview": "| Behandlung | Patient\\*innen | Erfolge | Erfolgsquote | |---|---|---|--…"
   },
   {
    "de": "59",
    "kind": "prose",
    "digest": "cf98881e51a6b418",
-   "en": "59",
+   "en": "58",
    "preview": "Stellen Sie sich vor, Sie haben Nierensteine. Welche Behandlung wählen S…"
   },
   {
    "de": "60",
    "kind": "prose",
    "digest": "ebc58473ca3f2c9f",
-   "en": "60",
+   "en": "59",
    "preview": "Nun gibt es aber nicht einfach Nierensteine, sondern kleine und große. T…"
   },
   {
    "de": "61",
    "kind": "table",
    "digest": "f2cfff889ff53731",
-   "en": "61",
+   "en": "60",
    "preview": "| Behandlung | kleine Steine | große Steine | |---|---|---| | A | 81 von…"
   },
   {
    "de": "62",
    "kind": "prose",
    "digest": "618835996cee4fa2",
-   "en": "62",
+   "en": "61",
    "preview": "Bei kleinen Steinen ist A besser, bei großen Steinen ist A besser. Wenn …"
   },
   {
    "de": "63",
    "kind": "prose",
    "digest": "d437cda482a78d35",
-   "en": "63",
+   "en": "62",
    "preview": "Die Auflösung steckt in den absoluten Zahlen, nicht in den Prozenten. Be…"
   },
   {
    "de": "64",
    "kind": "prose",
    "digest": "721529a345655f1d",
-   "en": "64",
+   "en": "63",
    "preview": "Dieses Phänomen heißt **Simpson-Paradoxon**: Ein Zusammenhang, der in de…"
   },
   {
    "de": "65",
    "kind": "directive",
    "digest": "f2f6cef112452c97",
-   "en": "65",
+   "en": "64",
    "preview": "```{figure} images/simpson-paradoxon.png :width: 560px :align: center :n…"
   },
   {
    "de": "66",
    "kind": "prose",
    "digest": "658e07ed52b17266",
-   "en": "66",
+   "en": "65",
    "preview": "Im Nierenstein-Beispiel kannten wir die Steingröße. Oft ist die Variable…"
   },
   {
    "de": "67",
    "kind": "directive",
    "digest": "5879b3a79a1de27c",
-   "en": "67",
+   "en": "66",
    "preview": ":::{admonition} Take-Home-Message"
   },
   {
    "de": "68",
    "kind": "prose",
    "digest": "56ab47d86646cd51",
-   "en": "68",
+   "en": "67",
    "preview": "Bevor Sie eine Tabelle aggregieren oder einen Trend ablesen, fragen Sie,…"
   },
   {
    "de": "69",
    "kind": "directive",
    "digest": "f1ae2a75ed1f9972",
-   "en": "69",
+   "en": "68",
    "preview": ":::"
   },
   {
    "de": "70",
    "kind": "directive",
    "digest": "1a7894e4bb8849aa",
-   "en": "70",
+   "en": "69",
    "preview": ":::{admonition} Aufgabe: Simpson im Iris-Datensatz"
   },
   {
    "de": "71",
    "kind": "prose",
    "digest": "271598e45a043b2b",
-   "en": "71",
+   "en": "70",
    "preview": ":class: tip Der Iris-Datensatz (den wir ab dem Kapitel [Iris](iris.ipynb…"
   },
   {
    "de": "72",
    "kind": "directive",
    "digest": "f1ae2a75ed1f9972",
-   "en": "72",
+   "en": "71",
    "preview": ":::"
   },
   {
    "de": "73",
    "kind": "directive",
    "digest": "bb3131ef0807dae6",
-   "en": "73",
+   "en": "72",
    "preview": ":::{admonition} Lösung"
   },
   {
    "de": "74",
    "kind": "prose",
    "digest": "594150ae65341b38",
-   "en": "74",
+   "en": "73",
    "preview": ":class: dropdown Über alle Pflanzen hinweg ist der Zusammenhang schwach …"
   },
   {
    "de": "75",
    "kind": "directive",
    "digest": "f1ae2a75ed1f9972",
-   "en": "75",
+   "en": "74",
    "preview": ":::"
   },
   {
    "de": "76",
    "kind": "heading",
    "digest": "7b619b278966816d",
-   "en": "76",
+   "en": "75",
    "preview": "## Visualisierung"
   },
   {
    "de": "77",
    "kind": "prose",
    "digest": "81bce1d08f6253a2",
-   "en": "77",
+   "en": "76",
    "preview": "Wozu visualisieren? Der erste Grund: Zusammenfassende Zahlen können lüge…"
   },
   {
    "de": "78",
    "kind": "prose",
    "digest": "6ec41fe00bc5e574",
-   "en": "78",
+   "en": "77",
    "preview": "> Never trust summary statistics alone; always visualize your data. > > …"
   },
   {
    "de": "79",
    "kind": "prose",
    "digest": "685a8db63b5e43d6",
-   "en": "79",
+   "en": "78",
    "preview": "Justin Matejka und George Fitzmaurice haben daraus die 'Datasaurus Dozen…"
   },
   {
    "de": "80",
    "kind": "directive",
    "digest": "f45caebe3a51c8ef",
-   "en": "80",
+   "en": "79",
    "preview": "```{figure} images/AllDinosGrey_1.png :width: 480px :align: center :name…"
   },
   {
    "de": "81",
    "kind": "prose",
    "digest": "2aa0ac6dfbc9b429",
-   "en": "81",
+   "en": "80",
    "preview": "Der zweite Grund, immer zu plotten, ist das Simpson-Paradoxon von oben: …"
   },
   {
    "de": "82",
    "kind": "prose",
    "digest": "f200d844877fd584",
-   "en": "82",
+   "en": "81",
    "preview": "* Wichtigste Arten von Plots"
   },
   {
    "de": "83",
    "kind": "prose",
    "digest": "3e83c0ddc3698443",
-   "en": "83",
+   "en": "82",
    "preview": "* Histogramme"
   },
   {
    "de": "84",
    "kind": "prose",
    "digest": "27c2cfa97096b523",
-   "en": "84",
+   "en": "83",
    "preview": "Um die Häufigkeitsverteilung kardinal skalierter Merkmale zu visualisier…"
   },
   {
    "de": "85",
    "kind": "prose",
    "digest": "80a2c629252e55a3",
-   "en": "85",
+   "en": "84",
    "preview": "Histogramme sind also spezielle Bar charts / Column charts. Für nominal …"
   },
   {
    "de": "86",
    "kind": "prose",
    "digest": "7b740f95bb91ea30",
-   "en": "86",
+   "en": "85",
    "preview": "Willkürlich ist die Anordnung allerdings nur bei *nominalen* Merkmalen; …"
   },
   {
    "de": "87",
    "kind": "prose",
    "digest": "9755cfea9f8118ca",
-   "en": "87",
+   "en": "86",
    "preview": "Ein Histogramm besteht also eigentlich aus einer statistischen Transform…"
   },
   {
    "de": "88",
    "kind": "prose",
    "digest": "40d7c25fbdc28596",
-   "en": "88",
+   "en": "87",
    "preview": "Empfehlenswert: [der Artikel „Histogramm“ in der deutschen Wikipedia](ht…"
   },
   {
    "de": "89",
    "kind": "prose",
    "digest": "5bc2201ddfda8d46",
-   "en": "89",
+   "en": "88",
    "preview": "* Scatterplot"
   },
   {
    "de": "90",
    "kind": "prose",
    "digest": "db577ad73abc7b52",
-   "en": "90",
+   "en": "89",
    "preview": "Eine Menge von Vektoren in $\\mathbb{R}^2$ lässt sich darstellen indem an…"
   },
   {
    "de": "91",
    "kind": "prose",
    "digest": "edae41b13784db6f",
-   "en": "91",
+   "en": "90",
    "preview": "In Matplotlib ist das eine Zeile, und wenn die Daten schon als $(N,2)$-A…"
   },
   {
    "de": "92",
    "kind": "code",
    "digest": "1481dd480b0022c9",
-   "en": "92",
+   "en": "91",
    "preview": "```python plt.scatter(x, y, marker=\"o\") plt.scatter(daten[:, 0], daten[:…"
   },
   {
    "de": "93",
    "kind": "prose",
    "digest": "84d3a0647a05d743",
-   "en": "93",
+   "en": "92",
    "preview": "Die dritte Zeile ist der Trick, mit dem ein Scatterplot eine dritte Vari…"
   },
   {
    "de": "94",
    "kind": "prose",
    "digest": "7cdeda4b244c1d2f",
-   "en": "94",
+   "en": "93",
    "preview": "* Boxplot, auch Box-and-Whiskers-plot"
   },
   {
    "de": "95",
    "kind": "prose",
    "digest": "e23be927c945029a",
-   "en": "95",
+   "en": "94",
    "preview": "Zeigt Median, Quartile und Ausreißer einer Verteilung in einem Bild: Der…"
   },
   {
    "de": "96",
    "kind": "prose",
    "digest": "008c96ca3d491260",
-   "en": "96",
+   "en": "95",
    "preview": "* Linienplot"
   },
   {
    "de": "97",
    "kind": "prose",
    "digest": "a060865b24035a5e",
-   "en": "97",
+   "en": "96",
    "preview": "Wenn man eine oder mehrere Funktionsgraphen plottet (so wie wir es mit d…"
   },
   {
    "de": "98",
    "kind": "prose",
    "digest": "3d88757db20ea288",
-   "en": "98",
+   "en": "97",
    "preview": "Umgekehrt ist der Linienplot genau das richtige Werkzeug, wenn die Daten…"
   },
   {
    "de": "99",
    "kind": "code",
    "digest": "8568dd0429305087",
-   "en": "99",
+   "en": "98",
    "preview": "```python winkel = np.linspace(0, 2 * np.pi, 360) plt.plot(np.cos(winkel…"
   },
   {
    "de": "100",
    "kind": "prose",
    "digest": "a3c7e4d47dbaa40a",
-   "en": "100",
+   "en": "99",
    "preview": "Dasselbe Prinzip steckt hinter jedem Dichteplot in diesem Buch: Die Dich…"
   },
   {
    "de": "101",
    "kind": "prose",
    "digest": "9cde843bfcfe070b",
-   "en": "101",
+   "en": "100",
    "preview": "* Tortendiagramm"
   },
   {
    "de": "102",
    "kind": "prose",
    "digest": "791e66cd7f973f0e",
-   "en": "102",
+   "en": "101",
    "preview": "Generell gilt: Wo ein Tortendiagramm geht, geht auch ein Balkendiagramm,…"
   },
   {
    "de": "103",
    "kind": "prose",
    "digest": "2d377269e5a5483b",
-   "en": "103",
+   "en": "102",
    "preview": "* Violinenplot"
   },
   {
    "de": "104",
    "kind": "prose",
    "digest": "cf8e0528a23e57fc",
-   "en": "104",
+   "en": "103",
    "preview": "Ähnlich einem Boxplot, aber anstelle eines Rechtecks wird die Dichtevert…"
   },
   {
    "de": "105",
    "kind": "prose",
    "digest": "6458b4d0ae574c1d",
-   "en": "105",
+   "en": "104",
    "preview": "* Kartendarstellung"
   },
   {
    "de": "106",
    "kind": "prose",
    "digest": "171325494715feac",
-   "en": "106",
+   "en": "105",
    "preview": "Mit einem Bild einer Landkarte (oder anderer Karte, z.B. Netzwerktopolog…"
   },
   {
    "de": "107",
    "kind": "prose",
    "digest": "a016e0a807bc7354",
-   "en": "107",
+   "en": "106",
    "preview": "* unzählige weitere, seltener gebrauchte oder nicht in diesem Schema kat…"
   },
   {
    "de": "108",
    "kind": "prose",
    "digest": "a17a866cfe19b0f6",
-   "en": "108",
+   "en": "107",
    "preview": "* Wichtigste Werkzeuge zum Plotten mit Python"
   },
   {
    "de": "109",
    "kind": "prose",
    "digest": "b58b49e6519dbad6",
-   "en": "109",
+   "en": "108",
    "preview": "* `matplotlib` - das verwenden wir, es ist das am häufigsten verwendete …"
   },
   {
    "de": "110",
    "kind": "prose",
    "digest": "d7070f8035e51303",
-   "en": "110",
+   "en": "109",
    "preview": "* Die Grammatik der Grafiken"
   },
   {
    "de": "111",
    "kind": "prose",
    "digest": "b9dfe69c71ec9539",
-   "en": "111",
+   "en": "110",
    "preview": "* Geschichte"
   },
   {
    "de": "112",
    "kind": "prose",
    "digest": "dbd304c6c21c604d",
-   "en": "112",
+   "en": "111",
    "preview": "1983: Bertin: Semiology of Graphics"
   },
   {
    "de": "113",
    "kind": "prose",
    "digest": "bdc802284428a975",
-   "en": "113",
+   "en": "112",
    "preview": "2000: Wilkinson, Anand, Grossman: The Grammar of Graphics"
   },
   {
    "de": "114",
    "kind": "prose",
    "digest": "4958ac364560b64d",
-   "en": "114",
+   "en": "113",
    "preview": "2005: Wickham: `ggplot2` R Paket"
   },
   {
    "de": "115",
    "kind": "prose",
    "digest": "b240bf89df84c5e0",
-   "en": "115",
+   "en": "114",
    "preview": "2010: Wickham: A Layered Grammar of Graphics"
   },
   {
    "de": "116",
    "kind": "prose",
    "digest": "ef3b50c68835457a",
-   "en": "116",
+   "en": "115",
    "preview": "* Schichten (Layer) der Grammatik"
   },
   {
    "de": "117",
    "kind": "prose",
    "digest": "2ced8cc77ebb08f4",
-   "en": "117",
+   "en": "116",
    "preview": "* Daten -- Welche sollen visualisiert werden? * Ästhetik -- Achsen, Dime…"
   },
   {
    "de": "118",
    "kind": "prose",
    "digest": "a2f93bf858e5cac5",
-   "en": "118",
+   "en": "117",
    "preview": "* Kombination der Teile:"
   },
   {
    "de": "119",
    "kind": "prose",
    "digest": "33120ff9495f9c0e",
-   "en": "119",
+   "en": "118",
    "preview": "![Einzeln](images/layers-einzeln.png) $\\to$ ![Zusammen](images/layers-zu…"
   },
   {
    "de": "120",
    "kind": "prose",
    "digest": "755d4a28fe0497c1",
-   "en": "120",
+   "en": "119",
    "preview": "* Eine Schicht besteht aus"
   },
   {
    "de": "121",
    "kind": "prose",
    "digest": "7e853caaa7a9c86d",
-   "en": "121",
+   "en": "120",
    "preview": "* Daten und ästhetische Zuordnungen (aes) * Statistischen Transformation…"
   },
   {
    "de": "122",
    "kind": "prose",
    "digest": "1cd4e12207a4bd54",
-   "en": "122",
+   "en": "121",
    "preview": "* Ein Plot besteht aus"
   },
   {
    "de": "123",
    "kind": "prose",
    "digest": "f499e115dbc1c607",
-   "en": "123",
+   "en": "122",
    "preview": "* Einem default-Datensatz und Zuordnungen von Variablen darin auf Ästhet…"
   },
   {
    "de": "124",
    "kind": "prose",
    "digest": "5d7898df13e4f235",
-   "en": "124",
+   "en": "123",
    "preview": "* Eine statistische Transformation ist typischerweise eine *Zusammenfass…"
   },
   {
    "de": "125",
    "kind": "prose",
    "digest": "e1708ead1eaeae66",
-   "en": "125",
+   "en": "124",
    "preview": "Beispiel: Glättung, die auf einer Menge von Punkten eine Kurve macht, di…"
   },
   {
    "de": "126",
    "kind": "prose",
    "digest": "c04e7cb91bb88d65",
-   "en": "126",
+   "en": "125",
    "preview": "Die wichtigsten statistischen Transformationen, die in ggplot2 implement…"
   },
   {
    "de": "127",
    "kind": "prose",
    "digest": "42d6f60dfe87526e",
-   "en": "127",
+   "en": "126",
    "preview": "* bin: Teile stetigen Bereich in Bins (Klassen) und zähle Punkte in jede…"
   },
   {
    "de": "128",
    "kind": "prose",
    "digest": "4981c41359ff5b92",
-   "en": "128",
+   "en": "127",
    "preview": "* Eine Skala im Sinne der Grammatik der Grafiken kontrolliert die Zuordn…"
   },
   {
    "de": "129",
    "kind": "prose",
    "digest": "95281b190653ecd0",
-   "en": "129",
+   "en": "128",
    "preview": "Beispiel: eine reelle Variable zwischen $0$ und $1$ lässt sich als Farbä…"
   },
   {
    "de": "130",
    "kind": "prose",
    "digest": "c894beb258d419da",
-   "en": "130",
+   "en": "129",
    "preview": "Beispiel: eine faktorielle Variable (etwa die Spezies im Iris-Datensatz)…"
   },
   {
    "de": "131",
    "kind": "prose",
    "digest": "45578a911201112b",
-   "en": "131",
+   "en": "130",
    "preview": "Man kann auch mehrere Variablen auf eine Ästhetik abbilden, wenn man etw…"
   },
   {
    "de": "132",
    "kind": "prose",
    "digest": "43933c5c069a0b2d",
-   "en": "132",
+   "en": "131",
    "preview": "* Farben"
   },
   {
    "de": "133",
    "kind": "prose",
    "digest": "f277b8216fd012c5",
-   "en": "133",
+   "en": "132",
    "preview": "Bei der Wahl von Farbskalen muss man auf die Unterscheidbarkeit achten, …"
   },
   {
    "de": "134",
    "kind": "prose",
    "digest": "db5727d020167438",
-   "en": "134",
+   "en": "133",
    "preview": "Erstens die Umstände. Ein Plot wird im Sonnenlicht auf einem Laptop ange…"
   },
   {
    "de": "135",
    "kind": "prose",
    "digest": "98b5eea5f5ded0cd",
-   "en": "135",
+   "en": "134",
    "preview": "Zweitens die Betrachter\\*innen selbst: Etwa jeder zwölfte Mann und jede …"
   },
   {
    "de": "136",
    "kind": "prose",
    "digest": "c6074ab6f89f11d8",
-   "en": "136",
+   "en": "135",
    "preview": "Eine Farbpalette, die auch bei eingeschränkter Farbwahrnehmung gut funkt…"
   },
   {
    "de": "137",
    "kind": "prose",
    "digest": "6bd97d4f7c994079",
-   "en": "137",
+   "en": "136",
    "preview": "![Gute Palette](images/gute-palette.png)"
   },
   {
    "de": "138",
    "kind": "prose",
    "digest": "e01e76ca0819683e",
-   "en": "138",
+   "en": "137",
    "preview": "Dass sie funktioniert, kann man nachrechnen: Farbsehschwächen lassen sic…"
   },
   {
    "de": "139",
    "kind": "directive",
    "digest": "1cf0ea8600e9343f",
-   "en": "139",
+   "en": "138",
    "preview": "```{figure} images/farbwahrnehmung-simulation.png :width: 560px :align: …"
   },
   {
    "de": "140",
    "kind": "prose",
    "digest": "85b4ec0683752129",
-   "en": "140",
+   "en": "139",
    "preview": "Zwei Dinge sieht man daran. Erstens: Die Palette verliert zwar ihre Bunt…"
   },
   {
    "de": "141",
    "kind": "prose",
    "digest": "0cc8a9a1a2058659",
-   "en": "141",
+   "en": "140",
    "preview": "Die Forschung über gut geeignete Farbpaletten ist nicht beendet - so gab…"
   },
   {
    "de": "142",
    "kind": "heading",
    "digest": "01de4dcccc7381b3",
-   "en": "142",
+   "en": "141",
    "preview": "## Explorative Datenanalyse als Prozess"
   },
   {
    "de": "143",
    "kind": "prose",
    "digest": "58ab9f4edfaa7137",
-   "en": "143",
+   "en": "142",
    "preview": "Die Werkzeuge dieses Kapitels — Skalenniveaus, Lage- und Streuungsmaße, …"
   },
   {
    "de": "144",
    "kind": "prose",
    "digest": "c2517d8aa60c4487",
-   "en": "144",
+   "en": "143",
    "preview": "1. **Forschungsfragen formulieren.** Was will man eigentlich wissen? Wel…"
   },
   {
    "de": "145",
    "kind": "prose",
    "digest": "1f8611e84edcc71f",
-   "en": "145",
+   "en": "144",
    "preview": "Die fünf Schritte sind die feinere Auflösung dessen, was {numref}`ds-pro…"
   }
  ]

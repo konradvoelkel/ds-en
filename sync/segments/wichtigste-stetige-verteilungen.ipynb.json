@@ -14,357 +14,358 @@
    "de": "c0.1",
    "kind": "prose",
    "digest": "14ce0daab8ec8ce2",
-   "en": "c0.1",
+   "en": null,
+   "dropped": "link to the German HHU lecture recording",
    "preview": "[Vorlesungsaufzeichnung Stetige Verteilungen in SciPy (VL 9, erste 40 Mi…"
   },
   {
    "de": "c0.2",
    "kind": "prose",
    "digest": "b05021930d24219d",
-   "en": "c0.2",
+   "en": "c0.1",
    "preview": "Nachdem wir ausführlich über die Gaussverteilung gesprochen haben, wolle…"
   },
   {
    "de": "c1.0",
    "kind": "heading",
    "digest": "07f09b9d58188878",
-   "en": "c1.0",
+   "en": "c0.2",
    "preview": "## SciPy Statistics"
   },
   {
    "de": "c2",
    "kind": "code",
    "digest": "6312e3dc6ecefc97",
-   "en": "c2",
+   "en": "c1.0",
    "preview": "import numpy as np np.random.seed(12321) import scipy.stats as st # Zufa…"
   },
   {
    "de": "c3",
    "kind": "code",
    "digest": "764744308f0caff8",
-   "en": "c3",
+   "en": "c2",
    "preview": "# Verteilung checken: Xsamples = X.rvs(size=1000) print(\"mean:\", np.mean…"
   },
   {
    "de": "c4",
    "kind": "code",
    "digest": "2036023e3ca68762",
-   "en": "c4",
+   "en": "c3",
    "preview": "# Daten fitten: mu, sigma = st.norm.fit(Xsamples) print(mu, sigma)"
   },
   {
    "de": "c5.0",
    "kind": "prose",
    "digest": "639df3e723ad5649",
-   "en": "c5.0",
+   "en": "c4",
    "preview": "Es gibt noch weitere praktische Methoden, etwa `st.norm.sf`, die 'surviv…"
   },
   {
    "de": "c6.0",
    "kind": "heading",
    "digest": "fe1124d278f432e6",
-   "en": "c6.0",
+   "en": "c5.0",
    "preview": "## Matplotlib"
   },
   {
    "de": "c6.1",
    "kind": "prose",
    "digest": "bb0ad50d3b5339c8",
-   "en": "c6.1",
+   "en": "c6.0",
    "preview": "Wir werden uns von den Verteilungen jeweils Plots der Dichtefunktionen (…"
   },
   {
    "de": "c6.2",
    "kind": "prose",
    "digest": "6af76d377535e977",
-   "en": "c6.2",
+   "en": "c6.1",
    "preview": "Als erstes Beispiel simulieren wir die stetige Verteilung auf $[5,8)$ au…"
   },
   {
    "de": "c7",
    "kind": "code",
    "digest": "654557fee0fe8cb1",
-   "en": "c7",
+   "en": "c6.2",
    "preview": "from matplotlib import pyplot as plt"
   },
   {
    "de": "c8",
    "kind": "code",
    "digest": "91c01c20f813cd62",
-   "en": "c8",
+   "en": "c7",
    "preview": "# Größe der Plotausgabe anpassen: plt.rcParams[\"figure.figsize\"] = (16,9…"
   },
   {
    "de": "c9.0",
    "kind": "prose",
    "digest": "0f19e35fcfcd2e66",
-   "en": "c9.0",
+   "en": "c8",
    "preview": "Zum Plotten einer Funktion definieren wir diese als Python-Methode und r…"
   },
   {
    "de": "c10",
    "kind": "code",
    "digest": "58383f6cd510db4b",
-   "en": "c10",
+   "en": "c9.0",
    "preview": "# Funktion x |-> 3+2x+x²-x³ auf Intervall [-80,90] plotten: def f(x): re…"
   },
   {
    "de": "c11.0",
    "kind": "prose",
    "digest": "72b5d892b6ac978a",
-   "en": "c11.0",
+   "en": "c10",
    "preview": "Damit kümmern wir uns nun um die wichtigsten stetigen Verteilungen:"
   },
   {
    "de": "c11.1",
    "kind": "heading",
    "digest": "cdccce95e60b7981",
-   "en": "c11.1",
+   "en": "c11.0",
    "preview": "## Normalverteilung"
   },
   {
    "de": "c11.2",
    "kind": "prose",
    "digest": "4055e9fb5887831e",
-   "en": "c11.2",
+   "en": "c11.1",
    "preview": "* Parameter $\\mu,\\sigma$, Notation $\\mathcal{N}(\\mu,\\sigma^2)$ * Dichte …"
   },
   {
    "de": "c12",
    "kind": "code",
    "digest": "0777f28ba827e963",
-   "en": "c12",
+   "en": "c11.2",
    "preview": "# Für Plots: def plotX(x, X, name, params): # Zuerst die Dichtefunktion:…"
   },
   {
    "de": "c13",
    "kind": "code",
    "digest": "e68ec982252f627b",
-   "en": "c13",
+   "en": "c12",
    "preview": "X = st.norm(loc=3, scale=2) Xsamples = X.rvs(size=10000) plt.hist(Xsampl…"
   },
   {
    "de": "c14.0",
    "kind": "heading",
    "digest": "4d244b690d94bcb0",
-   "en": "c14.0",
+   "en": "c13",
    "preview": "## Kontaminierte Normalverteilung"
   },
   {
    "de": "c14.1",
    "kind": "prose",
    "digest": "6530d95c0dfc1651",
-   "en": "c14.1",
+   "en": "c14.0",
    "preview": "Die kontaminierte Normalverteilung ist ein einfacher Fall eines sogenann…"
   },
   {
    "de": "c14.2",
    "kind": "prose",
    "digest": "9859e58b63851d01",
-   "en": "c14.2",
+   "en": "c14.1",
    "preview": "* Parameter $\\varepsilon,\\mu_1,\\sigma_1,\\mu_2,\\sigma_2$, Notation $\\vare…"
   },
   {
    "de": "c15",
    "kind": "code",
    "digest": "e9a633b7d7a3c604",
-   "en": "c15",
+   "en": "c14.2",
    "preview": "name = \"0.6·N(0,1) + 0.4·N(2, 0.5²)\" def f(x, epsilon=0.6, mu1=0, sigma1…"
   },
   {
    "de": "c16.0",
    "kind": "heading",
    "digest": "e73b3d28f2c4f0ab",
-   "en": "c16.0",
+   "en": "c15",
    "preview": "## Dirac-Verteilung"
   },
   {
    "de": "c16.1",
    "kind": "prose",
    "digest": "9b4a87c0ac50018a",
-   "en": "c16.1",
+   "en": "c16.0",
    "preview": "* Parameter $\\xi$, Notation $\\delta(\\xi)$ * Ohne Dichte, aber $P(X = \\xi…"
   },
   {
    "de": "c16.2",
    "kind": "prose",
    "digest": "68879d98c82ddbea",
-   "en": "c16.2",
+   "en": "c16.1",
    "preview": "Die Dirac-Verteilung ist strenggenommen unplotbar (denn es gibt ja keine…"
   },
   {
    "de": "c17",
    "kind": "code",
    "digest": "8ee45e6386e642d6",
-   "en": "c17",
+   "en": "c16.2",
    "preview": "name = \"Dirac-Verteilung bei ξ=0\" plt.plot(x, np.heaviside(x, 1)) plt.yl…"
   },
   {
    "de": "c18.0",
    "kind": "heading",
    "digest": "10c275f93dec1d10",
-   "en": "c18.0",
+   "en": "c17",
    "preview": "## Stetige Gleichverteilung"
   },
   {
    "de": "c18.1",
    "kind": "prose",
    "digest": "58c7a04fce0f0496",
-   "en": "c18.1",
+   "en": "c18.0",
    "preview": "* Parameter $a,b$, Notation $U([a,b])$ * Dichte $\\frac{1}{b-a}$ * Erwart…"
   },
   {
    "de": "c19",
    "kind": "code",
    "digest": "7ced27e01016ebd5",
-   "en": "c19",
+   "en": "c18.1",
    "preview": "a, b = -1, 2 X = st.uniform(loc=a, scale=b-a) print(X.mean(), X.var()) n…"
   },
   {
    "de": "c20.0",
    "kind": "heading",
    "digest": "eb0388fd3b792dab",
-   "en": "c20.0",
+   "en": "c19",
    "preview": "## Exponentialverteilung"
   },
   {
    "de": "c20.1",
    "kind": "prose",
    "digest": "2bae3d91990ad17d",
-   "en": "c20.1",
+   "en": "c20.0",
    "preview": "* Parameter $\\lambda$, Notation $Exp(\\lambda)$ * Dichte $\\lambda e^{-\\la…"
   },
   {
    "de": "c20.2",
    "kind": "prose",
    "digest": "da05475f5f1aeb12",
-   "en": "c20.2",
+   "en": "c20.1",
    "preview": "Die Exponentialverteilung ist die stetige Kehrseite der Poissonverteilun…"
   },
   {
    "de": "c21",
    "kind": "code",
    "digest": "04ad9443709ad088",
-   "en": "c21",
+   "en": "c20.2",
    "preview": "name = \"Exponentialverteilung\" lamda = 2 # 'lambda' ist in Python ein Sc…"
   },
   {
    "de": "c22.0",
    "kind": "heading",
    "digest": "6d68993457d84037",
-   "en": "c22.0",
+   "en": "c21",
    "preview": "## Lognormalverteilung"
   },
   {
    "de": "c22.1",
    "kind": "prose",
    "digest": "e54c29b3582a48ce",
-   "en": "c22.1",
+   "en": "c22.0",
    "preview": "* Parameter $\\mu, \\sigma$, Notation $Lognormal(\\mu,\\sigma^2)$ * Dichte $…"
   },
   {
    "de": "c23",
    "kind": "code",
    "digest": "5940ecef653042ee",
-   "en": "c23",
+   "en": "c22.1",
    "preview": "name = \"Log-normalverteilung\" mu, sigma = 1, 2 X = st.lognorm(s=sigma, s…"
   },
   {
    "de": "c24.0",
    "kind": "heading",
    "digest": "c559d9b209905775",
-   "en": "c24.0",
+   "en": "c23",
    "preview": "## Weibull-Verteilung"
   },
   {
    "de": "c24.1",
    "kind": "prose",
    "digest": "fea4a19e9981221f",
-   "en": "c24.1",
+   "en": "c24.0",
    "preview": "* Parameter $\\lambda>0, k>0$, Notation $Weibull(\\lambda,k)$ * Dichte $f(…"
   },
   {
    "de": "c25",
    "kind": "code",
    "digest": "9edf638455b6a50b",
-   "en": "c25",
+   "en": "c24.1",
    "preview": "name = \"Weibull-verteilung\" lamda, k = 1, 1.3 # lamda: siehe oben X = st…"
   },
   {
    "de": "c26.0",
    "kind": "heading",
    "digest": "05334bb44350cf16",
-   "en": "c26.0",
+   "en": "c25",
    "preview": "## Daten zum plotten und fitten"
   },
   {
    "de": "c26.1",
    "kind": "prose",
    "digest": "cf474d41ee79ccd6",
-   "en": "c26.1",
+   "en": "c26.0",
    "preview": "Damit wir ein bisschen üben können, Daten zu plotten und Verteilungen au…"
   },
   {
    "de": "c26.2",
    "kind": "prose",
    "digest": "9ec56868a7a64809",
-   "en": "c26.2",
+   "en": "c26.1",
    "preview": "Ein sehr einfacher und daher sehr instruktiver Datensatz ist Fisher-Ande…"
   },
   {
    "de": "c27",
    "kind": "code",
    "digest": "ec5bd19fb4e155aa",
-   "en": "c27",
+   "en": "c26.2",
    "preview": "from sklearn import datasets iris = datasets.load_iris() print(iris[\"dat…"
   },
   {
    "de": "c28",
    "kind": "code",
    "digest": "8abdd8bb85efadda",
-   "en": "c28",
+   "en": "c27",
    "preview": "first_feature = iris[\"data\"][:,0] plt.hist(first_feature, bins=30, densi…"
   },
   {
    "de": "c29.0",
    "kind": "prose",
    "digest": "bdf74a0a58b04551",
-   "en": "c29.0",
+   "en": "c28",
    "preview": "Eine Quelle für relativ gut gepflegte Spielzeugdaten, die auch viel disk…"
   },
   {
    "de": "c29.1",
    "kind": "prose",
    "digest": "ae17ce749d0da85f",
-   "en": "c29.1",
+   "en": "c29.0",
    "preview": "Der deutsche Wetterdienst DWD hat mit dem [Climate Data Center](https://…"
   },
   {
    "de": "c29.2",
    "kind": "prose",
    "digest": "cf1045921d995c64",
-   "en": "c29.2",
+   "en": "c29.1",
    "preview": "Schauen Sie sich diese (und andere!) Daten an, finden Sie heraus, wie di…"
   },
   {
    "de": "c29.3",
    "kind": "prose",
    "digest": "7ce12b62268828be",
-   "en": "c29.3",
+   "en": "c29.2",
    "preview": "Da sehr viele Daten nicht einer der hier aufgezählten Verteilungen genüg…"
   },
   {
    "de": "c29.4",
    "kind": "prose",
    "digest": "2bfffea0847157d9",
-   "en": "c29.4",
+   "en": "c29.3",
    "preview": "Wenn Sie sich weiter mit den Zusammenhängen zwischen den Verteilungen be…"
   },
   {
    "de": "c30.0",
    "kind": "directive",
    "digest": "f3c296c26e9cc03b",
-   "en": "c30.0",
+   "en": "c29.4",
    "preview": "```{figure} images/ProbOnto2.5.jpg --- width: 100% name: probonto-diagra…"
   }
  ]

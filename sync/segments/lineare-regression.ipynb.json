@@ -14,819 +14,820 @@
    "de": "c0.1",
    "kind": "prose",
    "digest": "ab4211cd7c5da15a",
-   "en": "c0.1",
+   "en": null,
+   "dropped": "link to the German HHU lecture recording",
    "preview": "[Vorlesungsaufzeichnung Regression (VL 19)](https://media.hhu.de/channel…"
   },
   {
    "de": "c0.2",
    "kind": "prose",
    "digest": "f499e58df817f8e4",
-   "en": "c0.2",
+   "en": "c0.1",
    "preview": "Wenn man einen Datensatz hinreichend aufbereitet hat (fehlende Daten ers…"
   },
   {
    "de": "c0.3",
    "kind": "prose",
    "digest": "97d290dbae17704c",
-   "en": "c0.3",
+   "en": "c0.2",
    "preview": "Ein Beispiel, bevor wir die Vokabeln festlegen. Beim Iris-Datensatz verm…"
   },
   {
    "de": "c1",
    "kind": "code",
    "digest": "e2d9569d40f7ef48",
-   "en": "c1",
+   "en": "c0.3",
    "preview": "import numpy as np import matplotlib.pyplot as plt from sklearn import d…"
   },
   {
    "de": "c2.0",
    "kind": "prose",
    "digest": "ca58ead679d53671",
-   "en": "c2.0",
+   "en": "c1",
    "preview": "Abgelesen haben wir die Faustregel"
   },
   {
    "de": "c2.1",
    "kind": "code",
    "digest": "56190aebf4c23bd4",
-   "en": "c2.1",
+   "en": "c2.0",
    "preview": "```python predicted_petal_width = petal_length * 0.5 - 1 ```"
   },
   {
    "de": "c2.2",
    "kind": "prose",
    "digest": "75d7c4d86ef7cf0f",
-   "en": "c2.2",
+   "en": "c2.1",
    "preview": "und damit stecken bereits alle Bestandteile einer Regression in dem Beis…"
   },
   {
    "de": "c2.3",
    "kind": "prose",
    "digest": "b8e268a6c734a001",
-   "en": "c2.3",
+   "en": "c2.2",
    "preview": "1. Es gibt eine **Funktion**, die aus der Einflussgröße die Zielgröße be…"
   },
   {
    "de": "c2.4",
    "kind": "prose",
    "digest": "39d8c573065195be",
-   "en": "c2.4",
+   "en": "c2.3",
    "preview": "Der dritte Punkt ist der Grund, warum eine Regression nicht einfach eine…"
   },
   {
    "de": "c2.5",
    "kind": "prose",
    "digest": "9b03627e322f8dd5",
-   "en": "c2.5",
+   "en": "c2.4",
    "preview": "Ein **Regressionsmodell** besteht aus:"
   },
   {
    "de": "c2.6",
    "kind": "prose",
    "digest": "e2c0c518c82839fe",
-   "en": "c2.6",
+   "en": "c2.5",
    "preview": "* **Regressoren** $x_i$, das ist eine ($k$-variate) 'unabhängige' Variab…"
   },
   {
    "de": "c2.7",
    "kind": "prose",
    "digest": "4b1795afceeedff5",
-   "en": "c2.7",
+   "en": "c2.6",
    "preview": "Für konkrete Daten $(x_i,y_i)$ nennt man $y_i - f(x_i, \\beta)$ für ein g…"
   },
   {
    "de": "c2.8",
    "kind": "prose",
    "digest": "4e1ddac8bd6de253",
-   "en": "c2.8",
+   "en": "c2.7",
    "preview": "Dafür lohnt sich eine feste Schreibweise. Eine Stichprobe besteht aus **…"
   },
   {
    "de": "c2.9",
    "kind": "math",
    "digest": "342d5ad6b5979201",
-   "en": "c2.9",
+   "en": "c2.8",
    "preview": "$$ y_i^{pred} := f(x_i; \\beta), $$"
   },
   {
    "de": "c2.10",
    "kind": "prose",
    "digest": "58c65d3325931ef3",
-   "en": "c2.10",
+   "en": "c2.9",
    "preview": "sie hängt also von den geschätzten Parametern ab und ändert sich mit ihn…"
   },
   {
    "de": "c2.11",
    "kind": "prose",
    "digest": "7fb294d5ab43e85c",
-   "en": "c2.11",
+   "en": "c2.10",
    "preview": "Eine Regressionsanalyse besteht darin, ein Regressionsmodell aufzustelle…"
   },
   {
    "de": "c2.12",
    "kind": "prose",
    "digest": "b9767547d662281a",
-   "en": "c2.12",
+   "en": "c2.11",
    "preview": "Bestimmte Regressionsverfahren unterscheiden sich in der Art der zulässi…"
   },
   {
    "de": "c3.0",
    "kind": "directive",
    "digest": "0e17e337080964f1",
-   "en": "c3.0",
+   "en": "c2.12",
    "preview": "```{admonition} Beispiel Der Einfachheit halber sei $k=1$, d.h. $X_i$ ei…"
   },
   {
    "de": "c3.1",
    "kind": "directive",
    "digest": "91074a24310c94fa",
-   "en": "c3.1",
+   "en": "c3.0",
    "preview": "```{admonition} Beispiel Man kann k-Means als Regressionsverfahren sehen…"
   },
   {
    "de": "c3.2",
    "kind": "directive",
    "digest": "4d7291287145b46d",
-   "en": "c3.2",
+   "en": "c3.1",
    "preview": "```{admonition} Beispiel Jedes Klassifikationsverfahren ist eine Regress…"
   },
   {
    "de": "c4.0",
    "kind": "heading",
    "digest": "727ae4982f103af2",
-   "en": "c4.0",
+   "en": "c3.2",
    "preview": "## Kleinste Quadrate"
   },
   {
    "de": "c4.1",
    "kind": "directive",
    "digest": "007094f49155b75a",
-   "en": "c4.1",
+   "en": "c4.0",
    "preview": "```{admonition} Definition Wenn man in einem Regressionsmodell die **Res…"
   },
   {
    "de": "c4.2",
    "kind": "prose",
    "digest": "065b773e8e811445",
-   "en": "c4.2",
+   "en": "c4.1",
    "preview": "Der kleinste-Quadrate-Schätzer ist ein Maximum-Likelihood-Schätzer, wenn…"
   },
   {
    "de": "c4.3",
    "kind": "directive",
    "digest": "38ff681e8feb9713",
-   "en": "c4.3",
+   "en": "c4.2",
    "preview": "```{admonition} Beispiel Wenn wir zu Punkten $(x_i,y_i)$ in der Ebene ei…"
   },
   {
    "de": "c4.4",
    "kind": "prose",
    "digest": "6c4825a435777817",
-   "en": "c4.4",
+   "en": "c4.3",
    "preview": "Im Allgemeinen lässt sich $\\beta_0$ berechnen mit der Formel"
   },
   {
    "de": "c4.5",
    "kind": "math",
    "digest": "16dc2c87baac7bba",
-   "en": "c4.5",
+   "en": "c4.4",
    "preview": "$$ \\beta_0 = \\texttt{mean}(y) - \\beta_1\\texttt{mean}(x). $$"
   },
   {
    "de": "c4.6",
    "kind": "prose",
    "digest": "a17271c38fa59d42",
-   "en": "c4.6",
+   "en": "c4.5",
    "preview": "Um also zunächst $\\beta_1$ im Allgemeinen zu bestimmen, verschiebt man d…"
   },
   {
    "de": "c4.7",
    "kind": "math",
    "digest": "3a6e24d789ea9ae1",
-   "en": "c4.7",
+   "en": "c4.6",
    "preview": "$$ \\beta_1 = \\dfrac{\\sum_{i=1}^N (x_i - \\texttt{mean}(x))(y_i - \\texttt{…"
   },
   {
    "de": "c4.8",
    "kind": "prose",
    "digest": "f7b3e68cb96a3c00",
-   "en": "c4.8",
+   "en": "c4.7",
    "preview": "Teilt man Zähler und Nenner durch $N$, stehen dort zwei Größen, die wir …"
   },
   {
    "de": "c4.9",
    "kind": "math",
    "digest": "e515688596109c7b",
-   "en": "c4.9",
+   "en": "c4.8",
    "preview": "$$ \\beta_1 = \\dfrac{\\operatorname{Cov}(x,y)}{\\sigma^2(x)}, \\qquad \\beta_…"
   },
   {
    "de": "c4.10",
    "kind": "prose",
    "digest": "7f2fdce9cbaf41cf",
-   "en": "c4.10",
+   "en": "c4.9",
    "preview": "Das ist die Form, in der man die Rechnung am schnellsten von Hand durchf…"
   },
   {
    "de": "c4.11",
    "kind": "directive",
    "digest": "45a18869524383cd",
-   "en": "c4.11",
+   "en": "c4.10",
    "preview": "```{admonition} Beispiel Für die vier Punkte $x = (-2, -1, 1, 2)$ und $y…"
   },
   {
    "de": "c5",
    "kind": "code",
    "digest": "3d483461cce171d2",
-   "en": "c5",
+   "en": "c4.11",
    "preview": "import numpy as np np.random.seed(1234) # generate synthetic data: x = n…"
   },
   {
    "de": "c6",
    "kind": "code",
    "digest": "00eff0ac5438c5a2",
-   "en": "c6",
+   "en": "c5",
    "preview": "import matplotlib.pyplot as plt fig, ax = plt.subplots(figsize=(10,10)) …"
   },
   {
    "de": "c7.0",
    "kind": "prose",
    "digest": "016753b74a3fd265",
-   "en": "c7.0",
+   "en": "c6",
    "preview": "Die Methode kleinster Quadrate lässt sich auch direkt mit Scipy nutzen (…"
   },
   {
    "de": "c8",
    "kind": "code",
    "digest": "1bdd6b0a40583583",
-   "en": "c8",
+   "en": "c7.0",
    "preview": "from scipy.optimize import curve_fit # define function class for regress…"
   },
   {
    "de": "c9.0",
    "kind": "prose",
    "digest": "f5e4a5d020eeb399",
-   "en": "c9.0",
+   "en": "c8",
    "preview": "Aus der Dokumentation von Scipy:"
   },
   {
    "de": "c9.1",
    "kind": "prose",
    "digest": "5439ac20020ce841",
-   "en": "c9.1",
+   "en": "c9.0",
    "preview": "`scipy.optimize.curve_fit` > > Use non-linear least squares to fit a fun…"
   },
   {
    "de": "c10",
    "kind": "code",
    "digest": "705a14f12e24f7bd",
-   "en": "c10",
+   "en": "c9.1",
    "preview": "fig, ax = plt.subplots(figsize=(10,10)) ax.plot(x, y, \"+\", label=\"Daten\"…"
   },
   {
    "de": "c11.0",
    "kind": "prose",
    "digest": "73b1329761f25019",
-   "en": "c11.0",
+   "en": "c10",
    "preview": "Bitte beachten Sie, dass dies nicht die Richtung maximaler Varianz ist -…"
   },
   {
    "de": "c11.1",
    "kind": "prose",
    "digest": "c71aabf3d071a76b",
-   "en": "c11.1",
+   "en": "c11.0",
    "preview": "Damit ist auch klar, dass die Regression ein asymmetrisches Verfahren is…"
   },
   {
    "de": "c12.0",
    "kind": "heading",
    "digest": "ab49d2a1565395fc",
-   "en": "c12.0",
+   "en": "c11.1",
    "preview": "## Lineare Regression"
   },
   {
    "de": "c12.1",
    "kind": "directive",
    "digest": "7718f4706c2ca829",
-   "en": "c12.1",
+   "en": "c12.0",
    "preview": "```{admonition} Definition Eine Regression der Form $Y_i = f(X_i, w) + \\…"
   },
   {
    "de": "c12.2",
    "kind": "directive",
    "digest": "8c4be986b5182f68",
-   "en": "c12.2",
+   "en": "c12.1",
    "preview": "```{admonition} Definition Eine Regression der Form $Y_i = f(X_i, w, w_0…"
   },
   {
    "de": "c12.3",
    "kind": "prose",
    "digest": "cd2da9986f8a1066",
-   "en": "c12.3",
+   "en": "c12.2",
    "preview": "Die zweite Definition sieht allgemeiner aus, lässt sich aber auf die ers…"
   },
   {
    "de": "c12.4",
    "kind": "math",
    "digest": "5e2041f32280ce3c",
-   "en": "c12.4",
+   "en": "c12.3",
    "preview": "$$ X_+ := (1, X_1, \\dots, X_k), \\qquad w_+ := (w_0, w_1, \\dots, w_k), \\q…"
   },
   {
    "de": "c12.5",
    "kind": "prose",
    "digest": "cb8521f9ac5591be",
-   "en": "c12.5",
+   "en": "c12.4",
    "preview": "Das ist die übliche stillschweigende Konvention: Für $x = (a,b)$ ist dan…"
   },
   {
    "de": "c12.6",
    "kind": "directive",
    "digest": "43d11e373f1818bc",
-   "en": "c12.6",
+   "en": "c12.5",
    "preview": "```{admonition} Hinweis Ein Beispiel für so ein Modell mit Bias: Der Pre…"
   },
   {
    "de": "c13.0",
    "kind": "prose",
    "digest": "1b6c083e3c0a2ad1",
-   "en": "c13.0",
+   "en": "c12.6",
    "preview": "Eine einfache lineare Regression lässt sich mit Scipy.stats durchführen:"
   },
   {
    "de": "c14",
    "kind": "code",
    "digest": "2b701f03d47e1d5d",
-   "en": "c14",
+   "en": "c13.0",
    "preview": "from scipy.stats import linregress linregress_result = linregress(x, y) …"
   },
   {
    "de": "c15.0",
    "kind": "prose",
    "digest": "9413b752d14380fd",
-   "en": "c15.0",
+   "en": "c14",
    "preview": "Die fünf Rückgabewerte lohnen einen Moment. `slope` ist die Steigung $\\b…"
   },
   {
    "de": "c16.0",
    "kind": "prose",
    "digest": "813c4670ff348a19",
-   "en": "c16.0",
+   "en": "c15.0",
    "preview": "Scipy hat für uns gleich einen Test durchgeführt, nämlich einen beidseit…"
   },
   {
    "de": "c17.0",
    "kind": "prose",
    "digest": "3dad629fc5ced39b",
-   "en": "c17.0",
+   "en": "c16.0",
    "preview": "Bevor wir das allgemein aufschreiben, ein Beispiel, bei dem der Trick so…"
   },
   {
    "de": "c18",
    "kind": "code",
    "digest": "54bf918bdf6599c6",
-   "en": "c18",
+   "en": "c17.0",
    "preview": "from sklearn import datasets iris = datasets.load_iris() x_iris = iris.d…"
   },
   {
    "de": "c19.0",
    "kind": "prose",
    "digest": "a8aa89ade38d196b",
-   "en": "c19.0",
+   "en": "c18",
    "preview": "Wir haben hier nichts anderes getan, als vor der Regression die Funktion…"
   },
   {
    "de": "c19.1",
    "kind": "prose",
    "digest": "b7f8302d13e96b57",
-   "en": "c19.1",
+   "en": "c19.0",
    "preview": "Zum Vergleich: Mit der Blütenblattlänge allein kommt man auf $r = 0{,}87…"
   },
   {
    "de": "c20.0",
    "kind": "directive",
    "digest": "27128512f77d6db3",
-   "en": "c20.0",
+   "en": "c19.1",
    "preview": "```{admonition} Definition Wenn eine Regressorvariable die Form $\\phi(X_…"
   },
   {
    "de": "c20.1",
    "kind": "prose",
    "digest": "baee32818c45b473",
-   "en": "c20.1",
+   "en": "c20.0",
    "preview": "Damit ist bei einer linearen Regression also nur eins linear: die Funkti…"
   },
   {
    "de": "c21.0",
    "kind": "prose",
    "digest": "e5c4dda475cf2fb2",
-   "en": "c21.0",
+   "en": "c20.1",
    "preview": "Da die lineare Regressionsanalyse sehr einfach durchzuführen ist, wird d…"
   },
   {
    "de": "c21.1",
    "kind": "prose",
    "digest": "1800e4a44fbb3722",
-   "en": "c21.1",
+   "en": "c21.0",
    "preview": "Man nennt den Fall $w = (w_0, w_1)$ eine **einfache lineare Regression**…"
   },
   {
    "de": "c21.2",
    "kind": "prose",
    "digest": "70a64b2c433c0369",
-   "en": "c21.2",
+   "en": "c21.1",
    "preview": "Darum betrachten wir nun die multilineare Regression mit Scikit-learn:"
   },
   {
    "de": "c22.0",
    "kind": "directive",
    "digest": "b3578a45a6b8f2bc",
-   "en": "c22.0",
+   "en": "c21.2",
    "preview": "```{admonition} Achtung: Begriffe anderswo :class: warning Die Wörter di…"
   },
   {
    "de": "c23",
    "kind": "code",
    "digest": "503d500f11970bfd",
-   "en": "c23",
+   "en": "c22.0",
    "preview": "from sklearn.linear_model import LinearRegression # first look at linear…"
   },
   {
    "de": "c24",
    "kind": "code",
    "digest": "31c1e81955537224",
-   "en": "c24",
+   "en": "c23",
    "preview": "fig, ax = plt.subplots(figsize=(10,10)) ax.plot(x, y, \"+\", label=\"Data\")…"
   },
   {
    "de": "c25.0",
    "kind": "prose",
    "digest": "6095750f99d1ed14",
-   "en": "c25.0",
+   "en": "c24",
    "preview": "Aus der Scikit-learn-Dokumentation:"
   },
   {
    "de": "c25.1",
    "kind": "prose",
    "digest": "e6a176003ccd0582",
-   "en": "c25.1",
+   "en": "c25.0",
    "preview": "`sklearn.linear_model.LinearRegression` > > From the implementation poin…"
   },
   {
    "de": "c25.2",
    "kind": "prose",
    "digest": "17d95630c2093528",
-   "en": "c25.2",
+   "en": "c25.1",
    "preview": "So gesehen ist Scikit-learn nicht 'besser' als Scipy, sondern einfach ei…"
   },
   {
    "de": "c26.0",
    "kind": "directive",
    "digest": "b95d16f73240dff9",
-   "en": "c26.0",
+   "en": "c25.2",
    "preview": "```{admonition} Beispiel Die Nutzung der Basisfunktion $\\phi(x) = (1,x,x…"
   },
   {
    "de": "c27.0",
    "kind": "prose",
    "digest": "837adb524aa86a12",
-   "en": "c27.0",
+   "en": "c26.0",
    "preview": "Ein Problem bei der Wahl einer Basisfunktion für ein Regressionsmodell i…"
   },
   {
    "de": "c27.1",
    "kind": "directive",
    "digest": "5cadb4589e7c76d0",
-   "en": "c27.1",
+   "en": "c27.0",
    "preview": "```{admonition} Beispiel Wir betrachten das Overfitten in Abhängigkeit v…"
   },
   {
    "de": "c28",
    "kind": "code",
    "digest": "cad2fb7dd03af676",
-   "en": "c28",
+   "en": "c27.1",
    "preview": "# define basis function class def phi(x, d): return np.dstack([np.power(…"
   },
   {
    "de": "c29",
    "kind": "code",
    "digest": "76d7ba71dd06dd10",
-   "en": "c29",
+   "en": "c28",
    "preview": "poly_regression_plot(x, y, 1)"
   },
   {
    "de": "c30",
    "kind": "code",
    "digest": "414a1eb13cc32960",
-   "en": "c30",
+   "en": "c29",
    "preview": "poly_regression_plot(x, y, 2)"
   },
   {
    "de": "c31",
    "kind": "code",
    "digest": "c25a0a8b73c42bdf",
-   "en": "c31",
+   "en": "c30",
    "preview": "poly_regression_plot(x, y, 30)"
   },
   {
    "de": "c32.0",
    "kind": "prose",
    "digest": "01f0d238ec3a5615",
-   "en": "c32.0",
+   "en": "c31",
    "preview": "Man kann ein lineares Regressionsmodell auch formulieren als"
   },
   {
    "de": "c32.1",
    "kind": "math",
    "digest": "3d1ca9e5b82b2131",
-   "en": "c32.1",
+   "en": "c32.0",
    "preview": "$$ P(y|X, \\theta) = \\mathcal{N}(w^T X, \\sigma^2) $$"
   },
   {
    "de": "c32.2",
    "kind": "prose",
    "digest": "26c79662657cd34d",
-   "en": "c32.2",
+   "en": "c32.1",
    "preview": "bzw. mit Basisfunktionserweiterung"
   },
   {
    "de": "c32.3",
    "kind": "math",
    "digest": "cf7880009f308077",
-   "en": "c32.3",
+   "en": "c32.2",
    "preview": "$$ P(y|X, \\theta) = \\mathcal{N}(w^T \\phi(X), \\sigma^2) $$"
   },
   {
    "de": "c32.4",
    "kind": "prose",
    "digest": "8770a902a01fbf9e",
-   "en": "c32.4",
+   "en": "c32.3",
    "preview": "Dabei sind $\\theta_i$ die Parameter der normalverteilten Fehler $\\epsilo…"
   },
   {
    "de": "c33.0",
    "kind": "heading",
    "digest": "14f297d89f288520",
-   "en": "c33.0",
+   "en": "c32.4",
    "preview": "## Anwendungsbeispiel"
   },
   {
    "de": "c33.1",
    "kind": "prose",
    "digest": "51cab822c4d98097",
-   "en": "c33.1",
+   "en": "c33.0",
    "preview": "Wir betrachten den [Melbourne Housing Market Datensatz von Anthony Pino]…"
   },
   {
    "de": "c33.2",
    "kind": "prose",
    "digest": "db8269b0fcdc1107",
-   "en": "c33.2",
+   "en": "c33.1",
    "preview": "Zum Einstieg putzen wir die Daten etwas."
   },
   {
    "de": "c34",
    "kind": "code",
    "digest": "d438ec04499b43b7",
-   "en": "c34",
+   "en": "c33.2",
    "preview": "import pandas as pd df = pd.read_csv(\"Melbourne_housing_FULL.csv\") print…"
   },
   {
    "de": "c35",
    "kind": "code",
    "digest": "12c2a14b558d3c17",
-   "en": "c35",
+   "en": "c34",
    "preview": "# don't care about lat, lon here: df = df.drop(columns=['Lattitude','Lon…"
   },
   {
    "de": "c36",
    "kind": "code",
    "digest": "8ad7dae289d28ba5",
-   "en": "c36",
+   "en": "c35",
    "preview": "regressor_columns = numerical_columns.drop('Price') x = df[regressor_col…"
   },
   {
    "de": "c37.0",
    "kind": "prose",
    "digest": "3971455ac0a04da8",
-   "en": "c37.0",
+   "en": "c36",
    "preview": "Bevor wir die Koeffizienten interpretieren, prüfen wir die Modellannahme…"
   },
   {
    "de": "c38",
    "kind": "code",
    "digest": "68222894c1fc5b4c",
-   "en": "c38",
+   "en": "c37.0",
    "preview": "from sklearn.metrics import PredictionErrorDisplay PredictionErrorDispla…"
   },
   {
    "de": "c39.0",
    "kind": "directive",
    "digest": "2ef0ca8d8073d090",
-   "en": "c39.0",
+   "en": "c38",
    "preview": "```{admonition} Definition $$ R^2 = 1 - \\dfrac{\\sum_{i=1}^N {\\left( y_i …"
   },
   {
    "de": "c40",
    "kind": "code",
    "digest": "145deaa109149782",
-   "en": "c40",
+   "en": "c39.0",
    "preview": "cdf = pd.DataFrame(data = regressor.coef_, index = regressor_columns, co…"
   },
   {
    "de": "c41.0",
    "kind": "prose",
    "digest": "73db17bb7ac109d1",
-   "en": "c41.0",
+   "en": "c40",
    "preview": "Interpretation:"
   },
   {
    "de": "c41.1",
    "kind": "prose",
    "digest": "b38fda87569f6bca",
-   "en": "c41.1",
+   "en": "c41.0",
    "preview": "Wenn ein Haus ein Jahr älter ist als ein anderes, ist der assoziierte Pr…"
   },
   {
    "de": "c42.0",
    "kind": "heading",
    "digest": "a7bcf65a5b44714c",
-   "en": "c42.0",
+   "en": "c41.1",
    "preview": "### Kategoriale Regressoren: One-Hot-Encoding"
   },
   {
    "de": "c42.1",
    "kind": "prose",
    "digest": "5538e1151dfc1877",
-   "en": "c42.1",
+   "en": "c42.0",
    "preview": "Beim Putzen der Daten haben wir alle Textspalten zu `category` gemacht —…"
   },
   {
    "de": "c42.2",
    "kind": "prose",
    "digest": "7d91412c31171748",
-   "en": "c42.2",
+   "en": "c42.1",
    "preview": "Einfach $h = 1$, $u = 2$, $t = 3$ zu setzen wäre falsch: `Type` ist nomi…"
   },
   {
    "de": "c43",
    "kind": "code",
    "digest": "4e7217778a050bc4",
-   "en": "c43",
+   "en": "c42.2",
    "preview": "dummies = pd.get_dummies(df['Type'], prefix='Type', drop_first=True, dty…"
   },
   {
    "de": "c44.0",
    "kind": "prose",
    "digest": "b6208ccbcada10ba",
-   "en": "c44.0",
+   "en": "c43",
    "preview": "Die beiden neuen Koeffizienten lesen sich als Preisunterschied *gegenübe…"
   },
   {
    "de": "c44.1",
    "kind": "prose",
    "digest": "175f69372aa8a554",
-   "en": "c44.1",
+   "en": "c44.0",
    "preview": "Ein ordinales Merkmal (etwa ein Zustand „schlecht / mittel / gut“) hätte…"
   },
   {
    "de": "c44.2",
    "kind": "prose",
    "digest": "9c9fedf8f253fda6",
-   "en": "c44.2",
+   "en": "c44.1",
    "preview": "Zum Schluss dieses Anwendungsbeispiels noch zwei Bilder zur linearen Reg…"
   },
   {
    "de": "c45",
    "kind": "code",
    "digest": "edb114bfe9f0e42e",
-   "en": "c45",
+   "en": "c44.2",
    "preview": "regressor_variable = x_train[[\"Distance\"]] regressor.fit(regressor_varia…"
   },
   {
    "de": "c46",
    "kind": "code",
    "digest": "c314f4d4ffd945c6",
-   "en": "c46",
+   "en": "c45",
    "preview": "regressor_variable = x_train[[\"Distance\", \"Age\"]] regressor.fit(regresso…"
   },
   {
    "de": "c47.0",
    "kind": "prose",
    "digest": "7099d7d891431ef6",
-   "en": "c47.0",
+   "en": "c46",
    "preview": "So wie diese Daten aussehen, wäre hier auch polynomiale Regression hilfr…"
   },
   {
    "de": "c48",
    "kind": "code",
    "digest": "952e7918b3f4cd7a",
-   "en": "c48",
+   "en": "c47.0",
    "preview": "from sklearn.preprocessing import PolynomialFeatures from sklearn.pipeli…"
   },
   {
    "de": "c49.0",
    "kind": "heading",
    "digest": "7925e339dc758fb6",
-   "en": "c49.0",
+   "en": "c48",
    "preview": "## Regularisierung"
   },
   {
    "de": "c49.1",
    "kind": "prose",
    "digest": "b1838ac3789064f7",
-   "en": "c49.1",
+   "en": "c49.0",
    "preview": "Wenn man nur wenige Stützstellen in den Trainingsdaten hat, neigt man um…"
   },
   {
    "de": "c50",
    "kind": "code",
    "digest": "182fe1ea4b4be38f",
-   "en": "c50",
+   "en": "c49.1",
    "preview": "# generate new synthetic data: np.random.seed(123) x = np.linspace(-6, 4…"
   },
   {
    "de": "c51.0",
    "kind": "prose",
    "digest": "88f20694a1ff28cc",
-   "en": "c51.0",
+   "en": "c50",
    "preview": "Der Trick der Regularisierung besteht nun darin, nicht *zu* gut auf die …"
   },
   {
    "de": "c51.1",
    "kind": "prose",
    "digest": "8361971af3e46a50",
-   "en": "c51.1",
+   "en": "c51.0",
    "preview": "Die **L2-Regularisierung**, auch als **Ridge-Regression** bekannt, beste…"
   },
   {
    "de": "c51.2",
    "kind": "prose",
    "digest": "d340000b0ac68bda",
-   "en": "c51.2",
+   "en": "c51.1",
    "preview": "Der Name L2 kommt daher, dass $P$ das Quadrat der L2-Norm ist."
   },
   {
    "de": "c51.3",
    "kind": "prose",
    "digest": "407c90b7ba18e658",
-   "en": "c51.3",
+   "en": "c51.2",
    "preview": "Dieselbe Idee, große Modellgewichte zu bestrafen, heißt im Deep Learning…"
   },
   {
    "de": "c51.4",
    "kind": "prose",
    "digest": "5cd2e644df20ec7c",
-   "en": "c51.4",
+   "en": "c51.3",
    "preview": "Es gibt auch die **L1-Regularisierung** bei der man statt $\\beta_i^2$ de…"
   },
   {
    "de": "c51.5",
    "kind": "prose",
    "digest": "78b640a03daaf4ea",
-   "en": "c51.5",
+   "en": "c51.4",
    "preview": "![L1 and L2 balls, image by Wikipedia User Nicoguaro, CC BY 4.0](images/…"
   },
   {
    "de": "c52",
    "kind": "code",
    "digest": "4ee9c66e4678501c",
-   "en": "c52",
+   "en": "c51.5",
    "preview": "from sklearn.linear_model import Ridge fig, axs = plt.subplots(5, 1, fig…"
   },
   {
    "de": "c53.0",
    "kind": "prose",
    "digest": "6876644fe0893a58",
-   "en": "c53.0",
+   "en": "c52",
    "preview": "Der praktische Unterschied zwischen L1 und L2: Die L1-Strafe setzt Koeff…"
   },
   {
    "de": "c54",
    "kind": "code",
    "digest": "a160c9efb65385fe",
-   "en": "c54",
+   "en": "c53.0",
    "preview": "from sklearn.linear_model import Lasso from sklearn.preprocessing import…"
   },
   {
    "de": "c55.0",
    "kind": "heading",
    "digest": "f5ef31e5b79da9ed",
-   "en": "c55.0",
+   "en": "c54",
    "preview": "## Zusammenfassung"
   },
   {
    "de": "c55.1",
    "kind": "prose",
    "digest": "17d72d182709e65a",
-   "en": "c55.1",
+   "en": "c55.0",
    "preview": "Eine Regression ist ein Modell $Y = f(X,\\beta) + \\epsilon$; *linear* hei…"
   },
   {
    "de": "c55.2",
    "kind": "prose",
    "digest": "5947ec7a2482b16a",
-   "en": "c55.2",
+   "en": "c55.1",
    "preview": "Video: [Crash Course Statistics Regression](https://www.youtube.com/watc…"
   }
  ]

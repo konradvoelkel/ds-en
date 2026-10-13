@@ -14,287 +14,288 @@
    "de": "c0.1",
    "kind": "prose",
    "digest": "ffb85df769cb27ff",
-   "en": "c0.1",
+   "en": null,
+   "dropped": "link to the German HHU lecture recording",
    "preview": "[Vorlesungsaufzeichnung Datenexploration mit Numpy](https://media.hhu.de…"
   },
   {
    "de": "c0.2",
    "kind": "prose",
    "digest": "4c8916929459aa5a",
-   "en": "c0.2",
+   "en": "c0.1",
    "preview": "In diesem Notebook nutzen wir nur Numpy (kein Pandas, Scikit-learn o.ä.)…"
   },
   {
    "de": "c0.3",
    "kind": "heading",
    "digest": "c268b9486a4fd170",
-   "en": "c0.3",
+   "en": "c0.2",
    "preview": "## Daten laden"
   },
   {
    "de": "c0.4",
    "kind": "prose",
    "digest": "c14e56bc6eb14c05",
-   "en": "c0.4",
+   "en": "c0.3",
    "preview": "Wir werden erstmal naiv die Komma-separierte Datei von Kaggle (die mit Ü…"
   },
   {
    "de": "c1",
    "kind": "code",
    "digest": "05cd74dc44097d0c",
-   "en": "c1",
+   "en": "c0.4",
    "preview": "import numpy as np filename = 'titanic.csv' try: data = np.genfromtxt( f…"
   },
   {
    "de": "c2.0",
    "kind": "prose",
    "digest": "d3b1c8bbd63ae7bd",
-   "en": "c2.0",
+   "en": "c1",
    "preview": "Offenbar enthält Zeile 2 mehr Variablen als die Überschriftzeile!"
   },
   {
    "de": "c2.1",
    "kind": "prose",
    "digest": "e76a8786e8744edc",
-   "en": "c2.1",
+   "en": "c2.0",
    "preview": "Wir drucken uns die ersten zwei Zeilen zur manuellen Inspektion aus:"
   },
   {
    "de": "c3",
    "kind": "code",
    "digest": "7db1dba7386cec5e",
-   "en": "c3",
+   "en": "c2.1",
    "preview": "with open(filename, \"r\") as file: for i in range(2): print(file.readline…"
   },
   {
    "de": "c4.0",
    "kind": "prose",
    "digest": "552070fd2c90a7a8",
-   "en": "c4.0",
+   "en": "c3",
    "preview": "Die Lösung ist ein CSV-Parser, der Anführungszeichen versteht: In `\"Brau…"
   },
   {
    "de": "c5",
    "kind": "code",
    "digest": "16becd696e2dbdd0",
-   "en": "c5",
+   "en": "c4.0",
    "preview": "import csv with open(\"titanic.csv\", newline=\"\", encoding=\"utf-8\") as que…"
   },
   {
    "de": "c6",
    "kind": "code",
    "digest": "f3ed75b5ee288b84",
-   "en": "c6",
+   "en": "c5",
    "preview": "filename = 'titanic.tsv' data = np.genfromtxt( filename, delimiter='\\t',…"
   },
   {
    "de": "c7",
    "kind": "code",
    "digest": "54006f1ac0d13e8e",
-   "en": "c7",
+   "en": "c6",
    "preview": "print(\"Columns:\", data.dtype.names) print(\"First 5 rows:\") print(data[:5…"
   },
   {
    "de": "c8.0",
    "kind": "heading",
    "digest": "b1bc2014f224bf22",
-   "en": "c8.0",
+   "en": "c7",
    "preview": "## Relevante Features auswählen"
   },
   {
    "de": "c9",
    "kind": "code",
    "digest": "c51d013ff6512aa3",
-   "en": "c9",
+   "en": "c8.0",
    "preview": "survived = data['Survived'].astype(int) pclass = data['Pclass'].astype(i…"
   },
   {
    "de": "c10.0",
    "kind": "heading",
    "digest": "797240fe5adf305e",
-   "en": "c10.0",
+   "en": "c9",
    "preview": "## NaN = Not a Number"
   },
   {
    "de": "c10.1",
    "kind": "prose",
    "digest": "6f36f23362eb3edc",
-   "en": "c10.1",
+   "en": "c10.0",
    "preview": "Ob man fehlende Werte durch den Median ersetzt oder die Zeilen weglässt,…"
   },
   {
    "de": "c11",
    "kind": "code",
    "digest": "a084eb605dc61ff4",
-   "en": "c11",
+   "en": "c10.1",
    "preview": "print(\"\\nAnzahl fehlender Alterswerte:\", np.sum(np.isnan(age))) # Fehlen…"
   },
   {
    "de": "c12.0",
    "kind": "heading",
    "digest": "36baf5314037c522",
-   "en": "c12.0",
+   "en": "c11",
    "preview": "## Überleben analysieren"
   },
   {
    "de": "c13",
    "kind": "code",
    "digest": "873c0d0e400dc998",
-   "en": "c13",
+   "en": "c12.0",
    "preview": "# neues Feature def survival_rate(mask): total = np.sum(mask) survived_t…"
   },
   {
    "de": "c14.0",
    "kind": "heading",
    "digest": "b9b1fe5e9a974354",
-   "en": "c14.0",
+   "en": "c13",
    "preview": "## Visualisierung: Überleben nach Geschlecht"
   },
   {
    "de": "c15",
    "kind": "code",
    "digest": "ef078c3a6b84e6be",
-   "en": "c15",
+   "en": "c14.0",
    "preview": "import matplotlib.pyplot as plt labels = [] rates = [] for s in np.uniqu…"
   },
   {
    "de": "c16.0",
    "kind": "heading",
    "digest": "cffa1694eeb2f46a",
-   "en": "c16.0",
+   "en": "c15",
    "preview": "## Ein erster Klassifikator"
   },
   {
    "de": "c16.1",
    "kind": "prose",
    "digest": "255d20e5d09bd590",
-   "en": "c16.1",
+   "en": "c16.0",
    "preview": "Die Überlebensquoten oben legen eine Regel nahe: „Frauen überleben, Männ…"
   },
   {
    "de": "c17",
    "kind": "code",
    "digest": "353dd378d62b98f7",
-   "en": "c17",
+   "en": "c16.1",
    "preview": "prediction = (sex == 'female') # Vorhersage: überlebt truth = (survived …"
   },
   {
    "de": "c18.0",
    "kind": "prose",
    "digest": "97a1c0889a20c253",
-   "en": "c18.0",
+   "en": "c17",
    "preview": "Diese $2 \\times 2$-Tabelle heißt **Konfusionsmatrix**. Sie ist nichts an…"
   },
   {
    "de": "c18.1",
    "kind": "prose",
    "digest": "68f71bd73e67564f",
-   "en": "c18.1",
+   "en": "c18.0",
    "preview": "* **Accuracy** (Treffergenauigkeit): der Anteil der richtigen Vorhersage…"
   },
   {
    "de": "c18.2",
    "kind": "prose",
    "digest": "718d1e5c2ee92b68",
-   "en": "c18.2",
+   "en": "c18.1",
    "preview": "Precision und Recall sind bedingte Wahrscheinlichkeiten, nur in verschie…"
   },
   {
    "de": "c19",
    "kind": "code",
    "digest": "fe008b94c13410de",
-   "en": "c19",
+   "en": "c18.2",
    "preview": "n = len(survived) def kennzahlen(prediction): tp = np.sum( prediction & …"
   },
   {
    "de": "c20.0",
    "kind": "prose",
    "digest": "38c4f9b5a27798be",
-   "en": "c20.0",
+   "en": "c19",
    "preview": "Die zweite Zeile ist der dümmste Klassifikator, den es gibt: Er sagt für…"
   },
   {
    "de": "c20.1",
    "kind": "prose",
    "digest": "b149cfb79a6f1141",
-   "en": "c20.1",
+   "en": "c20.0",
    "preview": "Der dümmste Klassifikator ist übrigens ein alter Bekannter. Im Kapitel […"
   },
   {
    "de": "c20.2",
    "kind": "prose",
    "digest": "ff2dfae30910ff3f",
-   "en": "c20.2",
+   "en": "c20.1",
    "preview": "Man kann die Regel verfeinern, etwa nach der Losung „Frauen und Kinder z…"
   },
   {
    "de": "c21",
    "kind": "code",
    "digest": "0c68ad1a9e1488c7",
-   "en": "c21",
+   "en": "c20.2",
    "preview": "acc, prec, rec = kennzahlen((sex == 'female') | (~missing & (age < 13)))…"
   },
   {
    "de": "c22.0",
    "kind": "prose",
    "digest": "9cdf6b25e7b4d5d8",
-   "en": "c22.0",
+   "en": "c21",
    "preview": "Die Accuracy ändert sich kaum, aber Recall steigt und Precision fällt: D…"
   },
   {
    "de": "c22.1",
    "kind": "prose",
    "digest": "52208e87ae6923e4",
-   "en": "c22.1",
+   "en": "c22.0",
    "preview": "Eine Sache haben wir uns hier erlaubt, die man später nie wieder tun dar…"
   },
   {
    "de": "c22.2",
    "kind": "heading",
    "digest": "a33dc78595d06cc9",
-   "en": "c22.2",
+   "en": "c22.1",
    "preview": "### Zwei Richtungen"
   },
   {
    "de": "c22.3",
    "kind": "prose",
    "digest": "e2563988d771648b",
-   "en": "c22.3",
+   "en": "c22.2",
    "preview": "Die Konfusionsmatrix enthält noch eine Lektion, die wir hier nur ansehen…"
   },
   {
    "de": "c23",
    "kind": "code",
    "digest": "cd1ec0cadf012104",
-   "en": "c23",
+   "en": "c22.3",
    "preview": "p_ueberlebt_wenn_frau = np.mean(survived[sex == 'female']) # P(überlebt …"
   },
   {
    "de": "c24.0",
    "kind": "prose",
    "digest": "e2cbcdb143ea3ef4",
-   "en": "c24.0",
+   "en": "c23",
    "preview": "Die beiden bedingten Wahrscheinlichkeiten sind verschieden, und der Umre…"
   },
   {
    "de": "c25.0",
    "kind": "heading",
    "digest": "ad6f589dd0af36b8",
-   "en": "c25.0",
+   "en": "c24.0",
    "preview": "## Blick auf Korrelationen"
   },
   {
    "de": "c25.1",
    "kind": "prose",
    "digest": "ba6b7b739e59e70d",
-   "en": "c25.1",
+   "en": "c25.0",
    "preview": "Wir haben noch nicht formal eingeführt, was das ist, aber so lassen wir …"
   },
   {
    "de": "c26",
    "kind": "code",
    "digest": "1e70d031120cf3fa",
-   "en": "c26",
+   "en": "c25.1",
    "preview": "is_female = (sex == 'female').astype(int) is_male = (sex == 'male').asty…"
   }
  ]

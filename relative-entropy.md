@@ -1,105 +1,103 @@
-# Relative Entropie
+# Relative entropy
 
-[Vorlesungsaufzeichnung Relative und stetige Entropie](https://media.hhu.de/channel/video/data-science-vl-22-relative-und-stetige-entropie/5dcf4a4c1f44569d78493f65d76a735f/167)
+## Logarithms
 
-## Logarithmen
-
-Die elementaren Eigenschaften des Logarithmus — Definition, Basiswechsel, bit und nat — stehen im Einschub im Kapitel [Erwartungswert und Varianz](expectation-variance.md). Hier geht es um die Frage, warum in der Informationstheorie ausgerechnet der Logarithmus auftaucht und keine andere Funktion.
+The elementary properties of the logarithm – definition, change of base, bit and nat – are in the digression in the chapter [Expectation and variance](expectation-variance.md). Here we are after a different question: why it is the logarithm, of all functions, that turns up in information theory, and nothing else.
 
 :::{admonition} Lemma
-Sei $l \colon \{1,\dots\} = \mathbb{N}_{>0} \to \mathbb{R}$ eine Funktion mit
-1. $l(ab) = l(a) + l(b)$ -- "vollständig additiv"
-2. $l(n+1) \geq l(n)$ -- "monoton wachsend"
-Dann existiert eine Konstante $c \in \mathbb{R}$ sodass $l(n) = c \ln(n)$.
+Let $l \colon \{1,\dots\} = \mathbb{N}_{>0} \to \mathbb{R}$ be a function with
+1. $l(ab) = l(a) + l(b)$ – "completely additive"
+2. $l(n+1) \geq l(n)$ – "monotonically increasing"
+Then there is a constant $c \in \mathbb{R}$ such that $l(n) = c \ln(n)$.
 :::
 
-:::{admonition} Bemerkung
-Aufgrund der Formel
+:::{admonition} Remark
+Because of the formula
 
 $$
 \ln(x) = \dfrac{\log_a(x)}{\log_a(e)}
 $$
 
-können wir die Konstante $c$ interpretieren als $c = \log_a(e)$,
-d.h. die Funktion $l$ ist ein Logarithmus zur Basis $a$.
+we can read the constant $c$ as $c = \log_a(e)$,
+that is, the function $l$ is a logarithm to base $a$.
 :::
 
-Es ist auch gleich klar, dass das gleiche Lemma für $\log_2$ anstelle von $\ln$ gilt (lediglich die Konstante ist eine andere).
+It is equally clear that the same lemma holds for $\log_2$ in place of $\ln$ (only the constant is a different one).
 
-Wenn wir also etwas abzählen wollen, sodass der Zählwert eines Produkts die Summe der einzelnen Zählwerte ist, dann müssen wir das mit einem Logarithmus tun.
+So if we want to count something in such a way that the count of a product is the sum of the individual counts, then we have to do it with a logarithm.
 
-:::{admonition} Beweis
-Wir wollen zeigen, dass für Funktionen $f,g \colon \mathbb{N}_{>0} \to \mathbb{R}$, die die Bedingungen aus dem Lemma erfüllen, stets
+:::{admonition} Proof
+We want to show that for functions $f,g \colon \mathbb{N}_{>0} \to \mathbb{R}$ satisfying the conditions of the lemma,
 
 $$
 f(n) g(2) = f(2) g(n)
 $$
 
-gilt, denn mit $g = \ln$ ist dann das Lemma bewiesen ($c=f(2)$).
+always holds, since with $g = \ln$ this proves the lemma ($c=f(2)$).
 
-Seien $n,k,m \in \mathbb{N}$ sodass $2^{m-1} \leq n^k \leq 2^m$.
-Aus der Monotonie folgt dann
+Let $n,k,m \in \mathbb{N}$ be such that $2^{m-1} \leq n^k \leq 2^m$.
+Monotonicity then gives
 
 $$
 f(2^{m-1}) \leq f(n^k) \leq f(2^m)
 $$
 
-und aus der Additivität
+and additivity gives
 
 $$
 (m-1)f(2) \leq kf(n) \leq mf(2)
 $$
 
-ebenso die gleiche Ungleichungskette für $g$ anstelle $f$, aber das multiplizieren wir noch mit $-1$:
+The same chain of inequalities holds for $g$ in place of $f$; that one we also multiply by $-1$:
 
 $$
 -mg(2) \leq -kg(n) \leq -(m-1)g(2).
 $$
 
-Die Summe dieser beiden Ungleichungsketten können wir nun vereinfachen zu
+The sum of these two chains of inequalities now simplifies to
 
 $$
 -f(2)g(2) \leq k\left(f(n)g(2) - f(2)g(n)\right) \leq f(2)g(2)
 $$
 
-teilen wir durch $k$, und lassen dann $k \to \infty$ gehen, so sehen wir,
-dass $f(n)g(2) - f(2)g(n) \to 0$ geht (für $k \to \infty$, wovon es gar nicht abhängt).
+Dividing by $k$ and then letting $k \to \infty$, we see
+that $f(n)g(2) - f(2)g(n) \to 0$ (as $k \to \infty$, on which it does not depend at all).
 :::
 
 :::{admonition} Lemma
-Wenn eine stetige Funktion $F \colon \mathbb{R} \to \mathbb{R}$ die Funktionalgleichung $F(xy) = xF(y) + F(x)y$ erfüllt und $F(x)/x$ monoton wachsend ist, so existiert eine Konstante $c \in \mathbb{R}$ sodass $F(x) = -x\log(x)c$.
+If a continuous function $F \colon \mathbb{R} \to \mathbb{R}$ satisfies the functional equation $F(xy) = xF(y) + F(x)y$ and $F(x)/x$ is monotonically increasing, then there is a constant $c \in \mathbb{R}$ such that $F(x) = -x\log(x)c$.
 :::
 
-:::{admonition} Beweis
-Die Funktion $g(x) := F(x)/x$ erfüllt $g(xy) = g(x) + g(y)$ und ist nach Voraussetzung monoton, also gibt es $c'$ mit $g(x) = c'\log(x)$, und $c:=-c'$ funktioniert.
+:::{admonition} Proof
+The function $g(x) := F(x)/x$ satisfies $g(xy) = g(x) + g(y)$ and is monotonic by assumption, so there is a $c'$ with $g(x) = c'\log(x)$, and $c:=-c'$ does the job.
 :::
 
-:::{admonition} Bemerkung
-Wir sehen also, dass der Entropie-Beitrag $-p\log(p)$ eines Ergebnisses mit Wahrscheinlichkeit $p$ eine sehr natürliche Größe ist. (Die *Information* $I(x) = -\log P(\{x\})$ aus dem Kapitel [Erwartungswert und Varianz](expectation-variance.md) ist der Faktor hinter dem $p$.)
+:::{admonition} Remark
+So we see that the entropy contribution $-p\log(p)$ of an outcome with probability $p$ is a very natural quantity. (The *surprisal* $I(x) = -\log P(\{x\})$ from the chapter [Expectation and variance](expectation-variance.md) is the factor behind the $p$.)
 :::
 
 :::{admonition} Lemma
-Der Logarithmus ist eine *konkave* Funktion, d.h. für eine Konvexkombination $\lambda x + \mu y$ (d.h. $\lambda + \mu = 1$ und $0 \leq \lambda, \mu \leq 1$) gilt
+The logarithm is a *concave* function, that is, for a convex combination $\lambda x + \mu y$ (so $\lambda + \mu = 1$ and $0 \leq \lambda, \mu \leq 1$) we have
 
 $$
 \lambda \log(x) + \mu \log(y) \leq \log(\lambda x + \mu y)
 $$
 :::
 
-:::{admonition} Beweis
-**Idee:**
-Die Ableitung von $\log(x)$ ist $\frac{1}{x}$ und das ist auf $(0,\infty)$ streng monoton fallend. Mit dem Mittelwertsatz kann man nun zeigen, dass $\log(x)$ streng konkav sein muss (also sogar $<$ statt $\leq$ in der Ungleichung oben).
+:::{admonition} Proof
+**Idea:**
+The derivative of $\log(x)$ is $\frac{1}{x}$, and that is strictly decreasing on $(0,\infty)$. With the mean value theorem one can now show that $\log(x)$ must be strictly concave (so even $<$ rather than $\leq$ in the inequality above).
 :::
 
-Wir haben vorher schon ein heuristisches Argument verwendet, aber nun können wir rigoros zeigen:
+We have already used a heuristic argument for this, but now we can prove it rigorously:
 
 :::{admonition} Proposition
-Wenn $p = (p_1,\dots,p_n)$ eine diskrete Verteilung auf $\Omega = \{1,\dots,n\}$ beschreibt, so gilt für die Entropie
-$H(p) \leq \log(n)$ (die Entropie der Gleichverteilung).
+If $p = (p_1,\dots,p_n)$ describes a discrete distribution on $\Omega = \{1,\dots,n\}$, then the entropy satisfies
+$H(p) \leq \log(n)$ (the entropy of the uniform distribution).
 :::
 
-:::{admonition} Beweis
-Wir nutzen aus, dass die Summe in der Definition der Entropie eine Konvexkombination ist, und dass der Logarithmus konkav ist:
+:::{admonition} Proof
+We use the fact that the sum in the definition of the entropy is a convex combination, and that the logarithm is concave:
 
 $H(p) = \sum_{i=1, p_i\neq 0}^n p_i \log \frac{1}{p_i} $
 
@@ -109,18 +107,18 @@ $\leq \log\left( \sum_{i=1}^n 1 \right) = \log(n)$
 :::
 
 
-## Definition und Eigenschaften
+## Definition and properties
 
 :::{admonition} Definition
-Seien $p,r \in \Delta_n$ (der Menge der Wahrscheinlichkeitsvektoren in $\mathbb{R}^n$, also Vektoren, deren Einträge zwischen $0$ und $1$ liegen und deren Summe über alle Einträge genau $1$ ist).
-Die *Entropie* (auch: Kullback-Leibler-Divergenz $D_{KL}$) von $p$ relativ zu $r$ ist
+Let $p,r \in \Delta_n$ (the set of probability vectors in $\mathbb{R}^n$, that is, vectors whose entries lie between $0$ and $1$ and whose entries sum to exactly $1$).
+The *entropy* (also: Kullback–Leibler divergence $D_{KL}$) of $p$ relative to $r$ is
 
 $H(p \Vert r) := \sum_{i,\ p_i > 0}^n p_i \log \left( \frac{p_i}{r_i} \right) \in \mathbb{R} \cup \{\infty\}.$
 :::
 
 :::{admonition} Proposition
-Schreibe $u_n = (\frac{1}{n}, \dots, \frac{1}{n}) \in \Delta_n$ für die Gleichverteilung auf $\{1,\dots,n\}$.
-Dann ist
+Write $u_n = (\frac{1}{n}, \dots, \frac{1}{n}) \in \Delta_n$ for the uniform distribution on $\{1,\dots,n\}$.
+Then
 
 $$
 H(p \Vert u_n) = H(u_n) - H(p) = \log(n) - H(p)
@@ -129,9 +127,9 @@ $$
 
 :::{admonition} Proposition
 $$
-H(p \Vert r) = 0 \text{ genau dann wenn } p=r
+H(p \Vert r) = 0 \text{ if and only if } p=r
 $$
-(ohne Beweis)
+(without proof)
 :::
 
 :::{admonition} Proposition
@@ -140,33 +138,33 @@ H(p \Vert r) \geq 0
 $$
 :::
 
-:::{admonition} Beweis
-$H(p \Vert r) = \sum p_i \log \left( \dfrac{p_i}{r_i} \right) = -\sum p_i \log \left( \dfrac{r_i}{p_i} \right)$ (wegen $\log(a/b) = -\log(b/a)$)
+:::{admonition} Proof
+$H(p \Vert r) = \sum p_i \log \left( \dfrac{p_i}{r_i} \right) = -\sum p_i \log \left( \dfrac{r_i}{p_i} \right)$ (since $\log(a/b) = -\log(b/a)$)
 $\geq - \log \left( \sum p_i \dfrac{r_i}{p_i} \right) \geq - \log \left( \sum r_i \right) = -\log 1 = 0$
 
-dabei haben wir wieder die Konkavität des Logarithmus ausgenutzt.
+where we have again used the concavity of the logarithm.
 :::
 
-:::{admonition} Beispiel
-Die relative Entropie ist nicht symmetrisch und kann unendlich groß werden. Sei $p_t := (t,\ 1-t)$ für $0 < t < 1$, eine Münze, die für kleines $t$ fast sicher auf $1$ fällt. In der einen Richtung ist
+:::{admonition} Example
+Relative entropy is not symmetric, and it can become infinite. Let $p_t := (t,\ 1-t)$ for $0 < t < 1$, a coin that for small $t$ comes up $1$ almost surely. In one direction,
 
 $$
 H\left(u_2 \,\Vert\, p_t\right) = \frac{1}{2} \log \frac{1}{2t} + \frac{1}{2}\log \frac{1}{2(1-t)} \xrightarrow{t \to 0} \infty,
 $$
 
-denn der erste Summand wächst wie $-\frac12\log t$ über alle Grenzen. In der anderen Richtung liefert die Proposition oben
+since the first summand grows beyond all bounds like $-\frac12\log t$. In the other direction the proposition above gives
 
 $$
 H\left(p_t \,\Vert\, u_2\right) = \log(2) - H(p_t), \qquad H(p_t) = -t\log t - (1-t)\log(1-t) \xrightarrow{t \to 0} 0,
 $$
 
-also $H(p_t \Vert u_2) \to \log 2$: endlich, zur Basis $2$ genau ein Bit. Wer die fast sichere Münze $p_t$ für fair hält, zahlt höchstens ein Bit; wer umgekehrt die faire Münze für $p_t$ hält, wird von der Seite, die er für unmöglich hielt, unendlich überrascht.
+so $H(p_t \Vert u_2) \to \log 2$: finite, and to base $2$ exactly one bit. Take the almost certain coin $p_t$ for a fair one and you pay at most one bit; take the fair coin for $p_t$, and the side you thought impossible will surprise you infinitely.
 :::
 
-## Verbundentropie
+## Joint entropy
 
 :::{admonition} Definition
-Die *Verbundentropie* von zwei diskreten Zufallsvariablen $X,Y$ ist
+The *joint entropy* of two discrete random variables $X,Y$ is
 
 $$
 H(X,Y) := \mathbb{E} I_{X,Y} = -\sum_{i=1}^n \sum_{j=1}^n P(X = z_i, Y=z_j) \log P(X=z_i, Y=z_j)
@@ -179,32 +177,32 @@ H(X) + H(Y) \geq H(X,Y) \geq \max\left( H(X), H(Y) \right)
 $$
 :::
 
-:::{admonition} Beispiel
+:::{admonition} Example
 $$
 H(X,X) = H(X)
 $$
 
-denn in der Summe für den linken Ausdruck sind alle Summanden außerhalb der Diagonalen $0$.
+since in the sum for the left-hand expression every summand off the diagonal is $0$.
 :::
 
 :::{admonition} Proposition
-Wenn $X, Y$ unabhängige Zufallsvariablen sind, dann ist $H(X, Y) = H(X) + H(Y)$.
+If $X, Y$ are independent random variables, then $H(X, Y) = H(X) + H(Y)$.
 :::
 
-:::{admonition} Beweis
-Die Unabhängigkeit bedeutet für alle $i,j$:
+:::{admonition} Proof
+Independence means that for all $i,j$:
 
 $$
 P(X = z_i, Y = z_j) = P(X = z_i)\cdot P(Y = z_j)
 $$
 
-das Logarithmieren wir:
+We take logarithms:
 
 $$
 \log P(X = z_i, Y = z_j) = \log P(X = z_i) + \log P(Y = z_j)
 $$
 
-also haben wir insgesamt
+and so altogether we have
 
 \begin{align}
 H(X,Y) &:= -\sum_{i=1}^n \sum_{j=1}^n P(X = z_i, Y = z_j) \log P(X = z_i, Y = z_j) \\
@@ -218,33 +216,33 @@ H(X,Y) &:= -\sum_{i=1}^n \sum_{j=1}^n P(X = z_i, Y = z_j) \log P(X = z_i, Y = z_
 :::
 
 :::{admonition} Definition
-Die *gemeinsame Information* (auch *Transinformation*, englisch *mutual information*) von zwei Zufallsvariablen $X,Y$ ist definiert als
+The *mutual information* (also *transinformation*) of two random variables $X,Y$ is defined as
 
 $$
 I(X;Y) := H(X)+H(Y)-H(X,Y)= H(X,Y  \Vert X\times Y)
 $$
 
-Hier steht $H(\cdot \Vert \cdot)$ für die relative Entropie der *Verteilung* von $(X,Y)$ zur Produktverteilung $P_X \times P_Y$, also der Verteilung, die $(X,Y)$ hätte, wenn $X$ und $Y$ unabhängig wären.
+Here $H(\cdot \Vert \cdot)$ stands for the relative entropy of the *distribution* of $(X,Y)$ with respect to the product distribution $P_X \times P_Y$, that is, the distribution $(X,Y)$ would have if $X$ and $Y$ were independent.
 
-Ein sehr häufiger Anwendungsfall der gemeinsamen Information liegt im Clustering:
-Wenn man zu einem Datensatz mit einer Methode der Wahl zu Clustern gekommen ist,
-also eine geschätzte Klassenzugehörigkeit (etwa $1,2$ oder $3$ als Label),
-und für einen Teildatensatz (zum Testen) von Hand eine Klasseneinteilung vorgenommen wurde,
-können wir von diesen Klassenvariablen die gemeinsame Information berechnen um zu quantifizieren, wie gut die Klassenbildung auf dem Testdatensatz funktionierte.
-Von Vorteil ist dabei, dass die konkreten Label nicht mehr relevant sind
-(d.h. die Methode ist invariant unter Permutation der Klassenbezeichnungen).
+A very common application of mutual information is in clustering:
+if we have arrived at clusters for a dataset by a method of our choice,
+that is, at an estimated class membership (say $1$, $2$ or $3$ as a label),
+and a classification has been carried out by hand for a subset of the data (for testing),
+then we can compute the mutual information of these class variables to quantify how well the clustering worked on the test data.
+The advantage here is that the concrete labels no longer matter
+(that is, the method is invariant under permutation of the class names).
 
-Die *bedingte Entropie* von $X$ bedingt auf $Y$ ist definiert als
+The *conditional entropy* of $X$ given $Y$ is defined as
 
 $$
 H(X|Y) := H(X) - I(X;Y)
 $$
 :::
 
-:::{admonition} Beispiel
-Die gemeinsame Information von $X$ mit sich selbst ist genau die Entropie $I(X;X) = H(X)$.
+:::{admonition} Example
+The mutual information of $X$ with itself is exactly the entropy $I(X;X) = H(X)$.
 
-Wenn $X,Y$ unabhängig sind, ist $I(X;Y) = H(X) + H(Y) - (H(X) + H(Y)) = 0$.
+If $X,Y$ are independent, then $I(X;Y) = H(X) + H(Y) - (H(X) + H(Y)) = 0$.
 :::
 
 :::{admonition} Proposition
@@ -252,21 +250,21 @@ $$
 H(X|Y) = H(X,Y) - H(Y)
 $$
 
-und wenn $X,Y$ unabhängig sind, ist $H(X|Y) = H(X)$.
+and if $X,Y$ are independent, then $H(X|Y) = H(X)$.
 :::
 
 
-:::{admonition} Satz
-**Entropischer Satz von Bayes**
+:::{admonition} Theorem
+**Entropic Bayes' theorem**
 
 $$
 H(X|Y) = H(Y|X) + H(X) - H(Y)
 $$
 :::
 
-:::{admonition} Beispiel
-Wenn $X$ vollständig von $Y$ abhängt (z.B. $Y$ ein Würfelwurf und $X = f(Y)$ mit $f = \mod 2$),
-dann ist $H(X,Y) = H(Y)$ und $H(X|Y) = 0$.
+:::{admonition} Example
+If $X$ depends entirely on $Y$ (for example $Y$ a throw of a die and $X = f(Y)$ with $f = \mod 2$),
+then $H(X,Y) = H(Y)$ and $H(X|Y) = 0$.
 :::
 
 ```{figure} images/1920px-Entropy-mutual-information-relative-entropy-relation-diagram.svg.png
@@ -274,21 +272,21 @@ dann ist $H(X,Y) = H(Y)$ und $H(X|Y) = 0$.
 :align: center
 :name: entropy-diagram
 
-Entropie, bedingte Entropie, Verbundentropie und gemeinsame Information in einem Venn-Diagramm. Abbildung: [Wikimedia Commons, Benutzer KonradVoelkel](https://commons.wikimedia.org/wiki/File:Entropy-mutual-information-relative-entropy-relation-diagram.svg) (2010, gemeinfrei).
+Entropy, conditional entropy, joint entropy and mutual information in a Venn diagram. Figure: [Wikimedia Commons, user KonradVoelkel](https://commons.wikimedia.org/wiki/File:Entropy-mutual-information-relative-entropy-relation-diagram.svg) (2010, public domain).
 ```
 
 
 :::{admonition} Definition
-Die *Kreuzentropie* von $X$ (verteilt nach $p \in \Delta_n$) und $Y$ (verteilt nach $r \in \Delta_n$) ist
+The *cross-entropy* of $X$ (distributed according to $p \in \Delta_n$) and $Y$ (distributed according to $r \in \Delta_n$) is
 
 $$
 H(X; Y) = \mathbb{E}_X I(Y) = -\sum_{i,\ p_i > 0}^n p_i \log r_i \in \mathbb{R} \cup \{\infty\}.
 $$
 :::
 
-Ein Summand mit $p_i > 0$ und $r_i = 0$ hat dabei den Wert $\infty$ (mit $\log 0 = -\infty$): Ein Ereignis, das nach $r$ unmöglich ist, aber nach $p$ vorkommt, kostet unendlich viel.
+A summand with $p_i > 0$ and $r_i = 0$ has the value $\infty$ here (with $\log 0 = -\infty$): an event that is impossible under $r$ but occurs under $p$ costs infinitely much.
 
-*Achtung*: Leider wird die Kreuzentropie von manchen Autoren auch mit $H(X, Y)$ notiert, was man also leicht mit der Verbundentropie verwechseln kann. Außerdem ähnelt die Notation $H(X;Y)$ der gemeinsamen Information $I(X;Y)$ von oben, die etwas ganz anderes ist.
+*Careful*: some authors unfortunately write the cross-entropy as $H(X, Y)$ as well, which is then easily confused with the joint entropy. The notation $H(X;Y)$ also resembles that of the mutual information $I(X;Y)$ above, which is something else entirely.
 
 :::{admonition} Proposition
 $$
@@ -296,86 +294,86 @@ H(X; Y) = H(X) + H(X \Vert Y)
 $$
 :::
 
-Wenn man $X$ festhält und $Y$ variiert, ist es das gleiche, ob man $H(X;Y)$ oder $H(X \Vert Y)$ minimiert, daher wird im maschinellen Lernen häufig das eine mit dem anderen substituiert. Die Maximum-Likelihood-Methode kann man auffassen als Minimierung einer Kreuzentropie und damit als Minimierung der relativen Entropie. Das erklärt, wie und wieso Entropie für maschinelles Lernen relevant ist.
+If we hold $X$ fixed and vary $Y$, minimising $H(X;Y)$ and minimising $H(X \Vert Y)$ come to the same thing, which is why in machine learning one is often substituted for the other. The maximum likelihood method can be read as the minimisation of a cross-entropy, and hence as the minimisation of a relative entropy. That explains how and why entropy is relevant to machine learning.
 
-:::{admonition} Bemerkung
-Im Deep Learning begegnet man dieser Beobachtung unter drei Namen: *negative log-likelihood*, *Kreuzentropie* und *KL-Divergenz zu den Labels* bezeichnen dort dieselbe Loss-Funktion für Klassifikationsprobleme. Der Unterschied zwischen den letzten beiden ist nur die Konstante $H(X)$ aus der Proposition oben, die von den Modellparametern nicht abhängt. Die Vorlesung *Einführung in Deep Learning* setzt diesen Zusammenhang als bekannt voraus.
+:::{admonition} Remark
+In deep learning you meet this observation under three names: *negative log-likelihood*, *cross-entropy* and *KL divergence to the labels* all refer there to the same loss function for classification problems. The difference between the last two is only the constant $H(X)$ from the proposition above, which does not depend on the model parameters. The course *Introduction to Deep Learning* takes this connection as known.
 :::
 
-Ansonsten ist die Kreuzentropie eine in der Theorie deutlich seltener verwendete Größe als die relative Entropie (die meist Kullback-Leibler-Divergenz $D_{KL}$ genannt wird).
+Apart from that, the cross-entropy is a quantity used considerably less often in the theory than the relative entropy (which is usually called the Kullback–Leibler divergence $D_{KL}$).
 
-## Stetige Entropie
+## Continuous entropy
 
 :::{note}
-Dieses Unterkapitel ist nicht klausurrelevant und greift auf Maßtheorie vor (Radon-Nikodym-Ableitung, invariante Maße), die wir im Kurs nicht behandeln. Beim ersten Lesen genügt es, die Kernaussage mitzunehmen: Im Stetigen ist Entropie nur *relativ* zu einem Bezugsmaß sinnvoll definiert, die relative Entropie ist also der eigentlich grundlegende Begriff.
+This section is not part of the course proper and reaches ahead to measure theory (Radon–Nikodym derivative, invariant measures), which we do not cover in this course. On a first reading it is enough to take away the core statement: in the continuous case entropy is only meaningfully defined *relative* to a reference measure, so relative entropy is the notion that is actually fundamental.
 :::
 
-Man könnte meinen, dass sich die Formel $H(p) = -\sum p_i \log p_i$ verallgemeinert zu $H(P) = -\int \log P dP$, aber das ergibt so keinen Sinn. Man kann aber das folgende tun:
+One might think that the formula $H(p) = -\sum p_i \log p_i$ generalises to $H(P) = -\int \log P dP$, but like that it makes no sense. What one can do is this:
 
 :::{admonition} Definition
-Sei $P$ eine stetige Verteilung mit Dichtefunktion $f$, die auf einer Menge $\Omega \subseteq \mathbb{R}^n$ definiert ist.
-Dann heißt
+Let $P$ be a continuous distribution with density function $f$ defined on a set $\Omega \subseteq \mathbb{R}^n$.
+Then
 
 $$
 h(X) := \mathbb{E}\left( -\log(f(X)) \right) = - \int_\Omega f(x) \log f(x) dx
 $$
 
-die *differentielle Entropie* von $X$ (definiert ebenfalls von Claude Shannon).
+is called the *differential entropy* of $X$ (likewise defined by Claude Shannon).
 :::
 
-Sie erfüllt bereits einige schöne Eigenschaften, die wir uns von einer stetigen Entropie vorstellen, z.B. Translationsinvarianz: $h(X) = h(X - v)$ für einen Vektor $v \in \mathbb{R}^n$.
+It already has some of the pleasant properties we picture a continuous entropy having, translation invariance for instance: $h(X) = h(X - v)$ for a vector $v \in \mathbb{R}^n$.
 
-Leider ist die differentielle Entropie nicht invariant unter beliebigen Transformationen, auch nicht Isomorphismen.
+Unfortunately the differential entropy is not invariant under arbitrary transformations, not even under isomorphisms.
 
-Jaynes hat vorgeschlagen, sich immer feiner werdende Histogramme vorzustellen, also eine Menge von $N$ diskreten Punkten $\{x_i\}$,
-dann schreiben wir
-$M(a,b) = \lim_{N \to \infty} \frac{1}{N} (\text{Anzahl } x_i : a < x_i < b)$
-und eine Dichte $m$ mit $M(a,b) = \int_a^b m(x) dx$ nennen wir *invariantes Maß*.
-Damit schreiben wir nun
+Jaynes suggested picturing ever finer histograms, that is, a set of $N$ discrete points $\{x_i\}$;
+we then write
+$M(a,b) = \lim_{N \to \infty} \frac{1}{N} (\text{number of } x_i : a < x_i < b)$
+and call a density $m$ with $M(a,b) = \int_a^b m(x) dx$ an *invariant measure*.
+With that we now write
 
 $$
 \lim_{N \to \infty} \log(N) - \int p(x) \log \dfrac{p(x)}{m(x)} dx
 $$
 
-aber weil $\lim_{N \to \infty} \log(N) = \infty$ ist, lassen wir den Teil einfach frech weg, und erhalten so eine Größe, die sich ähnlich wie $h(x)$ verhält, aber skaleninvariant ist:
+but since $\lim_{N \to \infty} \log(N) = \infty$, we cheekily drop that part, and so obtain a quantity that behaves much like $h(x)$ but is scale invariant:
 
 $$
 H(X) := - \int p(x) \log \dfrac{p(x)}{m(x)} dx
 $$
 
-Zum Einen wollen wir festhalten, dass die "diskrete Entropie" einer stetigen Verteilung eigentlich $\infty$ ist.
-Zum Anderen, dass offensichtlich für einen sinnvollen Entropiebegriff zwangsläufig Bezug genommen werden muss auf eine weitere Verteilung (hier das "invariante Maß").
+The first thing to record is that the "discrete entropy" of a continuous distribution is really $\infty$.
+The second is that a workable notion of entropy evidently cannot avoid referring to a further distribution (here the "invariant measure").
 
-Wenn man vom theoretischen Standpunkt analysiert, was $h(X)$ und $H(X)$ sind, so kommt man zur allgemeinen relativen Entropie $H(P,Q)$, sodass $h(X) = -H(f\lambda \,\Vert\, \lambda)$ mit $\lambda$ dem Lebesgue-Maß und $f$ einer Dichte von $X$.
+Analysing from a theoretical standpoint what $h(X)$ and $H(X)$ are leads to the general relative entropy $H(P,Q)$, with $h(X) = -H(f\lambda \,\Vert\, \lambda)$, where $\lambda$ is the Lebesgue measure and $f$ a density of $X$.
 
 :::{admonition} Definition
-Seien $P,R$ stetige Verteilungen. Die *relative Entropie* $H(P \Vert R)$ (auch: Kullback-Leibler-Divergenz $D_{KL}(P,R)$) ist
+Let $P,R$ be continuous distributions. The *relative entropy* $H(P \Vert R)$ (also: Kullback–Leibler divergence $D_{KL}(P,R)$) is
 
 $$
 H(P \Vert R) := - \int_\Omega \log \left( \dfrac{dR}{dP} \right) dP
 $$
 
-dabei ist $\dfrac{dR}{dP}$ die Radon-Nikodym-Ableitung eines Maßes bezüglich eines anderen.
+where $\dfrac{dR}{dP}$ is the Radon–Nikodym derivative of one measure with respect to another.
 :::
 
-Das wollen wir jetzt auch nicht weiter diskutieren, sondern lieber festhalten, dass das für $P$ und $R$ mit Dichtefunktionen $p,r \colon \mathbb{R}^n \to [0,\infty)$ einfacher aussieht:
+We will not discuss that any further either, and would rather record that for $P$ and $R$ with density functions $p,r \colon \mathbb{R}^n \to [0,\infty)$ it looks simpler:
 
 $$
 H(P \Vert R) = \int_\Omega p(x) \log \frac{p(x)}{r(x)} dx
 $$
 
-Diesen Ausdruck wiederum dürfen wir (wenn die Dichtefunktionen hinreichend freundlich sind) über Riemann-Summen ausrechnen.
-Wenn z.B. $n=1$ und $\Omega = \mathbb{R}$, dann können wir
+This expression in turn we may evaluate (if the density functions are friendly enough) by Riemann sums.
+If for instance $n=1$ and $\Omega = \mathbb{R}$, then we can look at
 
 $H(P \Vert R) = \int_{\mathbb{R}} p(x) \log \dfrac{p(x)}{r(x)} dx$
 $= \sum_{k = -\infty}^{\infty} \int_{k}^{k+1} p(x) \log \dfrac{p(x)}{r(x)}dx$
 
-betrachten und die Integralterme rechts durch Werte abschätzen, um so $H(P \Vert R)$ abzuschätzen. 
+and bound the integral terms on the right by values, so as to estimate $H(P \Vert R)$.
 
 $$
 H(P \Vert R) \approx \sum_{k = -\infty}^{\infty} p(k) \log \dfrac{p(k)}{r(k)}
 $$
 
-Die Unterteilung in Intervalle der Länge $1$ können wir natürlich beliebig feiner wählen, um die Approximation beliebig genau zu bekommen. Das Ersetzen einer stetigen Verteilung durch eine solche diskrete Verteilung ist analog der Bildung eines Histogramms.
+The subdivision into intervals of length $1$ can of course be chosen as fine as we like, to make the approximation as accurate as we like. Replacing a continuous distribution by such a discrete distribution is the analogue of forming a histogram.
 
-Wenn Sie noch Zweifel daran haben, welche Relevanz die abstrakte Informationstheorie für die praktische Arbeit von Data Scientists und Machine Learning Entwicklern haben soll, ist eine [Reise in die Wikipedia-Seite zu Anwendungen der gemeinsamen Information bzw. bedingter Entropie](https://en.wikipedia.org/wiki/Mutual_information#Applications_2) ratsam.
+If you still have doubts about what relevance abstract information theory is supposed to have for the practical work of data scientists and machine learning engineers, a [trip into the Wikipedia page on applications of mutual information and conditional entropy](https://en.wikipedia.org/wiki/Mutual_information#Applications_2) is to be recommended.

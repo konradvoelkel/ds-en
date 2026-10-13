@@ -14,616 +14,617 @@
    "de": "c0.1",
    "kind": "prose",
    "digest": "9de72ae2c5a6c73a",
-   "en": "c0.1",
+   "en": null,
+   "dropped": "link to the German HHU lecture recording",
    "preview": "[Vorlesungsaufzeichnung Hauptkomponentenanalyse (VL 18)](https://media.h…"
   },
   {
    "de": "c1.0",
    "kind": "heading",
    "digest": "0e6337d10aa87aa3",
-   "en": "c1.0",
+   "en": "c0.1",
    "preview": "## PCA"
   },
   {
    "de": "c1.1",
    "kind": "prose",
    "digest": "cfbf7d35ca16c14a",
-   "en": "c1.1",
+   "en": "c1.0",
    "preview": "Die Principal Component Analysis (Hauptkomponentenanalyse) ist ein unsup…"
   },
   {
    "de": "c1.2",
    "kind": "prose",
    "digest": "a63ac2f37d15fcf8",
-   "en": "c1.2",
+   "en": "c1.1",
    "preview": "Wenn jemand „wir machen eine PCA“ sagt, sind meist die Schritte 1–2 geme…"
   },
   {
    "de": "c1.3",
    "kind": "prose",
    "digest": "e80bdc54144fd474",
-   "en": "c1.3",
+   "en": "c1.2",
    "preview": "1. **fit** — aus den Daten eine lineare, invertierbare Koordinatentransf…"
   },
   {
    "de": "c1.4",
    "kind": "prose",
    "digest": "f16a2e6c617c042a",
-   "en": "c1.4",
+   "en": "c1.3",
    "preview": "In Scikit-Learn heißen die ersten beiden Schritte genau so (`PCA().fit(x…"
   },
   {
    "de": "c1.5",
    "kind": "directive",
    "digest": "cb635ed6bf1b96b0",
-   "en": "c1.5",
+   "en": "c1.4",
    "preview": "```{admonition} Beispiel Wenn man Daten im dreidimensionalen Raum hat, b…"
   },
   {
    "de": "c1.6",
    "kind": "prose",
    "digest": "c2a446cbd18b7518",
-   "en": "c1.6",
+   "en": "c1.5",
    "preview": "Die beiden Abbildungen zeigen genau diese zwei Fälle. Blau sind die Orig…"
   },
   {
    "de": "c1.7",
    "kind": "directive",
    "digest": "c2147cd035bc0b57",
-   "en": "c1.7",
+   "en": "c1.6",
    "preview": "```{figure} images/case_a_dual_proj.png :width: 600px :align: center :na…"
   },
   {
    "de": "c1.8",
    "kind": "directive",
    "digest": "18ea62d1ed20c9b9",
-   "en": "c1.8",
+   "en": "c1.7",
    "preview": "```{figure} images/case_b_dual_proj.png :width: 600px :align: center :na…"
   },
   {
    "de": "c1.9",
    "kind": "prose",
    "digest": "47fc45a7a29df6cc",
-   "en": "c1.9",
+   "en": "c1.8",
    "preview": "Fall (b) ist der realistische: Eine Koordinate ist nie exakt konstant, s…"
   },
   {
    "de": "c1.10",
    "kind": "prose",
    "digest": "4c9d92c1abde5e58",
-   "en": "c1.10",
+   "en": "c1.9",
    "preview": "Eine Koordinatentransformation ist nichts anderes als eine Matrixmultipl…"
   },
   {
    "de": "c1.11",
    "kind": "prose",
    "digest": "5358411068af682a",
-   "en": "c1.11",
+   "en": "c1.10",
    "preview": "Weil wir jede Hauptachse normieren und die nächste immer im Orthogonalko…"
   },
   {
    "de": "c1.12",
    "kind": "prose",
    "digest": "5f7b8995a4aeda0e",
-   "en": "c1.12",
+   "en": "c1.11",
    "preview": "Leider haben wir bisher noch nicht festgestellt, wie man die Richtung de…"
   },
   {
    "de": "c1.13",
    "kind": "heading",
    "digest": "aa048a137004e1f8",
-   "en": "c1.13",
+   "en": "c1.12",
    "preview": "### Herleitung"
   },
   {
    "de": "c1.14",
    "kind": "directive",
    "digest": "22003a68ba3f2417",
-   "en": "c1.14",
+   "en": "c1.13",
    "preview": "```{admonition} Beispiel Wenn wir ein Sample einer bivariaten Standardno…"
   },
   {
    "de": "c1.15",
    "kind": "directive",
    "digest": "3ae97bad97f39fc5",
-   "en": "c1.15",
+   "en": "c1.14",
    "preview": "```{admonition} Beispiel Wenn eine beliebige invertierbare Matrix $M = \\…"
   },
   {
    "de": "c1.16",
    "kind": "prose",
    "digest": "7f6b4ec4938a0d26",
-   "en": "c1.16",
+   "en": "c1.15",
    "preview": "Diese Beispiele bringen uns darauf, uns vorzustellen, welche Matrix $M$ …"
   },
   {
    "de": "c2.0",
    "kind": "directive",
    "digest": "3dfe61c25b036baf",
-   "en": "c2.0",
+   "en": "c1.16",
    "preview": "```{admonition} Beispiel Wenn wir die Kovarianzmatrix einer bivariaten S…"
   },
   {
    "de": "c2.1",
    "kind": "prose",
    "digest": "7e283852727edaea",
-   "en": "c2.1",
+   "en": "c2.0",
    "preview": "So eine Kovarianzmatrix kann man immer aufstellen. Wenn wir das mit unse…"
   },
   {
    "de": "c2.2",
    "kind": "directive",
    "digest": "635a9bc6272387dc",
-   "en": "c2.2",
+   "en": "c2.1",
    "preview": "```{admonition} Definition Eine quadratische Matrix $C$ heißt **symmetri…"
   },
   {
    "de": "c2.3",
    "kind": "directive",
    "digest": "35bc902ad8cbff5b",
-   "en": "c2.3",
+   "en": "c2.2",
    "preview": "```{admonition} Bemerkung Ist $D$ die zentrierte Datenmatrix (eine Zeile…"
   },
   {
    "de": "c2.4",
    "kind": "directive",
    "digest": "1a12a8ee20000710",
-   "en": "c2.4",
+   "en": "c2.3",
    "preview": "```{admonition} Satz Zu jeder positiv definiten symmetrischen Matrix $C$…"
   },
   {
    "de": "c2.5",
    "kind": "prose",
    "digest": "f565022f01204775",
-   "en": "c2.5",
+   "en": "c2.4",
    "preview": "Um diese Matrix $\\Sigma$ zu bestimmen, gibt es eine sehr einfache Möglic…"
   },
   {
    "de": "c2.6",
    "kind": "prose",
    "digest": "58b2e938d38d81bf",
-   "en": "c2.6",
+   "en": "c2.5",
    "preview": "Angenommen, wir hätten eine derartige Zerlegung bestimmt (man sagt auch:…"
   },
   {
    "de": "c2.7",
    "kind": "math",
    "digest": "8227fa15b1b5fa1a",
-   "en": "c2.7",
+   "en": "c2.6",
    "preview": "$$\\Sigma^2 = T \\Sigma' T^{-1} T \\Sigma' T^{-1} = T \\Sigma'^2 T^{-1} = T …"
   },
   {
    "de": "c2.8",
    "kind": "prose",
    "digest": "cd2947c9666f2b42",
-   "en": "c2.8",
+   "en": "c2.7",
    "preview": "Die gesuchte Matrix $T$ erfüllt $C = T C' T^{-1}$, umgestellt also $C T …"
   },
   {
    "de": "c2.9",
    "kind": "directive",
    "digest": "409450ebf77bb2df",
-   "en": "c2.9",
+   "en": "c2.8",
    "preview": "```{admonition} Satz Für jede symmetrische Matrix $C$ gibt es eine Ortho…"
   },
   {
    "de": "c2.10",
    "kind": "prose",
    "digest": "eff488d910f498f2",
-   "en": "c2.10",
+   "en": "c2.9",
    "preview": "Dass Eigenvektoren zu verschiedenen Eigenwerten senkrecht aufeinander st…"
   },
   {
    "de": "c2.11",
    "kind": "math",
    "digest": "7cc4c58d3e0ba92b",
-   "en": "c2.11",
+   "en": "c2.10",
    "preview": "$$\\lambda_1 v_1^\\top v_2 = (C v_1)^\\top v_2 = v_1^\\top C v_2 = \\lambda_2…"
   },
   {
    "de": "c2.12",
    "kind": "prose",
    "digest": "448353d78540591e",
-   "en": "c2.12",
+   "en": "c2.11",
    "preview": "also $(\\lambda_1 - \\lambda_2)\\, v_1^\\top v_2 = 0$ und damit $v_1^\\top v_…"
   },
   {
    "de": "c2.13",
    "kind": "directive",
    "digest": "0011f68373d472a2",
-   "en": "c2.13",
+   "en": "c2.12",
    "preview": "```{admonition} Bemerkung Fassen wir die Herleitung zusammen. Wir hatten…"
   },
   {
    "de": "c2.14",
    "kind": "prose",
    "digest": "bfacbe5ffb8f6fab",
-   "en": "c2.14",
+   "en": "c2.13",
    "preview": "Damit haben wir also alle Zutaten beisammen, wenn wir nur irgendwie die …"
   },
   {
    "de": "c2.15",
    "kind": "prose",
    "digest": "4817fcfef6eaa04c",
-   "en": "c2.15",
+   "en": "c2.14",
    "preview": "Ein gutes Verfahren, um den Eigenvektor zum größten Eigenwert zu bestimm…"
   },
   {
    "de": "c2.16",
    "kind": "prose",
    "digest": "fe33f0477f94cf64",
-   "en": "c2.16",
+   "en": "c2.15",
    "preview": "Ein weniger effizientes Verfahren ist das, was Sie in der linearen Algeb…"
   },
   {
    "de": "c2.17",
    "kind": "prose",
    "digest": "63447f53fa9baedd",
-   "en": "c2.17",
+   "en": "c2.16",
    "preview": "Numpy und Scikit-Learn greifen auf LAPACK zurück, was in Fortran geschri…"
   },
   {
    "de": "c3",
    "kind": "code",
    "digest": "f7649333b3dbc51a",
-   "en": "c3",
+   "en": "c2.17",
    "preview": "import numpy as np import scipy.stats as st import matplotlib.pyplot as …"
   },
   {
    "de": "c4",
    "kind": "code",
    "digest": "4751722a134afa47",
-   "en": "c4",
+   "en": "c3",
    "preview": "C = np.array([[2.5, 0.5], [0.5, 1.75]]) # zum Beispiel! # C ist symmetri…"
   },
   {
    "de": "c5.0",
    "kind": "prose",
    "digest": "f1eef0882cbeaf21",
-   "en": "c5.0",
+   "en": "c4",
    "preview": "Die Eigenwerte sind die Varianzen der Daten entlang der zugehörigen Eige…"
   },
   {
    "de": "c6.0",
    "kind": "heading",
    "digest": "cc2404563ff11da9",
-   "en": "c6.0",
+   "en": "c5.0",
    "preview": "### Dimensionsreduktion in fünf Schritten"
   },
   {
    "de": "c6.1",
    "kind": "prose",
    "digest": "791c13eb6fe8bc90",
-   "en": "c6.1",
+   "en": "c6.0",
    "preview": "Aus einem Datensatz $x_1, \\dots, x_N \\in \\mathbb{R}^d$ macht die PCA ein…"
   },
   {
    "de": "c6.2",
    "kind": "prose",
    "digest": "56f4ad58f4e8e92e",
-   "en": "c6.2",
+   "en": "c6.1",
    "preview": "1. **Zentrieren:** Von jedem Merkmal seinen Mittelwert abziehen, sodass …"
   },
   {
    "de": "c6.3",
    "kind": "directive",
    "digest": "71fed1596aa01c5b",
-   "en": "c6.3",
+   "en": "c6.2",
    "preview": "```{admonition} Beispiel Für $C = \\begin{pmatrix} 5 & 3 \\\\ 3 & 5 \\end{pm…"
   },
   {
    "de": "c7",
    "kind": "code",
    "digest": "db0ad1986d4ee4e5",
-   "en": "c7",
+   "en": "c6.3",
    "preview": "C = np.array([[5.0, 3.0], [3.0, 5.0]]) werte, vektoren = np.linalg.eigh(…"
   },
   {
    "de": "c8.0",
    "kind": "prose",
    "digest": "bd1cb5f5657425b9",
-   "en": "c8.0",
+   "en": "c7",
    "preview": "Jetzt betrachten wir anstelle der fiktiven Kovarianzmatrix $C$ ein echte…"
   },
   {
    "de": "c9",
    "kind": "code",
    "digest": "5bca47a88eb7af0a",
-   "en": "c9",
+   "en": "c8.0",
    "preview": "fig, axs = plt.subplots(1, 3, figsize=(9, 3)) x = st.multivariate_normal…"
   },
   {
    "de": "c10.0",
    "kind": "prose",
    "digest": "4f992ca8fd958d58",
-   "en": "c10.0",
+   "en": "c9",
    "preview": "Betrachten Sie die Plots ganz genau. Haben wir die Transformation vollst…"
   },
   {
    "de": "c11.0",
    "kind": "heading",
    "digest": "38a25a22dbf5facc",
-   "en": "c11.0",
+   "en": "c10.0",
    "preview": "### Berechnung"
   },
   {
    "de": "c11.1",
    "kind": "prose",
    "digest": "31bc84f856ea6c51",
-   "en": "c11.1",
+   "en": "c11.0",
    "preview": "Ebenso können wir nun natürlich mit Daten verfahren, die wir gar nicht s…"
   },
   {
    "de": "c12",
    "kind": "code",
    "digest": "c98f60c001f1f7bc",
-   "en": "c12",
+   "en": "c11.1",
    "preview": "iris = datasets.load_iris() x = iris.data C = np.cov(x, rowvar=False) pr…"
   },
   {
    "de": "c13.0",
    "kind": "heading",
    "digest": "9334cfb322b3198c",
-   "en": "c13.0",
+   "en": "c12",
    "preview": "### Berechnung mit Scikit-learn"
   },
   {
    "de": "c13.1",
    "kind": "prose",
    "digest": "421fe8b75133de23",
-   "en": "c13.1",
+   "en": "c13.0",
    "preview": "Wir müssen uns noch nicht einmal die Mühe machen, selbst die Singulärwer…"
   },
   {
    "de": "c14",
    "kind": "code",
    "digest": "d05e19caffa04df3",
-   "en": "c14",
+   "en": "c13.1",
    "preview": "from sklearn.decomposition import PCA pca_iris = PCA().fit_transform(iri…"
   },
   {
    "de": "c15.0",
    "kind": "prose",
    "digest": "3ad6f94252ae897a",
-   "en": "c15.0",
+   "en": "c14",
    "preview": "Ein ganz anderer Zugang zum Finden der Richtung maximaler Varianz ist es…"
   },
   {
    "de": "c15.1",
    "kind": "prose",
    "digest": "3d226d833311c944",
-   "en": "c15.1",
+   "en": "c15.0",
    "preview": "Die Summe der quadrierten Abstände ist, bis auf den Faktor $\\frac1n$, ei…"
   },
   {
    "de": "c15.2",
    "kind": "prose",
    "digest": "028f735c1f828a27",
-   "en": "c15.2",
+   "en": "c15.1",
    "preview": "Ein Detail, das man leicht überliest und das die PCA von der [linearen R…"
   },
   {
    "de": "c15.3",
    "kind": "prose",
    "digest": "174ae2ce41c405b1",
-   "en": "c15.3",
+   "en": "c15.2",
    "preview": "Dieses Vorgehen ist hier bildlich dargestellt:"
   },
   {
    "de": "c15.4",
    "kind": "directive",
    "digest": "bb7de915dc71848e",
-   "en": "c15.4",
+   "en": "c15.3",
    "preview": "```{figure} images/pca-variation.gif :width: 600px :align: center :name:…"
   },
   {
    "de": "c16.0",
    "kind": "heading",
    "digest": "fa695657ea7fc6bb",
-   "en": "c16.0",
+   "en": "c15.4",
    "preview": "### Anwendungsbeispiel MNIST"
   },
   {
    "de": "c16.1",
    "kind": "prose",
    "digest": "649848f34c85ef99",
-   "en": "c16.1",
+   "en": "c16.0",
    "preview": "Bisher haben wir die Dimension nur zum plotten reduziert - für viele Alg…"
   },
   {
    "de": "c17",
    "kind": "code",
    "digest": "31c0f9090c405e54",
-   "en": "c17",
+   "en": "c16.1",
    "preview": "digits = datasets.load_digits() fig, axs = plt.subplots(1,10, figsize=(1…"
   },
   {
    "de": "c18.0",
    "kind": "prose",
    "digest": "508c3ae72cfcccc5",
-   "en": "c18.0",
+   "en": "c17",
    "preview": "Wie viele Komponenten braucht man? Scikit-learn liefert die erklärte Var…"
   },
   {
    "de": "c19",
    "kind": "code",
    "digest": "9b20098460756f84",
-   "en": "c19",
+   "en": "c18.0",
    "preview": "pca = PCA().fit(x) ratio = pca.explained_variance_ratio_ kumuliert = np.…"
   },
   {
    "de": "c20",
    "kind": "code",
    "digest": "4ce0a5a3e983ded9",
-   "en": "c20",
+   "en": "c19",
    "preview": "# Jetzt schmeissen wir Dimensionen weg, # und analysieren wie dadurch di…"
   },
   {
    "de": "c21",
    "kind": "code",
    "digest": "34108d6e6e3c7424",
-   "en": "c21",
+   "en": "c20",
    "preview": "# Work in batches to avoid Jupyter cell timeout after 30 seconds: scores…"
   },
   {
    "de": "c22",
    "kind": "code",
    "digest": "62f68f2c8b68f1f1",
-   "en": "c22",
+   "en": "c21",
    "preview": "scores, pca_x = update_scores(scores, pca_x, 16, 1)"
   },
   {
    "de": "c23",
    "kind": "code",
    "digest": "a5b4100cbe88b091",
-   "en": "c23",
+   "en": "c22",
    "preview": "fig, ax = plt.subplots() ax.plot(np.arange(0, 33), scores) ax.invert_xax…"
   },
   {
    "de": "c24.0",
    "kind": "prose",
    "digest": "da32b01f9678a188",
-   "en": "c24.0",
+   "en": "c23",
    "preview": "Wie man im Graph erkennen kann, leidet die 10-Means-Performance als Klas…"
   },
   {
    "de": "c24.1",
    "kind": "prose",
    "digest": "a577fb3ebf8a06c6",
-   "en": "c24.1",
+   "en": "c24.0",
    "preview": "Wir haben in den Iris-Daten bereits gesehen, dass die Kovarianzmatrizen …"
   },
   {
    "de": "c25.0",
    "kind": "heading",
    "digest": "e7c2e5df5ad915ee",
-   "en": "c25.0",
+   "en": "c24.1",
    "preview": "## Skalenunterschiede"
   },
   {
    "de": "c25.1",
    "kind": "prose",
    "digest": "269ac735fab94288",
-   "en": "c25.1",
+   "en": "c25.0",
    "preview": "Problematisch wird es, wenn die Daten nicht, wie in den Beispielen zuvor…"
   },
   {
    "de": "c25.2",
    "kind": "prose",
    "digest": "a8e75407ff3aedd9",
-   "en": "c25.2",
+   "en": "c25.1",
    "preview": "Dann dominieren die Variablen mit großen Zahlen, was eine Verzerrung der…"
   },
   {
    "de": "c25.3",
    "kind": "prose",
    "digest": "5bc7f7d1e68f2b61",
-   "en": "c25.3",
+   "en": "c25.2",
    "preview": "Eine 'Normalisierung' ist eine Reskalierung auf das Intervall $[0,1]$. S…"
   },
   {
    "de": "c25.4",
    "kind": "prose",
    "digest": "f1f685031ad8b92d",
-   "en": "c25.4",
+   "en": "c25.3",
    "preview": "Jede solche Umskalierung nennt sich 'Feature Scaling'."
   },
   {
    "de": "c25.5",
    "kind": "prose",
    "digest": "a518a0898ad0513b",
-   "en": "c25.5",
+   "en": "c25.4",
    "preview": "In Python kann man das mit Scikit-Learn machen, indem man ein `Scaler`-O…"
   },
   {
    "de": "c26",
    "kind": "code",
    "digest": "826fa7fb9ff69f52",
-   "en": "c26",
+   "en": "c25.5",
    "preview": "import numpy as np import matplotlib.pyplot as plt from sklearn.preproce…"
   },
   {
    "de": "c27",
    "kind": "code",
    "digest": "5ef5b3d7614ee8c3",
-   "en": "c27",
+   "en": "c26",
    "preview": "# scale it: scaler = StandardScaler() scaled = scaler.fit_transform(dumm…"
   },
   {
    "de": "c28.0",
    "kind": "prose",
    "digest": "f07e3ced20167e03",
-   "en": "c28.0",
+   "en": "c27",
    "preview": "Wir betrachten jetzt den Einfluss der Skalierung auf die PCA und anschli…"
   },
   {
    "de": "c29",
    "kind": "code",
    "digest": "b1b6c53c6840e33c",
-   "en": "c29",
+   "en": "c28.0",
    "preview": "from sklearn.decomposition import PCA from sklearn.cluster import KMeans…"
   },
   {
    "de": "c30",
    "kind": "code",
    "digest": "ff903382e7582fe7",
-   "en": "c30",
+   "en": "c29",
    "preview": "# let's take a look: fig, axs = plt.subplots(2, 2, figsize=(10,10)) axs[…"
   },
   {
    "de": "c31.0",
    "kind": "prose",
    "digest": "f2fa1ad0d81221ee",
-   "en": "c31.0",
+   "en": "c30",
    "preview": "Man kann in der oberen Zeile deutlich erkennen, dass k-Means auf den uns…"
   },
   {
    "de": "c31.1",
    "kind": "prose",
    "digest": "097da33329a39a1c",
-   "en": "c31.1",
+   "en": "c31.0",
    "preview": "Das ist letztlich eine Inkarnation von Simpson's Paradox, denn die \"rich…"
   },
   {
    "de": "c31.2",
    "kind": "heading",
    "digest": "c60ee36cab2006f6",
-   "en": "c31.2",
+   "en": "c31.1",
    "preview": "### Anwendungsbeispiel Wine"
   },
   {
    "de": "c31.3",
    "kind": "prose",
    "digest": "21514f501f81d8f0",
-   "en": "c31.3",
+   "en": "c31.2",
    "preview": "Zuletzt betrachten wir noch ein 'Erfolgsbeispiel' des Standardskalierens…"
   },
   {
    "de": "c32",
    "kind": "code",
    "digest": "01aa8adff1853d5b",
-   "en": "c32",
+   "en": "c31.3",
    "preview": "import pandas as pd from sklearn.datasets import load_wine df, target = …"
   },
   {
    "de": "c33",
    "kind": "code",
    "digest": "5ce1be3e3d5786e4",
-   "en": "c33",
+   "en": "c32",
    "preview": "unscaled_pca = PCA(n_components=2).fit_transform(df) unscaled_kmeans = K…"
   },
   {
    "de": "c34.0",
    "kind": "prose",
    "digest": "1e22760e285fa534",
-   "en": "c34.0",
+   "en": "c33",
    "preview": "Statt hier nur auf das Bild zu achten, ist es besser, auch eine Kennzahl…"
   },
   {
    "de": "c35",
    "kind": "code",
    "digest": "09de390d81855e62",
-   "en": "c35",
+   "en": "c34.0",
    "preview": "from sklearn.metrics import normalized_mutual_info_score scaled_score = …"
   }
  ]

@@ -122,12 +122,12 @@
       "source": "stochastik-programmieren.ipynb"
     },
     "random-variables-distributions.md": {
-      "translated": false,
+      "translated": true,
       "style_pass": false,
       "source": "zufallsvariablen-verteilungen.md"
     },
     "relative-entropy.md": {
-      "translated": false,
+      "translated": true,
       "style_pass": false,
       "source": "relative-entropie.md"
     },

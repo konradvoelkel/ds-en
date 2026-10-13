@@ -12,14 +12,14 @@ next to it, so the next change is an edit rather than an archaeology project.
 
 | File | Used in | German text | Status |
 |---|---|---|---|
-| `dsprozess-simplified-1.png` | descriptive-statistics | Ausschnitt, Rohdaten, Daten | to do |
-| `dsprozess-simplified-2.png` | descriptive-statistics | as above, plus Modell | to do |
-| `dsprozess-simplified-3.png` | descriptive-statistics | as above, plus Zielgröße | to do |
+| `dsprozess-simplified-1.png` | random-variables-distributions | Ausschnitt / Rohdaten / Daten | to do |
+| `dsprozess-simplified-2.png` | random-variables-distributions | Daten / Modell / Synthetische Daten | to do |
+| `dsprozess-simplified-3.png` | random-variables-distributions | Daten / Transformierte Daten / Zielgröße | to do |
 | ~~`stochastik-statistik-wtheorie.png`~~ | intro-stochastics | Stochastik, Statistik, Wahrscheinlichkeitstheorie, Realität, Ausschnitt, Modelle | **done** → `stochastics-overview.svg` |
-| `entropie-gas-hoch.png` | relative-entropy | labels to check | to do |
-| `entropie-gas-niedrig.png` | relative-entropy | labels to check | to do |
-| `entropie-gas-hoch-geteilt.png` | relative-entropy | labels to check | to do |
-| `entropie-gas-niedrig-geteilt.png` | relative-entropy | labels to check | to do |
+| ~~`entropie-gas-hoch.png`~~ | expectation-variance | none – inspected, no text at all | **clean** |
+| ~~`entropie-gas-niedrig.png`~~ | expectation-variance | none – inspected | **clean** |
+| ~~`entropie-gas-hoch-geteilt.png`~~ | expectation-variance | none – inspected | **clean** |
+| ~~`entropie-gas-niedrig-geteilt.png`~~ | expectation-variance | none – inspected | **clean** |
 | `simpson-paradoxon.png` | descriptive-statistics | labels to check | to do |
 | `farbwahrnehmung-simulation.png` | descriptive-statistics | labels to check | to do |
 | `chi-quadrat-verteilungen.png` | statistical-tests | labels to check | to do |
@@ -31,7 +31,9 @@ next to it, so the next change is an edit rather than an archaeology project.
 | ~~`normalmarginal.png`~~ | covariance | none – inspected, no text at all | **clean** |
 
 "Labels to check" means the file has not been inspected yet; the chapter's translator
-inspects it and either redraws it or strikes the row.
+inspects it and either redraws it or strikes the row. The "used in" column was guessed from
+file names when this list was first written and has been corrected twice already – trust the
+grep, not the name.
 
 The file names stay as they are until a figure is actually redrawn; a renamed figure is
 renamed in the chapter that uses it, in the same commit.

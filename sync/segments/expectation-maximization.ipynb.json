@@ -14,1288 +14,1289 @@
    "de": "c0.1",
    "kind": "prose",
    "digest": "5c1a50e984c70a91",
-   "en": "c0.1",
+   "en": null,
+   "dropped": "link to the German HHU lecture recording",
    "preview": "[Vorlesungsaufzeichnung Expectation Maximization (VL 23)](https://media.…"
   },
   {
    "de": "c0.2",
    "kind": "heading",
    "digest": "5e48e63bc199c3e3",
-   "en": "c0.2",
+   "en": "c0.1",
    "preview": "## Motivation"
   },
   {
    "de": "c0.3",
    "kind": "prose",
    "digest": "542e2617c2e263c3",
-   "en": "c0.3",
+   "en": "c0.2",
    "preview": "Im supervised Learning haben wir gesehen, dass Lineare Regression (event…"
   },
   {
    "de": "c1.0",
    "kind": "directive",
    "digest": "742fa8f5b9c50048",
-   "en": "c1.0",
+   "en": "c0.3",
    "preview": "```{admonition} Beispiel Formuliert als Expectation-Maximization-Verfahr…"
   },
   {
    "de": "c1.1",
    "kind": "prose",
    "digest": "af0f850e30086d72",
-   "en": "c1.1",
+   "en": "c1.0",
    "preview": "Es liegt nahe, ein Verfahren zu verwenden, welches die Form der Cluster …"
   },
   {
    "de": "c2.0",
    "kind": "heading",
    "digest": "ca2f45d51be0cf07",
-   "en": "c2.0",
+   "en": "c1.1",
    "preview": "### Gemischte Gausssche Modelle, supervised"
   },
   {
    "de": "c2.1",
    "kind": "prose",
    "digest": "1084e46dc0275f16",
-   "en": "c2.1",
+   "en": "c2.0",
    "preview": "Wenn wir von Daten in $\\mathbb{R}^d$ Einteilungen in $k$ Klassen (Label)…"
   },
   {
    "de": "c2.2",
    "kind": "prose",
    "digest": "7b617976c468e5a4",
-   "en": "c2.2",
+   "en": "c2.1",
    "preview": "Daraus resultiert ein Modell für die gesamten Daten, wenn wir mit $p_i$ …"
   },
   {
    "de": "c2.3",
    "kind": "math",
    "digest": "60e320858013ee61",
-   "en": "c2.3",
+   "en": "c2.2",
    "preview": "$$ f(x) = \\sum_{i=1}^k p_i f_i(x). $$"
   },
   {
    "de": "c2.4",
    "kind": "prose",
    "digest": "abd7491e9ec8b60f",
-   "en": "c2.4",
+   "en": "c2.3",
    "preview": "Dieses Modell können wir natürlich auch wieder benutzen, um einzuschätze…"
   },
   {
    "de": "c2.5",
    "kind": "math",
    "digest": "9b37f31ee4b8ef30",
-   "en": "c2.5",
+   "en": "c2.4",
    "preview": "$$ P_i(x) = p_i f_i(x) $$"
   },
   {
    "de": "c2.6",
    "kind": "prose",
    "digest": "4aae4d2d432c32e6",
-   "en": "c2.6",
+   "en": "c2.5",
    "preview": "und wählen das $i$ aus, für das dieser Ausdruck maximal wird."
   },
   {
    "de": "c3.0",
    "kind": "prose",
    "digest": "65c49f9b4de783c4",
-   "en": "c3.0",
+   "en": "c2.6",
    "preview": "Als Entstehungsprozess kann man sich das so vorstellen: ein (fiktives) g…"
   },
   {
    "de": "c3.1",
    "kind": "prose",
    "digest": "af17fdaed932cf1e",
-   "en": "c3.1",
+   "en": "c3.0",
    "preview": "Nun kann es leicht passieren, wenn sich die Cluster überschneiden, dass …"
   },
   {
    "de": "c3.2",
    "kind": "prose",
    "digest": "5327b75b50a84632",
-   "en": "c3.2",
+   "en": "c3.1",
    "preview": "Wir wollen noch eine weitere Beobachtung machen: das gemischte Gausssche…"
   },
   {
    "de": "c4",
    "kind": "code",
    "digest": "610c5445d5d7c38e",
-   "en": "c4",
+   "en": "c3.2",
    "preview": "import numpy as np import matplotlib.pyplot as plt from sklearn.datasets…"
   },
   {
    "de": "c5.0",
    "kind": "heading",
    "digest": "f11e1c0a9845facd",
-   "en": "c5.0",
+   "en": "c4",
    "preview": "### Gemischte Gausssche Modelle, unsupervised"
   },
   {
    "de": "c5.1",
    "kind": "prose",
    "digest": "f6ebbef407857d7d",
-   "en": "c5.1",
+   "en": "c5.0",
    "preview": "Das eben beschriebene Vorgehen ist nicht möglich, wenn wir keine Klassen…"
   },
   {
    "de": "c5.2",
    "kind": "prose",
    "digest": "3a7b03eb6ab2e536",
-   "en": "c5.2",
+   "en": "c5.1",
    "preview": "Es bietet sich ein zweistufiges Verfahren an: zunächst ließe sich mit k-…"
   },
   {
    "de": "c5.3",
    "kind": "prose",
    "digest": "430340b1ef0e41ef",
-   "en": "c5.3",
+   "en": "c5.2",
    "preview": "Nun lässt sich wiederum feststellen, dass die Klasseneinteilung, die uns…"
   },
   {
    "de": "c5.4",
    "kind": "prose",
    "digest": "6bdd50de37181eaf",
-   "en": "c5.4",
+   "en": "c5.3",
    "preview": "Mit dieser verbesserten Klasseneinteilung, also der verbesserten Schätzu…"
   },
   {
    "de": "c6.0",
    "kind": "prose",
    "digest": "7c791159d554b083",
-   "en": "c6.0",
+   "en": "c5.4",
    "preview": "Wir wollen nun noch eine Beobachtung machen: Wenn im Aufstellen der Kova…"
   },
   {
    "de": "c6.1",
    "kind": "prose",
    "digest": "b08d317f3ccc05dc",
-   "en": "c6.1",
+   "en": "c6.0",
    "preview": "Um für eine beliebige Verteilung einen guten Schätzer zu konstruieren, h…"
   },
   {
    "de": "c7.0",
    "kind": "heading",
    "digest": "51c78a01bf0d044c",
-   "en": "c7.0",
+   "en": "c6.1",
    "preview": "## Maximum Likelihood in Modellen mit latenten Variablen"
   },
   {
    "de": "c7.1",
    "kind": "prose",
    "digest": "27a74f015cdca477",
-   "en": "c7.1",
+   "en": "c7.0",
    "preview": "Die Wahrscheinlichkeitsdichte im gemischten Gausschen Modell, wo $\\theta…"
   },
   {
    "de": "c7.2",
    "kind": "math",
    "digest": "79e9993e4606690b",
-   "en": "c7.2",
+   "en": "c7.1",
    "preview": "$$ f(x) = \\sum_{j=1}^k p_j f_j(x, \\theta_j) = P(X=x|M=\\theta) = L(\\theta…"
   },
   {
    "de": "c7.3",
    "kind": "prose",
    "digest": "2d2d73c53ae6cf0b",
-   "en": "c7.3",
+   "en": "c7.2",
    "preview": "das ist die Likelihood (also die Wahrscheinlichkeit der Daten, berechnet…"
   },
   {
    "de": "c7.4",
    "kind": "prose",
    "digest": "cffedc7c7e0a4644",
-   "en": "c7.4",
+   "en": "c7.3",
    "preview": "Tipp: wenn Sie sich gern in der Notation $\\theta$ als Liste über $\\theta…"
   },
   {
    "de": "c7.5",
    "kind": "prose",
    "digest": "05de4581f29dc84e",
-   "en": "c7.5",
+   "en": "c7.4",
    "preview": "Wenn wir die Modellierung, dass die Einteilung der Datenpunkte in Klasse…"
   },
   {
    "de": "c8.0",
    "kind": "prose",
    "digest": "36962caeed22e394",
-   "en": "c8.0",
+   "en": "c7.5",
    "preview": "Unser Modell, formuliert mit der latenten Variable $Y$, ist"
   },
   {
    "de": "c8.1",
    "kind": "math",
    "digest": "3a75f9dfdfc0ee81",
-   "en": "c8.1",
+   "en": "c8.0",
    "preview": "$$ \\begin{aligned} P(Y = j\\ |\\ \\theta) =& p_j \\\\ P(X=x\\ |\\ Y=j, \\theta) …"
   },
   {
    "de": "c9.0",
    "kind": "heading",
    "digest": "0134ddd06f24480b",
-   "en": "c9.0",
+   "en": "c8.1",
    "preview": "### Nullstellen der Ableitung bestimmen?"
   },
   {
    "de": "c9.1",
    "kind": "prose",
    "digest": "b1cfbb02a64f7902",
-   "en": "c9.1",
+   "en": "c9.0",
    "preview": "Direkt die Nullstellen der Ableitung von $L(\\theta)$ zu bestimmen ist ni…"
   },
   {
    "de": "c9.2",
    "kind": "math",
    "digest": "cee15aa97a618187",
-   "en": "c9.2",
+   "en": "c9.1",
    "preview": "$$ \\begin{aligned} \\ell(\\theta) =& \\log P(X=x\\ |\\ \\theta) \\\\ =& \\log \\le…"
   },
   {
    "de": "c9.3",
    "kind": "prose",
    "digest": "d82a5d08c4ffc47a",
-   "en": "c9.3",
+   "en": "c9.2",
    "preview": "und aus der Summen-Nummer kommen wir mit dem Logarithmus nicht so leicht…"
   },
   {
    "de": "c9.4",
    "kind": "heading",
    "digest": "0a5c5cdd0760b642",
-   "en": "c9.4",
+   "en": "c9.3",
    "preview": "### Jensen to the rescue!"
   },
   {
    "de": "c9.5",
    "kind": "prose",
    "digest": "2fd53c872df7f012",
-   "en": "c9.5",
+   "en": "c9.4",
    "preview": "Wir können unsere Ziele etwas abschwächen und mit der Jensenschen Unglei…"
   },
   {
    "de": "c9.6",
    "kind": "math",
    "digest": "f3c631f52f1ee75f",
-   "en": "c9.6",
+   "en": "c9.5",
    "preview": "$$ \\ell(\\theta) \\geq \\sum_{j=1}^k p_j \\log f_j(x\\ |\\ \\theta_j) $$"
   },
   {
    "de": "c9.7",
    "kind": "prose",
    "digest": "9b3ff83f4ca628b0",
-   "en": "c9.7",
+   "en": "c9.6",
    "preview": "Das charmante an dem Ausdruck auf der rechten Seite ist, dass ein $\\thet…"
   },
   {
    "de": "c9.8",
    "kind": "prose",
    "digest": "81351649c78a6f1f",
-   "en": "c9.8",
+   "en": "c9.7",
    "preview": "Wir wollen feststellen, dass sich im Ausdruck für den Beitrag einer Klas…"
   },
   {
    "de": "c9.9",
    "kind": "math",
    "digest": "5f5abfb683fb6f54",
-   "en": "c9.9",
+   "en": "c9.8",
    "preview": "$$ \\begin{aligned} \\ell(\\theta) =& \\log \\left( \\sum_{j=1}^k P(X=x, Y=j\\ …"
   },
   {
    "de": "c9.10",
    "kind": "prose",
    "digest": "5f5bd04c02eaa570",
-   "en": "c9.10",
+   "en": "c9.9",
    "preview": "Die Nützlichkeit sieht man nach Anwenden der Jensenschen Ungleichung, di…"
   },
   {
    "de": "c9.11",
    "kind": "math",
    "digest": "b0807c46d027a06f",
-   "en": "c9.11",
+   "en": "c9.10",
    "preview": "$$ \\begin{aligned} \\ell(\\theta) \\geq & \\sum_{j=1}^k q(j) \\log \\left( \\fr…"
   },
   {
    "de": "c9.12",
    "kind": "prose",
    "digest": "49561c17f717e056",
-   "en": "c9.12",
+   "en": "c9.11",
    "preview": "Wir haben also eine untere Schranke an $\\ell(\\theta)$ gefunden, die wir …"
   },
   {
    "de": "c9.13",
    "kind": "directive",
    "digest": "1a53892ded841a3d",
-   "en": "c9.13",
+   "en": "c9.12",
    "preview": "```{admonition} Bemerkung In der Vorlesung *Einführung in Deep Learning*…"
   },
   {
    "de": "c9.14",
    "kind": "prose",
    "digest": "577922e33c656285",
-   "en": "c9.14",
+   "en": "c9.13",
    "preview": "Diese Beobachtung wollen wir wieder aufgreifen (daher haben wir dem Kind…"
   },
   {
    "de": "c10.0",
    "kind": "heading",
    "digest": "85eca963a1334f1f",
-   "en": "c10.0",
+   "en": "c9.14",
    "preview": "## Auxiliary Functions"
   },
   {
    "de": "c10.1",
    "kind": "prose",
    "digest": "7c96dcb6aa7a6ef2",
-   "en": "c10.1",
+   "en": "c10.0",
    "preview": "Wenn wir eine Funktion $\\ell(\\theta)$ nicht maximieren können, können wi…"
   },
   {
    "de": "c10.2",
    "kind": "prose",
    "digest": "3b4e9a869d71924c",
-   "en": "c10.2",
+   "en": "c10.1",
    "preview": "Mit diesen Voraussetzungen kann man bereits zeigen, dass ein iterativer …"
   },
   {
    "de": "c10.3",
    "kind": "math",
    "digest": "856a68bf1d4465a0",
-   "en": "c10.3",
+   "en": "c10.2",
    "preview": "$$ \\begin{aligned} \\ell(\\theta^{(t)}) =& Q(\\theta^{(t)}, \\theta^{(t)}) \\…"
   },
   {
    "de": "c10.4",
    "kind": "prose",
    "digest": "b9c20173b5044410",
-   "en": "c10.4",
+   "en": "c10.3",
    "preview": "Insgesamt haben wir also $\\ell(\\theta^{(t)}) \\leq \\ell(\\theta^{(t+1)})$,…"
   },
   {
    "de": "c10.5",
    "kind": "prose",
    "digest": "7e6321be0c91e4ec",
-   "en": "c10.5",
+   "en": "c10.4",
    "preview": "Es bleibt für uns, wenn wir diesen Ansatz wählen wollen, noch die Wahl e…"
   },
   {
    "de": "c11.0",
    "kind": "heading",
    "digest": "981a5c9bca560982",
-   "en": "c11.0",
+   "en": "c10.5",
    "preview": "## Vollständige-Daten log-Likelihood"
   },
   {
    "de": "c11.1",
    "kind": "prose",
    "digest": "589df6842371a1bd",
-   "en": "c11.1",
+   "en": "c11.0",
    "preview": "Die letzte Zutat zur Entwicklung des E-M-Algorithmus für das gemischte G…"
   },
   {
    "de": "c11.2",
    "kind": "prose",
    "digest": "518d780ca3c97b9b",
-   "en": "c11.2",
+   "en": "c11.1",
    "preview": "Die vollständigen Daten sind also $(x_i,y_i)$, was wir mit $(X,Y)$ model…"
   },
   {
    "de": "c11.3",
    "kind": "prose",
    "digest": "3b007e7137a77116",
-   "en": "c11.3",
+   "en": "c11.2",
    "preview": "Es ist nun nützlich, die Variable $Y_i$ auch one-hot-encoded anzusehen: …"
   },
   {
    "de": "c11.4",
    "kind": "prose",
    "digest": "06681f118f0bd304",
-   "en": "c11.4",
+   "en": "c11.3",
    "preview": "Die log-Likelihood der Daten unter dem gemischten Gaussschen Modell ist"
   },
   {
    "de": "c11.5",
    "kind": "math",
    "digest": "5aac30aa9ab309ae",
-   "en": "c11.5",
+   "en": "c11.4",
    "preview": "$$ \\begin{aligned} \\ell_c(\\theta) = \\log P((X,Y)|\\theta) =& \\sum_{i=1}^n…"
   },
   {
    "de": "c11.6",
    "kind": "prose",
    "digest": "bcecf74165197db2",
-   "en": "c11.6",
+   "en": "c11.5",
    "preview": "dabei haben wir in der ersten Umformung eine fette $1$ hinzugefügt, da $…"
   },
   {
    "de": "c11.7",
    "kind": "prose",
    "digest": "0f01225d0aeea5aa",
-   "en": "c11.7",
+   "en": "c11.6",
    "preview": "Man beachte auch, dass das $\\theta$ jetzt wirklich nur noch $\\theta_1,\\d…"
   },
   {
    "de": "c11.8",
    "kind": "prose",
    "digest": "7f136cfbbd3c308c",
-   "en": "c11.8",
+   "en": "c11.7",
    "preview": "Wir können noch weiter vereinfachen:"
   },
   {
    "de": "c11.9",
    "kind": "math",
    "digest": "1cffaf47ff325fc7",
-   "en": "c11.9",
+   "en": "c11.8",
    "preview": "$$ \\log P(X=x_i, Y=y_i) = \\log \\left( p_{y_i} f_{y_i}(x_i) \\right) = \\lo…"
   },
   {
    "de": "c11.10",
    "kind": "heading",
    "digest": "bbd2c90f5e4cb1be",
-   "en": "c11.10",
+   "en": "c11.9",
    "preview": "### Erwartungswert über die latente Variable"
   },
   {
    "de": "c11.11",
    "kind": "prose",
    "digest": "93c90d682575f3e4",
-   "en": "c11.11",
+   "en": "c11.10",
    "preview": "Wenn wir eine Verteilung $q(y)$ für die latente Variable $Y$ annehmen, d…"
   },
   {
    "de": "c11.12",
    "kind": "math",
    "digest": "e570f35702ad156b",
-   "en": "c11.12",
+   "en": "c11.11",
    "preview": "$$ \\begin{aligned} \\mathbb{E}_{Y \\sim q} \\ell_c(\\theta) =& \\mathbb{E}_{Y…"
   },
   {
    "de": "c11.13",
    "kind": "prose",
    "digest": "1fca444e93bedbba",
-   "en": "c11.13",
+   "en": "c11.12",
    "preview": "Hierbei nennen wir die mit $\\tau_{ij}$ bezeichneten Terme **responsibili…"
   },
   {
    "de": "c11.14",
    "kind": "math",
    "digest": "f41b48320a3de975",
-   "en": "c11.14",
+   "en": "c11.13",
    "preview": "$$ \\tau_{ij} := \\mathbb{E}_{Y \\sim q} Y_{ij} = P(Y_i = j\\ |\\ X=x_i,\\thet…"
   },
   {
    "de": "c11.15",
    "kind": "prose",
    "digest": "f30455b96d2836ba",
-   "en": "c11.15",
+   "en": "c11.14",
    "preview": "Wenn wir die $\\tau_{ij}$ festhalten, haben wir mit $\\mathbb{E}_{Y \\sim q…"
   },
   {
    "de": "c11.16",
    "kind": "prose",
    "digest": "3bd8d96bfde3200b",
-   "en": "c11.16",
+   "en": "c11.15",
    "preview": "Wir definieren also"
   },
   {
    "de": "c11.17",
    "kind": "math",
    "digest": "497037771f97d5ac",
-   "en": "c11.17",
+   "en": "c11.16",
    "preview": "$$ Q(\\theta,\\vartheta) := \\sum_{i=1}^n \\sum_{j=1}^k \\tau_{ij}(\\vartheta)…"
   },
   {
    "de": "c11.18",
    "kind": "prose",
    "digest": "646a3451aeaac2ee",
-   "en": "c11.18",
+   "en": "c11.17",
    "preview": "Das ist für $\\theta=\\vartheta$ die erwartete vollständige-Daten log-Like…"
   },
   {
    "de": "c11.19",
    "kind": "heading",
    "digest": "ad32a4f764578216",
-   "en": "c11.19",
+   "en": "c11.18",
    "preview": "### Der Unterschied zwischen $L(\\theta, q)$ und $Q(\\theta, \\theta)$"
   },
   {
    "de": "c11.20",
    "kind": "prose",
    "digest": "5d8a6b2c50a2f1e1",
-   "en": "c11.20",
+   "en": "c11.19",
    "preview": "Wir erinnern uns nochmal an die Beobachtung zuvor, die wir mit Hilfe der…"
   },
   {
    "de": "c11.21",
    "kind": "math",
    "digest": "ff20d0a2d6812e28",
-   "en": "c11.21",
+   "en": "c11.20",
    "preview": "$$ \\ell(\\theta) \\geq L(\\theta, q) = \\sum_{j=1}^k q(j) \\log P\\left(X=x, Y…"
   },
   {
    "de": "c11.22",
    "kind": "prose",
    "digest": "22287bf3799923d7",
-   "en": "c11.22",
+   "en": "c11.21",
    "preview": "und stellen fest, dass der Summand, der nicht $H(q)$ ist, genau die erwa…"
   },
   {
    "de": "c11.23",
    "kind": "math",
    "digest": "a21ca695cd8d9e4e",
-   "en": "c11.23",
+   "en": "c11.22",
    "preview": "$$ \\ell(\\theta) \\geq L(\\theta, q) = \\mathbb{E}_{Y \\sim q} \\ell_c(\\theta)…"
   },
   {
    "de": "c11.24",
    "kind": "prose",
    "digest": "d8aaad7934b98a71",
-   "en": "c11.24",
+   "en": "c11.23",
    "preview": "Da $H(q)$ nicht von $\\theta$ abhängt, können wir also $Q(\\theta,\\varthet…"
   },
   {
    "de": "c11.25",
    "kind": "heading",
    "digest": "b3e182a33e7ec8af",
-   "en": "c11.25",
+   "en": "c11.24",
    "preview": "### Der Unterschied zwischen $\\ell(\\theta)$ und $L(\\theta, q)$"
   },
   {
    "de": "c11.26",
    "kind": "prose",
    "digest": "35565a2d14eb0086",
-   "en": "c11.26",
+   "en": "c11.25",
    "preview": "Wir stellen die Formel für $L(\\theta, q)$ noch einmal anders um. Dabei w…"
   },
   {
    "de": "c11.27",
    "kind": "math",
    "digest": "c05496a612645c1d",
-   "en": "c11.27",
+   "en": "c11.26",
    "preview": "$$ \\begin{aligned} \\ell(\\theta) \\geq& L(\\theta, q) = \\sum_{j=1}^k q(j) \\…"
   },
   {
    "de": "c11.28",
    "kind": "prose",
    "digest": "4ee034a4c093888b",
-   "en": "c11.28",
+   "en": "c11.27",
    "preview": "Die Differenz zwischen $\\ell(\\theta)$ und $L(\\theta,q)$ ist also genau d…"
   },
   {
    "de": "c11.29",
    "kind": "math",
    "digest": "baf0257b748f76c7",
-   "en": "c11.29",
+   "en": "c11.28",
    "preview": "$$ \\ell(\\theta) - L(\\theta, q) = H\\big(q \\,\\Vert\\, P(Y \\mid X=x, \\theta)…"
   },
   {
    "de": "c11.30",
    "kind": "prose",
    "digest": "c051cb9dd93e5629",
-   "en": "c11.30",
+   "en": "c11.29",
    "preview": "Damit ist auch $\\ell(\\theta) - Q(\\theta,\\theta) = H\\big(q \\,\\Vert\\, P(Y …"
   },
   {
    "de": "c12.0",
    "kind": "heading",
    "digest": "7186bacbda43cfff",
-   "en": "c12.0",
+   "en": "c11.30",
    "preview": "## E-M-Algorithmus zum fitten eines gemischten Gaussschen Modells"
   },
   {
    "de": "c12.1",
    "kind": "prose",
    "digest": "98652dd5f3e4e3c7",
-   "en": "c12.1",
+   "en": "c12.0",
    "preview": "Der Algorithmus wird mit einer Wahl von $\\theta^{(0)}$ initialisiert (un…"
   },
   {
    "de": "c12.2",
    "kind": "prose",
    "digest": "588219a06862139d",
-   "en": "c12.2",
+   "en": "c12.1",
    "preview": "Dann führt man iterativ abwechselnd den E-Schritt und den M-Schritt durc…"
   },
   {
    "de": "c12.3",
    "kind": "prose",
    "digest": "c3250b6d3ee69298",
-   "en": "c12.3",
+   "en": "c12.2",
    "preview": "* **E-Schritt**: Update den Parameter $\\vartheta$: setze $\\vartheta = \\t…"
   },
   {
    "de": "c12.4",
    "kind": "prose",
    "digest": "67737d199c5ecd6c",
-   "en": "c12.4",
+   "en": "c12.3",
    "preview": "Das Verfahren konvergiert, da die Approximationen an ein Maximum von $\\e…"
   },
   {
    "de": "c12.5",
    "kind": "prose",
    "digest": "59fad588e5e6325d",
-   "en": "c12.5",
+   "en": "c12.4",
    "preview": "Bisher haben wir nicht benötigt, welche Form die Dichtefunktionen $f_j$ …"
   },
   {
    "de": "c12.6",
    "kind": "prose",
    "digest": "6385f652d030183d",
-   "en": "c12.6",
+   "en": "c12.5",
    "preview": "Noch allgemeiner, wenn es nicht zwangsläufig um die Maximierung einer Li…"
   },
   {
    "de": "c12.7",
    "kind": "prose",
    "digest": "27d74cc8d10aa445",
-   "en": "c12.7",
+   "en": "c12.6",
    "preview": "Wir wollen uns jetzt aber doch erstmal auf den Fall einer diskreten endl…"
   },
   {
    "de": "c13.0",
    "kind": "heading",
    "digest": "ec086b09ba1752f3",
-   "en": "c13.0",
+   "en": "c12.7",
    "preview": "### Konkrete Formeln für das gemischte Gaussche Modell"
   },
   {
    "de": "c13.1",
    "kind": "prose",
    "digest": "ce9c918eafdcdd42",
-   "en": "c13.1",
+   "en": "c13.0",
    "preview": "Um den Algorithmus konkret implementieren zu können, müssen wir natürlic…"
   },
   {
    "de": "c13.2",
    "kind": "math",
    "digest": "e17dc7d71d02c66f",
-   "en": "c13.2",
+   "en": "c13.1",
    "preview": "$$ f_j(x) = f_j(x, \\mu_j, \\Sigma_j) = \\dfrac{1}{\\sqrt{(2\\pi)^n \\det\\Sigm…"
   },
   {
    "de": "c13.3",
    "kind": "prose",
    "digest": "3cd141e64fc80187",
-   "en": "c13.3",
+   "en": "c13.2",
    "preview": "Weil wir uns das Leben leicht machen wollen, betrachten wir erstmal den …"
   },
   {
    "de": "c13.4",
    "kind": "math",
    "digest": "9ba250769e0c4d6b",
-   "en": "c13.4",
+   "en": "c13.3",
    "preview": "$$ f_j(x) = f_j(x, \\mu_j, \\sigma_j) = \\dfrac{1}{\\sqrt{2\\pi}\\,\\sigma_j}\\,…"
   },
   {
    "de": "c13.5",
    "kind": "prose",
    "digest": "f34bfeb8071689a2",
-   "en": "c13.5",
+   "en": "c13.4",
    "preview": "Im Iterationsverfahren haben wir im Schritt $t$ die Parameter $\\theta^{(…"
   },
   {
    "de": "c13.6",
    "kind": "prose",
    "digest": "e71fe6e94ac207b7",
-   "en": "c13.6",
+   "en": "c13.5",
    "preview": "Im E-Schritt berechnen wir die Verantwortlichkeiten"
   },
   {
    "de": "c13.7",
    "kind": "math",
    "digest": "5fef910dc1900889",
-   "en": "c13.7",
+   "en": "c13.6",
    "preview": "$$ \\begin{aligned} \\tau_{ij}(\\theta^{(t)}) =& \\frac{P(Y_i = j, X=x_i\\ |\\…"
   },
   {
    "de": "c13.8",
    "kind": "prose",
    "digest": "0ab30b3650b31c66",
-   "en": "c13.8",
+   "en": "c13.7",
    "preview": "Im M-Schritt maximieren wir $Q(\\theta,\\vartheta)$ in $\\theta$, indem wir…"
   },
   {
    "de": "c13.9",
    "kind": "math",
    "digest": "639b35d556204500",
-   "en": "c13.9",
+   "en": "c13.8",
    "preview": "$$ \\begin{aligned} 0 =& \\frac{d}{d\\theta} Q(\\theta, \\vartheta) \\\\ =& \\fr…"
   },
   {
    "de": "c13.10",
    "kind": "prose",
    "digest": "f01cbf8f43fbcd25",
-   "en": "c13.10",
+   "en": "c13.9",
    "preview": "Als ersten Schritt betrachten wir die Ableitungen nach den $\\mu_j$:"
   },
   {
    "de": "c13.11",
    "kind": "math",
    "digest": "1427b5bfcfdecdcd",
-   "en": "c13.11",
+   "en": "c13.10",
    "preview": "$$ \\begin{aligned} \\frac{d}{d\\mu_j} \\log f_j(x_i) =& - \\frac{\\frac{d}{d\\…"
   },
   {
    "de": "c13.12",
    "kind": "prose",
    "digest": "15101d7e13613f09",
-   "en": "c13.12",
+   "en": "c13.11",
    "preview": "Wir können mit $\\sigma_j^2$ durchmultiplizieren und nach $\\mu_j$ umstell…"
   },
   {
    "de": "c13.13",
    "kind": "math",
    "digest": "18bb74b330371a2b",
-   "en": "c13.13",
+   "en": "c13.12",
    "preview": "$$ \\mu_j^{(t+1)} = \\frac{\\sum_{i=1}^n \\tau_{ij} x_i }{ \\sum_{i=1}^n \\tau…"
   },
   {
    "de": "c13.14",
    "kind": "prose",
    "digest": "4906403aa27a1ff0",
-   "en": "c13.14",
+   "en": "c13.13",
    "preview": "Als nächsten Schritt betrachten wir die Ableitungen nach den $\\sigma_j$:"
   },
   {
    "de": "c13.15",
    "kind": "math",
    "digest": "19655c65316f2c13",
-   "en": "c13.15",
+   "en": "c13.14",
    "preview": "$$ \\begin{aligned} \\frac{d}{d\\sigma_j} \\log f_j(x_i) =& -\\frac{1}{\\sigma…"
   },
   {
    "de": "c13.16",
    "kind": "prose",
    "digest": "cf0ee164014b31b4",
-   "en": "c13.16",
+   "en": "c13.15",
    "preview": "Stellt man die Gleichung $0 = \\frac{d}{d\\sigma_j} Q(\\theta, \\theta^{(t)}…"
   },
   {
    "de": "c13.17",
    "kind": "math",
    "digest": "31118ae0e11fad2f",
-   "en": "c13.17",
+   "en": "c13.16",
    "preview": "$${\\left(\\sigma_j^{(t+1)}\\right)}^2 = \\frac{\\sum_{i=1}^n \\tau_{ij}(x_i-\\…"
   },
   {
    "de": "c13.18",
    "kind": "prose",
    "digest": "57541673173b9b69",
-   "en": "c13.18",
+   "en": "c13.17",
    "preview": "Schließlich können wir analog über die Nullstellen der Ableitung nach $p…"
   },
   {
    "de": "c13.19",
    "kind": "math",
    "digest": "c7338f996704da6a",
-   "en": "c13.19",
+   "en": "c13.18",
    "preview": "$$ p_j^{(t+1)} = \\frac{\\sum_{i=1}^n \\tau_{ij}}{n} $$"
   },
   {
    "de": "c13.20",
    "kind": "prose",
    "digest": "7c55b9f2d1731b96",
-   "en": "c13.20",
+   "en": "c13.19",
    "preview": "Damit sind nun neue Parameter $\\theta^{(t+1)}$ gefunden."
   },
   {
    "de": "c14.0",
    "kind": "heading",
    "digest": "048ce392ab43592a",
-   "en": "c14.0",
+   "en": "c13.20",
    "preview": "#### Spezialfall k-Means"
   },
   {
    "de": "c14.1",
    "kind": "prose",
    "digest": "febf916fc69ebfe6",
-   "en": "c14.1",
+   "en": "c14.0",
    "preview": "Wenn wir $p_j = \\frac{1}{k}$ und $\\Sigma_j = E_d$ festhalten, erhalten w…"
   },
   {
    "de": "c14.2",
    "kind": "math",
    "digest": "5ae1a9c389f6c10a",
-   "en": "c14.2",
+   "en": "c14.1",
    "preview": "$$ \\tau_{ij}(\\theta^{(t)}) = \\frac{f_j\\left(x_i,\\mu_j^{(t)},E_d\\right)}{…"
   },
   {
    "de": "c14.3",
    "kind": "prose",
    "digest": "083667ecfb80d759",
-   "en": "c14.3",
+   "en": "c14.2",
    "preview": "Ein echter Unterschied zum klassischen k-Means-Verfahren ist, dass wir h…"
   },
   {
    "de": "c14.4",
    "kind": "math",
    "digest": "d9359c70e0d1673f",
-   "en": "c14.4",
+   "en": "c14.3",
    "preview": "$$ \\begin{aligned} \\mu_j^{(t+1)} =& \\frac{\\sum_{i=1}^n \\widetilde{\\tau_{…"
   },
   {
    "de": "c14.5",
    "kind": "prose",
    "digest": "c9374e09789c5b6f",
-   "en": "c14.5",
+   "en": "c14.4",
    "preview": "wobei $y_i$ die Klasse ist, der $x_i$ hart zugewiesen wurde. Das ist gen…"
   },
   {
    "de": "c15.0",
    "kind": "heading",
    "digest": "e80895a7c3d9e603",
-   "en": "c15.0",
+   "en": "c14.5",
    "preview": "#### Allgemeinere Modelle implementieren"
   },
   {
    "de": "c15.1",
    "kind": "prose",
    "digest": "ee38f596c4f47dd0",
-   "en": "c15.1",
+   "en": "c15.0",
    "preview": "Wenn Sie allgemeinere Modelle implementieren wollen als das, was wir hie…"
   },
   {
    "de": "c16.0",
    "kind": "heading",
    "digest": "f3ae68c1c16b9585",
-   "en": "c16.0",
+   "en": "c15.1",
    "preview": "### Implementierung in Python"
   },
   {
    "de": "c16.1",
    "kind": "heading",
    "digest": "25fc38f770557ab5",
-   "en": "c16.1",
+   "en": "c16.0",
    "preview": "#### Univariate Daten"
   },
   {
    "de": "c17",
    "kind": "code",
    "digest": "f61756fe0ed22032",
-   "en": "c17",
+   "en": "c16.1",
    "preview": "# Variante für univariate Gausssche Mischungen, # nicht-vektorisiert (fü…"
   },
   {
    "de": "c18.0",
    "kind": "prose",
    "digest": "cc952999ee3b26a9",
-   "en": "c18.0",
+   "en": "c17",
    "preview": "Wie auch beim k-Means-Verfahren wollen wir nun zugucken, wie sich im Lau…"
   },
   {
    "de": "c19",
    "kind": "code",
    "digest": "f68dbe3253b989ea",
-   "en": "c19",
+   "en": "c18.0",
    "preview": "np.random.seed(12345) pi = 1.0/3 real_mu_1, real_sigma_1 = 0, 1.5 real_m…"
   },
   {
    "de": "c20",
    "kind": "code",
    "digest": "f16c232deda0d367",
-   "en": "c20",
+   "en": "c19",
    "preview": "# Initiale theta aufstellen: pis = np.ones(2) + np.random.random(2) pis …"
   },
   {
    "de": "c21",
    "kind": "code",
    "digest": "ba46beb19af9488b",
-   "en": "c21",
+   "en": "c20",
    "preview": "# Darstellung der echten Parameter vs. die initialen: fig, ax = plt.subp…"
   },
   {
    "de": "c22",
    "kind": "code",
    "digest": "c77407cc05b1890a",
-   "en": "c22",
+   "en": "c21",
    "preview": "import matplotlib.animation as animation from IPython import display as …"
   },
   {
    "de": "c23.0",
    "kind": "heading",
    "digest": "fe304e1906578b77",
-   "en": "c23.0",
+   "en": "c22",
    "preview": "#### Multivariate Daten"
   },
   {
    "de": "c23.1",
    "kind": "prose",
    "digest": "37575996c34d9b00",
-   "en": "c23.1",
+   "en": "c23.0",
    "preview": "Für den allgemeineren multivariaten Fall mühen wir uns nicht mehr mit de…"
   },
   {
    "de": "c24",
    "kind": "code",
    "digest": "f51eb5aca69e1cac",
-   "en": "c24",
+   "en": "c23.1",
    "preview": "from scipy.stats import multivariate_normal as mvn def EMmulti(xs, pis, …"
   },
   {
    "de": "c25.0",
    "kind": "heading",
    "digest": "738133435514fa95",
-   "en": "c25.0",
+   "en": "c24",
    "preview": "## Anwendungsbeispiele"
   },
   {
    "de": "c25.1",
    "kind": "heading",
    "digest": "646ffad939d3c372",
-   "en": "c25.1",
+   "en": "c25.0",
    "preview": "### Aufenthaltsorte"
   },
   {
    "de": "c25.2",
    "kind": "prose",
    "digest": "da96096f7f4a54fb",
-   "en": "c25.2",
+   "en": "c25.1",
    "preview": "In `data.csv` sind Aufenthaltsorte aufgezeichnet. Die Daten kommen mit d…"
   },
   {
    "de": "c26",
    "kind": "code",
    "digest": "33822c9ce446d746",
-   "en": "c26",
+   "en": "c25.2",
    "preview": "data = np.genfromtxt(\"data.csv\", delimiter=',') fig, ax = plt.subplots()…"
   },
   {
    "de": "c27.0",
    "kind": "prose",
    "digest": "3a7bdf13871505a1",
-   "en": "c27.0",
+   "en": "c26",
    "preview": "Die Transformation auf Hauptkomponenten ist wenig nützlich bei diesen Da…"
   },
   {
    "de": "c28",
    "kind": "code",
    "digest": "c64295842c31f485",
-   "en": "c28",
+   "en": "c27.0",
    "preview": "from sklearn.decomposition import PCA pc = PCA().fit_transform(data) fig…"
   },
   {
    "de": "c29",
    "kind": "code",
    "digest": "9958576191f3701e",
-   "en": "c29",
+   "en": "c28",
    "preview": "np.random.seed(1234321) pis = np.array([0.2,0.2,0.2,0.2,0.2]) mus = np.r…"
   },
   {
    "de": "c30",
    "kind": "code",
    "digest": "cd14ea8a1c394a9f",
-   "en": "c30",
+   "en": "c29",
    "preview": "ys = np.concatenate([mvn(m, s).rvs(int(p*2000)) for p, m, s in zip(pis, …"
   },
   {
    "de": "c31.0",
    "kind": "prose",
    "digest": "2c0573d3090990e0",
-   "en": "c31.0",
+   "en": "c30",
    "preview": "Eine Interpretation wäre nun, dass wir die längeren Aufenthaltsorte dami…"
   },
   {
    "de": "c32.0",
    "kind": "heading",
    "digest": "391259efcf702af0",
-   "en": "c32.0",
+   "en": "c31.0",
    "preview": "### Iris-Klassifikation"
   },
   {
    "de": "c32.1",
    "kind": "prose",
    "digest": "213562f0ee70996d",
-   "en": "c32.1",
+   "en": "c32.0",
    "preview": "Wir werden jetzt die GMM (Gaussian Mixture Model)-Implementierung von Sc…"
   },
   {
    "de": "c33",
    "kind": "code",
    "digest": "6b2d63fbf9d09898",
-   "en": "c33",
+   "en": "c32.1",
    "preview": "from sklearn.mixture import GaussianMixture from sklearn.metrics import …"
   },
   {
    "de": "c34.0",
    "kind": "prose",
    "digest": "7fed3b9ef8134020",
-   "en": "c34.0",
+   "en": "c33",
    "preview": "Aus dem Gausschen Mischungsmodell können wir auch die individuellen Wahr…"
   },
   {
    "de": "c35",
    "kind": "code",
    "digest": "524717b6982c4595",
-   "en": "c35",
+   "en": "c34.0",
    "preview": "y_pred = gm.predict(xpc) y_pred_proba = gm.predict_proba(xpc) y_pred_max…"
   },
   {
    "de": "c36.0",
    "kind": "prose",
    "digest": "c63f424a0f991348",
-   "en": "c36.0",
+   "en": "c35",
    "preview": "Hier wollen wir einmal die Permutation finden, die die höchste Übereinst…"
   },
   {
    "de": "c37",
    "kind": "code",
    "digest": "9090eeef8f7b324d",
-   "en": "c37",
+   "en": "c36.0",
    "preview": "from itertools import permutations best_accuracy = 0.0 for permutation i…"
   },
   {
    "de": "c38.0",
    "kind": "prose",
    "digest": "118371d3b6e551e4",
-   "en": "c38.0",
+   "en": "c37",
    "preview": "Und schließlich plotten, wie das Ergebnis aussieht:"
   },
   {
    "de": "c39",
    "kind": "code",
    "digest": "d23ebb85164e7b51",
-   "en": "c39",
+   "en": "c38.0",
    "preview": "# Wir betrachten direkt die Marginalverteilungen # in den ersten 2 Haupt…"
   },
   {
    "de": "c40.0",
    "kind": "heading",
    "digest": "09772eef0b036685",
-   "en": "c40.0",
+   "en": "c39",
    "preview": "### Handgeschriebene Ziffern"
   },
   {
    "de": "c40.1",
    "kind": "prose",
    "digest": "a7b7fb77b570e949",
-   "en": "c40.1",
+   "en": "c40.0",
    "preview": "Auf dem UCI ML hand-written digits Datensatz schauen wir uns an, wie gut…"
   },
   {
    "de": "c41",
    "kind": "code",
    "digest": "d9b87923c3b4cc94",
-   "en": "c41",
+   "en": "c40.1",
    "preview": "from sklearn.datasets import load_digits x,y = load_digits(return_X_y=Tr…"
   },
   {
    "de": "c42.0",
    "kind": "directive",
    "digest": "06a8d19c25859d91",
-   "en": "c42.0",
+   "en": "c41",
    "preview": ":::{note}"
   },
   {
    "de": "c42.1",
    "kind": "prose",
    "digest": "53b15374aab3a257",
-   "en": "c42.1",
+   "en": "c42.0",
    "preview": "**Ausblick (nicht klausurrelevant):** Das Bayessche Informationskriteriu…"
   },
   {
    "de": "c42.2",
    "kind": "directive",
    "digest": "f1ae2a75ed1f9972",
-   "en": "c42.2",
+   "en": "c42.1",
    "preview": ":::"
   },
   {
    "de": "c42.3",
    "kind": "prose",
    "digest": "6b3d600969a121b4",
-   "en": "c42.3",
+   "en": "c42.2",
    "preview": "Wie viele Komponenten soll das Modell haben? Im Kapitel über Model Selec…"
   },
   {
    "de": "c43",
    "kind": "code",
    "digest": "1accb42e07a0e860",
-   "en": "c43",
+   "en": "c42.3",
    "preview": "ks = [1, 2, 5, 10, 20, 40, 60, 100] bics = [GaussianMixture(k, random_st…"
   },
   {
    "de": "c44.0",
    "kind": "prose",
    "digest": "f8b54c3ddeafe12b",
-   "en": "c44.0",
+   "en": "c43",
    "preview": "Hier fällt das BIC bis zum größten getesteten $k$: Die Ziffern zerfallen…"
   },
   {
    "de": "c45",
    "kind": "code",
    "digest": "3bd4fef0de39873f",
-   "en": "c45",
+   "en": "c44.0",
    "preview": "def plot_digits(x): so_many_rows = min(100, len(x)) // 10 fig, ax = plt.…"
   },
   {
    "de": "c46",
    "kind": "code",
    "digest": "535acc742bbe56ad",
-   "en": "c46",
+   "en": "c45",
    "preview": "gm = GaussianMixture(100, random_state=23) gm.fit(data) new_data, new_la…"
   },
   {
    "de": "c47.0",
    "kind": "prose",
    "digest": "26ad5ba1a26e7260",
-   "en": "c47.0",
+   "en": "c46",
    "preview": "Diese neuen Ziffern hat das GMM für uns generiert. Warum aber sind die z…"
   },
   {
    "de": "c47.1",
    "kind": "prose",
    "digest": "c5e05d89e8fbb733",
-   "en": "c47.1",
+   "en": "c47.0",
    "preview": "Weil wir im Training gar nicht versucht haben, pro Ziffer genau eine Nor…"
   },
   {
    "de": "c47.2",
    "kind": "prose",
    "digest": "cfe12460c5cf6c5f",
-   "en": "c47.2",
+   "en": "c47.1",
    "preview": "Um etwas Einsicht in unser Modell zu gewinnen, schauen wir uns einzelne …"
   },
   {
    "de": "c48",
    "kind": "code",
    "digest": "56c7f7642e86e3e5",
-   "en": "c48",
+   "en": "c47.2",
    "preview": "for i in range(10): mu = gm.means_[i] sigma = gm.covariances_[i] new_dat…"
   },
   {
    "de": "c49.0",
    "kind": "prose",
    "digest": "82fb2a4eff8f9a54",
-   "en": "c49.0",
+   "en": "c48",
    "preview": "Wir sehen also durchaus, dass die Mischungskomponenten innerhalb einer K…"
   },
   {
    "de": "c50",
    "kind": "code",
    "digest": "f549957046e1a3c0",
-   "en": "c50",
+   "en": "c49.0",
    "preview": "gm = GaussianMixture(10, random_state=23) gm.fit(data) new_data, new_lab…"
   },
   {
    "de": "c51.0",
    "kind": "prose",
    "digest": "d9d3774fdd8fe5a2",
-   "en": "c51.0",
+   "en": "c50",
    "preview": "Um in unserem Paradigma ohne zusätzliche Algorithmen z.B. eine $7$ zu ge…"
   },
   {
    "de": "c52",
    "kind": "code",
    "digest": "85755a19ae6cc260",
-   "en": "c52",
+   "en": "c51.0",
    "preview": "gm7 = GaussianMixture(10, random_state=23) gm7.fit(data[y == 7]) new_dat…"
   },
   {
    "de": "c53.0",
    "kind": "heading",
    "digest": "e44c62057bcfa3b1",
-   "en": "c53.0",
+   "en": "c52",
    "preview": "### Fashion-MNIST"
   },
   {
    "de": "c53.1",
    "kind": "prose",
    "digest": "54c4bca664c6d305",
-   "en": "c53.1",
+   "en": "c53.0",
    "preview": "Einfach nur weil es geht, gucken wir uns genau das gleiche auf dem Fashi…"
   },
   {
    "de": "c54",
    "kind": "code",
    "digest": "99f86e52b853d2ea",
-   "en": "c54",
+   "en": "c53.1",
    "preview": "from itertools import product import numpy as np # Der Lader steckt in f…"
   },
   {
    "de": "c55",
    "kind": "code",
    "digest": "4095d42128b6414b",
-   "en": "c55",
+   "en": "c54",
    "preview": "x_train, y_train = load_mnist(kind='train') #x_test, y_test = load_mnist…"
   },
   {
    "de": "c56",
    "kind": "code",
    "digest": "950f755a183f9aa0",
-   "en": "c56",
+   "en": "c55",
    "preview": "def show_fashion_image(raw_data, ax): im = ax.imshow(raw_data.reshape(28…"
   },
   {
    "de": "c57.0",
    "kind": "prose",
    "digest": "3be4dbba82d04459",
-   "en": "c57.0",
+   "en": "c56",
    "preview": "Wir schauen uns an, wie lange PCA.fit und EM (der gm.fit) auf diesem etw…"
   },
   {
    "de": "c58",
    "kind": "code",
    "digest": "1d043f241719b0ec",
-   "en": "c58",
+   "en": "c57.0",
    "preview": "vargoal = .90 pca = PCA(vargoal) %timeit pca.fit(x_train) pca.fit(x_trai…"
   },
   {
    "de": "c59",
    "kind": "code",
    "digest": "80d8d2bdd7e04011",
-   "en": "c59",
+   "en": "c58",
    "preview": "print(\"kept %d of %d dimensions for %2.f%% of variance \" % (len(pca.comp…"
   },
   {
    "de": "c60",
    "kind": "code",
    "digest": "2e6b55fa71e3edeb",
-   "en": "c60",
+   "en": "c59",
    "preview": "%%time gm = GaussianMixture(50, random_state=23) gm.fit(fashion_data[y_t…"
   },
   {
    "de": "c61",
    "kind": "code",
    "digest": "24d44ab240b621da",
-   "en": "c61",
+   "en": "c60",
    "preview": "def draw_gm_sample(gm, pca, n=10): new_data, new_labels = gm.sample(n) n…"
   },
   {
    "de": "c62",
    "kind": "code",
    "digest": "f3d473feeaf50767",
-   "en": "c62",
+   "en": "c61",
    "preview": "%time highres_pca = PCA(.94).fit(x_train) highres_data = highres_pca.tra…"
   },
   {
    "de": "c63",
    "kind": "code",
    "digest": "7761c3249b71e5c1",
-   "en": "c63",
+   "en": "c62",
    "preview": "highres_gm = GaussianMixture(90, tol=1e-2, random_state=42) %time highre…"
   },
   {
    "de": "c64.0",
    "kind": "heading",
    "digest": "449ccf5eb8effdc3",
-   "en": "c64.0",
+   "en": "c63",
    "preview": "## Rückblick und Ausblick"
   },
   {
    "de": "c64.1",
    "kind": "prose",
    "digest": "f5c95515f02a7686",
-   "en": "c64.1",
+   "en": "c64.0",
    "preview": "Damit endet das Skript. Der Weg durch den Kursteil zum maschinellen Lern…"
   },
   {
    "de": "c64.2",
    "kind": "prose",
    "digest": "9cd54ca82cba4043",
-   "en": "c64.2",
+   "en": "c64.1",
    "preview": "* **k-Means** war unser erstes Verfahren: Abstände messen, Punkte Zentro…"
   },
   {
    "de": "c64.3",
    "kind": "prose",
    "digest": "0076dd99baee5b8e",
-   "en": "c64.3",
+   "en": "c64.2",
    "preview": "Bewusst nicht behandelt haben wir unter anderem neuronale Netze und Deep…"
   }
  ]
