@@ -765,3 +765,500 @@ Recorded because a translator will otherwise think one of them is wrong:
   reader the acronym is material the original does not have. Both chapters agree; if that
   is ever revisited, they move together.
 
+## Discrete distributions
+
+First needed in `important-discrete-distributions.ipynb`.
+
+| German | English | Note |
+|---|---|---|
+| Achtung (admonition title) | Caution | not in the fixed table of `TRANSLATION.md` §5; `:class: warning` is kept |
+| Annäherung an eine Verteilung | approaching a distribution | plot title in cell 20 |
+| Aufruf (einer Methode) | call | table header *gesucht \ |
+| Ausfallwahrscheinlichkeit | failure probability | the Poisson binomial example |
+| Ausgaberaum | output space | $\Delta_n$ as the output of a classifier |
+| Bauteil | component | the defective-components running example; not "part" |
+| binäre Entropiefunktion | binary entropy function | $h(p)$; the `###` heading |
+| Chance (englisch *odds*) | odds | the German glosses itself with the English word, so the doublet collapses – see *Decisions* |
+| Charge | batch | "components from different batches" |
+| Der Vollständigkeit halber | For completeness | section heading |
+| diskrete Gleichverteilung | discrete uniform distribution | already used in a code comment in `numpy.ipynb` |
+| Exponentialreihe | exponential series | $\sum \lambda^k/k! = e^\lambda$ |
+| Fehlerquelle | source of error | "the most frequent source of error" |
+| Fehlversuch | failure | the geometric distribution's two conventions: trials up to the first success vs. failures before it |
+| gedächtnislos | memoryless | and *Gedächtnislosigkeit* would be *memorylessness* |
+| geometrische Verteilung | geometric distribution |  |
+| Grenzfall | limiting case |  |
+| Grenzübergang | passage to the limit | also the comment in cell 20 |
+| höchstens abzählbar | at most countable | matches `random-variables-distributions.md` and `expectation-variance.md` |
+| Indexverschiebung | index shift | in the Poisson expected-value computation |
+| Ja/Nein-Merkmal | yes/no feature | follows the glossary's *Merkmal* → feature |
+| Klassifikationsverfahren | classification algorithm | follows the glossary's *Lernverfahren* → learning algorithm |
+| Kosmetik (nicht nur Kosmetik) | not merely cosmetic | rendered adjectivally |
+| Leitfrage | guiding question |  |
+| logistische Regression | logistic regression |  |
+| logistische Sigmoidfunktion | logistic sigmoid function |  |
+| Logit | logit | lower case in English running prose |
+| Maximum-Entropie-Verteilung | maximum entropy distribution | unhyphenated attributively |
+| Maximum-Likelihood-Schätzung | maximum likelihood estimation | the glossary has the *estimator* and the *principle*, not the act |
+| Muster (von Erfolgen und Misserfolgen) | pattern | the combinatorial argument for the binomial pmf |
+| Münzwurf | coin toss | cf. the glossary's *Würfelwurf* → throw of a die |
+| Nullstelle | zero | "the only zero is at $p = \frac12$"; not "root" |
+| Ohne Beweis | Without proof | the bolded last line of the limit theorem |
+| Poisson-Binomialverteilung | Poisson binomial distribution | no hyphen in English |
+| Poissonverteilung | Poisson distribution |  |
+| Potenzmenge | power set | matches `intro-stochastics.md` |
+| Präparat (radioaktives) | specimen | **not** "sample" – see *Decisions* |
+| Rückblick | Looking back | section heading; mirrors the glossary's *Ausblick* → Looking ahead |
+| Satz von de Moivre-Laplace | de Moivre–Laplace theorem | en dash in the name, as for *Radon–Nikodym* and *Cramér–Rao* |
+| Summenformel | summation formula | $\sum i^2$ |
+| Tippfehler | typo | plural *typos* |
+| Verbindungsversuch | connection attempt |  |
+| Versuch, Bernoulli-Versuch | trial, Bernoulli trial | "one probability per trial", "$n$ independent Bernoulli trials" |
+| Zufallszahlengenerator | random number generator |  |
+| Überlebensfunktion | survival function | the German glosses the English term with a German one; collapses – see *Decisions* |
+| σ-Algebra | σ-algebra | the source uses the bare σ character here rather than `$\sigma$`; kept as it stands |
+
+## A first exploratory pass
+
+First needed in `titanic-eda-numpy.ipynb`.
+
+| German | English | Note |
+|---|---|---|
+| Accuracy (Treffergenauigkeit) | accuracy | the German glosses the English word; the gloss collapses, as with *Störvariable/Confounder* |
+| Anführungszeichen | quotation marks | in the CSV-parser sense |
+| Anteil (in the grouped `print` labels and the $y$-axis label) | rate | the cell's own third loop was already English and said `Rate:`; see *Decisions* |
+| Auszug (aus der Passagierliste) | extract |  |
+| Daten verfälschen | to distort the data |  |
+| erster Anlauf (chapter title *Titanic EDA, erster Anlauf*) | a first pass | see *Decisions* – "a first attempt" is the literal reading |
+| Fehlklassifikationsrate | misclassification rate | the thing the mode minimises; `expectation-variance.md` calls the same loss the *counting error* |
+| Instanz | instance | already in `TERMINOLOGY.md` under *Beobachtung, Instanz* |
+| Klassifikator | classifier |  |
+| Losung ("Frauen und Kinder zuerst") | maxim | "women and children first" is the established English form of the order |
+| Precision (Genauigkeit) | precision | likewise |
+| protokollieren | to put on record |  |
+| Recall (Trefferquote) | recall | likewise; the German's second gloss *in der Medizin Sensitivität* is informative and was kept, and it matches the glossary's `Sensitivität → sensitivity` |
+| Rettungsboote planen | planning lifeboats | the recall-versus-precision example |
+| Spam aussortieren | sorting out spam |  |
+| Trennzeichen | separator | of a CSV/TSV field |
+| Umrechnung, Umrechnungsfaktor | conversion, conversion factor | the Bayes factor between precision and recall |
+| Zeile (einer Datei) / Zeile (einer Tabelle) | line / row | two senses in this chapter: `file.readline()` output is a *line* (c2.0, c2.1), a data record is a *row* |
+| Überlebensquote, Überlebensanteil, Überlebensrate | survival rate | the German uses all three; English has one, and the notebook's own function is `survival_rate` |
+| Überschriftzeile, "die mit Überschriften daher kommt" | header row |  |
+
+## The normal distribution and the central limit theorem
+
+First needed in `normal-distribution.ipynb`.
+
+| German | English | Note |
+|---|---|---|
+| Approximation der Binomialverteilung | Approximating the binomial distribution | section heading; the German noun phrase reads better as a gerund in a heading |
+| Auswertungsvorschrift | analysis protocol | the documents that fix how a study's data are to be evaluated |
+| de Moivre-Laplace | de Moivre–Laplace | en dash in the two-name theorem, as for *Radon–Nikodym* and *Berry–Esseen* |
+| dreiecksverteilt | triangularly distributed | the sum of two uniforms |
+| Ein Integral | An integral | section heading |
+| gestutzte Normalverteilung | truncated normal distribution | `scipy.stats.truncnorm`, last row of the maximum-entropy table |
+| Glockenkurve, Glockenform | bell curve, bell shape |  |
+| Konvergenz in Verteilung | convergence in distribution | the mode of convergence in the central limit theorem; the glossary already has *stochastische Konvergenz* → convergence in probability, which is a different thing |
+| Laplace-Bedingung | the Laplace condition | $Np \ge 10$ and $N(1-p) \ge 10$; bolded lead-in inside the *Rule of thumb* admonition |
+| Momenterzeugendenfunktion | moment generating function | no hyphens in English |
+| Nebenbedingung | constraint | the maximum-entropy side condition |
+| Normalapproximation | normal approximation | legend entry in cell 16 and running prose in cell 17 |
+| Normalverteiltheit | normality | "normality is preserved under affine-linear transformations"; see *Decisions* |
+| Ortsbestimmung | position fixing | the GNSS example |
+| Praxisbeispiel (as an `##` heading) | A practical example | see the section above on the heading |
+| Satz von Berry–Esseen | Theorem (Berry–Esseen) | admonition title; see *Decisions* |
+| stabil unter Faltung | stable under convolution |  |
+| standardnormalverteilt | standard normally distributed | the adjective; *Standardnormalverteilung* → standard normal distribution |
+| Steckbrief (einer Verteilung) | profile | the per-distribution summary pages of `important-continuous-distributions.ipynb`; that chapter is not translated yet and should use the same word |
+| Stirling-Formel | Stirling's formula | genitive, as for *Satz von Bayes* → Bayes' theorem |
+| Störeinfluss, Störung | disturbance | the independent error sources that sum to a normal distribution; not *Störvariable* → confounder, which the glossary already has |
+| technosozial | techno-social | hyphenated |
+| Verhältnis (von Schiefe und Umfang) | ratio |  |
+
+## Continuous distributions
+
+First needed in `important-continuous-distributions.ipynb`.
+
+| German | English | Note |
+|---|---|---|
+| Fertigungsgenauigkeit | manufacturing precision | normal-distribution application bullet |
+| Gaussssche Mischung | Gaussian mixture | `statistical-models.md` already has *gemischtes Modell* → mixture model; this is the named special case |
+| Gaussverteilung | Gaussian distribution | the glossary's *Normalverteilung* row licenses "Gaussian" where the German says so; the chapter's opening sentence does |
+| Heaviside-Step-Funktion | Heaviside step function | no hyphens in English |
+| Kehrseite (stetige Kehrseite der Poissonverteilung) | flip side | "the continuous flip side of the Poisson distribution" |
+| Lognormalverteilung | log-normal distribution | hyphenated and lower case in running prose, matching the English Wikipedia title the chapter links to; the heading is `## Log-normal distribution` |
+| Spielzeugdaten | toy data | the wording `landing-page.md` already uses |
+| Sternenhimmel | night sky | the Hubble bullet; `verschmierter Pixelhaufen` → *smeared-out heap of pixels* |
+| Stetige Gleichverteilung | continuous uniform distribution | the glossary's *Gleichverteilung* row says "discrete or continuous, say which", and the heading says which |
+| Superresolution-Technik | super-resolution technique | hyphenated in English |
+| Weibull-Verteilung | Weibull distribution |  |
+| Wärmepumpe | heat pump | the Weibull application bullet |
+| Übersichtsgrafik | overview diagram | the ProbOnto figure |
+
+## Cleaning data
+
+First needed in `data-cleaning.ipynb`.
+
+| German | English | Note |
+|---|---|---|
+| Alternative | alternation | the operator, not "alternative" |
+| Anker | anchor |  |
+| Anrede (Titanic) | title | the Mr/Mrs/Miss field; also the column name, see *Code changes* |
+| Augenschein | – | "the first step is always to look"; there is no English noun that is not stilted |
+| Ausreißer | outlier | and *Ausreißer erkennen* → *spotting outliers* |
+| Baustein | building block | table header and running prose |
+| Beispielaufgabe (admonition title) | Example exercise | TRANSLATION.md §5 fixes *Übung / Aufgabe → Exercise*; this is the compound |
+| Daten schrubben | data scrubbing | the German quotes the English already; `what-is-data-science.md` uses the same word |
+| Dezimaltrenner | decimal separator | TRANSLATION.md §6 already calls it that |
+| Editierdistanz (Levenshtein-Distanz) | edit distance (Levenshtein distance) |  |
+| Einfüge-, Lösch-, Ersetzungsschritte | insertions, deletions, substitutions |  |
+| Einzeiler | one-liner |  |
+| Encoding, Kodierung | encoding | one English word for the German's two |
+| endlicher Automat | finite automaton | plural *automata*; "Vorlesung über formale Sprachen" → "the course on formal languages" |
+| Ersatzwert | substitute value | what `fillna` inserts |
+| Feature Engineering | feature engineering | lower case in English running prose |
+| Freitextfeld | free-text field |  |
+| Gier, gierig / faul | greed, greedy / lazy | the standard regex names; the German uses the same metaphor |
+| Gruppe | group | and *Rückwärtsreferenz* below |
+| Imputation | imputation | bold on first use, as in the German |
+| Lücke (in einer Spalte) | gap | not "hole", not "missing value" – the chapter contrasts genuine gaps with the ones it creates |
+| Maske | mask | already in the glossary from `numpy.ipynb`; the chapter's logging columns are masks |
+| Messfehler / Vorzeichenfehler | measurement error / sign error |  |
+| Metadatendatei | metadata file |  |
+| naiv / bewusst (Zeitstempel) | naive / aware | Python's own pair, which is what the German is translating |
+| negativer / positiver Lookahead | negative / positive lookahead | the German keeps the English word too |
+| Niederschlagshöhe | amount of precipitation | DWD's `RSK`, "in mm" |
+| Ortszeit | local time |  |
+| passt auf (Tabellenkopf) | matches |  |
+| Protokoll | log | "the table of assignments belongs in the log"; "three columns that are nothing but the log". Chosen because `what-is-data-science.md` already promises a chapter that "insists on logging every change made to the data" |
+| Protokollieren (rule 1) | log it | the imperative heading of the Principle admonition |
+| Raw-String | raw string | two words |
+| Rechtschreibprüfer | spell checker |  |
+| Rettungsreihenfolge | the order in which people were rescued | rendered as a clause; "rescue order" reads as a product name |
+| Rückwärtsreferenz | backreference | one word in English |
+| Schreibweise (einer Stadt) | spelling | "seven spellings become two cities" |
+| Schreibweise (Tabellenkopf) | notation | table header; distinct from *Schreibweise* = spelling above, which is why both are recorded |
+| schwach / stark bindend | binding weakly / binding strongly | operator precedence, the axis the table is sorted on |
+| Sommerzeit-Umstellung | daylight-saving change | `what-is-data-science.md` already says "daylight saving changes" |
+| Sonnenscheindauer | duration of sunshine | DWD's `SDK` |
+| sprechende Namen | telling names |  |
+| Tausendertrennzeichen | thousands separator |  |
+| Unix-Zeitstempel | Unix timestamp | the glossary has *Zeitstempel → timestamp* |
+| Verfälschung, verfälschen | distortion, to distort | the chapter's central verb: "every act of cleaning distorts the data" |
+| Verkettung | concatenation | the glossary has *Verkettung (von Abbildungen) → composition*; for strings and regexes it is concatenation |
+| Wiederholung | repetition |  |
+| Wochentag | day of the week |  |
+| Z-Score | z-score | lower case, matching the glossary's *z-Wert → z-value*, *z-Test → z-test* |
+| Zeichenklasse, negierte Zeichenklasse | character class, negated character class |  |
+| Zeitzonendatenbank | time zone database | "the *tz database* (also called the IANA time zone database)" |
+| Zielmetrik | target metric | the glossary has *Zielgröße → target variable*, not this |
+| Zusammenfassen auf Monate | aggregating up to months | what `resample("MS")` does |
+| Überlebensrate | survival rate |  |
+| Übersetzungstabelle | mapping table | "translation table" would be confusing in a translated book, and a `dict` passed to `replace` is a mapping |
+
+## The multivariate normal distribution
+
+First needed in `multivariate-normal.ipynb`.
+
+| German | English | Note |
+|---|---|---|
+| Basiswechsel (linear algebra) | change of basis | **collides** with the existing row *Basiswechsel → change of base* in `relative-entropy.md`, which is about logarithms. Two different things; "an orthogonal change of basis" is the only English here |
+| Dichten von multivariaten Verteilungen | Densities of multivariate distributions | section heading |
+| Drehstreckung | the rotation and the stretching | rendered as a pair of nouns, not as one word – see *Decisions* |
+| drehsymmetrisch | rotationally symmetric | not "rotation-symmetric" |
+| Eigenzerlegung | eigendecomposition | one word, as PCA literature has it |
+| Gipfel (einer Dichte) | peak | "deforms the peak into an ellipse"; not "summit" |
+| Halbachse (einer Ellipse) | semi-axis | plural *semi-axes* |
+| Heatmap | heatmap | the German already uses the English word; one word in the English edition |
+| Herleitung | derivation | the section heading *Derivation: from the symmetry to the formula* |
+| Konturplot | contour plot | distinct from *Höhenlinie/Konturlinie → contour line*, which the chapter also uses |
+| Levelset, Niveaumenge | level set | two words in English; follows the `statistical-models.md` row *Niveaumenge → level set*. The German writes the English loanword as one word, "Levelsets" |
+| Linearkombination | linear combination |  |
+| Maximum-Entropie-Eigenschaft | maximum entropy property | unhyphenated in English |
+| mehrdimensional / multivariat | multidimensional / multivariate | the German uses both for the same thing and so does the English |
+| orthogonale Matrix | orthogonal matrix |  |
+| quadratische Form | quadratic form |  |
+| Signatur (einer Funktion) | signature | of $f \colon \mathbb{R}^n \to [0,\infty)$ |
+| Strahl (von $\mu$ weg) | ray |  |
+| Strecken, Streckung | stretching | the verb for $D$; *Skalieren* → *scaling* is the operation's bolded name in the list |
+| Streckfaktor | stretch factor | also in a `print` string; the factors $\sqrt{\lambda_i}$ |
+| univariat normalverteilt | univariate normally distributed | and *multivariat normalverteilt* → multivariate normally distributed |
+| Variational Autoencoder | variational autoencoder | lower case in English running prose; the German capitalises it as a noun |
+| Verschieben / Skalieren / Drehen | Shifting / Scaling / Rotating | the three bolded operations in the derivation; the code comments use the same three words |
+
+## Clustering
+
+First needed in `kmeans.ipynb`.
+
+| German | English | Note |
+|---|---|---|
+| Ausdehnung (eines Clusters) | extent | the bolded weakness **Very different extent (variance)**; "spread" is taken by the glossary for *Streuung* |
+| Bewertung (eines Verfahrens) | assessment | not "evaluation": the paragraph is about *whether you can judge the result at all*, which is what the train-test split buys you |
+| bisecting k-means | bisecting k-means | the German already uses the English name; stays, and so do *mini-batch k-means* and *kmeans++* |
+| Einordnung (section heading) | Where this fits | the opening heading *Einordnung: Klassifikation, Regression, Clustering*; "Classification" alone would collide with the task name in the same heading |
+| Elbow-Kriterium, Elbow plot | elbow criterion, elbow plot | lower case in English running prose; `fig.suptitle("elbow plot")` was already English |
+| Fluch der Dimensionalität (curse of dimensionality) | curse of dimensionality | the German glosses itself with the English; the doublet collapses |
+| gemischtes Gaußsches Modell | Gaussian mixture model | follows the glossary's *gemischtes Modell → mixture model*; `descriptive-statistics.md` already links the EM chapter under this name |
+| Gerade / Hyperebene | straight line / hyperplane | "a straight line", not "a line", because the point of the sentence is that the boundary is *not* curved |
+| Halbebene | half-plane |  |
+| Halbmond (als Clusterform) | half-moon | the scikit-learn `make_moons` shape |
+| innere Varianz | inner variance | matches the code's `total_inner_variance`; the elbow score is `group_variance / total_inner_variance` |
+| Konvergenz | convergence | and *konvergierende Implementierung* → *converging implementation* |
+| Label | label | the German uses the English word; bolded on first use, as in `titanic-eda-numpy.ipynb` |
+| Merkmalsraum | feature space | follows the glossary's *Merkmal → feature* |
+| Mittelsenkrechte | perpendicular bisector | of the *Verbindungsstrecke* → *line segment joining* the two centroids |
+| Samplegröße | sample size | the glossary's *Stichprobenumfang → sample size*; the German says *Samplegröße* here |
+| Schwelle (auf einem Merkmal) | threshold | matches the glossary's *Schwellwert → threshold* |
+| Train-Test-Split | train-test split | hyphenated, lower case; `model-selection.ipynb` will need the same |
+| Trägheit (inertia) | inertia | the German glosses itself with the English; the doublet collapses. The quantity $J(c_1,\dots,c_k) = \sum_i \min_j \lVert x_i - c_j \rVert^2$ |
+| Verwechslung | mix-up | the off-diagonal entries of a confusion matrix; "confusion" would read as the matrix's name |
+| Voronoi-Zelle | Voronoi cell | plural *Voronoi cells* |
+| Zerlegung (der Ebene) | decomposition | follows the glossary's *Zerlegung → decomposition* from `covariance.md`, even though that row is about events |
+| Zuweisungsschritt | assignment step | the first half of a k-means iteration; the second is the centroid update |
+
+## Dimensionality reduction
+
+First needed in `dimensionality-reduction.ipynb`.
+
+| German | English | Note |
+|---|---|---|
+| Anwendungsbeispiel (as an `###` heading) | Application example | rendered with a colon, *Application example: MNIST* / *Application example: Wine*; the German juxtaposes without punctuation, which English will not do |
+| Auswählen / Projizieren | Selecting / Projecting | two of the five bolded steps; follows the mvn pattern *Verschieben / Skalieren / Drehen → Shifting / Scaling / Rotating* |
+| Berechnung (as an `###` heading) | Computation | and *Berechnung mit Scikit-learn* → *Computation with Scikit-learn* |
+| charakteristisches Polynom | characteristic polynomial |  |
+| Diagonalmatrix, Diagonaleintrag | diagonal matrix, diagonal entry |  |
+| Dimensionsreduktion in fünf Schritten | Dimensionality reduction in five steps | section heading; the glossary already fixes the term |
+| Eigenraumzerlegung | eigenspace decomposition | the German's own parenthetical name for $C = TC'T^{-1}$; distinct from *Eigenzerlegung → eigendecomposition*, which `multivariate-normal.ipynb` already has |
+| Einheitsbasisvektor | standard basis vector | not "unit basis vector" |
+| erklärte Varianz | explained variance | the German glosses itself "*erklärte Varianz* (explained variance)"; the doublet collapses to one word. `explained_variance_ratio_` stays as the attribute name |
+| Feature Scaling | feature scaling | lower case in English running prose; kept in the German's own single quotes |
+| Gaussverfahren | Gaussian elimination | not "Gauss procedure"; the standard English name for solving $Mv = \alpha v$ by row reduction |
+| gemischte Gausssche Modelle | Gaussian mixture models | the standard English name; `statistical-models.md` has *gemischtes Modell → mixture model*, and this is the Gaussian case |
+| Gesamtvarianz | total variance | $\operatorname{tr}(C)$ |
+| Hauptkomponente / Hauptachse | principal component / principal axis | plural *principal axes*; the glossary had only *Hauptkomponentenanalyse → principal component analysis* |
+| Linear Discriminant Analysis (LDA) | linear discriminant analysis (LDA) | already English in the German; lower-cased in running prose, as with *data mining* |
+| Normalisierung | normalisation | house `-ise` spelling; the rescaling to $[0,1]$, kept in the German's single quotes |
+| Orthogonalkomplement | orthogonal complement |  |
+| Orthonormalbasis | orthonormal basis | and *Orthonormalmatrix* → *orthonormal matrix*, the German's second name for an orthogonal matrix |
+| Rayleigh-Quotient | Rayleigh quotient | no hyphen in English |
+| Reskalierung, Umskalierung | rescaling | two German words, one English one |
+| Rücktransformation, rücktransformiert | back-transformation, back-transformed | also a plot title, cell 9 |
+| scheren | to shear | what a matrix does besides rotating; *stauchen / strecken* → *compress / stretch* |
+| Schwerpunkt (eines Datensatzes) | centre of mass | British spelling; "so that the dataset has its centre of mass at $0$" |
+| Singulärwert, Singulärwertzerlegung | singular value, singular value decomposition | SVD; the code comment keeps the English expansion the German already had |
+| Skalenunterschiede | Differences in scale | the `##` section heading |
+| Spektralsatz | spectral theorem |  |
+| Standardisierung | standardisation | mean $0$, standard deviation $1$; kept in the German's single quotes |
+| Standardskalierung, standardskaliert | standard scaling, standard-scaled | hyphenated attributively, in prose and in the plot titles |
+| Untervektorraum | subspace | not "sub-vector space" |
+| Verzerrung (einer Transformation) | distortion | here the scale effect, not statistical bias – `statistical-models.md` has *verzerrt → biased* for that |
+| Zentrieren | Centring | British spelling; the first of the five bolded steps. *zentrierte Datenmatrix* → *centred data matrix*, following the glossary's *zentriertes Sample → centred sample* |
+
+## Regression
+
+First needed in `linear-regression.ipynb`.
+
+| German | English | Note |
+|---|---|---|
+| Achtung: Begriffe anderswo | Caution: these terms elsewhere | admonition title, `:class: warning` |
+| Anwendungsbeispiel | An example application | `##` heading; the Melbourne section |
+| Ausgleichsgerade | line of best fit | the regression line computed by least squares |
+| Basisfunktion, Basisfunktionserweiterung | basis function, basis function expansion | the standard English of Hastie et al.; "basis expansion" alone was avoided because the German names the function |
+| Bestimmtheitsmaß | coefficient of determination | the German glosses itself "en. *Coefficient of determination*"; the doublet collapses to the one English word |
+| Bias-Term (Achsenabschnitt) | bias term (intercept) | `w_0`; the chapter itself warns that *bias* is doubly used – the estimator's bias is in `statistical-models.md` |
+| CBD | CBD | kept; the chapter explains it is what Melbourne calls its centre |
+| Dummy-Falle | dummy variable trap | the standard English name is the longer one; italicised as in the German |
+| einfache / multiple lineare Regression | simple / multiple linear regression |  |
+| Einflussgröße | explanatory variable | the counterpart of the glossary's *Zielgröße* → target variable; "regressor" is reserved for the German's own parenthetical *(Regressor)* |
+| Formfaktor | shape factor | petal area as length × width "up to a shape factor" |
+| Gerade minimalen Abstands | Line of minimal distance | plot legend, kept literal; the prose word is *line of best fit* |
+| kleinste Quadrate, kleinste-Quadrate-Schätzer | least squares, least squares estimator | `## Kleinste Quadrate` → `## Least squares` |
+| L1-/L2-Regularisierung, L1-/L2-Norm | L1 / L2 regularisation, L1 / L2 norm | no hyphen before the numeral in English |
+| Lasso-Regularisierung | lasso regularisation | lower case in running prose, as with *bootstrap* in `statistical-tests.md` |
+| Link-Funktion | link function | logistic regression's $\sigma$ |
+| polynomiale Regression | polynomial regression |  |
+| Referenzkategorie | reference category | the level `drop_first=True` leaves out |
+| Regressand | regressand | stays; paired with *Regressor* → regressor |
+| Regressionsgerade / Regressionskurve | regression line / regression curve | plot legends |
+| Regularisierung | regularisation | `##` heading; house `-ise` spelling |
+| Reihenhaus / Wohnung (`Type`) | townhouse / unit | the Melbourne `Type` codes; *unit* glossed once as "that is a flat", since the Australian word is not obvious |
+| Residuenquadratsumme | residual sum of squares | not "sum of squared residuals"; `Residuen` → residuals is already in the glossary |
+| Ridge-Regression | ridge regression | lower case in running prose |
+| Strafterm, Strafe | penalty term, penalty | `Die L1-Strafe` → "the L1 penalty" |
+| Störgröße | error term | the unobservable $\epsilon$, as against the observable residual – see *Decisions* |
+| Stützstelle | support point | see *Decisions* |
+| weight decay | weight decay | the German already uses the English |
+| Zusammenfassung | Summary | `##` heading; matches the translated notebooks |
+
+## Kernel methods
+
+First needed in `kernel-methods.ipynb`.
+
+| German | English | Note |
+|---|---|---|
+| Abstandsbegriff | notion of distance | not "concept of distance" – the chapter means which inner product you measure with |
+| Abstandsmessung | measurement of distance | "rest on nothing but measurements of distance" |
+| Beobachtungsraum | observation space | where the first principal component is a curve, not a line |
+| bis auf Translation und Rotation | up to translation and rotation |  |
+| Datum (ein einzelnes) | datum | see *Decisions* 3 |
+| Eigenvektor | eigenvector |  |
+| Feature-Abbildung | feature map | $\phi$; not "feature mapping" |
+| Feature-Raum | feature space | $F$; also used (in German) by `expectation-maximization.ipynb` and `kmeans.ipynb` |
+| Feature-Vektor | feature vector |  |
+| Gausssche Kernel, Gauss-Kernel | Gaussian kernels | see *Decisions* 1 |
+| k-Nearest Neighbours | k-nearest neighbours | lower case in English running prose, as with *k-means* |
+| Kernel-Funktion, Kernelfunktion | kernel function | the German spells it both ways; one English spelling |
+| Kernel-Methode (singular) | kernel method | "one speaks of the **kernel method** when…"; the chapter title stays the plural *Kernel methods* |
+| Kernel-Trick | kernel trick | the chapter's central notion; the glossary had only *Kernel-Methoden → kernel methods* |
+| Mercer-Kernel | Mercer kernel | no hyphen in English, as with *Shannon entropy* |
+| Nebenbemerkung | aside | *Bemerkung → Remark* is fixed for admonition titles; this is running prose |
+| normierte Vektoren | normalised vectors | the glossary's *normieren → to normalise* |
+| Normierung | normalisation | the one a Gaussian density would carry and a kernel does not |
+| quadrierter / quadratischer Exponentialkernel | squared / quadratic exponential kernel | the German offers both; so does the English |
+| radiale Basisfunktion | radial basis function | the first section heading; `rbf_kernel` keeps its name |
+| radialer Basisfunktionskernel | radial basis function kernel |  |
+| rechenintensiv | expensive to compute |  |
+| Ridge-Regularisierung | ridge regularisation | house `-ise`; `KernelRidge` keeps its name |
+| Satz von Mercer | Mercer's theorem | genitive, as for *Satz von Bayes → Bayes' theorem* |
+| Standbild | still image | the PDF fallback in the cell 5 comment |
+| Support Vector Machines | support vector machines | likewise lower case |
+| translations- und rotationsinvariant | invariant under translation and rotation | the German compound does not survive as one word |
+| Vektorraum mit Skalarprodukt | vector space with an inner product | follows the glossary's *Skalarprodukt → inner product* |
+
+## Model selection and cross-validation
+
+First needed in `model-selection.ipynb`.
+
+| German | English | Note |
+|---|---|---|
+| Bestimmtheitsmaß / $R^2$-Wert | $R^2$ value | the chapter only uses *$R^2$-Wert*; `linear-regression.ipynb` (still German) carries *Bestimmtheitsmaß* and will need *coefficient of determination* |
+| Bewertung (der Modellperformance / von Clustering / einer Regression) | assessing | the three `Bewertung …` headings become *Assessing model performance*, *Assessing a clustering*, *Assessing a regression*; "evaluation" was the alternative – see *Decisions* 4 |
+| Bewertungsfunktion | scoring function | what `scoring=` takes; "evaluation function" reads less like scikit-learn |
+| Black Box | black box | two words in English |
+| drop-in Ersatz | drop-in replacement |  |
+| Einheitsvarianz | unit variance | `StandardScaler` |
+| F1-Score | F1 score | two words, no hyphen, as `titanic-eda-numpy.ipynb` asked; the scikit-learn output column `f1-score` in block c19.0 stays literal because it is program output |
+| Fold, Falte | fold | the German uses the English *folds* in c4.3/c6.1 and the German *Falte* in c38.1; one English word |
+| gelabelt / ungelabelt | labelled / unlabelled | British double-l; *Label* → *label* was settled in `titanic-eda-numpy.ipynb` |
+| generalisieren, verallgemeinern | to generalise | the German uses both verbs for the same thing |
+| Gittersuche | grid search | the `###` heading; matches `GridSearchCV` |
+| Ground Truth | ground truth | lower case, as `sync/notes/titanic-eda-numpy.ipynb.md` asked this chapter to do |
+| Hauptkomponenten | principal components | `TERMINOLOGY.md` has *Hauptkomponentenanalyse* → PCA, not the components |
+| Homogenität / Vollständigkeit (Completeness) | homogeneity / completeness | the German switches between *Vollständigkeit* and the English *Completeness*; English has one word, which is also the scikit-learn name |
+| Hyperparameter-Finetuning | hyperparameter fine-tuning |  |
+| Hyperparametersuche | hyperparameter search | the `##` heading |
+| k-fold Cross Validation | k-fold cross-validation | heading; the German is already English but German-capitalised and unhyphenated – see *Decisions* 2 |
+| Kernel-Ridge-Regression | kernel ridge regression | no hyphens in English; `KernelRidge` |
+| Kernelbreite | kernel width | the RBF $\gamma$ |
+| Klassifikationsgüte | classification quality | follows the glossary's *Güte* → *quality* |
+| Lader | loader | the code comment in cell 28 |
+| leaken, Information Leakage, Informationsleck | to leak, information leakage | the German glosses the English with the German *ein Informationsleck*; the gloss collapses – see *Decisions* 5 |
+| log-gleichverteilt | log-uniformly | `loguniform`; the glossary's *Gleichverteilung* → *uniform distribution* |
+| normalisierte gemeinsame Information | normalised mutual information | `TERMINOLOGY.md` binds *gemeinsame Information* → *mutual information* (from `relative-entropy.md`); "normalised" in house spelling, even though the scorer is `normalized_mutual_info_score` |
+| permutationsinvariant | permutation-invariant |  |
+| Pixelsummen | pixel sums |  |
+| Randomisierte Suche | Randomised search | house `-ise` spelling, even though the class is `RandomizedSearchCV` |
+| Regularisierungskonstante / Regularisierungsparameter | regularisation constant / regularisation parameter | the German distinguishes the two words, so English does too |
+| Setting | setting | the German already uses the English word |
+| stratifizierte k-fache Kreuzvalidierung | stratified k-fold cross-validation |  |
+| Suchstrategie | search strategy |  |
+| Summe der Residuenquadrate | residual sum of squares | `TERMINOLOGY.md` has *Residuen* → *residuals* only |
+| Support Vector Classification | support vector classification | lower case in running prose; `SVC` and `SVM` stay upper case |
+| T-Shirts, Hosen | T-shirts, trousers | British "trousers" |
+| Teilstichprobe | subsample | one word; the glossary's *Stichprobe* → *sample* |
+| Test-Datensatz, Trainings-Datensatz, Validation-Datensatz | test set, training set, validation set | follows `descriptive-statistics.md`'s *Testdatensatz-Performance* → *performance on the test set*; `TERMINOLOGY.md` already binds *Testdaten/Trainingsdaten* → *test data / training data*, which is used where the German says *Daten* |
+| Training, Test und neue Daten | Training, test and new data | the `##` heading – see *Decisions* 1 |
+| Training, Validation und Test | Training, validation and test | the `###` heading |
+| Treibhausgase | greenhouse gases |  |
+| V-Maß | V-measure | `v_measure_score` |
+| Visualisierung der Kreuzvalidierungsstrategien | Visualising the cross-validation strategies | heading |
+| Zeitreihen-sensible Kreuzvalidierung | Time-series-aware cross-validation | heading; see *Decisions* 3 |
+
+## Worked exploratory analyses
+
+First needed in `eda-examples.ipynb`.
+
+| German | English | Note |
+|---|---|---|
+| Alkoholgehalt | alcohol content |  |
+| Anhäufung (im Scatterplot) | cluster | the visual pile-up that `alpha=0.1` reveals, not a clustering algorithm's cluster |
+| auseinanderhalten / trennen (Klassen) | keep apart / separate |  |
+| bloße Häufigkeit | bare frequency | the count on its own, before any covariate is brought in |
+| Byte-String | byte string | two words; `b'D\xfcsseldorf'` |
+| Colormap | colormap | one word, matplotlib's own spelling, and the German already uses it |
+| Deutscher Wetterdienst (DWD) | German weather service (DWD) | the German lower-cases *deutsche* here, so it is used descriptively; the abbreviation stays |
+| einstellige Zahl | single-digit number |  |
+| Explorative Analyse: Beispiele | Exploratory analysis: examples | the H1; `descriptive-statistics.md` already links here under exactly this text, twice, so it was fixed before I started |
+| Fachliteratur | specialist literature |  |
+| Forschungsfrage | research question | `descriptive-statistics.md` already has "Formulate the research questions" in its worked procedure, and this chapter is what that step points at |
+| ganze Zahl / Gleitkommazahl | integer / floating-point number | the `i8`/`f8` comment in cell 25 |
+| Hauptachsentransformation | principal component analysis | the German glosses itself "(principal component analysis, PCA)"; see *Decisions* 2 |
+| Hilfsvariable | auxiliary variable | the class, used to split the sample |
+| Indikator (für die Klasse) | indicator | not *Indikatorfunktion*, which `expectation-variance.md` already has |
+| Koordinaten-unabhängiges Verfahren | coordinate-independent procedure | the thing PCA will supply |
+| Kopfzeile (einer CSV) | header row | matches `titanic-eda-numpy.ipynb` |
+| menschenlesbar | human-readable |  |
+| Metadaten | metadata | plural verb: "the metadata are available" |
+| Niederschlag, Niederschlagsereignis | precipitation, precipitation event | `RRmean` is the *mean precipitation*; the quoted description says *starke Niederschlagsereignisse* → *heavy precipitation events* |
+| Normalverteilungsdichte | normal density | "the corresponding normal densities"; the glossary has *Dichte → density* |
+| Nutzungslizenz | licence | British spelling of the noun |
+| Objekt-orientiertes Interface | object-oriented interface | matplotlib's own name for it |
+| Originalquelle | original source | the CC-BY attribution requirement |
+| Passagierklasse | passenger class | `Pclass` |
+| Prolingehalt | proline content | `Proline`; the German adds *Aminosäure* → "an amino acid" |
+| Proteingehalt | protein content | the German's reading of `OD280/OD315 of diluted wines` |
+| Prävalenzfehler | base rate fallacy | see *Decisions* 3 – the glossary binds *Basisratenfehler* to this, and it is the same fallacy |
+| RADKLIM-Gitter, Gitterpunkt | RADKLIM grid, grid point |  |
+| Rückgabewert | return value |  |
+| Schadenspotenzial | damage potential | in the quoted description |
+| Starkregen | heavy rain | the weather, as against the catalogued *event* |
+| Starkregenereignis | heavy rainfall event | the section heading *Heavy rainfall events (CatRaRE)*; CatRaRE's own expansion is "Catalogue of Radar-based heavy Rainfall Events", so this is the DWD's English, not an invention |
+| Starkregengeschehen | heavy rainfall activity | in the quoted dataset description |
+| teiltransparent | partly transparent | the `alpha=` argument |
+| Trainings-Datensatz | training dataset | the glossary has *Trainingsdaten → training data*; this is the file |
+| Volumenprozent | per cent by volume | "12 to 14.5 per cent alcohol by volume" |
+| weißer Fleck (im Scatterplot) | white patch | the empty corner of the protein-proline cloud |
+| Wettbewerb/'Competition' (Kaggle) | 'competition' | the German already quotes the English word; lower-cased in English running prose |
+| Zeichenkette (Numpy `S10`) | string | already in `TERMINOLOGY.md` from `pandas.ipynb` |
+| Äpfelsäure | malic acid | the German glosses the dataset's own English column name, so the gloss collapses |
+| Überlebensquote | survival rate | as decided in `titanic-eda-numpy.ipynb` |
+| Überlebensstatus | survival status |  |
+
+## Mixture models and EM
+
+First needed in `expectation-maximization.ipynb`.
+
+| German | English | Note |
+|---|---|---|
+| Anwendungsbeispiele | Example applications | the `##` heading before the three datasets |
+| Aufenthaltsort | whereabouts | the GPS dataset's heading *Aufenthaltsorte* → *Whereabouts*; "die längeren Aufenthaltsorte" → "the places where the longer stays happened" |
+| Bayessches Informationskriterium (BIC) | Bayesian information criterion (BIC) | the German adjective is *Bayessch*, not *Bayes'sch*; English has the standard name |
+| Clustermittelpunkt, Clusterzentrum | cluster centre | British spelling; distinct from *Zentroid* → centroid, which the same cell also uses |
+| Entstehungsprozess | generative process | "one can picture the generative process like this"; follows *datenerzeugende Verteilung → data-generating distribution* in `covariance.md` |
+| erwartete vollständige-Daten log-Likelihood | expected complete-data log-likelihood | $Q(\theta,\theta)$ |
+| fette $1$ | fat $1$ | the trick of multiplying in a cleverly written $1$; twice, blocks c9.8 and c11.6 – see *Decisions* |
+| Fitness-Funktion | fitness function |  |
+| Hilfsfunktion | auxiliary function | the `##` heading is already English in the German (*Auxiliary Functions*) and was left verbatim – see *Decisions* |
+| hochgestellter Index | superscript index | the $t$ of $\theta^{(t)}$ |
+| Iversen-Bracket (sic) | Iverson bracket | the German misspells the name; corrected – see *Decisions* |
+| Jensensche Ungleichung | Jensen's inequality | genitive, as for *Satz von Bayes → Bayes' theorem* |
+| Klasseneinteilung | division into classes | the chapter's workhorse word, 11 occurrences in 7 blocks; "class" alone in the one place where it is a single point's class – see *Decisions* |
+| M-M-Algorithmus, Minorisieren-Maximieren | MM algorithm, minorise–maximise | en dash in the pair, house `-ise`; *Majorisieren-Minimieren* → majorise–minimise |
+| Mischkomponente, Mischungskomponente | mixture component | two German spellings, one English word |
+| Mischungsparameter | mixture parameters | the $p_j^{(t)}$ inside the iteration |
+| Mischverhältnis | mixing ratio | the $p_i$ at initialisation time; kept literal rather than "mixture weights" |
+| Normalverteilungsannahme | normality assumption | not "normal distribution assumption" |
+| Nullstellen der Ableitung bestimmen | finding the zeros of the derivative | section heading; `statistical-models.md` says "setting derivatives to $0$" in prose, but the heading needs the noun |
+| Optimierungstransfer | optimisation transfer | the MM literature's own term |
+| Responsibilities, Verantwortlichkeiten | responsibilities | the German offers both words (and misspells the English one as *responsibilites*); the doublet collapses – see *Decisions* |
+| Sample-Erwartungswert | sample expected value | and *Sample-Kovarianz* → sample covariance – see *Decisions* |
+| Schablone (für Algorithmen) | template | "the EM algorithm is really not one algorithm but a template" |
+| soft assignment, hard assignment | soft assignment, hard assignment | the German glosses each with *(weiche/feste Zuweisung)*; the gloss disappears. The verb: "the class to which $x_i$ was hard-assigned" |
+| Spezialfall | special case | heading *Spezialfall k-Means* → *Special case: k-means* |
+| Stichprobenindex | sample index |  |
+| Summen-Nummer | that sum business | colloquial; "and the logarithm does not get us out of that sum business so easily" |
+| Teildatensatz der $7$er | the subset of the data consisting of the $7$s |  |
+| vollständige Daten, vollständige-Daten log-Likelihood | complete data, complete-data log-likelihood | the `##` heading becomes *The complete-data log-likelihood* |
+| Zeitreihenanalyse | time series analysis | the closing list of what the book does not cover |
+| Zielgröße (an optimisation target) | target quantity | **collides** with the glossary's *Zielgröße → target variable*, which is the supervised-learning label. Here it is the objective being optimised, not a variable – see *Decisions* |
+

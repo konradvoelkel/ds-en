@@ -115,13 +115,25 @@ def syntax(nb_path: Path) -> int:
         if cell["cell_type"] != "code":
             continue
         source = "".join(cell["source"])
-        if not source.strip() or source.lstrip().startswith(("%", "!")):
+        if not source.strip():
             continue
         try:
             compile(source, f"cell {i}", "exec")
+            continue
         except SyntaxError as e:
+            first = e
+        # IPython line magics and shell escapes are not Python, and they can sit on any
+        # line of a cell, not only the first. Blank them and try again -- but only after
+        # the cell has already failed to compile, because a continuation line starting
+        # with `%` is far more often the modulo operator than a magic, and blanking that
+        # would break a cell that was fine.
+        stripped = "\n".join("" if re.match(r"\s*[%!]", line) else line
+                              for line in source.split("\n"))
+        try:
+            compile(stripped, f"cell {i}", "exec")
+        except SyntaxError:
             bad += 1
-            print(f"cell {i}: {e.msg} (line {e.lineno})")
+            print(f"cell {i}: {first.msg} (line {first.lineno})")
     if bad:
         print(f"{nb_path}: {bad} cell(s) do not compile")
         return 1
