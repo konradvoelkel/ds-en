@@ -292,7 +292,7 @@ If $\theta_0$ is the 'true' parameter for $X$ (the one $x$ was sampled with), th
 :::
 
 :::{admonition} Example
-**An application: server log files.** From the timestamps of a web application we compute the gaps between two requests, that is, waiting times $x_1,\dots,x_n$. In order to estimate the load to be expected, together with the mean running time of a request, we model them as $\operatorname{Exp}(\lambda)$-distributed and estimate $\lambda$ as in the example above: $\hat\lambda = 1/\texttt{mean}(x)$. So we reckon with a mean waiting time of $\texttt{mean}(x)$ between two requests, and for the number of requests per unit of time with the Poisson distribution for the same $\lambda$ (chapter [The most important discrete distributions](important-discrete-distributions.ipynb)).
+**An application: server log files.** From the timestamps of a web application we compute the gaps between two requests, that is, waiting times $x_1,\dots,x_n$. In order to estimate the load to be expected (for which the mean running time of a request is also needed), we model them as $\operatorname{Exp}(\lambda)$-distributed and estimate $\lambda$ as in the example above: $\hat\lambda = 1/\texttt{mean}(x)$. So we reckon with a mean waiting time of $\texttt{mean}(x)$ between two requests, and for the number of requests per unit of time with the Poisson distribution for the same $\lambda$ (chapter [The most important discrete distributions](important-discrete-distributions.ipynb)).
 :::
 
 :::{admonition} Example

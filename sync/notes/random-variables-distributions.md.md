@@ -137,3 +137,51 @@ Smaller things, for the record:
   really is a probability measure, always." – the German's word order puts the emphasis on
   *immer*, and the trailing "always" is the only way I found to keep it in a sentence this
   short without padding.
+
+## Style pass
+
+46 of 143 blocks changed, all of them prose; no maths, code, directive, heading or table
+block was touched (verified by diffing every `$…$` span and every non-prose block digest
+against a snapshot). `sync.py align` and `check_english.py` pass.
+
+Kinds of change:
+
+* **"one" → "you"/"we"** throughout ("one can calculate … as one does" → "you can calculate
+  … as you do"; "one knows the right answer" → "you know"; "the data one actually works
+  with" → "we actually work with").
+* **Nominalisations → verbs**: "is the definition of a pmf" → "defines a pmf"; "is an
+  estimate of the parameter" → "estimates the parameter"; "the comparison of data and
+  model" → "comparing data and model"; "To choose … is therefore to choose" → "Choosing …
+  therefore means choosing".
+* **German connectives dropped or replaced**: trailing "as well"/"again" (*auch*, *wieder*),
+  "already" (*schon*) in "is already uniquely determined", "then" opening a main clause after
+  an *if*-clause, sentence-initial "thus"/"In three places we do meet it … all the same".
+* **Calques → idiom**: "the low cases" → "the small cases"; "a statement … won from the
+  sample" → "obtained from the sample"; "builds on your knowing" → "takes it for granted
+  that you know"; "A model comes about" → "A model only arises"; "has grown by a fifth
+  entry" → "has gained a fifth entry"; "raw data accrue about it" → "raw data about it
+  accumulate".
+* **Clause order inside a block** where the German put the condition last: the tail of the
+  children's example ("whenever we look at an outcome of $X$" moved before the action it
+  governs); the three-character message example recast from five short sentences into
+  three.
+* "clean it … translate it" → "clean them … translate them": the book treats *data* as
+  plural everywhere else in the chapter.
+
+Deliberately left alone:
+
+* The jumper-colour letters $\{r,y,b,k\}$ and every formula around them (the translator's
+  Decision 1 still wants a human's yes on the $k$).
+* "This really is a probability measure, always." – the translator's reasoning under *Smaller
+  things* above (block 33) holds; it is short and the stress is right.
+* The repetition "Its simplest case has a name of its own." / "The case $n = 2$ has a name of
+  its own." across blocks 95 and 97 – the German's own; cross-block, so not mine to merge.
+
+Noticed, for a human:
+
+* Block 42 says "the colour of **their** jumper", block 44 "the colour of **its** jumper" for
+  the same child. One pronoun or the other; I did not pick, because the choice belongs to
+  the book's voice, not to a style pass.
+* In the message example the random variables are set in roman ("X, Y and Z", "XYZ") in
+  prose but as `$X$`, `$Y$`, `$XYZ$` in the maths-bearing sentences of the same block. The
+  German does the same; worth a decision book-wide.

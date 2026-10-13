@@ -2,7 +2,7 @@
 
 ## Logarithms
 
-The elementary properties of the logarithm – definition, change of base, bit and nat – are in the digression in the chapter [Expected value and variance](expectation-variance.md). Here we are after a different question: why it is the logarithm, of all functions, that turns up in information theory, and nothing else.
+The elementary properties of the logarithm – definition, change of base, bit and nat – are covered in the digression in the chapter [Expected value and variance](expectation-variance.md). Here we are after a different question: why it is the logarithm, of all functions, that turns up in information theory, and nothing else.
 
 :::{admonition} Lemma
 Let $l \colon \{1,\dots\} = \mathbb{N}_{>0} \to \mathbb{R}$ be a function with
@@ -22,9 +22,9 @@ we can read the constant $c$ as $c = \log_a(e)$,
 that is, the function $l$ is a logarithm to base $a$.
 :::
 
-It is equally clear that the same lemma holds for $\log_2$ in place of $\ln$ (only the constant is a different one).
+Equally clearly, the same lemma holds for $\log_2$ in place of $\ln$ (only the constant is different).
 
-So if we want to count something in such a way that the count of a product is the sum of the individual counts, then we have to do it with a logarithm.
+So if we want to count something in such a way that the count of a product is the sum of the individual counts, we have to use a logarithm.
 
 :::{admonition} Proof
 We want to show that for functions $f,g \colon \mathbb{N}_{>0} \to \mathbb{R}$ satisfying the conditions of the lemma,
@@ -48,20 +48,20 @@ $$
 (m-1)f(2) \leq kf(n) \leq mf(2)
 $$
 
-The same chain of inequalities holds for $g$ in place of $f$; that one we also multiply by $-1$:
+The same chain of inequalities holds for $g$ in place of $f$; this one we multiply by $-1$ as well:
 
 $$
 -mg(2) \leq -kg(n) \leq -(m-1)g(2).
 $$
 
-The sum of these two chains of inequalities now simplifies to
+Adding the two chains of inequalities and simplifying gives
 
 $$
 -f(2)g(2) \leq k\left(f(n)g(2) - f(2)g(n)\right) \leq f(2)g(2)
 $$
 
-Dividing by $k$ and then letting $k \to \infty$, we see
-that $f(n)g(2) - f(2)g(n) \to 0$ (as $k \to \infty$, on which it does not depend at all).
+Dividing by $k$ and letting $k \to \infty$, we see
+that $f(n)g(2) - f(2)g(n) \to 0$ (as $k \to \infty$, on which the expression does not depend at all).
 :::
 
 :::{admonition} Lemma
@@ -73,7 +73,7 @@ The function $g(x) := F(x)/x$ satisfies $g(xy) = g(x) + g(y)$ and is monotonic b
 :::
 
 :::{admonition} Remark
-So we see that the entropy contribution $-p\log(p)$ of an outcome with probability $p$ is a very natural quantity. (The *self-information* $I(x) = -\log P(\{x\})$ from the chapter [Expected value and variance](expectation-variance.md) is the factor behind the $p$.)
+So the entropy contribution $-p\log(p)$ of an outcome with probability $p$ turns out to be a very natural quantity. (The *self-information* $I(x) = -\log P(\{x\})$ from the chapter [Expected value and variance](expectation-variance.md) is the factor that multiplies the $p$.)
 :::
 
 :::{admonition} Lemma
@@ -86,10 +86,10 @@ $$
 
 :::{admonition} Proof
 **Idea:**
-The derivative of $\log(x)$ is $\frac{1}{x}$, and that is strictly decreasing on $(0,\infty)$. With the mean value theorem one can now show that $\log(x)$ must be strictly concave (so even $<$ rather than $\leq$ in the inequality above).
+The derivative of $\log(x)$ is $\frac{1}{x}$, which is strictly decreasing on $(0,\infty)$. The mean value theorem then shows that $\log(x)$ must be strictly concave (so in fact $<$ rather than $\leq$ in the inequality above).
 :::
 
-We have already used a heuristic argument for this, but now we can prove it rigorously:
+We have argued this heuristically before; now we can prove it rigorously:
 
 :::{admonition} Proposition
 If $p = (p_1,\dots,p_n)$ describes a discrete distribution on $\Omega = \{1,\dots,n\}$, then the entropy satisfies
@@ -110,7 +110,7 @@ $\leq \log\left( \sum_{i=1}^n 1 \right) = \log(n)$
 ## Definition and properties
 
 :::{admonition} Definition
-Let $p,r \in \Delta_n$ (the set of probability vectors in $\mathbb{R}^n$, that is, vectors whose entries lie between $0$ and $1$ and whose entries sum to exactly $1$).
+Let $p,r \in \Delta_n$ (the set of probability vectors in $\mathbb{R}^n$, that is, vectors whose entries lie between $0$ and $1$ and sum to exactly $1$).
 The *entropy* (also: Kullback–Leibler divergence $D_{KL}$) of $p$ relative to $r$ is
 
 $H(p \Vert r) := \sum_{i,\ p_i > 0}^n p_i \log \left( \frac{p_i}{r_i} \right) \in \mathbb{R} \cup \{\infty\}.$
@@ -152,13 +152,13 @@ $$
 H\left(u_2 \,\Vert\, p_t\right) = \frac{1}{2} \log \frac{1}{2t} + \frac{1}{2}\log \frac{1}{2(1-t)} \xrightarrow{t \to 0} \infty,
 $$
 
-since the first summand grows beyond all bounds like $-\frac12\log t$. In the other direction the proposition above gives
+since the first summand grows without bound, like $-\frac12\log t$. In the other direction the proposition above gives
 
 $$
 H\left(p_t \,\Vert\, u_2\right) = \log(2) - H(p_t), \qquad H(p_t) = -t\log t - (1-t)\log(1-t) \xrightarrow{t \to 0} 0,
 $$
 
-so $H(p_t \Vert u_2) \to \log 2$: finite, and to base $2$ exactly one bit. Take the almost certain coin $p_t$ for a fair one and you pay at most one bit; take the fair coin for $p_t$, and the side you thought impossible will surprise you infinitely.
+so $H(p_t \Vert u_2) \to \log 2$: finite, and to base $2$ exactly one bit. Mistake the almost certain coin $p_t$ for a fair one and you pay at most one bit; mistake the fair coin for $p_t$, and the side you thought impossible will surprise you infinitely.
 :::
 
 ## Joint entropy
@@ -182,7 +182,7 @@ $$
 H(X,X) = H(X)
 $$
 
-since in the sum for the left-hand expression every summand off the diagonal is $0$.
+since in the sum on the left every summand off the diagonal is $0$.
 :::
 
 :::{admonition} Proposition
@@ -202,7 +202,7 @@ $$
 \log P(X = z_i, Y = z_j) = \log P(X = z_i) + \log P(Y = z_j)
 $$
 
-and so altogether we have
+and so, all in all,
 
 \begin{align}
 H(X,Y) &:= -\sum_{i=1}^n \sum_{j=1}^n P(X = z_i, Y = z_j) \log P(X = z_i, Y = z_j) \\
@@ -224,12 +224,12 @@ $$
 
 Here $H(\cdot \Vert \cdot)$ stands for the relative entropy of the *distribution* of $(X,Y)$ with respect to the product distribution $P_X \times P_Y$, that is, the distribution $(X,Y)$ would have if $X$ and $Y$ were independent.
 
-A very common application of mutual information is in clustering:
-if we have arrived at clusters for a dataset by a method of our choice,
-that is, at an estimated class membership (say $1$, $2$ or $3$ as a label),
-and a classification has been carried out by hand for a subset of the data (for testing),
-then we can compute the mutual information of these class variables to quantify how well the clustering worked on the test data.
-The advantage here is that the concrete labels no longer matter
+A very common application of mutual information is in clustering.
+Suppose we have clustered a dataset by some method of our choice –
+that is, arrived at an estimated class membership (say $1$, $2$ or $3$ as a label) –
+and a subset of the data has been classified by hand (for testing).
+Then we can compute the mutual information of these two class variables to quantify how well the clustering worked on the test data.
+The advantage is that the concrete labels no longer matter
 (that is, the method is invariant under permutation of the class names).
 
 The *conditional entropy* of $X$ given $Y$ is defined as
@@ -240,7 +240,7 @@ $$
 :::
 
 :::{admonition} Example
-The mutual information of $X$ with itself is exactly the entropy $I(X;X) = H(X)$.
+The mutual information of $X$ with itself is just the entropy: $I(X;X) = H(X)$.
 
 If $X,Y$ are independent, then $I(X;Y) = H(X) + H(Y) - (H(X) + H(Y)) = 0$.
 :::
@@ -284,9 +284,9 @@ H(X; Y) = \mathbb{E}_X I(Y) = -\sum_{i,\ p_i > 0}^n p_i \log r_i \in \mathbb{R} 
 $$
 :::
 
-A summand with $p_i > 0$ and $r_i = 0$ has the value $\infty$ here (with $\log 0 = -\infty$): an event that is impossible under $r$ but occurs under $p$ costs infinitely much.
+A summand with $p_i > 0$ and $r_i = 0$ is $\infty$ here (with $\log 0 = -\infty$): an event that is impossible under $r$ but occurs under $p$ comes at infinite cost.
 
-*Careful*: some authors unfortunately write the cross-entropy as $H(X, Y)$ as well, which is then easily confused with the joint entropy. The notation $H(X;Y)$ also resembles that of the mutual information $I(X;Y)$ above, which is something else entirely.
+*Careful*: some authors unfortunately write the cross-entropy as $H(X, Y)$ too, which is easily confused with the joint entropy. And the notation $H(X;Y)$ resembles that of the mutual information $I(X;Y)$ above, which is something else entirely.
 
 :::{admonition} Proposition
 $$
@@ -294,21 +294,21 @@ H(X; Y) = H(X) + H(X \Vert Y)
 $$
 :::
 
-If we hold $X$ fixed and vary $Y$, minimising $H(X;Y)$ and minimising $H(X \Vert Y)$ come to the same thing, which is why in machine learning one is often substituted for the other. The maximum likelihood method can be read as the minimisation of a cross-entropy, and hence as the minimisation of a relative entropy. That explains how and why entropy is relevant to machine learning.
+If we hold $X$ fixed and vary $Y$, minimising $H(X;Y)$ and minimising $H(X \Vert Y)$ come to the same thing, which is why machine learning often substitutes one for the other. The maximum likelihood method can be read as minimising a cross-entropy, and hence as minimising a relative entropy. That is how, and why, entropy matters to machine learning.
 
 :::{admonition} Remark
-In deep learning you meet this observation under three names: *negative log-likelihood*, *cross-entropy* and *KL divergence to the labels* all refer there to the same loss function for classification problems. The difference between the last two is only the constant $H(X)$ from the proposition above, which does not depend on the model parameters. The course *Introduction to Deep Learning* takes this connection as known.
+In deep learning you meet this observation under three names: *negative log-likelihood*, *cross-entropy* and *KL divergence to the labels* all refer to the same loss function for classification problems. The last two differ only by the constant $H(X)$ from the proposition above, which does not depend on the model parameters. The course *Introduction to Deep Learning* takes this connection for granted.
 :::
 
-Apart from that, the cross-entropy is a quantity used considerably less often in the theory than the relative entropy (which is usually called the Kullback–Leibler divergence $D_{KL}$).
+Otherwise, the cross-entropy is used considerably less often in the theory than the relative entropy (usually called the Kullback–Leibler divergence $D_{KL}$).
 
 ## Continuous entropy
 
 :::{note}
-This section is not part of the course proper and reaches ahead to measure theory (Radon–Nikodym derivative, invariant measures), which we do not cover in this course. On a first reading it is enough to take away the core statement: in the continuous case entropy is only meaningfully defined *relative* to a reference measure, so relative entropy is the notion that is actually fundamental.
+This section is not part of the course proper; it reaches ahead to measure theory (Radon–Nikodym derivative, invariant measures), which this course does not cover. On a first reading it is enough to take away the core statement: in the continuous case, entropy is only meaningfully defined *relative* to a reference measure, so relative entropy is the fundamental notion.
 :::
 
-One might think that the formula $H(p) = -\sum p_i \log p_i$ generalises to $H(P) = -\int \log P dP$, but like that it makes no sense. What one can do is this:
+One might think that the formula $H(p) = -\sum p_i \log p_i$ generalises to $H(P) = -\int \log P dP$, but as it stands that makes no sense. What one can do is this:
 
 :::{admonition} Definition
 Let $P$ be a continuous distribution with density function $f$ defined on a set $\Omega \subseteq \mathbb{R}^n$.
@@ -321,30 +321,30 @@ $$
 is called the *differential entropy* of $X$ (likewise defined by Claude Shannon).
 :::
 
-It already has some of the pleasant properties we picture a continuous entropy having, translation invariance for instance: $h(X) = h(X - v)$ for a vector $v \in \mathbb{R}^n$.
+It already has some of the pleasant properties we would expect of a continuous entropy, translation invariance for instance: $h(X) = h(X - v)$ for a vector $v \in \mathbb{R}^n$.
 
 Unfortunately the differential entropy is not invariant under arbitrary transformations, not even under isomorphisms.
 
-Jaynes suggested picturing ever finer histograms, that is, a set of $N$ discrete points $\{x_i\}$;
-we then write
+Jaynes suggested picturing ever finer histograms, that is, a set of $N$ discrete points $\{x_i\}$.
+We then write
 $M(a,b) = \lim_{N \to \infty} \frac{1}{N} (\text{number of } x_i : a < x_i < b)$
 and call a density $m$ with $M(a,b) = \int_a^b m(x) dx$ an *invariant measure*.
-With that we now write
+With that in hand we write
 
 $$
 \lim_{N \to \infty} \log(N) - \int p(x) \log \dfrac{p(x)}{m(x)} dx
 $$
 
-but since $\lim_{N \to \infty} \log(N) = \infty$, we cheekily drop that part, and so obtain a quantity that behaves much like $h(x)$ but is scale invariant:
+but since $\lim_{N \to \infty} \log(N) = \infty$, we cheekily drop that part and so obtain a quantity that behaves much like $h(x)$ but is scale invariant:
 
 $$
 H(X) := - \int p(x) \log \dfrac{p(x)}{m(x)} dx
 $$
 
-The first thing to record is that the "discrete entropy" of a continuous distribution is really $\infty$.
-The second is that a workable notion of entropy evidently cannot avoid referring to a further distribution (here the "invariant measure").
+The first thing to note is that the "discrete entropy" of a continuous distribution is really $\infty$.
+The second is that a workable notion of entropy evidently cannot do without reference to a further distribution (here the "invariant measure").
 
-Analysing from a theoretical standpoint what $h(X)$ and $H(X)$ are leads to the general relative entropy $H(P,Q)$, with $h(X) = -H(f\lambda \,\Vert\, \lambda)$, where $\lambda$ is the Lebesgue measure and $f$ a density of $X$.
+A theoretical analysis of what $h(X)$ and $H(X)$ really are leads to the general relative entropy $H(P,Q)$, with $h(X) = -H(f\lambda \,\Vert\, \lambda)$, where $\lambda$ is the Lebesgue measure and $f$ a density of $X$.
 
 :::{admonition} Definition
 Let $P,R$ be continuous distributions. The *relative entropy* $H(P \Vert R)$ (also: Kullback–Leibler divergence $D_{KL}(P,R)$) is
@@ -356,24 +356,24 @@ $$
 where $\dfrac{dR}{dP}$ is the Radon–Nikodym derivative of one measure with respect to another.
 :::
 
-We will not discuss that any further either, and would rather record that for $P$ and $R$ with density functions $p,r \colon \mathbb{R}^n \to [0,\infty)$ it looks simpler:
+We will not pursue that any further either; instead we record that for $P$ and $R$ with density functions $p,r \colon \mathbb{R}^n \to [0,\infty)$ it looks simpler:
 
 $$
 H(P \Vert R) = \int_\Omega p(x) \log \frac{p(x)}{r(x)} dx
 $$
 
-This expression in turn we may evaluate (if the density functions are friendly enough) by Riemann sums.
-If for instance $n=1$ and $\Omega = \mathbb{R}$, then we can look at
+This expression, in turn, we may evaluate by Riemann sums (if the density functions are friendly enough).
+If for instance $n=1$ and $\Omega = \mathbb{R}$, we can look at
 
 $H(P \Vert R) = \int_{\mathbb{R}} p(x) \log \dfrac{p(x)}{r(x)} dx$
 $= \sum_{k = -\infty}^{\infty} \int_{k}^{k+1} p(x) \log \dfrac{p(x)}{r(x)}dx$
 
-and bound the integral terms on the right by values, so as to estimate $H(P \Vert R)$.
+and bound each of the integrals on the right by a value, so as to estimate $H(P \Vert R)$.
 
 $$
 H(P \Vert R) \approx \sum_{k = -\infty}^{\infty} p(k) \log \dfrac{p(k)}{r(k)}
 $$
 
-The subdivision into intervals of length $1$ can of course be chosen as fine as we like, to make the approximation as accurate as we like. Replacing a continuous distribution by such a discrete distribution is the analogue of forming a histogram.
+The subdivision into intervals of length $1$ can of course be made as fine as we like, making the approximation as accurate as we like. Replacing a continuous distribution by such a discrete one is the analogue of forming a histogram.
 
-If you still have doubts about what relevance abstract information theory is supposed to have for the practical work of data scientists and machine learning engineers, a [trip into the Wikipedia page on applications of mutual information and conditional entropy](https://en.wikipedia.org/wiki/Mutual_information#Applications_2) is to be recommended.
+If you still doubt that abstract information theory has any relevance to the practical work of data scientists and machine learning engineers, a [trip into the Wikipedia page on applications of mutual information and conditional entropy](https://en.wikipedia.org/wiki/Mutual_information#Applications_2) is recommended.

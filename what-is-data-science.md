@@ -2,9 +2,9 @@
 
 ## First off: a spreadsheet that sent Europe into austerity
 
-In 2010 the Harvard economists Carmen Reinhart and Kenneth Rogoff published an analysis of two centuries of public debt and economic growth {cite}`reinhart2010`. Their finding: as soon as a country's debt exceeds 90% of its economic output, the economy shrinks by an average of 0.1% per year. The number went places. It appeared in the US Congress budget proposal, the EU monetary affairs commissioner quoted it, and it was an argument for austerity policy in Europe after the financial crisis.
+In 2010 the Harvard economists Carmen Reinhart and Kenneth Rogoff published an analysis of two centuries of public debt and economic growth {cite}`reinhart2010`. Their finding: as soon as a country's debt exceeds 90% of its economic output, the economy shrinks by an average of 0.1% per year. The number went places. It appeared in the US Congress budget proposal, the EU monetary affairs commissioner quoted it, and it served as an argument for austerity in Europe after the financial crisis.
 
-Three years later Thomas Herndon, a doctoral student at Amherst, was given a seminar assignment: redo the numbers of a well-known study. He asked for the spreadsheet and found in it a selected range of cells that was five rows too short. Australia, Austria, Belgium, Canada and Denmark were missing from the average – all countries with high debt and respectable growth. On top of that came omitted years and an unusual weighting. With all three corrections, $-0.1\,\%$ growth turned into $+2.2\,\%$ {cite}`herndon2014`. The cliff at 90% did not exist.
+Three years later Thomas Herndon, a doctoral student at Amherst, was given a seminar assignment: recompute the numbers of a well-known study. He asked for the spreadsheet and found a selected cell range that was five rows short. Australia, Austria, Belgium, Canada and Denmark were missing from the average – all of them countries with high debt and respectable growth. On top of that came omitted years and an unusual weighting. With all three corrected, $-0.1\,\%$ growth turned into $+2.2\,\%$ {cite}`herndon2014`. The cliff at 90% did not exist.
 
 Everything this course is about is in that story. The raw numbers were real and public; the analysis was a handful of averages; and the result was still wrong, because nobody had checked which rows actually went into the calculation, and because a spreadsheet does not show you that. Finding the error took no better mathematics, just somebody willing to pick the data up again from the start. That is exactly what we practise: loading data instead of clicking on it; checking every summary figure against the rows it is made of; and writing calculations down so that others can repeat them. It is why we work with Python and not with Excel in this course, and why the chapter [Data cleaning](data-cleaning.ipynb) insists on logging every change made to the data.
 
@@ -19,9 +19,9 @@ If, in representing and passing on a communication, we abstract away from the me
 The meaning assigned is called *information*.
 The pair \<message, assigned information\> is called a *datum*. The plural is data.
 
-So we may call a CSV file "data" exactly when we have a context for assigning meaning to the bit strings it contains. Most of that context we never consciously notice – we assume, for instance, that a CSV file can be opened in a text editor and that its contents are encoded as strings in such a way that we could guess the data types just by looking. Which fields of a table are encoded how, though, is often not something the table itself tells you; for that you need metadata.
+So we may call a CSV file "data" exactly when we have a context for giving meaning to the bit strings in it. Most of that context never registers consciously – we assume, for instance, that a CSV file opens in a text editor and that its contents are encoded as strings from which we could guess the data types just by looking. How each field of a table is encoded, though, is often something the table itself does not tell you; for that you need metadata.
 
-If we look at the answers to a single-choice question, for example, what is usually recorded in the message is the number of the chosen answer, not the string of the actual answer. That string is written down in a *code book*, a coding table. To make sense of the answers as data, we therefore have to fall back on the coding table.
+Take the answers to a single-choice question: what the message usually records is the number of the chosen answer, not the string of the answer itself. That string is written down in a *code book*, a coding table, and to make sense of the answers as data we have to go back to it.
 
 (ein-bunter-mix)=
 ## A colourful mix
@@ -34,7 +34,7 @@ If we look at the answers to a single-choice question, for example, what is usua
 The "Data Science Venn Diagram" by Drew Conway (2013), CC BY-NC 3.0, source: drewconway.com/zia/2013/3/26/the-data-science-venn-diagram
 ```
 
-In 2013 Drew Conway gave what is still the most-quoted answer to the question of what makes data science: the intersection of three circles. *Hacking skills* means being able to handle data in arbitrary formats by programming, *math & statistics knowledge* means knowing what a calculation on that data actually says, and *substantive expertise* is domain knowledge about the field the data comes from. Any two of the circles give you something familiar: hacking and statistics together are *machine learning*, statistics and domain knowledge are *traditional research* as the empirical sciences have long practised it. Hacking and domain knowledge without statistics is what Conway calls the *danger zone*: someone who can read in data, turn a method loose on it and finds the results plausible for their field will believe those results, without being able to judge whether they are more than chance. The spreadsheet at the start of this chapter shows that this zone is dangerous for experts too. This course supplies the statistics circle and practises the hacking circle on small datasets; the domain knowledge you will bring later, from the field you end up working in.
+In 2013 Drew Conway gave what is still the most-quoted answer to the question of what data science consists of: the intersection of three circles. *Hacking skills* means being able to handle data in arbitrary formats by programming, *math & statistics knowledge* means knowing what a calculation on that data actually says, and *substantive expertise* is domain knowledge about the field the data comes from. Any two of the circles give you something familiar: hacking and statistics together are *machine learning*, statistics and domain knowledge are *traditional research* as the empirical sciences have long practised it. Hacking and domain knowledge without statistics is what Conway calls the *danger zone*: someone who can read data in, turn a method loose on it and find the results plausible for their field will believe them, without being able to judge whether they are anything more than chance. The spreadsheet at the start of this chapter shows that this zone is dangerous for experts too. This course supplies the statistics circle and practises the hacking circle on small datasets; the domain knowledge you will bring yourself, later, from whatever field you end up working in.
 
 ## What is a data scientist?
 
@@ -67,12 +67,12 @@ thread is that all have had to work with a tremendous amount of data before
 starting to work on the “real” problem
 [DJ Patil: Building Data Science Teams (2011), What Makes a Data Scientist? (p.11ff)](https://www.datascienceassn.org/sites/default/files/Building%20Data%20Science%20Teams.pdf)
 
-So what Patil describes is how to recognise good data scientists: by depth in some discipline, and above all by the curiosity to keep taking a problem apart until testable hypotheses come out of it.
+What Patil describes, then, is how to recognise a good data scientist: by depth in some discipline, and above all by the curiosity to keep taking a problem apart until testable hypotheses fall out of it.
 
-A significant part of a data scientist's work is preparing data, the so-called "data scrubbing". A lot of classical programming technique goes into it: regular expressions, say, and knowledge of industry standards for data types together with the deviations from those standards that turn up in practice. The list is surprisingly concrete: time and date formats including time zones and daylight saving changes, GIS formats for anything spatial, country codes (of which there are several competing systems), Unicode and the encodings it was meant to replace, and the usual departures from the CSV standard – separators, quotation marks, line breaks in the middle of a field. The craft of it has a chapter of its own in this book, [Data cleaning](data-cleaning.ipynb).
+A large part of a data scientist's work is preparing data – "data scrubbing". A good deal of classical programming craft goes into it: regular expressions, say, and a knowledge of the industry standards for data types, along with the ways practice departs from them. The list is surprisingly concrete: time and date formats including time zones and daylight saving changes, GIS formats for anything spatial, country codes (of which there are several competing systems), Unicode and the encodings it was meant to replace, and the usual departures from the CSV standard – separators, quotation marks, line breaks in the middle of a field. The craft of it has a chapter of its own in this book, [Data cleaning](data-cleaning.ipynb).
 
-Three further things you need for it are taught in no lecture: patience, practice, and domain knowledge about the field of application. Whether a blood pressure reading of $400$ is a measurement error, or an age of $0$ a missing value, is written in no data format – only someone who knows the field, or who asks someone who does, can tell.
-In machine learning too, in deep learning for instance, considerably better results can be had by taking care of the training data.
+Three more things it needs are taught in no lecture: patience, practice, and domain knowledge of the field of application. No data format tells you whether a blood pressure reading of $400$ is a measurement error or an age of $0$ a missing value – only someone who knows the field can, or someone who asks a person who does.
+In machine learning too, deep learning included, taking care of the training data buys considerably better results.
 
 
 
@@ -89,13 +89,13 @@ There is also an [hour-long podcast with the authors](https://talkpython.fm/epis
 
 **State of Data Science 2021**
 
-An hour of podcast: [State of Data Science in 2021 with Stan Seibert](https://talkpython.fm/episodes/show/333/state-of-data-science-in-2021)
+An hour-long podcast: [State of Data Science in 2021 with Stan Seibert](https://talkpython.fm/episodes/show/333/state-of-data-science-in-2021)
 
 **State of Data Science 2024**
 
 A blog post from the IDE maker JetBrains: [State of Data Science in 2024: 6 Key Data Science Trends](https://blog.jetbrains.com/pycharm/2024/12/the-state-of-data-science/)
 
-An interesting contrast is this article by Mike Loukides of O'Reilly: [What is data science?](http://radar.oreilly.com/2010/06/what-is-data-science.html) from 2010. You can see at once that the tools and software packages are in flux, and that some of what looked particularly exciting in 2010 has already been forgotten. But you can also see that data science is not a simple hype that will soon blow over, but a global trend that has been developing for more than ten years, and that Conway's three circles from the section [A colourful mix](#ein-bunter-mix) still describe it well. Labels like "data mining", "big data" and perhaps "data science" too may lose their meaning over time, yet there is no doubt that statistical methods and machine learning will play a growing role in computer science and in society for a long while yet.
+An interesting contrast is a 2010 article by Mike Loukides of O'Reilly, [What is data science?](http://radar.oreilly.com/2010/06/what-is-data-science.html). You can see at once that the tools and software packages are in flux, and that some of what looked most exciting in 2010 has already been forgotten. But you can also see that data science is not a passing hype that will soon blow over, but a global trend more than ten years in the making, and that Conway's three circles from the section [A colourful mix](#ein-bunter-mix) still describe it well. Labels like "data mining", "big data" and perhaps "data science" too may lose their meaning over time; what is beyond doubt is that statistical methods and machine learning will play a growing role in computer science and in society for a long while yet.
 
 ## What comes next
 

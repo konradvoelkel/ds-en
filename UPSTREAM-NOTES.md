@@ -44,6 +44,14 @@ ds-skript.
   *train-test split*". `model-selection.ipynb` has no section of that name; the heading is
   *Training, Test und neue Daten*.
 
+## Two German words for one thing
+
+* **`intro-stochastik.md`** calls Ω the *Ergebnisraum* in one place and the *Zustandsraum*
+  of a die in another. They are the same thing; the English says "sample space" and "state
+  space" to match, because a translation that silently harmonises its original stops being
+  one. (*Ereignisraum*, the third word in that chapter, is genuinely a different thing: the
+  pair (Ω, F).)
+
 ## Cosmetic and housekeeping
 
 * **`images/normalmarginal.png`** has an empty default axes in the bottom-left panel — a

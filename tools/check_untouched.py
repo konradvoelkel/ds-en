@@ -11,6 +11,12 @@ file against a git ref and asserts that everything which is not prose is byte-id
 What must not change: inline and display maths, fenced code blocks, link texts and link
 targets, directive and admonition lines, MyST targets, citation keys, and -- in a notebook
 -- every code cell, in full.
+
+Maths, links and citations are compared as multisets, not in order: rewriting a sentence
+to put its clauses the other way round moves the formulas in it without changing any of
+them, and that is exactly what a style pass is for. A reordering is reported, not failed.
+Code cells and the sequence of block kinds are compared in order, because there no
+reordering is innocent.
 """
 
 from __future__ import annotations
@@ -23,6 +29,8 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent))
 from segment import segment_text  # noqa: E402
+
+ORDERED = {"code cells", "block kinds"}
 
 MATHS = re.compile(r"\$\$?[^$]*\$\$?", re.S)
 LINKS = re.compile(r"\[([^\]\n]{0,120})\]\(([^)\s]+)\)")
@@ -63,7 +71,16 @@ def main() -> int:
             continue
         new = Path(name).read_text()
         before, after = _facets(name, old), _facets(name, new)
-        problems = [k for k in before if before[k] != after[k]]
+        problems, reordered = [], []
+        for key in before:
+            if before[key] == after[key]:
+                continue
+            if key not in ORDERED and sorted(map(str, before[key])) == sorted(map(str, after[key])):
+                reordered.append(key)
+            else:
+                problems.append(key)
+        for key in reordered:
+            print(f"· {name}: {key} reordered but unchanged – a restructured sentence")
         if problems:
             bad += 1
             print(f"✗ {name}: changed {', '.join(problems)}")
@@ -76,8 +93,10 @@ def main() -> int:
                         if x != y:
                             print(f"    {key}: {str(x)[:70]!r}\n          -> {str(y)[:70]!r}")
                             break
-        else:
+        elif not reordered:
             print(f"✓ {name}: prose only")
+        else:
+            print(f"✓ {name}: prose only (with reordering)")
     print(f"-- {len(files) - bad}/{len(files)} changed prose only")
     return 1 if bad else 0
 

@@ -129,3 +129,57 @@ Smaller things:
   notationally (the first is the surprisal of the pair, the second the expectation under
   $p$ of the surprisal under $r$), but that is the original's business, not the
   translation's.
+
+## Style pass
+
+33 of 172 blocks changed, all prose; no maths, code, directive, heading or table block
+touched (verified by diffing every `$…$` span and every non-prose block digest against a
+snapshot). `sync.py align` and `check_english.py` pass.
+
+**The brief named a thermodynamics digression in this chapter. There is none** – as the
+Figures section above already says, the gas/macrostate passage lives in
+`expectation-variance.md`. The loosest prose here is the `## Continuous entropy` section
+(Jaynes, invariant measures, Radon–Nikodym), and that is where most of the editing went.
+
+Kinds of change:
+
+* **Definitions kept exact.** The only edit inside a Definition block is the duplicated
+  "whose entries lie between $0$ and $1$ and whose entries sum to" → "… and sum to"
+  (block 55). The Lemma, Proposition and Theorem statements are untouched.
+* **German shape in the proofs**: "that one we also multiply by $-1$" → "this one we multiply
+  by $-1$ as well"; "The sum of these two chains of inequalities now simplifies to" →
+  "Adding the two chains of inequalities and simplifying gives"; "With the mean value
+  theorem one can now show" → "The mean value theorem then shows".
+* **Nominalisations**: "the minimisation of a cross-entropy … the minimisation of a relative
+  entropy" → "minimising … minimising"; "Analysing from a theoretical standpoint what …" →
+  "A theoretical analysis of what …"; "has the value $\infty$" → "is $\infty$".
+* **Calques**: "costs infinitely much" → "comes at infinite cost"; "grows beyond all bounds"
+  → "grows without bound"; "takes this connection as known" → "for granted"; "is to be
+  recommended" → "is recommended"; "like that it makes no sense" → "as it stands that makes
+  no sense"; "Take the almost certain coin for a fair one" → "Mistake … for".
+* **The clustering paragraph** (block 107) was one seven-line *if … and … then* sentence;
+  it is now three sentences, same seven lines, same block. I added the word "two" in "these
+  two class variables" – there are exactly two labellings in play – which is the one edit
+  in the chapter that adds a word rather than rearranging; strike it if it reads as an
+  intrusion.
+* One of my own edits was reverted: I had written "does not depend on $k$" in the first
+  proof, which would have added a new `$k$` span. The maths set is byte-identical to the
+  snapshot.
+
+Noticed, for a human:
+
+* **TERMINOLOGY.md contradicts itself** on *Selbstinformation*: the *Expectation* section
+  has "Selbstinformation → self-information", the *Entropy* section has "Information,
+  Selbstinformation → surprisal". This file uses *self-information* (block 34), which is
+  what the style brief asked for and what `expectation-variance.md` defines. The glossary
+  row needs reconciling; I did not edit it.
+* Block 74: "a coin that for small $t$ comes up $1$ almost surely" uses the technical term
+  loosely – $P = 1 - t$ is not "almost surely". The German's own looseness; left.
+* Block 147 (differential entropy): the Definition introduces $P$ and $f$ but then defines
+  $h(X)$ for an $X$ that is never named. Original's business; left.
+* Block 158 writes the general relative entropy as $H(P,Q)$ with a comma while every other
+  block uses $H(\cdot \Vert \cdot)$. Original's notation; left.
+* Block 25: the parenthetical "(as $k \to \infty$, on which the expression does not depend
+  at all)" is the German's slightly roundabout way of saying the expression is therefore
+  $0$. I kept its logic rather than tightening it into a claim the German does not quite
+  make.

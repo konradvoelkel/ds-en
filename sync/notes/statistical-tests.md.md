@@ -226,3 +226,106 @@ The three `## Ausblick:` headings became `## Looking ahead:` (TRANSLATION.md §5
 * Link texts follow the already-translated chapters: *The most important discrete
   distributions*, *The normal distribution*, *Titanic EDA*, and *Expectation Maximization*
   (which the German original already writes in English).
+
+## Style pass
+
+Fable, 14 October 2026. 116 of the 223 blocks changed (115 prose blocks and one cell of the
+z-test/t-test comparison table); no block merged, split, reordered or retyped. `sync.py align`
+and `check_english.py` both still pass. Every `$…$` and `$$…$$` span is byte-identical to the
+translated version; in two sentences the *position* of two inline spans in the sentence moved
+because the sentence was reordered ("We draw $n$ independent, identically distributed samples
+of $Z$" for "We sample $Z$ … $n$ times"; "how well $\texttt{mean}(X)$ estimates $\mu(Z)$" for
+"how well we can estimate $\mu(Z)$ with $\texttt{mean}(X)$"). Code cells, admonition titles,
+link texts, `{ref}`/`{cite}` keys, figure names, the `(signifikanz)=` target and all headings
+are untouched.
+
+### Kinds of change
+
+* **German inversions and front-loaded participles** unwound: "Shown is the projection of …"
+  → "The figure shows the projection of …"; "Translated: $\epsilon$ is to be determined …" →
+  "In words: we are to determine $\epsilon$ …"; "All in all we obtain:" → "Putting it all
+  together,".
+* **"one" → "you"/"we"** throughout (TRANSLATION.md §6 on address), e.g. the bootstrap recipe,
+  the t-test derivation ("one has to work with … one considers" → "we have to work with … we
+  consider"), the drug example ("What one can do instead" → "What you can do instead").
+  "One says that the statistic is distribution-free" → "The statistic is said to be
+  distribution-free"; "one speaks of a confidence interval" → "we speak of".
+* **Nominalisations turned back into verbs**: "determining confidence intervals with Chebyshev's
+  inequality yields very large intervals" → "confidence intervals obtained from Chebyshev's
+  inequality are very wide"; "A generalisation of the t-test to more than 2 sample groups is
+  ANOVA" → "ANOVA … generalises the t-test to more than 2 sample groups"; "the estimation
+  error incurred in estimating σ is accounted for in" → "the error made in estimating σ is
+  built into".
+* **Calques replaced by the English idiom**: "so-called" dropped before the $\chi^2$ and
+  Student t distributions (in English it reads as scepticism); "is again normally distributed"
+  → "is in turn normally distributed"; "measured in the 'unit' standard deviation" → "measured
+  with the standard deviation as the 'unit'" (twice); "quite allowed to be 'too big'" →
+  "perfectly allowed"; "a shade under two standard deviations" → "just under"; "bring that
+  state about" → "bring it about"; "Three warnings belong to the definition" → "go with";
+  "building block for stopping p-value hacking" → "safeguard against p-value hacking"; "does
+  not become a datum" → "is not yet a datum".
+* **Long subject–verb-separated sentences** split or re-hung: Stein's lemma (one sentence →
+  two), the two-sample `ttest_ind` sentence (the assumptions moved out of the middle to the
+  end), the "Suppose our sample almost follows a standard normal distribution – then …" dash
+  chain, the ANOVA "one then splits a sample … and considers ANOVA" clause, the drug
+  example's "we construct an experiment with which it can be refuted that …".
+* **Connectives translated one-for-one** replaced: "why that is, is settled by the section"
+  → "the section … explains why"; "In this test one wants to find out whether" → "The test
+  asks whether"; "For that it will be above all important to discuss the notion of
+  significance" → "Above all, that means getting clear about the notion of significance";
+  "Afterwards it was said that the polls had got it wrong" → "Afterwards, the polls were said
+  to have got it wrong".
+* **Small punctuation**: the missing full stop at the end of the first *Prediction intervals*
+  sentence; semicolons instead of commas in the three-part closing sentence of the polling
+  digression; the section reference "in the section looking ahead, below" now names the
+  section, *Looking ahead: confidence intervals*, since there are five "Looking ahead"
+  sections.
+* "The return value `statistic`" / "The return value `pvalue`" → "The attribute `statistic`" /
+  "The attribute `pvalue`": the preceding sentence has just said that the return value is a
+  `TtestResult` object *with* these attributes, so "return value" for the attribute was the
+  German's looseness, not a fact about SciPy. Flagging it here in case a reviewer prefers the
+  literal rendering.
+
+### Kept deliberately
+
+* The six "not part of the course proper" markers are verbatim; only the sentences around two
+  of them changed ("Anyone who skips them can read straight on" → "If you skip them, read
+  straight on"; "is of no concern to us at the moment" → "need not concern us at the moment").
+* The bolded lead-ins inside the Example admonitions ("**The trivial case:**", "**Coin
+  toss:**", "**A sample from a normal distribution:**", "**Weighing apples.**") stay where and
+  as they are (TRANSLATION.md §5). Note the German's own inconsistency: three end in a colon,
+  one in a full stop. Not touched; it mirrors the original.
+* The terminology rows for this chapter are all used as declared: *uniformly best test* (3),
+  *power function* (1), *type I / type II error* (6 / 5), *effective level*, *likelihood
+  ratio*, *set estimator*, *interval estimator*, *error level*, *distribution-free*,
+  *summary measure*, *random sample*, *sampling error*, *Gauss test*, *quantile
+  transformation*. "the usual procedure of looking for the most powerful test at a fixed
+  level" (opening of *Best simple tests*) was left as is even though it brushes against the
+  UMP phrasing the glossary avoids – it is the translator's sentence and the glossary decision
+  is recorded above.
+* "fewer than a proportion $\alpha$ of the possible samples" (after the aligned display in
+  *Confidence intervals*): the display says $\leq \alpha$, so "at most" would be the exact
+  rendering. Left alone – that is a meaning question for the German, not a style question.
+* "has therefore thought up a context" in the Significance remark: "thought up" is sardonic
+  and is, I think, meant; only the "therefore" was moved to the front of the sentence.
+* The definition of the uniformly best test ("every other test of level $\alpha$ has smaller
+  or equal power") was left as translated rather than rewritten to "no other test has greater
+  power": same content, but definitions are the one place where the literal shape is worth
+  keeping.
+* The Ioannidis and xkcd quotations, the Definition of *statistically significant* (one
+  clause reordered only), the `TtestResult` sentence about older SciPy versions, and all
+  bullet lists of tests were left essentially verbatim.
+
+### Noticed, not touched
+
+* Block 8 (the figure gloss): the German's parenthesis-inside-parenthesis "(parts per million
+  by volume) (compare 30 May 2022 …)" was folded into one parenthesis with a semicolon. If a
+  reviewer considers that a structural change to the German's own typography, the old form is
+  in the translated version.
+* "the shape parameter" in *From set estimator to test* is still the obscure phrase the
+  translator flagged above; nothing was done to it.
+* "halfway plausible" (twice, *Confidence intervals*) is the translator's rendering of
+  *halbwegs plausibel*; it is understandable but slightly odd English. "reasonably plausible"
+  would be the idiom. Left for a human: it recurs in the same paragraph as a deliberate echo.
+* The chapter never actually defines *critical value* before using "'critical' t-value" in
+  scare quotes; that is the German's choice too.

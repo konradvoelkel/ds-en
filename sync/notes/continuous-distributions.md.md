@@ -85,3 +85,41 @@ statement in readable English maths.
 **One wording I am not certain about.** Block 10's "Das Wort *abgeschlossen* ist dabei keine
 Dekoration" – I used "is not decoration here". The German is a lecturer's aside and I wanted
 to keep that register rather than flatten it to "is essential".
+
+## Style pass
+
+Second pass (Fable), prose only. 20 of the 42 prose blocks were touched; every `$…$`
+and `$$…$$` is byte-identical to before, no block was merged, split or reordered
+(`sync.py align`: 92 blocks aligned; `check_english.py`: clean), and the admonition
+titles, link texts and the three-name cdf gloss (Decisions 3) are as they were.
+
+Kinds of change:
+
+* **German verb-last word order undone.** "With $D = \mathbb{R}$ and $f$ given by [maths]
+  a probability measure on $\mathbb{R}$ is defined" (blocks 48/50) is now "Take $D = \mathbb{R}$
+  and $f$ given by [maths]. This $f$ defines a probability measure …" – each half stays in its
+  own block. Likewise "Closed sets are, for instance, every interval …" → "Every interval of
+  the form $[a,b]$ is closed, for instance …", and "Not closed, by contrast, is $(0,1]$" →
+  "The interval $(0,1]$, by contrast, is not".
+* **Fronted subordinate clauses unwound.** "(That the intersection itself again has
+  probability $1$ … we will not use any further.)" → "… is something we will not need."
+  "That we are allowed to integrate other functions of $X$ in this way too is what the
+  following theorem says" → "That other functions of $X$ may be integrated in the same way …".
+* **"one" → "you"** (block 84), "correspondingly" → "likewise", "hence in all" → "so … in
+  all", "watch out for it" → "look out for it", "admits a representation by a density" →
+  "can be represented by a density", "take a great deal of trouble" → "go to great lengths".
+* Light trims inside definitions where a parenthesis repeated itself ("(which we define in
+  the next section)" → "(defined in the next section)"; "Riemann integrability is a
+  sufficient criterion" → "Riemann integrability suffices").
+
+Noticed but not touched:
+
+* Decision 1 above describes a gloss in block 67 ("which English unhelpfully calls by the
+  same word as probability distributions") that is **no longer in the file** – the block now
+  reads "the theory of distributions – generalised functions – from functional analysis".
+  Someone trimmed it after the notes were written; the note is stale, the text is fine.
+* Block 79 keeps "*cumulative probability distribution function*, or *distribution
+  function*, or *cdf*" per Decision 3, although `TERMINOLOGY.md` has *Verteilungsfunktion* →
+  cumulative distribution function. A consistency pass may want one name.
+* Blocks 2, 11, 24, 32–36, 40, 42, 77, 87 (the definitions and theorems proper) read as
+  mathematical English already and were left alone.

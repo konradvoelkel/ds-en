@@ -220,3 +220,61 @@ false friend), the Art. 5 principle names, the Chapter III right names, `Aufsich
 → **supervisory authority**, `Geldbuße` → **administrative fine**, and the currency
 convention from Decisions 4, which belongs in TRANSLATION.md section 6 rather than in the
 glossary.
+
+## Style pass
+
+Second pass (Fable), deliberately the most conservative of the four. 22 of the 33 prose
+blocks were touched, most of them in one or two phrases; `sync.py align`: 50 blocks aligned,
+`check_english.py`: clean, the single `check-ignore` entry (block 49, the bpb film title)
+still stands.
+
+Not touched, by rule: every quotation from the GDPR's official English text (the Art. 5
+principles in block 14, the Art. 6 bases and Art. 9 categories in blocks 18 and 21, the
+Art. 58 powers in block 32, the "effective, proportionate and dissuasive" and Art. 83(2)
+criteria in block 33, the Art. 4 definitions of personal data and pseudonymisation in
+blocks 4 and 29); the fixed terms (controller, processor, data subject, filing system,
+supervisory authority, rectification, erasure, restriction, objection, adequacy decision);
+every German term and its gloss; every ETid link, date, amount and docket number; the table.
+
+Kinds of change in the connective prose:
+
+* **The census-judgment sentence** (block 9): the quotation now attaches to the noun it
+  qualifies – "a social order 'in which citizens can no longer know …' would be incompatible
+  with the right of self-determination" – instead of hanging off the end of the clause. The
+  quoted words are unchanged.
+* **"To these comes …" / "To these … adds"** (blocks 15, 30), a *hinzu kommt* calque, →
+  "Art. 5 Abs. 2 adds accountability to these" / "Added to these is liability".
+* **Nominalisations and prepositional stacks** → verbs: "a missing legal basis towards a
+  company's own staff" → "for data on a company's own staff"; "without checking the consent
+  cleanly in its systems" → "without a clean check of consent in its systems"; "the duty to
+  inform people about the storing of information on their devices" → "to tell people when
+  information is stored on their devices"; "being a directive it depended on being
+  transposed" → "as a directive it had to be transposed".
+* **"one" → "you"** (blocks 29, 46), "can try candidates through" (*durchprobieren*) →
+  "can run through candidate codes", "lines of attack" (*Stoßrichtungen*) → "lines",
+  "the measure" (*Maßstab*) → "the yardstick", "called to account" → "held to account",
+  "The practical rule … runs:" → "The practical rule …:".
+* "Two misunderstandings are thereby disposed of" → "That disposes of two
+  misunderstandings"; "The default setting therefore decides the outcome in fact" → "So in
+  practice the default setting decides the outcome"; "The nursery's telephone list" → "A
+  nursery's telephone list" (generic, as the German *die Kita* is).
+* "classify … as unlawful" (block 30, the Austrian DSB and Google Analytics) → "find …
+  unlawful", which is what a supervisory authority does in English.
+
+Noticed but not touched (meaning, not style – a human should look):
+
+* **Privacy-by-design maxim 2** (block 23): "the later in a process a link to a person
+  survives, the smaller the circle of people who get to see it" reads backwards at first
+  sight. It is a faithful rendering of the German ("je später im Prozess ein Personenbezug
+  besteht, desto kleiner ist der Kreis derer, die ihn sehen"); if the intended sense is
+  "the further downstream, the fewer people, so anonymise early", the German might say so
+  more plainly.
+* **The parcel service as a processor** (blocks 12 and 19). Faithful to the German. In
+  German practice a parcel carrier is commonly treated as an independent controller rather
+  than a processor under Art. 28; whether the example is the one the author wants is a
+  lawyer's question, flagged here only because the chapter promises that every case can be
+  checked.
+* Decision 3 above (the *Abs.*/*lit.* gloss in block 11) is a translator's addition that
+  still awaits a human yes or no; I left the clause exactly as it was.
+* The capitalisation of Privacy by Design/Default (Decision 11) was left as the translator
+  set it: capitals as defined terms, lower case in running prose.

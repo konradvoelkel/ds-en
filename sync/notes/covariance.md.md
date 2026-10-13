@@ -149,3 +149,40 @@ decimal points (`0{,}99` → `0.99` and friends); three em dashes became spaced 
 similarity'`, `'Guess the Correlation'` all became plain double quotes per TRANSLATION.md
 §6. Inside maths, only `\text{Evidenz}` and `\text{mit }` contained German; both were
 translated. The Python block has no German in it and is untouched, outputs included.
+
+## Style pass
+
+29 of 139 blocks changed, all prose; no maths, code, directive, heading or table block
+touched (verified by diffing every `$…$` span and every non-prose block digest against a
+snapshot). The five Bayes admonitions keep their bold lead-ins in the body exactly as
+TRANSLATION.md §5 requires – only the sentences around them moved. `sync.py align` and
+`check_english.py` pass.
+
+Kinds of change:
+
+* **Verb for nominalisation / passive**: "it follows that … With rule (4)" → "Rule (4) then
+  gives"; "Multiplying out the definition, and linearity of" → "Multiply out the definition
+  and use linearity of"; "is at least in principle computable" → "can at least in principle
+  be computed".
+* **German sentence shape**: "In the discrete case the joint pmf is a product, because of the
+  independence, …" → "In the discrete case, independence makes the joint pmf a product, …";
+  "The converse does not hold … An example is" → "The converse fails … Take"; "Anyone who
+  confuses the two … commits the base rate fallacy – which is common enough" → "Confusing
+  the two … is the base rate fallacy – common enough".
+* **Connectives**: "as soon as" (*sobald*) → "whenever"; "as well" at the end of the Bayes
+  proof → "once more" in the middle; "we thus obtain" → "this gives".
+* **Agreement**: "the $99\,\%$ are its recall" → "is its recall".
+* **Wording the translator flagged**: Decision 5's "the probability (density)" is now
+  spelled out as "the probability (or probability density)"; "all you know is $A$ and its
+  opposite" (*Gegenteil*) → "$A$ and its complement are all you have to go on" – the
+  formula is about $A^c$, and "complement" is the English for that. Not a glossary term;
+  flagging it in case the book prefers the everyday word.
+* "here a base rate of one in a thousand lies between $0.99$ and $0.09$" → "stands between":
+  the number does not lie between those two numerically, it is what separates them.
+
+Left alone: "margins" (Decision 1), "a single population" (Decision 7, still needs the
+human's confirmation), the *Statistical models* / *Statistical models and estimators* link
+texts (Decision 8), the bottom-left empty axes in the figure.
+
+Noticed, for a human: nothing new beyond the translator's open decisions. The chapter was
+already the cleanest of the three.

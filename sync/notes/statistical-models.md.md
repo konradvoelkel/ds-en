@@ -147,3 +147,56 @@ parenthesis exists only to supply the English word.
 * **`gut zwei Prozent`** → "a good two per cent", spelled out, so the percentage rule of §6
   (`5 %` → `5%`) never bites; there is no numeral-plus-sign percentage anywhere in the
   chapter.
+
+## Style pass
+
+47 of 144 blocks touched; block count, order and alignment unchanged (`sync.py align` and
+`check_english.py` both pass). No maths, code, admonition titles, link texts or terminology
+changed; "uniformly best unbiased estimator" stays un-abbreviated and "sample space" is used
+for $\mathcal{X}$ as before.
+
+Kinds of change:
+
+* **"One" → "we"/"you".** "one wants to coax out", "one speaks of", "one has to be careful",
+  "one can help oneself with a simple trick", "one estimates a distribution", "one uses the
+  trick" – replaced by the book's own "we"/"you" voice where the German *man* had been
+  carried over one-for-one. "One speaks of a statistical model …" (block 2) and "one also
+  speaks of a one-parameter model" (block 23) stay, because there the impersonal is the
+  English idiom too.
+* **Nominalisations and "the X of Y of Z" chains turned back into verbs**: "extend the bare
+  estimation of a statistic by the information on what margin of error one attaches to that
+  estimate" → "add to the bare estimate of a statistic the information of what margin of
+  error goes with it"; "the value θ for which the relative entropy … is minimised" → "the
+  value θ that minimises the relative entropy"; "no closed form can be determined for" →
+  "there is no closed form for".
+* **Derivation connectives** in the maximum-likelihood section: "Differentiating and setting
+  equal to 0" → "setting the result to 0"; "can be seen from the fact that" → "follows from
+  the fact that"; "Because of the independence" → "By independence"; "it really does hold
+  that mean(x) comes arbitrarily close" → "mean(x) really does come arbitrarily close".
+* **German front-loading undone**: "The twice-repeated throw of the die we therefore model
+  with …" → "Throwing the die twice is therefore modelled with …"; "Such an estimator
+  therefore has the smallest spread … among all unbiased estimators" → "Among all unbiased
+  estimators, such an estimator …"; "the Cramér–Rao inequality for regular statistical
+  models bounds" → "for regular statistical models, the Cramér–Rao inequality bounds".
+* **Long sentences broken or re-hinged** (blocks 1, 3, 4, 10, 20, 40, 43, 102, 118): the
+  opening paragraph's parenthetical became a dash pair, the "given data … of which we know
+  that they arose …, we want to estimate" sentence was re-hinged on "We are given … and we
+  want", and the "If the density is large, then … If the density is small, then …" pair
+  became one sentence with a semicolon.
+* **Quotation marks**: five single-quoted scare words ('finished model', 'the sample space
+  with one probability measure on it', 'too large', 'true', 'perfect') became the book's
+  plain double quotes, per TRANSLATION.md §6. These were the only single quotes in the file.
+* **Agreement fix** in the k-means example: "The 'perfect' k-means solution, that is the
+  centroids …, are those for which" → "… – the centroids … – is the one for which".
+
+Noticed but not touched (meaning, not style):
+
+* Block 94 says Cramér–Rao "lets us recognise uniformly best estimators by the fact that
+  they do not exceed this variance bound". The bound is a lower bound, so an estimator
+  cannot go below it; "attain" is what is meant, and block 96 indeed says "attains". The
+  German presumably has the same wording; a human may want to tidy it on both sides.
+* Block 136: the server-log example says the model is used "to estimate the expected load,
+  together with the mean running time of a request" – the chapter never estimates a running
+  time, only a waiting time between requests. Reads like a loose phrase in the original.
+* Block 40 ends "a 'too large' parameter space is sometimes the simpler model"; the argument
+  before it is about the parameter *space* being simpler, not the model. Left as written.
