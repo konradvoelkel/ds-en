@@ -2,7 +2,22 @@
   "_comment": "Blocks of the German original that are deliberately absent from the English edition, keyed by the German file name and by the block id tools/segment.py gives them. Every entry needs a reason: a drop is a decision, not an accident. See TRANSLATION.md section 2.",
   "drops": {
     "was-ist-data-science.md": [
-      { "block": "1", "reason": "link to the German HHU lecture recording" }
+      {
+        "block": "1",
+        "reason": "link to the German HHU lecture recording"
+      }
+    ],
+    "intro-stochastik.md": [
+      {
+        "block": "1",
+        "reason": "link to the German HHU lecture recording"
+      }
+    ],
+    "intro-python.ipynb": [
+      {
+        "block": "c0.1",
+        "reason": "link to the German HHU lecture recording"
+      }
     ]
   }
 }

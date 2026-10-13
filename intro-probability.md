@@ -1,250 +1,248 @@
-# Herleitung des mathematischen Formalismus der Stochastik
+# Deriving the mathematical formalism of probability
 
-[Vorlesungsaufzeichnung Wahrscheinlichkeitsmaß (VL 2, erster Teil)](https://media.hhu.de/channel/video/data-science-vl-2-wahrscheinlichkeitsmass-zufallsvariable-pmf-2025/d5149a6bce20e827dc30685847505f16/167)
+You have already met the basics of (discrete) probability theory in Mathematics for Computer Scientists 3. We will go over them again, as far as we need them. In this course we will mostly use the notions of the probability mass function (for discrete random variables) and the probability density function (for continuous random variables), both of which build on the notion of a probability measure. At this point there is a short digression to explain why it is done exactly this way, and how one might arrive at the notion of a probability measure. The notions of a sigma-algebra ($\sigma$-algebra) and of measurable functions are essential for carrying out proofs in probability theory, and also for introducing more complex notions (such as those needed in mathematical finance or in the theory of machine learning) – here we can content ourselves with taking away when we are allowed to read over these notions.
 
-Sie haben bereits in Mathematik für Informatik 3 die Grundlagen der (diskreten) Wahrscheinlichkeitstheorie kennen gelernt. Wir werden diese auch noch im für uns nötigen Umfang wiederholen. In der Vorlesung werden wir vor allem die Begrifflichkeiten der Wahrscheinlichkeitsmassefunktion (für diskrete Zufallsvariablen) und Wahrscheinlichkeitsdichtefunktion (für stetige Zufallsvariablen) verwenden, die aber beide auf dem Begriff des Wahrscheinlichkeitsmaß aufbauen. An dieser Stelle gibt es einen kleinen Exkurs, um zu erklären, warum es eigentlich genau so gemacht wird, und wie man auf den Begriff des Wahrscheinlichkeitsmaßes kommen kann. Der Begriff der Sigma-Algebra ($\sigma$-Algebra) und der messbaren Funktionen sind essentiell, um in der Stochastik Beweise zu führen und auch um komplexere Begriffe (wie sie etwa in der Finanzmathematik oder in der Theorie des maschinellen Lernens benötigt werden) einzuführen - wir können uns hier damit begnügen, mitzunehmen, wann wir über diese Begriffe hinweglesen können.
-
-Man kann Stochastik als Oberbegriff für Wahrscheinlichkeitstheorie und Statistik auffassen. Die Statistik beschäftigt sich mit stochastischen Modellen, die anhand von Beobachtungen entwickelt werden, und macht Schlussfolgerungen. Die Wahrscheinlichkeitstheorie beschäftigt sich mit der Untersuchung von Modellen und der Theorie dahinter.
+The German word "Stochastik" is an umbrella term for probability theory and statistics together, and English has no equivalent. Statistics is concerned with probabilistic models developed from observations, and draws conclusions from them. Probability theory is concerned with investigating those models and the theory behind them.
 
 ```{figure} images/stochastik-statistik-wtheorie.png
 :width: 480px
 :align: center
 :name: stochastik-uebersicht
 
-Stochastik als Oberbegriff: Die Statistik arbeitet an einem Ausschnitt der Realität, die Wahrscheinlichkeitstheorie an den Modellen.
+Probability theory and statistics under one roof: statistics works on a section of reality, probability theory works on the models.
 ```
 
-Die beiden Pfeile in der Mitte sind die eigentliche Aussage des Bildes, und sie laufen in entgegengesetzte Richtungen. Vom Ausschnitt der Realität zu den Modellen führt die **Modellbildung**: Man beobachtet, sammelt Daten und stellt ein Modell auf, das dazu passt. Von den Modellen zurück zur Realität führt die **Vorhersage**: Man rechnet im Modell und behauptet etwas über die Welt, das sich prüfen lässt. Beide Richtungen braucht man, und dieses Buch geht sie mehrfach ab.
+The two arrows in the middle are what the picture is really saying, and they run in opposite directions. From the section of reality to the models leads **modelling**: you observe, collect data and set up a model that fits. From the models back to reality leads **prediction**: you calculate within the model and assert something about the world that can be checked. Both directions are needed, and this book walks each of them several times.
 
-Wie immer in der Informatik ist ein wesentliches Ziel, mit einem Modell einen Ausschnitt der Realität zu modellieren, d.h. von diesem Ausschnitt zu abstrahieren und mit dem Modell ein Stück der Realität vorherzusagen und das Modell an der Realität zu prüfen.
+As always in computer science, one essential aim is to model a section of reality with a model, that is, to abstract away from that section, to use the model to predict a piece of reality, and to test the model against reality.
 
-Wir kennen bereits logische Modelle der Realität: Wenn es regnet, wird der Rasen nass. Wenn ich hungrig bin, und dann viel esse, bin ich danach nicht mehr hungrig.
+We already know logical models of reality: if it rains, the lawn gets wet. If I am hungry and then eat a lot, I am no longer hungry afterwards.
 
-In der Notation der Aussagenlogik schreibt sich das erste Modell als Implikation. Mit $N$ für „der Rasen ist nass“, $R$ für „es hat geregnet“ und $G$ für „jemand hat gegossen“ lautet es
+In the notation of propositional logic, the first model is written as an implication. With $N$ for "the lawn is wet", $R$ for "it has rained" and $G$ for "somebody watered it", it reads
 
 $$
 N \Rightarrow R \vee G,
 $$
 
-oder, wie man es in einer Programmiersprache hinschreiben würde, `(!N) || R || G`. Das Modell ist nützlich, aber es beantwortet die Frage nicht, die uns beim Blick auf den nassen Rasen tatsächlich umtreibt: Welche der beiden Möglichkeiten war es? Regnet es hier oft? Hat überhaupt schon einmal jemand diesen Rasen gegossen? Die Aussagenlogik kann darauf nur mit „mindestens eine von beiden“ antworten.
+or, as you would write it in a programming language, `(!N) || R || G`. The model is useful, but it does not answer the question that actually occupies us when we look at the wet lawn: which of the two was it? Does it rain here often? Has anybody ever watered this lawn at all? Propositional logic can only answer "at least one of the two".
 
-Statistische Modelle erweitern diese Alles-oder-nichts-Logik nun um verschiedene Grade von Plausibilität: wenn der Rasen nass ist, ist es plausibel, anzunehmen, dass es vor kurzem regnete. Es ist ebenso plausibel, anzunehmen, dass jemand den Rasen gewässert hat mit einem Gartenschlauch. Was wir plausibler finden, hängt davon ab, was wir sonst über die Realität wissen. Durch längere Beobachtung des Rasens können wir feststellen, welche Gründe wie oft zu einem nassen Rasen führen, und daran unser Modell schärfen.
+Statistical models now extend this all-or-nothing logic by degrees of plausibility: if the lawn is wet, it is plausible to assume that it rained recently. It is equally plausible to assume that somebody watered the lawn with a garden hose. Which we find more plausible depends on what else we know about reality. By watching the lawn for longer we can establish how often each reason leads to a wet lawn, and sharpen our model accordingly.
 
-Um mit Plausibilität genau so rechnen zu können wie mit Boolescher Logik, und schließlich auch im Computer zu implementieren, müssen wir die Plausibilitätswerte mit Zahlen versehen. Eine geeignete Abstraktion sind reelle Zahlen, denn reelle Zahlen sind der einzige archimedisch angeordnete vollständige Körper, der die rationalen Zahlen enthält (und die darin enthaltene Unteralgebra der berechenbaren reellen Zahlen hat uns schon viele gute Dienste geleistet).
+To be able to calculate with plausibility exactly as we do with Boolean logic, and finally to implement it on a computer, we have to attach numbers to the plausibility values. A suitable abstraction is the real numbers, since the reals are the only Archimedean ordered complete field containing the rationals (and the subalgebra of computable reals inside them has already served us well).
 
-:::{admonition} Beispiel
-Ein erster, naiver Anlauf: Wir zählen einfach mit. Im letzten Monat hat es an $20$ Tagen geregnet, und an $5$ Tagen hat jemand gegossen. Wir setzen also $plausi(R) = 20$ und $plausi(G) = 5$.
+:::{admonition} Example
+A first, naive attempt: we simply count. Last month it rained on $20$ days, and on $5$ days somebody watered. So we set $plaus(R) = 20$ and $plaus(G) = 5$.
 
-Wie plausibel ist dann „es hat geregnet oder jemand hat gegossen“? Die naheliegende Antwort $25$ ist falsch, sobald es auch nur einen Tag gab, an dem beides passiert ist — dieser Tag wäre doppelt gezählt. Die richtige Antwort lautet
+How plausible, then, is "it rained or somebody watered"? The obvious answer $25$ is wrong as soon as there was even one day on which both happened – that day would be counted twice. The correct answer is
 
 $$
-plausi(R \vee G) = plausi(R) + plausi(G) - plausi(R \wedge G),
+plaus(R \vee G) = plaus(R) + plaus(G) - plaus(R \wedge G),
 $$
 
-und um sie auszurechnen, müssen wir wissen, ob auch schon einmal in den Regen hinein gegossen wurde.
+and to work it out we need to know whether anybody ever watered into the rain.
 :::
 
-An diesem Beispiel sieht man zweierlei. Erstens rechnet man mit Plausibilitäten nicht so naiv, wie man zunächst denkt; es braucht Regeln. Zweitens sind die Zahlen $20$ und $5$ unhandlich, weil sie vom Beobachtungszeitraum abhängen: Bei zwei Monaten Beobachtung stünde dort $40$ und $10$, ohne dass sich an der Sache etwas geändert hätte.
+Two things can be seen from this example. First, calculating with plausibilities is not as naive as one might at first think; it needs rules. Second, the numbers $20$ and $5$ are unwieldy, because they depend on the observation period: with two months of observation they would read $40$ and $10$, without anything having changed about the matter itself.
 
-Wir wünschen uns außerdem, dass Plausibilitätslogik mit der klassischen Logik kompatibel ist, d.h. logisch äquivalente Aussagen sollten gleich plausibel sein und verschiedene Wege, um die Plausibilität einer Aussage zu bestimmen, sollten zum gleichen Ergebnis kommen (Konsistenz).
-Um das in Mathematik zu formulieren, nennen wir nun eine endliche Menge von Aussagen, deren Plausibilität wir bewerten wollen, $\mathcal{A}$ und die Zuordnung der Plausibilität ist eine Abbildung $p \colon \mathcal{A} \to \mathbb{R}$.
+We also want plausibility logic to be compatible with classical logic, that is, logically equivalent statements should be equally plausible, and different routes to determining the plausibility of a statement should arrive at the same result (consistency).
+To put that into mathematics, let us call a finite set of statements whose plausibility we want to assess $\mathcal{A}$, and the assignment of plausibility is a map $p \colon \mathcal{A} \to \mathbb{R}$.
 
-Zwei Regeln wollen wir auf jeden Fall haben. Die erste ist die Formel aus dem Beispiel, die sogenannte *Inklusion–Exklusion*: Wer zwei Möglichkeiten addiert, zählt ihre Überschneidung doppelt und muss sie einmal abziehen,
-
-$$
-plausi(A \vee B) = plausi(A) + plausi(B) - plausi(A \wedge B).
-$$
-
-Die zweite behebt das Problem mit dem Beobachtungszeitraum. Wir normieren so, dass sich die Plausibilität einer Aussage und die ihres Gegenteils zu $1$ ergänzen,
+Two rules we want in any case. The first is the formula from the example, so-called *inclusion–exclusion*: whoever adds two possibilities counts their overlap twice and has to subtract it once,
 
 $$
-plausi(A) + plausi(\neg A) = 1,
+plaus(A \vee B) = plaus(A) + plaus(B) - plaus(A \wedge B).
 $$
 
-denn genau eines von beiden trifft zu. Damit liegt jede Plausibilität zwischen $0$ und $1$, und die absolute Länge des Beobachtungszeitraums fällt heraus: Aus $20$ Regentagen von $30$ wird $\frac{2}{3}$, ob man nun einen Monat oder ein Jahr lang zählt.
+The second fixes the problem with the observation period. We normalise so that the plausibility of a statement and that of its negation add up to $1$,
 
-Reicht das schon, um zu diesen Zahlen „Wahrscheinlichkeit“ zu sagen? Nicht ganz — aber fast.
+$$
+plaus(A) + plaus(\neg A) = 1,
+$$
 
-Wenn man diese Forderungen präzisiert, kann man das [Cox-Jaynes-Theorem](https://en.wikipedia.org/wiki/Cox%27s_theorem) beweisen, das besagt, dass es eine mathematische Abbildung $cj$ von den reellen Zahlen in das geschlossene Intervall $[0,1]$ gibt, die Plausibilitäten auf "Wahrscheinlichkeiten" abbildet, sodass (fast) alle Regeln der klassischen Wahrscheinlichkeitstheorie erfüllt sind. So erfüllt $P := cj \circ p \colon \mathcal{A} \to [0,1]$ die Regeln
-1. $P(WAHR) = 1$ und $P(FALSCH) = 0$.
-1. Wenn $A_1,\dots,A_n$ eine endliche Menge paarweise unvereinbarer (sich gegenseitig ausschließender) Aussagen sind, dann gilt endliche Additivität:
+since exactly one of the two holds. Every plausibility then lies between $0$ and $1$, and the absolute length of the observation period drops out: $20$ rainy days out of $30$ become $\frac{2}{3}$, whether you count for a month or for a year.
+
+Is that already enough to call these numbers "probability"? Not quite – but almost.
+
+If these requirements are made precise, one can prove [Cox's theorem](https://en.wikipedia.org/wiki/Cox%27s_theorem), which says that there is a mathematical map $cj$ from the real numbers into the closed interval $[0,1]$ taking plausibilities to "probabilities" in such a way that (almost) all the rules of classical probability theory are satisfied. Thus $P := cj \circ p \colon \mathcal{A} \to [0,1]$ satisfies the rules
+1. $P(TRUE) = 1$ and $P(FALSE) = 0$.
+1. If $A_1,\dots,A_n$ is a finite set of pairwise incompatible (mutually exclusive) statements, then finite additivity holds:
 $ P(A_1 \vee \dots \vee A_n) = \sum_{i=1}^n P(A_i) $
 
-Wir werden uns nun der modernen Fassung des Wahrscheinlichkeitsbegriffs nähern. Dabei soll der Begriff der sigma-Algebra hier nur erwähnt werden, man darf ihn danach (für diese Vorlesung) wieder vergessen.
+We will now approach the modern version of the notion of probability. The notion of a sigma-algebra is only to be mentioned here; afterwards you may (for this course) forget it again.
 
-## Exkurs (optional): Das Maßproblem
+## Digression (optional): the measure problem
 
 :::{note}
-Dieser und der folgende Exkurs sind reine Hintergrundlektüre und **nicht Teil des Kurses** (nicht klausurrelevant). Sie erklären, warum die Definitionen im Abschnitt *Formalismus* so aussehen, wie sie aussehen. Wer sie überspringt, kann direkt beim Abschnitt *Formalismus* weiterlesen.
+This digression and the next are pure background reading and **not part of the course** (not examinable). They explain why the definitions in the section *Formalism* look the way they do. If you skip them, you can carry straight on at the section *Formalism*.
 :::
 
-Bei einem Würfel oder einer Münze ist relativ klar, wie wir die Wahrscheinlichkeit modellieren und wie wir ein statistisches Modell aufstellen können, das wir auch implementieren können. In der Theorie stellt sich aber schnell die Frage, wie es z.B. mit einem unendlich oft wiederholten Experiment aussieht. Das ist keine rein theoretische Frage, denn wir sind an der Asymptotik interessiert, also wie sich ein hinreichend oft wiederholtes Experiment näherungsweise verhält.
+For a die or a coin it is reasonably clear how we model the probability and how we can set up a statistical model that we can also implement. In theory, though, the question soon arises of what happens with, say, an experiment repeated infinitely often. That is not a purely theoretical question, because we are interested in the asymptotics, that is, in how an experiment repeated sufficiently often behaves approximately.
 
-Unendlich oft wiederholte Münzwürfe können wir wie eine unendliche Folge von $0$en und $1$en notieren, und bei näherer Betrachtung liefert uns das auch eine Darstellung für reelle Zahlen im Einheitsintervall $[0,1]$, die sich im Rechner eben so gut implementieren lässt, wie der Rechner eine Turingmaschine ist (in der Realität ist das Band endlich, aber wir können es ja immer wieder verlängern - bzw. der Speicher unserer Rechner ist beschränkt aber nicht auf einen festen Wert).
+Coin tosses repeated infinitely often can be written down as an infinite sequence of $0$s and $1$s, and on closer inspection this also gives us a representation of the real numbers in the unit interval $[0,1]$, one that can be implemented on a computer just as well as the computer is a Turing machine (in reality the tape is finite, but we can always extend it – or rather, the memory of our computers is bounded but not bounded by a fixed value).
 
-Wir möchten nun gerne jedem Ergebnis (jedem Versuchsausgang beim unendlich oft wiederholten Münzwurf) eine Wahrscheinlichkeit zuordnen, sodass $P(\Omega)=1$ ist, wobei $\Omega = \{0,1\}^{\mathbb{N}}$ der Ergebnisraum ist.
-Außerdem soll für paarweise disjunkte Teilmengen $A_i \subseteq \Omega$ die endliche Additivität gelten:
+We would now like to assign a probability to every outcome (every result of the infinitely repeated coin toss) in such a way that $P(\Omega)=1$, where $\Omega = \{0,1\}^{\mathbb{N}}$ is the sample space.
+Moreover, finite additivity should hold for pairwise disjoint subsets $A_i \subseteq \Omega$:
 
 $P\left( \bigcup_{i=1}^n A_i \right) = \sum_{i=1}^n P(A_i)$
 
-Eine weitere natürliche Forderung ist die Flip-Invarianz, also dass es für die Wahrscheinlichkeit keinen Unterschied macht, ob ich den $n$-ten Münzwurf (das $n$-te bit) genau umdrehe. Man kann das formalisieren über einen Operator $F_n \colon \Omega \to \Omega$ mit
+A further natural requirement is flip invariance, that is, that it makes no difference to the probability if I flip exactly the $n$-th coin toss (the $n$-th bit). This can be formalised by an operator $F_n \colon \Omega \to \Omega$ with
 
 $F_n(\omega_1,\dots,\omega_{n-1},\omega_n,\omega_{n+1},\dots) =
      (\omega_1,\dots,\omega_{n-1},1-\omega_n,\omega_{n+1},\dots)$
-     
-Dann erwarten wir für jede Teilmenge $A \subseteq \Omega$ dass $P(F_n A) = P(A)$ gilt.
 
-Im Jahr 1923 hat Banach mit Hilfe des Auswahlaxioms bewiesen, dass es zwar möglich ist, nicht-konstruktiv so eine Wahrscheinlichkeit $P$ zu definieren, dass es aber nicht eindeutig möglich ist!
+We then expect $P(F_n A) = P(A)$ to hold for every subset $A \subseteq \Omega$.
 
-Wenn wir eine unserer Forderungen verschärfen, nämlich von der endlichen Additivität zur $\sigma$-Additivität (man sagt Sigma-Additivität oder abzählbare Additivität), [hat schon 1905 Vitali bewiesen](https://de.wikipedia.org/wiki/Ma%C3%9Fproblem#Unl%C3%B6sbarkeit_des_Ma%C3%9Fproblems), dass es überhaupt keine solche Abbildung $P$ gibt, es also unmöglich ist, unendlichen Münzwürfen so Wahrscheinlichkeiten zuzuordnen. Woran liegt das, und was soll das mit der $\sigma$-Additivität?
+In 1923 Banach proved, using the axiom of choice, that while it is possible to define such a probability $P$ non-constructively, it is not possible to do so uniquely!
 
-## Exkurs (optional): Offene Mengen messen
+If we tighten one of our requirements, going from finite additivity to $\sigma$-additivity (one says sigma-additivity or countable additivity), then [Vitali had already proved in 1905](https://en.wikipedia.org/wiki/Non-measurable_set) that no such map $P$ exists at all, so that it is impossible to assign probabilities to infinite coin tosses in this way. Why is that, and what has it to do with $\sigma$-additivity?
 
-Eine sehr praktische Definition für jede Menge $M$ auf der es einen Abstandsbegriff gibt (genauer: $M$ ein metrischer Raum) ist diese:
-Eine Menge $U \subseteq M$ heißt *offen* wenn es um jeden Punkt $u \in U$ einen Abstand $\epsilon > 0$ gibt, sodass alle Punkte $x \in M$ mit Abstand $d(x,u) < \epsilon$ bereits gänzlich in $U$ liegen, also $x \in U$. Für $M=\mathbb{R}$ sind z.B. endliche Vereinigungen von offenen Intervallen solche offenen Mengen, daher der Name.
+## Digression (optional): measuring open sets
 
-Man kann nun zeigen, dass die klassische $\epsilon$-$\delta$-Definition von Stetigkeit äquivalent ist zu: $f \colon X \to Y$ heißt *stetig* wenn die Urbilder offener Mengen $U \subseteq Y$ auch offene Mengen $f^{-1}(U) \subseteq X$ sind.
+A very practical definition for any set $M$ on which there is a notion of distance (more precisely: $M$ a metric space) is this:
+a set $U \subseteq M$ is called *open* if around every point $u \in U$ there is a distance $\epsilon > 0$ such that all points $x \in M$ at distance $d(x,u) < \epsilon$ already lie entirely in $U$, that is $x \in U$. For $M=\mathbb{R}$, finite unions of open intervals are such open sets, which is where the name comes from.
 
-Wenn wir auf den Zahlen im Intervall $[0,1]$ eine Gleichverteilung definieren wollen (so wie im unendlichen Münzwurf-Beispiel), oder auch gleich auf allen reellen Zahlen, dann wissen wir eigentlich schon ganz genau, wie wir mit Intervallen verfahren wollen: für ein Intervall $[a,b]$ soll die Wahrscheinlichkeit / das Maß eben $b-a$ sein.
+One can now show that the classical $\epsilon$-$\delta$ definition of continuity is equivalent to this: $f \colon X \to Y$ is called *continuous* if the preimages of open sets $U \subseteq Y$ are open sets $f^{-1}(U) \subseteq X$ as well.
 
-Da sich jede offene Menge in $\mathbb{R}$ als abzählbare Vereinigung von Intervallen schreiben lässt, wissen wir also, wie den offenen Mengen ein Maß zugeordnet werden kann: als abzählbare Summe über die Längen eben dieser Intervalle. Es stellt sich heraus, dass man so eine Gleichverteilung definieren kann, nur eben nicht für beliebige Teilmengen von $\mathbb{R}$ oder $[0,1]$ einen Wahrscheinlichkeitswert bestimmen. Man sagt, es gibt *nicht-messbare Mengen*.
+If we want to define a uniform distribution on the numbers in the interval $[0,1]$ (as in the infinite coin-toss example), or indeed on all the reals, then we already know exactly how we want to treat intervals: for an interval $[a,b]$ the probability, the measure, should simply be $b-a$.
 
-Aus dieser Beobachtung leiten wir nun die Forderung ab, dass unsere Wahrscheinlichkeit $P$ nicht nur endlich additiv sein soll, sondern $\sigma$-additiv. Nach dem Satz von Vitali akzeptieren wir, dass nicht jede Teilmenge von $\mathbb{R}$ messbar ist und begnügen uns damit, eine Teilalgebra von $\mathcal{P}(\mathbb{R})$ auszuzeichnen, die *messbaren Mengen*.
+Since every open set in $\mathbb{R}$ can be written as a countable union of intervals, we therefore know how a measure can be assigned to the open sets: as the countable sum of the lengths of exactly those intervals. It turns out that a uniform distribution can indeed be defined this way, only that one cannot then determine a probability value for arbitrary subsets of $\mathbb{R}$ or $[0,1]$. One says that there are *non-measurable sets*.
 
-## Formalismus
+From this observation we now derive the requirement that our probability $P$ should not merely be finitely additive, but $\sigma$-additive. Following Vitali's theorem we accept that not every subset of $\mathbb{R}$ is measurable, and content ourselves with singling out a subalgebra of $\mathcal{P}(\mathbb{R})$, the *measurable sets*.
 
-Bisher haben wir Plausibilitäten an *Aussagen* geheftet: "es regnete", "jemand hat gegossen". Aussagen sind für die Logik der richtige Gegenstand, aber sie sind unhandlich, sobald man rechnen will — schon die Frage, wie viele verschiedene Aussagen es gibt, führt in die Irre. Der Trick der modernen Stochastik besteht darin, jede Aussage durch die Menge der Situationen zu ersetzen, in denen sie zutrifft.
+## Formalism
 
-Dazu denken wir uns eine Menge $\Omega$ aller in Frage kommenden **Ergebnisse** $\omega$ — im Rasen-Beispiel etwa alle Zustände, in denen die Welt heute Morgen sein könnte. Jede Aussage über die Welt zerlegt diese Menge in zwei Teile: die Zustände, in denen sie wahr ist, und die übrigen. Die Aussage "der Rasen ist nass" wird so zur Teilmenge $N \subseteq \Omega$ aller Weltzustände mit nassem Rasen, "es regnete" zu $R \subseteq \Omega$ und "jemand hat gegossen" zu $G \subseteq \Omega$. Statt einer Plausibilität für die Aussage suchen wir jetzt eine Zahl für die Teilmenge.
+So far we have pinned plausibilities to *statements*: "it rained", "somebody watered". Statements are the right object for logic, but they are unwieldy as soon as one wants to calculate – even the question of how many different statements there are leads astray. The trick of modern probability theory is to replace every statement by the set of situations in which it holds.
 
-Der Gewinn: Die logischen Verknüpfungen werden zu Mengenoperationen, die wir bereits kennen und beherrschen.
+To that end we imagine a set $\Omega$ of all **outcomes** $\omega$ under consideration – in the lawn example, say, all the states the world could be in this morning. Every statement about the world splits this set in two: the states in which it is true, and the rest. The statement "the lawn is wet" thus becomes the subset $N \subseteq \Omega$ of all world states with a wet lawn, "it rained" becomes $R \subseteq \Omega$ and "somebody watered" becomes $G \subseteq \Omega$. Instead of a plausibility for the statement, we are now after a number for the subset.
 
-| Aussagenlogik | Mengenlogik |
+The gain: the logical connectives become set operations, which we already know and have mastered.
+
+| Propositional logic | Set logic |
 |---|---|
-| $A$ oder $B$, $A \vee B$ | $A \cup B$ |
-| $A$ und $B$, $A \wedge B$ | $A \cap B$ |
-| nicht $A$, $\neg A$ | $A^c := \Omega \setminus A$ |
+| $A$ or $B$, $A \vee B$ | $A \cup B$ |
+| $A$ and $B$, $A \wedge B$ | $A \cap B$ |
+| not $A$, $\neg A$ | $A^c := \Omega \setminus A$ |
 
-Aus der Frage, wie plausibel "es regnete oder jemand hat gegossen" ist, wird so die Frage nach $P(R \cup G)$, und "es hat weder geregnet noch gegossen" ist $R^c \cap G^c$, also das Komplement von $R \cup G$.
+The question of how plausible "it rained or somebody watered" is thus becomes the question of $P(R \cup G)$, and "it neither rained nor was watered" is $R^c \cap G^c$, that is, the complement of $R \cup G$.
 
-Eine Teilmenge von $\Omega$, der wir eine Wahrscheinlichkeit zuordnen, nennen wir ein **Ereignis**. Nun wäre es bequem, jede Teilmenge von $\Omega$ als Ereignis zuzulassen, und für endliches $\Omega$ geht das auch. Im Allgemeinen — das war die Lehre aus dem Maßproblem — geht es nicht. Wir zeichnen deshalb ein System $\mathcal{F}$ von "interessanten" Teilmengen aus und verlangen nur, dass es unter denselben Operationen abgeschlossen ist, die wir gerade übersetzt haben: Mit $A$ und $B$ sollen auch $A \cup B$, $A \cap B$ und $A^c$ in $\mathcal{F}$ liegen, und $\emptyset$ sowie $\Omega$ ohnehin. Die Wahrscheinlichkeit ist dann eine Abbildung $P \colon \mathcal{F} \to [0,1]$.
+A subset of $\Omega$ to which we assign a probability we call an **event**. Now it would be convenient to admit every subset of $\Omega$ as an event, and for finite $\Omega$ that works. In general – this was the lesson of the measure problem – it does not. We therefore single out a system $\mathcal{F}$ of "interesting" subsets and only require it to be closed under the same operations we have just translated: along with $A$ and $B$, the sets $A \cup B$, $A \cap B$ and $A^c$ should lie in $\mathcal{F}$, and $\emptyset$ and $\Omega$ in any case. The probability is then a map $P \colon \mathcal{F} \to [0,1]$.
 
-Auf mathematisch heißt so ein Mengensystem eine $\sigma$-Algebra — das $\sigma$ steht dafür, dass auch *abzählbar unendlich* viele Vereinigungen erlaubt sind, was wir für den Grenzübergang brauchen. Damit haben wir alle Zutaten beisammen und können die Definitionen aufschreiben.
-
-:::{admonition} Definition
-Sei $\Omega$ eine Menge. Dann heißt ein Mengensystem $\mathcal{F} \subseteq \mathcal{P}(\Omega)$ eine *$\sigma$-Algebra*, wenn
-1. $\Omega \in \mathcal{F}$ "WAHR ist messbar"
-1. $A \in \mathcal{F} \implies A^c := \Omega \setminus A \in \mathcal{F}$ "logisches NICHT"
-1. $A_1,\dots \in \mathcal{F} \implies \bigcup_{i\geq 1} A_i \in \mathcal{F}$ "logisches ODER"
-
-Terminologie: wir nennen die Elemente von $\Omega$ die *Ergebnisse* und die Elemente von $\mathcal{F}$ die messbaren Teilmengen oder auch *Ereignisse*. Das Paar $(\Omega,\mathcal{F})$ ist ein *Ereignisraum*.
-:::
-
-:::{admonition} Beispiel
-ein gewöhnlicher Würfel hat Zustandsraum $\Omega = \{1,2,3,4,5,6\}$ und die Potenzmenge $\mathcal{P}(\Omega)$ ist bereits eine $\sigma$-Algebra (es gibt also keine nicht-messbaren Mengen - das klappt für endliches $\Omega$ immer). Ein einzelner Würfelwurf liefert ein Ergebnis, die Augenzahl. Die Aussage "die Würfelaugen sind eine gerade Zahl" ist eine logische Aussage, die zu dem Ereignis $\{2,4,6\} \subseteq \Omega$ korrespondiert. In sehr vielen Fällen sind wir (notgedrungen) nicht an konkreten Ergebnissen interessiert, sondern an bestimmten Ereignissen.
-:::
-
-Merkregel: wenn unklar ist, was die $\sigma$-Algebra sein soll, ist es $\mathcal{P}(\Omega)$; mit anderen Worten: wenn unklar ist, was eine "messbare Menge" sein soll, ist einfach nur "Menge" gemeint.
+In mathematical language such a system of sets is called a $\sigma$-algebra – the $\sigma$ stands for the fact that *countably infinite* unions are allowed too, which we need for passing to the limit. With that we have all the ingredients together and can write the definitions down.
 
 :::{admonition} Definition
-Eine Funktion $P \colon \mathcal{F} \to [0,1]$ von einer $\sigma$-Algebra auf einer Menge $\Omega$ in das Einheitsintervall heißt *Wahrscheinlichkeitsmaß* wenn
-1. $P(\Omega) = 1$ (Normierung) und
-1. Für paarweise disjunkte Ereignisse $A_i \in \mathcal{F}$ gilt $\sigma$-Additivität:
+Let $\Omega$ be a set. Then a system of sets $\mathcal{F} \subseteq \mathcal{P}(\Omega)$ is called a *$\sigma$-algebra* if
+1. $\Omega \in \mathcal{F}$ "TRUE is measurable"
+1. $A \in \mathcal{F} \implies A^c := \Omega \setminus A \in \mathcal{F}$ "logical NOT"
+1. $A_1,\dots \in \mathcal{F} \implies \bigcup_{i\geq 1} A_i \in \mathcal{F}$ "logical OR"
+
+Terminology: we call the elements of $\Omega$ the *outcomes* and the elements of $\mathcal{F}$ the measurable subsets, or *events*. The pair $(\Omega,\mathcal{F})$ is an *event space*.
+:::
+
+:::{admonition} Example
+An ordinary die has state space $\Omega = \{1,2,3,4,5,6\}$, and the power set $\mathcal{P}(\Omega)$ is already a $\sigma$-algebra (so there are no non-measurable sets – this always works for finite $\Omega$). A single throw of the die yields an outcome, the number of pips. The statement "the number of pips is even" is a logical statement corresponding to the event $\{2,4,6\} \subseteq \Omega$. In very many cases we are (of necessity) not interested in concrete outcomes but in particular events.
+:::
+
+Rule of thumb: if it is unclear what the $\sigma$-algebra is supposed to be, it is $\mathcal{P}(\Omega)$; in other words, if it is unclear what a "measurable set" is supposed to be, "set" is simply what is meant.
+
+:::{admonition} Definition
+A function $P \colon \mathcal{F} \to [0,1]$ from a $\sigma$-algebra on a set $\Omega$ into the unit interval is called a *probability measure* if
+1. $P(\Omega) = 1$ (normalisation) and
+1. for pairwise disjoint events $A_i \in \mathcal{F}$, $\sigma$-additivity holds:
 $P \left( \bigcup_{i\geq 1} A_i \right) = \sum_{i\geq 1} P(A_i)$
 
-Das Tripel $(\Omega, \mathcal{F}, P)$ heißt *Wahrscheinlichkeitsraum*.
+The triple $(\Omega, \mathcal{F}, P)$ is called a *probability space*.
 :::
 
-Vergleichen Sie dazu im Skript "Mathematik für Informatik" Definition 12.2.5 sowie Bemerkung 12.2.8, in der als Spezialfall $\mathcal{F} = \mathcal{P}(\Omega)$ und $\Omega$ endlich angenommen werden.
+Compare this with Definition 12.2.5 and Remark 12.2.8 in the German lecture notes "Mathematik für Informatik", where the special case $\mathcal{F} = \mathcal{P}(\Omega)$ with finite $\Omega$ is assumed.
 
-:::{admonition} Beispiel
-Bleiben wir beim nassen Rasen. Wir setzen $\Omega = \{R, G, T\}$ (die Buchstaben stehen jetzt für Ergebnisse, nicht mehr wie oben für Ereignisse) für die drei Erklärungen „es hat geregnet“, „jemand hat gegossen“, „es war Tau“, und als $\sigma$-Algebra nehmen wir die Potenzmenge $\mathcal{F} = \mathcal{P}(\Omega)$. Die einelementigen Ereignisse $\{R\}, \{G\}, \{T\}$ heißen **Elementarereignisse**; auf einer endlichen Menge legen ihre Wahrscheinlichkeiten bereits das ganze Maß fest, denn jedes andere Ereignis ist eine disjunkte Vereinigung von ihnen.
+:::{admonition} Example
+Let us stay with the wet lawn. We set $\Omega = \{R, G, T\}$ (the letters now stand for outcomes, no longer for events as above) for the three explanations "it rained", "somebody watered", "it was dew", and as the $\sigma$-algebra we take the power set $\mathcal{F} = \mathcal{P}(\Omega)$. The one-element events $\{R\}, \{G\}, \{T\}$ are called **elementary events**; on a finite set their probabilities already fix the whole measure, since every other event is a disjoint union of them.
 
-Ein erster Versuch: $P(\{R\}) = \frac23$, $P(\{G\}) = \frac16$, $P(\{T\}) = \frac13$. Das ist kein Wahrscheinlichkeitsmaß. Aus der $\sigma$-Additivität folgt nämlich
+A first attempt: $P(\{R\}) = \frac23$, $P(\{G\}) = \frac16$, $P(\{T\}) = \frac13$. This is not a probability measure. For $\sigma$-additivity gives
 
 $$
 P(\Omega) = P(\{R\}) + P(\{G\}) + P(\{T\}) = \dfrac{2}{3} + \dfrac{1}{6} + \dfrac{1}{3} = \dfrac{7}{6} > 1,
 $$
 
-im Widerspruch zur Normierung $P(\Omega) = 1$. Mit $P(\{R\}) = \frac12$ statt $\frac23$ geht die Rechnung auf, und wir haben ein Wahrscheinlichkeitsmaß.
+contradicting the normalisation $P(\Omega) = 1$. With $P(\{R\}) = \frac12$ instead of $\frac23$ the sum works out, and we have a probability measure.
 
-Ein zweiter Einwand wiegt schwerer und betrifft nicht die Zahlen, sondern das Modell. Ein Wahrscheinlichkeitsmaß auf $\{R, G, T\}$ behauptet implizit, dass sich die drei Erklärungen gegenseitig ausschließen — dass es also nicht regnen *und* jemand gießen kann. Das ist offensichtlich falsch. Wer beides zulassen will, muss die Ergebnisse feiner wählen, etwa
+A second objection weighs more heavily and concerns not the numbers but the model. A probability measure on $\{R, G, T\}$ implicitly claims that the three explanations are mutually exclusive – that it cannot rain *and* somebody water. That is plainly false. Anyone who wants to allow both has to choose the outcomes more finely, for instance
 
 $$
 \Omega' = \{ R\,G,\ R\,\overline{G},\ \overline{R}\,G,\ \overline{R}\,\overline{G} \},
 $$
 
-also alle vier Kombinationen aus „geregnet ja/nein“ und „gegossen ja/nein“. Das Ereignis „es hat geregnet“ ist dann nicht mehr ein Elementarereignis, sondern die zweielementige Menge $\{R\,G,\ R\,\overline{G}\}$.
+that is, all four combinations of "rained yes/no" and "watered yes/no". The event "it rained" is then no longer an elementary event but the two-element set $\{R\,G,\ R\,\overline{G}\}$.
 
-Daran sieht man, was bei der Modellierung die eigentliche Arbeit ist: nicht das Verteilen der Zahlen, sondern die Wahl von $\Omega$. Die Ergebnisse müssen sich paarweise ausschließen und zusammen alles abdecken, was passieren kann.
+This shows where the real work of modelling lies: not in distributing the numbers, but in the choice of $\Omega$. The outcomes have to be pairwise exclusive and together cover everything that can happen.
 :::
 
-:::{admonition} Beispiel
-Auf einer endlichen Menge $\Omega$ von Kardinalität $N := |\Omega|$ (also Anzahl der Elemente $N$) ist mit $\mathcal{F} := \mathcal{P}(\Omega)$ und $P(A) := |A| / N$ ein Wahrscheinlichkeitsmaß definiert, das wir *Gleichverteilung* nennen.
+:::{admonition} Example
+On a finite set $\Omega$ of cardinality $N := |\Omega|$ (that is, with $N$ elements), $\mathcal{F} := \mathcal{P}(\Omega)$ together with $P(A) := |A| / N$ defines a probability measure, which we call the *uniform distribution*.
 
-Der faire Würfel ist der Fall $\Omega = \{1,\dots,6\}$: Das Ereignis „gerade Augenzahl“ ist $\{2,4,6\}$ und hat die Wahrscheinlichkeit $P(\{2,4,6\}) = \frac{3}{6} = \frac12$. Nachrechnen lässt sich das auch im Code, siehe [Stochastik programmieren](programming-probability.ipynb).
+The fair die is the case $\Omega = \{1,\dots,6\}$: the event "even number of pips" is $\{2,4,6\}$ and has probability $P(\{2,4,6\}) = \frac{3}{6} = \frac12$. This can also be checked in code, see [Programming with probability](programming-probability.ipynb).
 :::
 
-:::{admonition} Beispiel
-Für einen beliebigen Ereignisraum $(\Omega,\mathcal{F})$ und ein festes Element $\xi \in \Omega$ ist mit
+:::{admonition} Example
+For an arbitrary event space $(\Omega,\mathcal{F})$ and a fixed element $\xi \in \Omega$,
 
-$\delta_\xi := A \mapsto \begin{cases} 1 & \xi \in A,\\ 0 & \text{sonst} \end{cases}$
+$\delta_\xi := A \mapsto \begin{cases} 1 & \xi \in A,\\ 0 & \text{otherwise} \end{cases}$
 
-ein Wahrscheinlichkeitsmaß definiert, das *Dirac-Maß* mit Einheitsmasse am Punkt $\xi$.
+defines a probability measure, the *Dirac measure* with unit mass at the point $\xi$.
 
-Das ist der maximal unfaire Würfel: Ein Würfel, der immer eine Sechs zeigt, hat die Verteilung $\delta_6$. Für ihn ist $P(\{2,4,6\}) = 1$ und $P(\{1,2,3\}) = 0$ — das Ereignis „gerade Augenzahl“ tritt sicher ein, das Ereignis „höchstens drei“ nie. Zwischen diesen beiden Extremen, Gleichverteilung und Dirac-Maß, liegen alle übrigen Würfel.
+This is the maximally unfair die: a die that always shows a six has distribution $\delta_6$. For it, $P(\{2,4,6\}) = 1$ and $P(\{1,2,3\}) = 0$ – the event "even number of pips" occurs with certainty, the event "at most three" never. Between these two extremes, the uniform distribution and the Dirac measure, lie all the other dice.
 :::
 
 :::{admonition} Proposition
-**Rechenregeln** für Wahrscheinlichkeitsmaße:
-Für jeden Wahrscheinlichkeitsraum $(\Omega,\mathcal{F},P)$ mit $A,B \in \mathcal{F}$ gilt:
+**Rules of calculation** for probability measures:
+for every probability space $(\Omega,\mathcal{F},P)$ with $A,B \in \mathcal{F}$:
 1. $P(\emptyset) = 0$
-1. Endliche Additivität: $P(A \cup B) + P(A \cap B) = P(A) + P(B)$
-1. Monotonie: $A \subseteq B \implies P(A) \leq P(B)$
-1. $\sigma$-Subadditivität: $P \left( \bigcup_{i\geq 1} A_i \right) \leq \sum_{i\geq 1} P(A_i)$
-   (wenn die $A_i \in \mathcal{F}$ nicht notwendig disjunkt sind)
+1. Finite additivity: $P(A \cup B) + P(A \cap B) = P(A) + P(B)$
+1. Monotonicity: $A \subseteq B \implies P(A) \leq P(B)$
+1. $\sigma$-subadditivity: $P \left( \bigcup_{i\geq 1} A_i \right) \leq \sum_{i\geq 1} P(A_i)$
+   (where the $A_i \in \mathcal{F}$ need not be disjoint)
 :::
 
-:::{admonition} Beweis
+:::{admonition} Proof
 1. $1 = P(\Omega) = P(\emptyset \cup \Omega) = P(\emptyset) + P(\Omega) = P(\emptyset) + 1$
-1. $P(A \cup B) = P(A \cup (B \setminus A)) = P(A) + P(B \setminus A)$ und
-   $P(B \setminus A) + P(A \cap B) = P((B \setminus A) \cup (A \cap B)) = P(B)$ also
+1. $P(A \cup B) = P(A \cup (B \setminus A)) = P(A) + P(B \setminus A)$ and
+   $P(B \setminus A) + P(A \cap B) = P((B \setminus A) \cup (A \cap B)) = P(B)$, hence
    $P(A \cup B) + P(A \cap B) = P(A) + P(B \setminus A) + P(A \cap B) = P(A) + P(B)$
 1. $A \subseteq B \implies B = A \cup (B \setminus A)$
    $\phantom{A \subseteq B} \implies P(A) \leq P(A) + P(B \setminus A) = P(A \cup (B \setminus A)) = P(B)$
-1. den Leser\*innen als Übung überlassen.
+1. left to the reader as an exercise.
 :::
 
 :::{admonition} Definition
-Eine Funktion $f \colon \Omega \to \Omega'$ zwischen Wahrscheinlichkeitsräumen $\Omega$ und $\Omega'$ (die $\sigma$-Algebren und Wahrscheinlichkeitsmaße notieren wir nicht mehr extra dazu) heißt *messbar* oder auch *Zufallsvariable* wenn für messbare Mengen $U \subseteq \Omega'$ die Urbilder $f^{-1}(U) \subseteq \Omega$ ebenfalls messbar sind.
+A function $f \colon \Omega \to \Omega'$ between probability spaces $\Omega$ and $\Omega'$ (we no longer write the $\sigma$-algebras and probability measures out separately) is called *measurable*, or a *random variable*, if for measurable sets $U \subseteq \Omega'$ the preimages $f^{-1}(U) \subseteq \Omega$ are measurable as well.
 :::
 
-Merkregel: wenn unklar ist, was die $\sigma$-Algebren sein sollen, stellen wir uns jede Abbildung (=Funktion) als messbar vor. Das ist strenggenommen in der Regel falsch, sobald wir uns mit stetigen Zufallsvariablen beschäftigen - und wird uns doch in der Praxis nicht stören.
+Rule of thumb: if it is unclear what the $\sigma$-algebras are supposed to be, we picture every map (= function) as measurable. Strictly speaking that is usually false as soon as we deal with continuous random variables – and it will not trouble us in practice all the same.
 
-:::{admonition} Beispiel
-Wenn wir auf $[0,1]$ die Gleichverteilung definieren, indem wir auf offenen Intervallen die Intervalllänge als Wahrscheinlichkeitsmaß festlegen, so ist jede stetige Funktion $f \colon [0,1] \to [0,1]$ auch messbar.
+:::{admonition} Example
+If we define the uniform distribution on $[0,1]$ by declaring the interval length to be the probability measure on open intervals, then every continuous function $f \colon [0,1] \to [0,1]$ is measurable as well.
 :::
 
-Der Begriff Zufallsvariable ist sehr irreführend: es gibt hier keine Variable und keinen Zufall. Während der Begriff der messbaren Abbildung auch außerhalb der Wahrscheinlichkeitstheorie sinnvoll ist, hat der Begriff der Zufallsvariable aber eine andere typische Verwendung, andere syntaktische Gepflogenheiten. Wir dürfen uns diese begriffliche Überladung so vorstellen, wie einen API-Wrapper, der uns zusätzlichen syntaktischen Zucker gibt - eine Abbildung, die als Zufallsvariable daher kommt, lässt sich wie eine Variable einsetzen, die zufällige Werte annimmt. Wir werden diese Perspektive noch stärker nutzen und einüben.
+The term random variable is highly misleading: there is neither a variable nor randomness here. While the notion of a measurable map makes sense outside probability theory too, the notion of a random variable has a different typical use and different syntactic habits. We may picture this overloading of the term as an API wrapper that gives us extra syntactic sugar – a map that comes dressed as a random variable can be used like a variable taking random values. We will lean on this perspective more heavily and practise it.
 
-Wir wollen uns im Folgenden nicht weiter mit der Maßtheorie beschäftigen, die einiges an Aufwand erfordert, um z.B. das allgemeine Lebesgue-Integral zu definieren. Aufgrund der Anwendungen in der Informatik, insbesondere im maschinellen Lernen wollen wir aber eins festhalten: während das Riemann-Integral durch Approximation mit Flächeninhalten von Rechtecken gebildet wird, bildet man das Lebesgue-Integral durch Approximation der Funktion selbst durch Treppenfunktionen.
+In what follows we do not want to get further into measure theory, which takes a certain amount of effort to define, say, the general Lebesgue integral. Because of the applications in computer science, and in machine learning in particular, we do want to record one thing: whereas the Riemann integral is formed by approximating with the areas of rectangles, the Lebesgue integral is formed by approximating the function itself by step functions.
 
 :::{admonition} Definition
-Eine Treppenfunktion ist eine messbare Funktion, die nur endlich viele verschiedene Werte annimmt.
+A step function is a measurable function taking only finitely many different values.
 :::
 
-:::{admonition} Satz
-Zu jeder $\sigma$-Algebra auf $\Omega$ und jeder messbaren Funktion $f \colon \Omega \to \mathbb{R}$ gibt es eine Folge von Treppenfunktionen $t_n \colon \Omega \to \mathbb{R}$, die gegen $f$ konvergiert: $t_n \to f$.
+:::{admonition} Theorem
+For every $\sigma$-algebra on $\Omega$ and every measurable function $f \colon \Omega \to \mathbb{R}$ there is a sequence of step functions $t_n \colon \Omega \to \mathbb{R}$ converging to $f$: $t_n \to f$.
 :::
 
-Damit lassen sich sehr viele Aussagen beweisen, indem man sie für Treppenfunktionen beweist (so auch die Konstruktion des Lebesgue-Integrals). Man kann daraus auch weitreichende Universalitätsaussagen konstruieren, wenn ein Computermodell in der Lage ist, Treppenfunktionen beliebig genau zu approximieren. Damit lässt sich auch die Universalität von neuronalen Netzen einsehen; die Vorlesung *Einführung in Deep Learning* führt das aus (universelle Approximation).
+This allows a great many statements to be proved by proving them for step functions (the construction of the Lebesgue integral among them). Far-reaching universality statements can also be built from it whenever a model of computation is able to approximate step functions to arbitrary accuracy. It is also how the universality of neural networks can be seen; the course *Introduction to Deep Learning* works this out (universal approximation).
 
-Zuletzt soll nicht unerwähnt bleiben, dass es einen berechtigten Einwand gegenüber diesem Formalismus gibt: am Rechner lässt sich nur konstruktive Mathematik implementieren, der Satz vom ausgeschlossenen Dritten und das Auswahlaxiom sind nicht implementierbar. In dieser Logik aber (der konstruktivistischen / sogenannten intuitionistischen) lassen sich für einen metrischen Raum $X$ alle Mengen als messbar bezeichnen, weil die nicht-messbaren Teilmengen eben nicht konstruierbar sind. Damit wird manches einfacher, aber eben auch vieles unmöglich. Wir begnügen uns nun also damit, dass wir wissen, wie sich Texte lesen lassen, die den üblichen Formalismus verwenden, und außerdem eine gute Ausrede zur Hand haben, warum wir uns mit dem Formalismus nicht länger auseinander setzen werden.
+Finally, it should not go unmentioned that there is a legitimate objection to this formalism: on a computer only constructive mathematics can be implemented, and the law of the excluded middle and the axiom of choice are not implementable. In that logic, though (the constructivist, so-called intuitionistic one), all sets of a metric space $X$ may be called measurable, precisely because the non-measurable subsets are not constructible. That makes some things easier, but also a great many things impossible. So we content ourselves with knowing how to read texts that use the usual formalism, and with having a good excuse at hand for why we will not engage with the formalism any longer.
 
-Sie können also nun ein Stochastik-Buch in die Hand nehmen, dort einen Satz vorfinden "Sei X eine Menge mit einer $\sigma$-Algebra ..." und dabei den Teil mit der $\sigma$-Algebra für's erste überlesen, da Sie in der Praxis den nicht-messbaren Mengen (also denen, die nicht Teil des Mengensystems sind, welches $\sigma$-Algebra genannt wird) nicht über den Weg laufen. Mit anderen Worten: stellen Sie sich in erster Näherung vor, dass "messbar" keine Einschränkung ist. Was wir aber aus diesem Kapitel mindestens mitnehmen sollten ist der Begriff der Zufallsvariable, die Rechenregeln für Wahrscheinlichkeitsmaße $P$ und das wichtige Beispiel der Gleichverteilung.
+So you can now pick up a probability textbook, find a theorem there saying "let X be a set with a $\sigma$-algebra ..." and read over the $\sigma$-algebra part for the time being, since in practice you will not run into non-measurable sets (that is, into those that are not part of the system of sets called a $\sigma$-algebra). In other words: as a first approximation, imagine that "measurable" is no restriction at all. What we should take away from this chapter at the very least is the notion of a random variable, the rules of calculation for probability measures $P$, and the important example of the uniform distribution.
 
-Wenn Sie sich gern im weiteren Verlauf der Vorlesung mit interaktiven Spielchen der Stochastik nähern wollen, ist [Random Services](
-https://randomservices.org/random/prob/index.html) genau das Richtige für Sie.
-Wenn Sie es lieber elegant-visuell mögen, wird [Seeing Theory](https://seeing-theory.brown.edu/) Sie durch den Stochastik-Teil der Vorlesung begleiten.
+If you would like to approach probability through interactive playthings as the course goes on, [Random Services](
+https://randomservices.org/random/prob/index.html) is just the thing for you.
+If you prefer things elegant and visual, [Seeing Theory](https://seeing-theory.brown.edu/) will accompany you through the probability part of the course.
 
-[Wenn Sie in 6 Minuten den Würfelwurf (die Gleichverteilung, auch Laplace-Experiment) nochmal von jemand anderem erklärt haben möchten, können Sie das auf YouTube finden im Kanal musstewissen Mathe](https://www.youtube.com/watch?v=zPcjFWQa6Uc).
+[If you would like the throw of a die (the uniform distribution, also called a Laplace experiment) explained to you again by somebody else in six minutes, you can find that on YouTube on the channel musstewissen Mathe](https://www.youtube.com/watch?v=zPcjFWQa6Uc) (in German).
