@@ -9,6 +9,7 @@ order exactly as they were.
     python3 tools/nbtext.py export <notebook> [-o out.txt]
     python3 tools/nbtext.py import <notebook> <edited.txt>   # writes the notebook in place
     python3 tools/nbtext.py check  <notebook>                # export/import round-trips?
+    python3 tools/nbtext.py syntax <notebook>                # do the code cells still compile?
 
 The import refuses to run if the number or the types of the cells changed: block
 alignment with the German original is the invariant the whole sync machinery rests on,
@@ -105,6 +106,29 @@ def check(nb_path: Path) -> int:
     return 0
 
 
+def syntax(nb_path: Path) -> int:
+    """Translating code means editing code. This catches the obvious breakage without
+    paying for a full re-execution, which for some notebooks is minutes."""
+    nb = json.loads(nb_path.read_text())
+    bad = 0
+    for i, cell in enumerate(nb["cells"]):
+        if cell["cell_type"] != "code":
+            continue
+        source = "".join(cell["source"])
+        if not source.strip() or source.lstrip().startswith(("%", "!")):
+            continue
+        try:
+            compile(source, f"cell {i}", "exec")
+        except SyntaxError as e:
+            bad += 1
+            print(f"cell {i}: {e.msg} (line {e.lineno})")
+    if bad:
+        print(f"{nb_path}: {bad} cell(s) do not compile")
+        return 1
+    print(f"{nb_path}: all code cells compile")
+    return 0
+
+
 def main() -> int:
     if len(sys.argv) < 3:
         print(__doc__)
@@ -123,6 +147,8 @@ def main() -> int:
         return 0
     if cmd == "check":
         return check(nb_path)
+    if cmd == "syntax":
+        return syntax(nb_path)
     print(__doc__)
     return 2
 

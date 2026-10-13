@@ -67,7 +67,7 @@
       "source": "intro-stochastik.md"
     },
     "iris.ipynb": {
-      "translated": false,
+      "translated": true,
       "style_pass": false,
       "source": "iris.ipynb"
     },
