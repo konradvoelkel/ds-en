@@ -364,3 +364,61 @@ not my file, but whoever translates it should land on *Data cleaning*.
 * Cell 25's comments end with an unterminated double quote (`# takes up to the last ">`),
   copied from the German. Harmless inside a comment, and deliberate: the comment is
   pointing at the `">` in the pattern. Left alone so the diff stays a translation.
+
+## Style pass
+
+Markdown cells only; every code cell is byte-identical to the translated version
+(`check_untouched.py HEAD` reports *prose only*). 41 of the 81 blocks changed, spread over
+24 of the 24 markdown cells. `sync.py align`, `check_english.py`, `nbtext.py check`,
+`nbtext.py syntax` and `check_untouched.py` all pass. Not re-executed.
+
+**Nothing on the "what stayed German because it is data" list above was touched.** The DWD
+codes, `k.A.`, `DÃ¼sseldorf`, `15.01.2025`, `a(ffe|de)+`, `Kln` / `köln` / `"Kln"`, the
+`ue`→`ü` normalisation, the URLs and `YYYYMMDD` all stand exactly as the translator left
+them, inside their backticks or quotes. The glossary's own coinages (*telling names*,
+*mapping table*, *substitute value*, *gap*, *summary measure* / *metric*, *binding weakly /
+binding strongly*, *log*) were kept even where a synonym would have read more smoothly.
+
+Kinds of change:
+
+* **German sentence shape undone.** Fronted objects and verb-final clauses turned round:
+  "Which of the two it is, the number itself will not tell you" → "The number itself will
+  not tell you which"; "Why, the data file does not say" → "The data file does not say why";
+  "More robust is the variant with…" → "The variant built on…, is more robust".
+* **"Anyone who…" / "one" → "you" or imperative** where the German was giving advice:
+  "Anyone who works with them regularly should read" → "If you work with them regularly,
+  read"; "anyone who needs something more exact takes" → "if you need something more exact,
+  use"; "You should state the format, though, instead of letting it be guessed" → "State the
+  format, though, rather than letting it be guessed". Rule 1 of the Principle now says what
+  it means in English: "Every change goes into code, where it can be reproduced".
+* **Nominalisations and padding cut.** "the largest part of a data scientist's daily work is
+  not modelling" → "most of a data scientist's working day goes not on modelling"; "That is
+  as it should be." folded into the previous sentence as "– as it should"; "the loop sits
+  that the `+` creates" → "the loop created by the `+` sits".
+* **Calques replaced.** "stands in the data at 6 o'clock" → "the data have sunrise at 6
+  o'clock"; "the clock jumped" → "the clocks jumped"; "brings `difflib` along" → "ships
+  `difflib`"; "goes backwards" (the automaton) → "backing up"; "That is wanted" → "That is
+  intended"; "worth the trouble" → "worth learning".
+* **Rhythm.** The time-zone paragraph's last sentence became one conditional ("Confuse the
+  two and every time shifts by an hour or two – which nobody notices until…"); the Solution's
+  survival rates are now one sentence with the percentages carried by "for `Mrs` and
+  `Miss`…, for `Master`…, for `Mr`" rather than a colon-list.
+
+Noticed but not touched:
+
+* **c28.2 and c29.0 were edited and then put back verbatim.** `check_untouched.py` extracts
+  maths with `\$\$?[^$]*\$\$?` and does not mask fenced code or backticks, so the `$` anchor
+  in the fenced pattern `r"^<([a-z]+?)>(.*)</([a-z]+?)>$"` (c28.1) opens a "formula" that
+  runs through c28.2, c29.0 and the regex table up to the `` `$` `` in the anchor row. Any
+  prose change in that stretch is reported as *changed maths*. The two paragraphs therefore
+  keep their translation-pass wording ("and then comes the next counterexample", "The lesson
+  from this is well known and still holds unchanged"), which is slightly stiffer than the rest
+  of the chapter. A human can either accept that or teach the checker to skip fenced blocks.
+* **"70 to 80 per cent" / "above 50 per cent" in the Solution** are left spelled out, as the
+  translator wrote them. TRANSLATION.md §6 fixes `78 %` → `78%` for figures with a sign; the
+  German here is presumably words, so nothing was changed. Worth one glance for house
+  consistency.
+* **"binding weakly / binding strongly"** reads as a calque; the glossary binds it, so it
+  stays. "lowest to highest precedence" is what an English regex text would say.
+* The translator's doubts 1 (*Kennzahl* split), 2 (two translated example strings) and 7
+  (the DWD's name in the link text) are untouched and still open.

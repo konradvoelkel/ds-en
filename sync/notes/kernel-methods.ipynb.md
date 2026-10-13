@@ -165,3 +165,65 @@ output, so no text depends on it.
 machines as something "neither of which we have discussed", and the chapter indeed never
 returns to them; the English says so just as plainly. Worth knowing for whoever writes the
 English edition's cross-references: this chapter is not where a reader learns SVMs.
+
+## Style pass
+
+Markdown cells only; every code cell is byte-identical (`check_untouched.py HEAD`: "prose
+only"), the stored outputs stand. 6 of the 10 markdown cells touched, 16 of 37 markdown
+paragraphs; 53 blocks before and after, `sync.py align` passes. All 43 `$…$` / `$$…$$` spans
+compared before and after – byte-identical. No `TERMINOLOGY.md` term changed: *kernel
+trick*, *kernel method*, *kernel function*, *Mercer kernel*, *feature map*, *feature space*,
+*Gaussian kernels*, *measurement of distance*, *notion of distance*, *normalised vectors*,
+*normalisation* are all where they were.
+
+**Register kept.** The mathematical half (cells 13–19) stays in impersonal "one" – "one can
+remember", "one applies a linear transformation", "one now abstracts away", "one speaks of
+the kernel method" – as the translator chose (Decisions 7). The "we" passages stay "we". No
+"one" was turned into "you" anywhere in this file; the lighter touch is deliberate, and the
+chapter is already closer to English than most.
+
+Kinds of change:
+
+* **Dangling "Given …, they can be"** in both Examples of cell 14 → "Two points $A, B$ in
+  the plane can be described by their coordinates" / "Three points $A, B, C$ … can be
+  described". "and with it recover" → "and from it recover". The translator's "datum"
+  survives in both (Decisions 3), but the two-point case now reads "remember a single datum,
+  the distance $d(A, B)$" instead of "the single datum of the distance", which was the
+  phrase a reader tripped on; the three-point "the datum of the distances" is unchanged.
+* **Nominalisation and inversion.** "The kernel trick now consists in describing" → "The
+  kernel trick is now to describe"; "In principal component analysis the eigenvectors … are
+  computed" → "Principal component analysis computes the eigenvectors"; "a construction
+  $\phi$ always exists with which $\kappa$ can be represented as a kernel" → "there is
+  always a construction of a $\phi$ that represents $\kappa$ as a kernel"; "in order to
+  transform them linearly onto principal components afterwards" → "then transforms them
+  linearly onto principal components".
+* **Connectives and padding.** "measures distances the whole time" → "all the time";
+  "An aside, to explain that: we can also compute that" → "An aside, by way of explanation:
+  we can also compute"; "shows that there is a close relationship" → "shows a close
+  relationship"; "The normalisation otherwise customary" → "The usual normalisation"; "one
+  also speaks of the X or the Y or the Z" → "one speaks of the X, the Y or the Z"; "But what
+  does one do with the kernel now?" → "… with the kernel?"; "does not have to" → "need not"
+  (twice, cell 14).
+* **One sentence restructured** in cell 13: "Other algorithms too, k-nearest neighbours and
+  support vector machines for instance (…), rest on" → "Other algorithms, too – k-nearest
+  neighbours and support vector machines, for instance (…) – rest on". Same paragraph, same
+  sentence count.
+
+Noticed but not touched – for a human:
+
+1. **"the datum of the distances $d(A,B), d(B,C), d(A,C)$"** (cell 14, second Example) is
+   still the trip-hazard the translator described. "remember the three distances … as one
+   datum" would be the English, but it reorders what the German insists on; a translator's
+   call, not a style one.
+2. **Cell 19 now says "Principal component analysis"** where the translator's notes
+   (Decisions 2) say block c19.1 was "principal axis transformation". The text I received
+   already read "principal component analysis", so the consistency pass evidently flattened
+   it as `TERMINOLOGY.md` now prescribes; the notes above are the stale party, not the
+   prose.
+3. **"Note that we do not have to compare $(x-\mu)$ with $(y-\mu)$"** (cell 14, below the
+   Gaussian-kernel Definition): $\mu$ is never introduced in this chapter – it is the normal
+   density's mean, carried over from `normal-distribution.ipynb` by implication. Reads fine
+   to anyone who has that chapter; a one-word gloss would be an addition, so left alone.
+4. **Cell 16 "Linear regression with ridge regularisation, for instance:"** heads a cell
+   that does `KernelRidge` classification on cluster labels; the prose is the German's and
+   is correct in spirit, but a reader expecting a regression target may blink.

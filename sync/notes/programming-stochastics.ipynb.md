@@ -116,3 +116,41 @@ a quotation.
   `random-variables-distributions.md`, which does introduce the pmf. The German does not link
   it and neither does the translation, so nothing to fix — just confirming the claim survives
   the reordering, if any.
+
+## Style pass
+
+10 of 19 prose blocks changed, in 7 markdown cells; headings, link texts, maths and all
+5 code cells untouched (`check_untouched.py HEAD` passes, as do `sync.py align`,
+`check_english.py`, `nbtext.py check` and `nbtext.py syntax`).
+
+Kinds of change:
+
+* **"We now want to look briefly at how … can be simulated"** (the *wir wollen nun* opening)
+  → "Let us look briefly at how to simulate …"; "We will now use it" → "Now we use it".
+* **Modal-verb chains flattened.** "The seed … can be specified, and it should be, in order
+  to make random simulations reproducible" → "The seed … can be set, and should be, so that
+  random simulations are reproducible"; "If we want to draw a sample, we still have to get"
+  → "To draw a sample, though, we still need to get".
+* **Passive to active where the agent is us.** "random throws of a die can be generated" →
+  "we can generate random throws of a die".
+* **Prepositional repetition cut.** "you can also fall back on `random.randint(1,6)`, or on
+  `random.choice(range(1,7))`, or on `random.randrange(1,7)`" → "there are also
+  `random.randint(1,6)`, `random.choice(range(1,7))` and `random.randrange(1,7)`".
+* **"substituting … into $X$"** (the German *einsetzen*) → "plugging … into $X$", which is
+  what an English-speaking mathematician says; "Now one might object:" → "Now you might
+  object that".
+* **The `random.sample` / `random.choices` block** reshaped so the two sentences are
+  parallel ("… draws a sample … **without** replacement" / "… draws from the population
+  $k$ times **with** replacement"); the parenthesis "(assigning weights, as you do so,
+  instead of assembling a suitable population)" → "(and lets you assign weights instead of
+  assembling a suitable population)".
+* "the probabilities … of the die" → "the die's probabilities"; "turn the throw of a die
+  into a first statistical model" → "make the throw of a die our first statistical model".
+
+Glossary terms kept exactly: interface, shorthand, urn, pairwise distinct, "some … or
+other", throw of a die, number(s) of pips, relative frequency, random experiment, drawing
+with/without replacement.
+
+Not touched: the "Python constructs used" link list, the xkcd block, the single quotes
+around 'number of pips' (the translator's deliberate choice), and the open questions in the
+translation notes above (`transform_unit_to_dice`, `W` → `Omega`).

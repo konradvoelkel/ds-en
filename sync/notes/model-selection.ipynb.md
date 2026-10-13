@@ -235,3 +235,60 @@ data* instead; (b) decision 4, *assessing* versus *evaluation*, which sets five 
 (d) the stored outputs of cells 14 and 39 and the figures of cells 24 and 26 are still
 German, so the re-execution pass must actually reach this notebook – it needs network access
 on the first run, because cell 29 downloads four files from GitHub.
+
+## Style pass
+
+Markdown cells only; every code cell is byte-identical to before (`check_untouched.py HEAD`
+confirms "prose only"), and `sync.py align` (92 blocks), `check_english.py`, `nbtext.py
+check` and `nbtext.py syntax` all pass. 21 of the 25 markdown cells were touched, 38
+paragraphs in all; no block was merged, split or reordered, and no maths, link, image or
+admonition line changed.
+
+**Kinds of change.**
+
+* *Impersonal "one" to "you" or to a plain active sentence*: "usually one simply has to try
+  out" → "usually you simply have to try out"; "One says that the test set leaks" → "The test
+  set is said to leak"; "one could be unlucky" → "you could be unlucky"; "To assess a
+  regression one uses the $R^2$ value" → "A regression is assessed with the $R^2$ value".
+* *German sentence shape unwound*: the c3.0 sentence "If, while developing …, you compare 200
+  different variants by analysing their performance on the test set after fitting them on the
+  training set, that inevitably leads to …" is now two sentences in the order the work is
+  done ("by fitting each on the training set and analysing its performance on the test set.
+  That inevitably produces …"). "So that one can compare variants on the one hand and still
+  keep a test set on the other, in order to be able to judge …" → "To be able to compare
+  variants and still keep a test set for judging …". "In choosing a test set … there are two
+  fundamental problems" → "Choosing a test set … brings two fundamental problems".
+* *Calques replaced*: "the data at hand" → "the dataset in front of you"; "takes … as known"
+  → "treats … as known"; "Contrary to the intuition behind the name" → "Despite what the name
+  suggests"; "has the problem that classifying it correctly is a little too easy" → "The
+  trouble with … is that it is a little too easy to classify correctly"; "we imagine ourselves
+  undoing the permutation" → "in effect undoing the permutation".
+* *Padding cut*: "namely k times" → "k times, to be precise"; "which determines how many
+  samples are to be left out" → "which sets how many samples to leave out"; "whose syntax and
+  semantics are those of" → "which has the same syntax and semantics as"; "The harmonic
+  (potentially weighted) mean" → "The harmonic mean (possibly weighted)".
+* *Typography*: `2000--2022` in the c8 admonition became `2000–2022` (TRANSLATION.md §6; the
+  same range form the EM chapter already uses for `0–9`).
+
+**Left alone, deliberately.** The single scare quotes ('better', 'folds', 'worth',
+'predict', 'loss landscape') are the German's own – the original writes `'besser'`, not
+`„besser“` – so §6's quotation rule does not reach them; they stay. The second paragraph of
+c19 and the bullets of c38 were fluent already and were not touched. The terminology of the
+chapter (assessing, scoring function, fold, test set/validation set, generalise, ground
+truth, F1 score) is exactly as the translation left it.
+
+**For a human to look at.**
+
+* c3.1 "the test set (or rather the training set) is split up further" renders the German
+  *den Test- bzw. den Trainingsdatensatz*. "Or rather" is one reading of *bzw.*; the plainer
+  one is "the test set or the training set". I kept the translator's choice (meaning is not
+  mine to change) but it may be the wrong sense.
+* c3.3 "the lecture course *Einführung in Deep Learning* (introduction to deep learning)"
+  keeps the German title with a gloss, as this chapter's translation decided; the EM chapter
+  renders the same course as "the course *Introduction to Deep Learning*" (twice). One book
+  should do one thing. Not touched here – it is a name, and the decision belongs to whoever
+  owns both chapters.
+* c22.1 "pick two different hyperparameter settings at random" – the German says "zwei
+  verschiedene Hyperparameter"; "settings" makes explicit that values, not parameters, are
+  meant, which is what the sentence is about. A minimal clarification, flagged in case it
+  reads as more than that.

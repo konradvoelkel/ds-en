@@ -137,3 +137,48 @@ containing the old German `print` strings, and cell 3's output pins an older Num
 version. This is the expected state before the central re-execution pass; I did not
 re-execute, as instructed. Worth noting that cell 33 is seeded (`default_rng(1)`), so its
 numbers will not move, and cell 10's `timeit` numbers will.
+
+## Style pass
+
+25 of 43 prose blocks changed, in 17 markdown cells; headings, link texts, maths and all
+15 code cells untouched (`check_untouched.py HEAD` passes, as do `sync.py align`,
+`check_english.py`, `nbtext.py check` and `nbtext.py syntax`).
+
+Kinds of change:
+
+* **Verb-fronted sentences for German verb-final shapes.** "What other `dtype`s there are
+  and how they are used we can take from the documentation" → "The documentation lists the
+  other `dtype`s and how to use them"; "Following that attentively, you notice that …" →
+  "Look closely and you will notice that …"; "Detailed information … is given by [the
+  documentation]" → "For the details …, see [the documentation]" (link text unchanged).
+* **Nominalisations to verbs.** "a comparison of the representing strings" style phrases
+  were not in this chapter, but "In doing so, however, a further array object … is created
+  first … and `[y]` is then called on it" → "But it first creates a further array object …
+  and only then calls `[y]` on it"; "It is therefore more efficient in principle to use …"
+  → "In principle, then, Numpy's own `[x,y]` is the more efficient choice".
+* **"one" → "you"** throughout (blocks c27.0, c35.1), finishing what the translation
+  notes' decision 6 proposed; "one can hardly know every function" → "nobody can know every
+  function".
+* **Calques replaced.** "shows up a problem" → "exposes a problem"; "takes you from one axis
+  to the next" → "moves you from one axis to the next"; "Anyone who has learned to vectorise
+  here can go on doing it there" → "Whoever has learned to vectorise here can carry on doing
+  it there"; "datatypes" → "data types" (glossary spelling).
+* **Padding cut.** "It is important to note that" → "Note that"; "with everything that
+  entails" kept, but "the part that concerns us first" now hangs off a semicolon rather than
+  a relative clause.
+* **Articles.** "called `tensor` rather than `ndarray`" → "called a `tensor` rather than an
+  `ndarray`".
+
+Deliberately not touched:
+
+* `## Arrays` cell (c2.0): the heading, HTML comment and import sentence segment as one
+  block; left as is.
+* "There is an `arange` method too" (c7.0) and "`ufunc` … denotes a method" (c34.1): the
+  German says *Methode* and both are strictly functions, not methods. Meaning, so not
+  mine to fix; in c27.0 I dropped the noun ("These days you use `np.matmul`") rather than
+  pick a side. `programming-stochastics.ipynb`'s notes raise the same point. A human
+  should decide on one word for the three notebooks.
+* The operation "($n \times n$ array) * ($n$-vector)" in c29.0 has a bare `*` in prose
+  between two maths spans; it renders, but it is one unmatched asterisk away from
+  italics. Left alone.
+* The function list (c36.0) and every heading.

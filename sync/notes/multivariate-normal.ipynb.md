@@ -136,3 +136,49 @@ Three smaller calls, for the record:
   `expectation-variance.md`. The bolded `**Achtung**` became `**Careful**`; it is a bare
   bolded line, not an admonition title, so `TRANSLATION.md` §5 does not settle it – worth a
   glossary row if another chapter has one.
+
+## Style pass
+
+Markdown cells only; every code cell is byte-identical to `HEAD` (`check_untouched.py` passes
+"prose only"), and `sync.py align`, `check_english.py`, `nbtext.py check` and `nbtext.py syntax`
+are all clean. 26 of 58 non-code blocks changed; no block merged, split or reordered.
+
+Kinds of change:
+
+* **German sentence shape.** "If we want to generalise this …, then $P(\dots)$" → "Generalising
+  this … gives $P(\dots)$"; "From this we see: the density function must …" → "So the density
+  function must …: it encodes …"; "So that we get to know 3D plotting …" → "To get to know …";
+  "That is no accident but a calculation" → "That is no accident; it is a calculation".
+* **Nested parentheses unwound** in block c14.0: "(where it shows plainly enough, in the
+  two-dimensional histogram (also called a heatmap) and in the contour plot (the ellipses))"
+  is now a colon-led list.
+* **"one" → "you" / impersonal → direct.** "one checks this with the rules of calculation" →
+  "check this with …"; "anyone whose data have correlated features does not first have to" →
+  "if your data have correlated features, you do not first have to"; "one also writes" → "it is
+  also written".
+* **Nominalisations to verbs.** "the stretching is done" → "the stretching happens"; "how the
+  ellipse comes out of a perfect circle" → "arises from"; "$Q$ increases strictly monotonically"
+  → "$Q$ is strictly increasing"; "the density then has $z = x - \mu$ in it" → "is then evaluated
+  at $z = x - \mu$".
+* **Padding cut.** "every possible linear combination" → "every linear combination"; "namely at
+  $x = \mu$" → "at $x = \mu$"; "no matter what $\Sigma$ looks like, so for a negative covariance
+  or very different variances as well" → "whatever $\Sigma$ looks like, including …"; "undoes the
+  stretching again" → "undoes the stretching".
+* **Terminology untouched.** *Change of basis*, *inner product*, *stretch factor*, *the rotation
+  and the stretching* (the second occurrence, "the rotation and stretching enlarges", now reads
+  "the rotation and the stretching enlarge … and thin the density out", i.e. the glossary's pair
+  of nouns with a plural verb), *level set*, *contour line* / *contour plot*, *eigendecomposition*,
+  *semi-axes*, *peak*, *ray* – all as the glossary fixes them.
+* **The last Lemma** (c25.4): "then $X$ and $Y$ being uncorrelated already implies that they are
+  independent" → "then $X$ and $Y$ are independent as soon as they are uncorrelated". Same claim,
+  the German *schon* carried by "as soon as".
+
+Noticed but not touched:
+
+* **"X+Y=0" outside maths mode** in block c23.4, as the translation notes already say. Left.
+* **The "weirdo sample" / "bang"** register in c23.4 is the German's own liveliness and was kept.
+* **`print` label capitalisation** (cell 5 lower case, cell 17 upper case) is a code-cell matter
+  and is out of scope for this pass; still the German's own inconsistency.
+* **Block c2.1** "Let us try out a few candidates and look down on the density from above" – fine
+  English, left alone, but a reader may wonder whether "from above" refers to the plot's viewpoint
+  (it does: `contourf`).

@@ -249,3 +249,61 @@ German; the re-execution pass must reach this notebook, and it needs network acc
 execution time, which is by far the most fragile thing in the chapter. (d) `duessel` in
 cell 30, kept deliberately, item in *Code changes*. (e) `Hauptachsentransformation`,
 item 2, if the style pass wants the geometric hint back.
+
+## Style pass
+
+Markdown cells only; every code cell is byte-identical to the translated version
+(`check_untouched.py HEAD` reports *prose only*). 46 of the 102 blocks changed, in 29 of the
+30 markdown cells. `sync.py align`, `check_english.py`, `nbtext.py check`, `nbtext.py
+syntax` and `check_untouched.py` all pass. Not re-executed; the German stored outputs noted
+above are still there.
+
+Left alone on purpose: the `check-ignore` block c24.2 (the DWD citation, verbatim, together
+with its three link texts and "(in German)" markers); the DWD description blockquote in
+c24.1 (the translator's rendering, pending a check against the DWD's own English wording –
+only a colon was added to the lead-in); the quoted `wine.names` block in c4.3, trailing
+whitespace included; every link text; every formula; "the three producers of the wine" in
+c4.5, which is the open factual question in *Decisions* 1; and "principal component analysis
+(PCA)" in c23.1, because `TERMINOLOGY.md` explicitly rules out *principal axis
+transformation* for this book. The glossary's *bare frequency* and *white patch* stay.
+
+Kinds of change:
+
+* **Hedged German openers made direct.** "Having seen with the first attribute, the alcohol
+  content, that there is a dependence on the class" → "Having seen that the first attribute,
+  the alcohol content, depends on the class"; "One question that is always obvious is what
+  distribution the variables have" → "One question is always obvious: what distribution do
+  the variables have?"; "What would be correct here is to compute" → "The correct thing to do
+  here is to compute".
+* **Passive and impersonal "one" → active, "we" or "you".** "One could almost make out" →
+  "You could almost make out"; "class 3 can be separated from classes 1 and 2 by the protein
+  content" → "protein content separates class 3 from classes 1 and 2"; "What one would of
+  course like" → "What we would like, of course"; "Let us have the corresponding normal
+  densities drawn in" → "Let us draw in the corresponding normal densities".
+* **Calques replaced.** "it suffers from the fact that the absolute frequency of the classes
+  was not taken into account" → "it suffers from ignoring the absolute frequencies of the
+  classes"; "That will do us … for the time being" → "That will do … for now"; "Here the
+  suspicion arises that" → "Here we begin to suspect that"; "we take that along as
+  motivation" → "let that be motivation"; "search the specialist literature for whether one
+  can reconstruct why this relationship comes about" → "search the specialist literature for
+  an explanation of how it comes about".
+* **Numerals in running prose** – "2 files", "2 normal distributions", "2 variables", "these
+  7 events" – became words; the figures that are data (178 rows, 14 variables, 13
+  attributes, 12 and 13.5, 50/50) stayed figures.
+* **Rhythm.** "for passengers in first class it is considerably more likely to survive than
+  to die" → "a first-class passenger was considerably more likely to survive than to die";
+  the p-value paragraph lost its two spare "is"es ("as far from $0$ as ours is", "what it is
+  and what it is not").
+
+Noticed but not touched:
+
+* **c24.1's blockquote** is still the translator's English for the DWD description; if the
+  DWD's English CatRaRE page has its own sentence, that should replace it (*Decisions* 5).
+  I did not fetch it.
+* **The two DWD URLs** that probably have English siblings (*Decisions* 4) are unchanged;
+  link targets are outside a style pass.
+* **"in July and June"** (c29.0) keeps the German's order, July first – presumably because
+  July is the peak. An English reader may stumble on it; a human may want "June and July".
+* **"bare frequency"** (c27.0) is glossary-bound and was kept; the sentence around it was
+  reshaped so that the appositive "that is, at how the points in time are distributed" now
+  carries the meaning.

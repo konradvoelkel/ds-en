@@ -8,9 +8,9 @@ file against a git ref and asserts that everything which is not prose is byte-id
     python3 tools/check_untouched.py HEAD descriptive-statistics.md
     python3 tools/check_untouched.py HEAD~1 *.md *.ipynb
 
-What must not change: inline and display maths, fenced code blocks, link texts and link
-targets, directive and admonition lines, MyST targets, citation keys, and -- in a notebook
--- every code cell, in full.
+What must not change: inline and display maths, fenced code blocks, links *into the book*
+(text and target), directive and admonition lines, MyST targets, citation keys, and -- in a
+notebook -- every code cell, in full. Labels on external links are prose.
 
 Maths, links and citations are compared as multisets, not in order: rewriting a sentence
 to put its clauses the other way round moves the formulas in it without changing any of
@@ -32,10 +32,21 @@ from segment import segment_text  # noqa: E402
 
 ORDERED = {"code cells", "block kinds"}
 
+# Fenced blocks and inline code are blanked before the maths search. A `$` inside a code
+# fence -- a regex anchor, a shell prompt -- otherwise opens a span that runs on until the
+# next `$` anywhere in the file, swallowing whole paragraphs and reporting them as changed
+# maths. That happened, and an editor dutifully reverted two improved paragraphs because
+# of it.
+FENCED = re.compile(r"^(?P<f>```+|~~~+).*?^(?P=f)\s*$|`[^`\n]*`", re.S | re.M)
 MATHS = re.compile(r"\$\$?[^$]*\$\$?", re.S)
 LINKS = re.compile(r"\[([^\]\n]{0,120})\]\(([^)\s]+)\)")
 DIRECTIVE = re.compile(r"^\s*(?::{3,}|`{3,})\{[^}]*\}.*$|^\s*\([a-z0-9_-]+\)=\s*$", re.M)
 CITES = re.compile(r"\{cite\}`[^`]*`")
+
+
+def _blank_code(text: str) -> str:
+    """Replace fenced and inline code with spaces, keeping every offset intact."""
+    return FENCED.sub(lambda m: " " * len(m.group(0)), text)
 
 
 def _facets(name: str, text: str) -> dict[str, list]:
@@ -46,9 +57,13 @@ def _facets(name: str, text: str) -> dict[str, list]:
         code = ["".join(c["source"]) for c in nb["cells"] if c["cell_type"] == "code"]
     else:
         prose, code = text, []
+    links = LINKS.findall(prose)
     return {
-        "maths": MATHS.findall(prose),
-        "links": LINKS.findall(prose),
+        "maths": MATHS.findall(_blank_code(prose)),
+        # Only links into the book itself are protected. A chapter's name drifting is the
+        # failure check_links.py exists for; the label on an external documentation link
+        # is ordinary prose and may be improved like any other.
+        "internal links": [l for l in links if l[1].endswith((".md", ".ipynb"))],
         "directives": DIRECTIVE.findall(prose),
         "citations": CITES.findall(prose),
         "code cells": code,

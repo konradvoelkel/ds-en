@@ -168,3 +168,54 @@ Four smaller calls, for the record:
   usually prefers double quotes for that, but single quotes inside a notebook that also uses
   `'...'` for Python strings are less confusing, and `TRANSLATION.md` §6 only legislates the
   German-shaped marks. Left as single quotes.
+
+## Style pass
+
+Markdown cells only; every code cell is byte-identical to `HEAD` (`check_untouched.py` passes
+"prose only"), and `sync.py align`, `check_english.py`, `nbtext.py check` and `nbtext.py syntax`
+are all clean. 17 of 34 non-code blocks changed; no block merged, split or reordered, and the
+HTML-comment block c13.0 is untouched.
+
+Kinds of change:
+
+* **German sentence shape.** "From this follow the typical weaknesses by which k-means can be
+  recognised" → "The typical weaknesses that give k-means away all follow from this"; "What
+  k-means procedures need in order to succeed is data that …" → "For k-means procedures to
+  succeed, the data need to …"; "How the algorithm clusters the points step by step can also be
+  watched at leisure" → "You can also watch at leisure how …"; "On top of that comes what we
+  already know" → "Add to that what we already know"; "The so-called **inertia**, …, is what gets
+  minimised" → "What gets minimised is the so-called **inertia**, …".
+* **"one" → "you".** "one can use the **kmeans++** algorithm" → "you can use"; "Anyone whose data
+  look like this needs" → "If your data look like this, you need".
+* **Nominalisations to verbs.** "$600$ points that get halved save more squared distances than
+  $210$ points that get separated" → "halving $600$ points saves more squared distance than
+  separating $210$"; "the simplest procedure on which all the building blocks of machine learning
+  can be shown" → "the simplest procedure that shows all the building blocks"; "It is possible to
+  restrict these to points from the dataset and to make that choice simply by drawing uniformly
+  at random" → "These can be restricted to points of the dataset, chosen simply by drawing
+  uniformly at random".
+* **Padding cut.** "get a better clustering out of it" → "get a better clustering"; "which
+  centroid $c_i$ is at the smallest distance" → "is nearest"; "The $k$ is the number of clusters"
+  → "Here $k$ is …"; "(in general: the whole feature space)" → "(in general, the whole feature
+  space)"; "Where distributions interpenetrate" → "Where the distributions run into one another".
+* **Punctuation.** "Repeat steps 2-3" → "steps 2–3" (en dash for the range, as
+  `dimensionality-reduction.ipynb` already writes "steps 1–2"); "Scale first, see […]" → "Scale
+  first; see […]".
+* **Terminology untouched.** *k-means* lower case throughout, `# k-Means` H1 kept; *principal
+  component analysis* in the Trivia bullet; *inertia*, *Voronoi cells*, *perpendicular bisector*,
+  *line segment joining*, *half-planes*, *half-moons*, *extent*, *assessment*, *mix-up*,
+  *assignment step*, *convergence* – all as the glossary has them.
+
+Noticed but not touched:
+
+* **"the second is weighted a thousand times more strongly"** (block c33.3, *Features on
+  different scales*): with one feature in metres and one in millimetres the raw values differ by
+  a factor of $1000$, but the Euclidean distance "adds up squares" – as the same sentence says –
+  so the weighting is a factor of a million. The German says *tausendmal*; this is an upstream
+  slip, not a translation one. Worth a line in `UPSTREAM-NOTES.md` if a human agrees.
+* **"only reached $0.79$"** in c3.0: the translator's note flags "only" as an addition. It reads
+  naturally and carries the comparison the German makes by position; left in.
+* **c13.0**, the commented-out dead link to `kmeans-in-action.mp4`, is still awaiting a human
+  decision (see *Decisions* above).
+* **"a classification or a predictor"** in c4.0 is a slightly odd pair (a task and an object);
+  the German has it the same way.

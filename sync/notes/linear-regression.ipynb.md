@@ -183,3 +183,68 @@ has it, per §6.
 links under the H1 (`sync/drops/lineare-regression.ipynb.json`, reason already recorded).
 No further drops and no additions, so `sync/additions/linear-regression.ipynb.json` was not
 created. 118 German blocks → 117 English ones.
+
+## Style pass
+
+Markdown cells only; every code cell is byte-identical to before (`check_untouched.py HEAD`
+confirms "prose only") and the stored outputs therefore still match. 27 of the 32 markdown
+cells were touched, 59 of 107 markdown paragraphs; block count unchanged at 117 and
+`sync.py align` passes. Every `$…$` / `$$…$$` span was compared before and after – all 196
+are byte-identical. No term from `TERMINOLOGY.md` was changed; *error term* (the
+unobservable $\epsilon$), *residual* (the observable $y_i - f(x_i,\beta)$) and *explanatory
+variable* appear exactly where they did before, and the error-term/residual passage in cell
+2 was only tightened ("what becomes visible of the error terms" → "all we ever see of the
+error terms"), not restated.
+
+Kinds of change:
+
+* **Calques replaced by the English idiom.** "Please note that" (*Man beachte*) → "Note
+  that"; "what stands there are two quantities" (*da steht*) → "you are looking at two
+  quantities"; "Widespread, by contrast, is the way of speaking in which …" → "The
+  widespread usage, by contrast, is …"; "keep account of it" → "keep track of it"; "build
+  ourselves a new regressor" → "build a new regressor"; "In advance:" → "To anticipate:".
+* **Nominalisations turned into verbs.** "the central question … becomes the setting up of
+  the model, and in particular of the basis function, from the data" → "becomes how to set
+  up the model – and in particular the basis function – from the data"; "consists in
+  minimising a penalty term" → "minimises a penalty term"; "The trick of regularisation now
+  consists in not fitting" → "is not to fit"; "The use of the basis function … is called" →
+  "Using the basis function … is called"; "If in a regression model one minimises …, one
+  speaks of an estimate known as" → "Minimising … in a regression model yields an estimate
+  known as".
+* **"one" → "you" or an agentless verb** where the chapter is tutorial rather than
+  definitional (cells 4, 15, 49): "one shifts the data" → "you shift the data"; "if one were
+  to repeat the whole experiment" → "if you were to repeat"; "one is all the more prone to
+  overfitting" → "overfitting becomes all the more likely"; "then one needs other ideas" →
+  "then other ideas are needed". The Definition admonitions keep their impersonal form.
+* **Sentence shape.** Subject-verb-object restored in a dozen long sentences ("In linear
+  regression it is not the distances … that are minimised but the residuals" → "Linear
+  regression minimises not the distances … but the residuals"); two fronted connectives
+  moved ("Outside this chapter, its words are often used more narrowly"); one pair of
+  sentences in cell 51 merged inside its paragraph (L1 regularisation / lasso). Punctuation:
+  comma splice in "None of these narrowings is wrong, you only have to know" → semicolon;
+  "that is" set off with commas in the two bullet points of cell 2.
+* **Padding cut.** "A basis function expansion is simply not the better regressor
+  automatically, just because" → "is not automatically the better regressor just because";
+  "a pipeline for computing the polynomial regression" → "a pipeline to compute it";
+  "can do nothing but a simple linear regression!" → "can only do the simple kind!".
+
+Noticed but not touched – for a human:
+
+1. **Cell 32 says "the normally distributed errors $\epsilon_i$"** where the rest of the
+   chapter says *error terms* for $\epsilon_i$. It is not wrong – $\epsilon$ is the error –
+   and it does not blur the error-term/residual line, but it is the one place the fixed term
+   is not used for the fixed object. If the German says *Fehler* there, it is a translation
+   decision, not a style one, so I left it.
+2. **Cell 44 ends "which go beyond this course"** (and cell 51 cites a German lecture
+   course). `TRANSLATION.md` §2 says the English edition is a standalone book; "this
+   course" may want to become "this book" – but that is a meaning change and belongs to the
+   translator or the author.
+3. **Cell 12: "the bias of an estimator from the previous chapter".** The estimator's bias
+   is in `statistical-models.md`; whether that is "the previous chapter" in the English
+   book's order depends on `myst.yml`. Pointer, not prose, so untouched.
+4. **Cell 11 "the green bars"**: the residual bars in the stored plot are whatever colour
+   matplotlib's third cycle entry is (green in the default cycle). Fine as long as the
+   outputs are the ones stored; a re-execution with a different style would orphan the word.
+5. **Cell 2, "the residuals are its instances"** is slightly loose mathematically – they are
+   realisations of the residual random variables, which approximate the errors – but it is
+   the German's own phrasing of the error-term/residual distinction and I kept it exactly.

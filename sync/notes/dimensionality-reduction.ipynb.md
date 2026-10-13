@@ -189,3 +189,74 @@ Smaller calls, for the record:
   so a consistency pass should re-check this one once `linear-regression.ipynb` is
   translated – the glossary's row is *Regressionsanalyse → regression analysis*, and the
   German link text was already the short name, so I kept it short.
+
+## Style pass
+
+Markdown cells only; every code cell is byte-identical to `HEAD` (`check_untouched.py` passes
+"prose only (with reordering)" – one sentence in the Definition block c2.3 now puts the
+quantifier after the inequality, "**positive definite** if $v^\top C v > 0$ for all vectors
+$v \neq 0$", which moves two formulas without changing either). `sync.py align`,
+`check_english.py`, `nbtext.py check` and `nbtext.py syntax` are all clean. 45 of 69 non-code
+blocks changed; no block merged, split or reordered. This chapter had the most German left in its
+sentence shape, which is why the count is high; most edits are small.
+
+Kinds of change:
+
+* **German sentence shape.** "an unsupervised method in which a coordinate transformation is
+  carried out on the data, so that the new coordinate axes are ordered according to where the data
+  show the higher variance" → "an unsupervised method that applies a coordinate transformation to
+  the data so that the new coordinate axes are ordered by how much variance the data show along
+  them"; "To determine this matrix $\Sigma$ there is a very simple way if …" → "There is a very
+  simple way to find this matrix $\Sigma$ if …"; "Suppose we had determined such a decomposition
+  (one also says: …), then we can" → "Suppose we have found such a decomposition (also called …).
+  Then we can"; "In the top row one can clearly see that" → "The top row clearly shows that";
+  "Inductively we can now carry on and determine a matrix $M$" → "Carrying on inductively, we
+  obtain a matrix $M$"; "These examples lead us to picture which matrix" → "These examples suggest
+  asking which matrix".
+* **"one" → "you".** "one rescales every variable … Likewise one shifts" → "you rescale … and
+  likewise shift"; "one has to know the classes already – so, supervised learning" → "you have to
+  know the classes already – which makes it supervised learning"; "the quantity with which one
+  later decides" → "the quantity you later use to decide"; "first one determines the eigenvalues
+  … and for every eigenvalue $\alpha$ one determines" → "first find the eigenvalues …, then for
+  every eigenvalue $\alpha$ find"; "one would first have to cluster" → "you would first have to
+  cluster".
+* **Nominalisations and padding.** "We do not even have to go to the trouble of computing" → "We
+  do not even have to compute"; "we have not yet established how" → "have not yet said how";
+  "the inverse map … is then a transformation" kept; "which the code below also exploits" → "which
+  the code below exploits too"; "it merely fluctuates very little" → "it just varies very little";
+  "PCA turns this into a quantitative statement" → "PCA makes this quantitative"; "the fictitious
+  covariance matrix" → "the made-up covariance matrix"; "So we have all the ingredients together"
+  → "So we have all the ingredients"; "In the end the assumption of normality" → "In the end, the
+  normality assumption" (the glossary's row from `expectation-maximization.ipynb`).
+* **Clause order for English stress.** "here it is the *perpendicular* distance to the line that
+  is minimised, whereas in regression it is the vertical distance in the direction of the target
+  variable" → "…the vertical distance, in the direction of the target variable"; "rearranged
+  therefore $C T = T C'$" → "or, rearranged, $C T = T C'$"; "Their share of the total variance
+  $\operatorname{tr}(C) = \dots$, here therefore $2.75/4.25 \approx 65\%$ …, is called" → "…
+  – here $2.75/4.25 \approx 65\%$ … – is called".
+* **Terminology untouched.** *Principal component analysis* / *principal components* / *principal
+  axes*, *change of basis*, *inner product*, *orthonormal basis*, *orthogonal complement*,
+  *standard basis vector*, *eigenspace decomposition*, *eigendecomposition*, *explained
+  variance*, *total variance*, *Gaussian elimination*, *characteristic polynomial*, *Rayleigh
+  quotient*, *centre of mass*, *Centring*, *standardisation* / *normalisation* / *feature scaling*
+  in the German's single quotes, *distortion* (c25.2, kept as the noun), *back-transformation*,
+  *compress / stretch / shear*, *k-means* lower case, *linear discriminant analysis (LDA)*,
+  *Gaussian mixture models* – all as the glossary fixes them. Scikit-Learn / Scikit-learn kept
+  per occurrence as the German has it.
+
+Noticed but not touched:
+
+* **MNIST** (heading c16.0 and the last sentence of c16.1) is still "the MNIST dataset of
+  handwritten digits" for data that are `load_digits()`. Recorded in `UPSTREAM-NOTES.md`; not
+  fixed here, per the brief.
+* **"we can draw a circle around the 95\% quantile"** (c1.14) has a LaTeX-escaped per cent
+  sign *outside* maths mode. CommonMark swallows the backslash, so it renders correctly, but it
+  is a TeX habit in prose and `TRANSLATION.md` §6 wants a bare `95%` there. The German has it the
+  same way; left for a human to decide, since the translator chose to keep the source's spacing.
+* **"rotate about any axis by an angle"** (c1.9) is a slightly odd quantifier; "by any angle"
+  would be the natural English, but it is a (harmless) strengthening of the German, so left.
+* **"the Iris data"** (c24.1) is capitalised where `kmeans.ipynb` writes "the iris data" in
+  prose; the plot titles in both chapters say "Iris dataset". A whole-book consistency call.
+* **c2.17** still calls the eigendecomposition "a singular value decomposition", and **c1.15**
+  says "the symmetric situation is all we need" – both loose rather than wrong, as the
+  translation notes already say.
