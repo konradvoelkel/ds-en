@@ -64,518 +64,518 @@
    "de": "c1.0",
    "kind": "heading",
    "digest": "246948236f1a5c31",
-   "en": "c0.7",
+   "en": "c1.0",
    "preview": "## Daten laden und erster Blick"
   },
   {
    "de": "c1.1",
    "kind": "prose",
    "digest": "b6620b4d1aec6129",
-   "en": "c1.0",
+   "en": "c1.1",
    "preview": "Der DWD liefert je Station ein ZIP-Archiv mit einer Datendatei und mehre…"
   },
   {
    "de": "c2",
    "kind": "code",
    "digest": "4d6f5b0099dc803d",
-   "en": "c1.1",
+   "en": "c2",
    "preview": "import numpy as np import pandas as pd import matplotlib.pyplot as plt i…"
   },
   {
    "de": "c3.0",
    "kind": "prose",
    "digest": "d0c8c2d08532b5d8",
-   "en": "c2",
+   "en": "c3.0",
    "preview": "Die Spaltennamen sind Kürzel aus der Metadatendatei: `TMK` Tagesmittel d…"
   },
   {
    "de": "c4",
    "kind": "code",
    "digest": "63450cc10a7311a7",
-   "en": "c3.0",
+   "en": "c4",
    "preview": "wetter = (roh.rename(columns={\"MESS_DATUM\": \"datum_roh\", \"TMK\": \"temp_mi…"
   },
   {
    "de": "c5.0",
    "kind": "prose",
    "digest": "0327169732706096",
-   "en": "c4",
+   "en": "c5.0",
    "preview": "Die Sonnenscheindauer fehlt an fast allen Tagen des Jahres 2025, Luftdru…"
   },
   {
    "de": "c6",
    "kind": "code",
    "digest": "9acaa158561cead2",
-   "en": "c5.0",
+   "en": "c6",
    "preview": "rng = np.random.default_rng(2025) wahrheit = wetter[\"temp_mittel\"].copy(…"
   },
   {
    "de": "c7.0",
    "kind": "heading",
    "digest": "84c2d82f107ce24e",
-   "en": "c6",
+   "en": "c7.0",
    "preview": "## Ausreißer"
   },
   {
    "de": "c7.1",
    "kind": "prose",
    "digest": "9d0e59f9bdd1c1a0",
-   "en": "c7.0",
+   "en": "c7.1",
    "preview": "Ein Ausreißer ist ein Wert, der so weit von den anderen entfernt liegt, …"
   },
   {
    "de": "c8",
    "kind": "code",
    "digest": "8642efa6f3faeb7b",
-   "en": "c7.1",
+   "en": "c8",
    "preview": "fehlerhaft = kaputt.copy() fehlerhaft.loc[150, \"temp_mittel\"] = 231.0 # …"
   },
   {
    "de": "c9.0",
    "kind": "prose",
    "digest": "e8ca4af26341e84f",
-   "en": "c8",
+   "en": "c9.0",
    "preview": "Im Plot sieht man beide Fehler sofort; im Mittelwert verstecken sie sich…"
   },
   {
    "de": "c10",
    "kind": "code",
    "digest": "f11b97633125fb11",
-   "en": "c9.0",
+   "en": "c10",
    "preview": "spalte = fehlerhaft[\"temp_mittel\"] z = (spalte - spalte.mean()) / spalte…"
   },
   {
    "de": "c11.0",
    "kind": "prose",
    "digest": "0663ad3cd2882cc0",
-   "en": "c10",
+   "en": "c11.0",
    "preview": "Beide eingebauten Fehler werden gefunden, und nichts sonst. Das ist nich…"
   },
   {
    "de": "c11.1",
    "kind": "prose",
    "digest": "5388bd6d9c5e2330",
-   "en": "c11.0",
+   "en": "c11.1",
    "preview": "Was tun mit einem gefundenen Ausreißer? Nicht die Zeile löschen, denn di…"
   },
   {
    "de": "c12",
    "kind": "code",
    "digest": "0c0dd44f6d7317c4",
-   "en": "c11.1",
+   "en": "c12",
    "preview": "bereinigt = fehlerhaft.copy() bereinigt[\"temp_mittel_ausreisser\"] = ausr…"
   },
   {
    "de": "c13.0",
    "kind": "heading",
    "digest": "ebb8b1eec62c2df5",
-   "en": "c12",
+   "en": "c13.0",
    "preview": "## Fehlende Werte"
   },
   {
    "de": "c13.1",
    "kind": "prose",
    "digest": "abc3e81b3d73cc64",
-   "en": "c13.0",
+   "en": "c13.1",
    "preview": "Pandas kennt drei Antworten auf einen fehlenden Wert: ignorieren (die me…"
   },
   {
    "de": "c14",
    "kind": "code",
    "digest": "0ff4fc4d202b61f6",
-   "en": "c13.1",
+   "en": "c14",
    "preview": "spalte = bereinigt[\"temp_mittel\"] monat = bereinigt[\"datum_roh\"] // 100 …"
   },
   {
    "de": "c15.0",
    "kind": "prose",
    "digest": "3e9012c7475fc85d",
-   "en": "c14",
+   "en": "c15.0",
    "preview": "Die Reihenfolge ist typisch für Zeitreihen: Was die Nachbarn kennt (Inte…"
   },
   {
    "de": "c15.1",
    "kind": "prose",
    "digest": "fc440185c691936a",
-   "en": "c15.0",
+   "en": "c15.1",
    "preview": "Zwei Details, nach denen regelmäßig gefragt wird:"
   },
   {
    "de": "c15.2",
    "kind": "prose",
    "digest": "606c9683e0f62c33",
-   "en": "c15.1",
+   "en": "c15.2",
    "preview": "* `groupby(...).transform(\"mean\")` berechnet je Gruppe den Mittelwert un…"
   },
   {
    "de": "c15.3",
    "kind": "prose",
    "digest": "0bf57bbe72c33d6d",
-   "en": "c15.2",
+   "en": "c15.3",
    "preview": "Und noch einmal Regel 1: Nach der Imputation weiß die Spalte nicht mehr,…"
   },
   {
    "de": "c16",
    "kind": "code",
    "digest": "25e9cdf963b86d27",
-   "en": "c15.3",
+   "en": "c16",
    "preview": "bereinigt[\"temp_mittel\"] = bereinigt[\"temp_mittel\"].interpolate() berein…"
   },
   {
    "de": "c17.0",
    "kind": "heading",
    "digest": "cbe7563b95ce548d",
-   "en": "c16",
+   "en": "c17.0",
    "preview": "## Datentypen, Encoding und kategoriale Werte"
   },
   {
    "de": "c17.1",
    "kind": "prose",
    "digest": "1d3f83537c376c4a",
-   "en": "c17.0",
+   "en": "c17.1",
    "preview": "Die erste Prüfung nach dem Laden ist `info()`: Steht in einer Zahlenspal…"
   },
   {
    "de": "c17.2",
    "kind": "prose",
    "digest": "b6d99e5c141075ae",
-   "en": "c17.1",
+   "en": "c17.2",
    "preview": "Text hat außerdem ein **Encoding**. Eine Datei ist eine Folge von Bytes,…"
   },
   {
    "de": "c18",
    "kind": "code",
    "digest": "07985888815d2daa",
-   "en": "c17.2",
+   "en": "c18",
    "preview": "wort = \"Düsseldorf\" utf8 = wort.encode(\"utf-8\") latin1 = wort.encode(\"la…"
   },
   {
    "de": "c19.0",
    "kind": "prose",
    "digest": "d734e2d873e72c8c",
-   "en": "c18",
+   "en": "c19.0",
    "preview": "Das zweite Ergebnis ist das berüchtigte `DÃ¼sseldorf`, das man in vielen…"
   },
   {
    "de": "c19.1",
    "kind": "prose",
    "digest": "ef55e36ed3c15167",
-   "en": "c19.0",
+   "en": "c19.1",
    "preview": "**Kategoriale Werte** aus Freitextfeldern kommen in vielen Schreibweisen…"
   },
   {
    "de": "c20",
    "kind": "code",
    "digest": "d3e0c906b286a9d5",
-   "en": "c19.1",
+   "en": "c20",
    "preview": "import difflib stadt = pd.Series([\"Düsseldorf\", \"Duesseldorf\", \"düsseldo…"
   },
   {
    "de": "c21.0",
    "kind": "prose",
    "digest": "d8c208315fc351c3",
-   "en": "c20",
+   "en": "c21.0",
    "preview": "Aus sieben Schreibweisen werden zwei Städte. Auch das ist eine Verfälsch…"
   },
   {
    "de": "c21.1",
    "kind": "prose",
    "digest": "3c017b71d7f84faf",
-   "en": "c21.0",
+   "en": "c21.1",
    "preview": "Wie man kategoriale Werte anschließend in Zahlen übersetzt (Ordinal- und…"
   },
   {
    "de": "c22.0",
    "kind": "heading",
    "digest": "8dcf490ecc3aedb6",
-   "en": "c21.1",
+   "en": "c22.0",
    "preview": "## Reguläre Ausdrücke"
   },
   {
    "de": "c22.1",
    "kind": "prose",
    "digest": "d38e4a8bdd62eeb7",
-   "en": "c22.0",
+   "en": "c22.1",
    "preview": "Sobald eine Spalte Text enthält, aus dem man etwas herausziehen will (de…"
   },
   {
    "de": "c22.2",
    "kind": "prose",
    "digest": "54f35303f969098b",
-   "en": "c22.1",
+   "en": "c22.2",
    "preview": "1. Reguläre Ausdrücke **mehrzeilig mit Kommentaren** schreiben. Python e…"
   },
   {
    "de": "c23",
    "kind": "code",
    "digest": "1ef874640840ebfb",
-   "en": "c22.2",
+   "en": "c23",
    "preview": "import re urls = pd.Series([\"https://www.hhu.de/studium\", \"http://openda…"
   },
   {
    "de": "c24.0",
    "kind": "prose",
    "digest": "5e587d71735cf461",
-   "en": "c23",
+   "en": "c24.0",
    "preview": "Die letzte Zeile ist `NaN`, weil `mailto:` nicht auf das Muster passt. D…"
   },
   {
    "de": "c24.1",
    "kind": "prose",
    "digest": "97aba3eff4dc6c2c",
-   "en": "c24.0",
+   "en": "c24.1",
    "preview": "Die häufigste Falle ist die **Gier** der Wiederholungsoperatoren. `.*` n…"
   },
   {
    "de": "c25",
    "kind": "code",
    "digest": "2c43f905efa1fd2a",
-   "en": "c24.1",
+   "en": "c25",
    "preview": "html = '<a href=\"eins.html\">Eins</a> und <a href=\"zwei.html\">Zwei</a>' p…"
   },
   {
    "de": "c26.0",
    "kind": "prose",
    "digest": "2961cad9dd5a8884",
-   "en": "c25",
+   "en": "c26.0",
    "preview": "Zwei Konstruktionen lohnen sich, weil sie Probleme lösen, an denen man s…"
   },
   {
    "de": "c26.1",
    "kind": "prose",
    "digest": "b6a4a3f3eea8d69a",
-   "en": "c26.0",
+   "en": "c26.1",
    "preview": "Der **negative Lookahead** `(?!…)` prüft, dass an dieser Stelle etwas *n…"
   },
   {
    "de": "c26.2",
    "kind": "prose",
    "digest": "46b94f9e9b92e4a0",
-   "en": "c26.1",
+   "en": "c26.2",
    "preview": "Eine **Rückwärtsreferenz** `\\1` steht für das, was Gruppe 1 gefunden hat…"
   },
   {
    "de": "c27",
    "kind": "code",
    "digest": "87c0ce2e679ddad2",
-   "en": "c26.2",
+   "en": "c27",
    "preview": "print(re.findall(r\"(?!23)\\d\\d\", \"22 23 24\")) # 23 fehlt, 22 und 24 sind …"
   },
   {
    "de": "c28.0",
    "kind": "prose",
    "digest": "d730748b06afcff8",
-   "en": "c27",
+   "en": "c28.0",
    "preview": "Gruppen sind auch der Grund, warum ein Muster mehr zurückgeben kann als …"
   },
   {
    "de": "c28.1",
    "kind": "code",
    "digest": "9b37ab0826434ac8",
-   "en": "c28.0",
+   "en": "c28.1",
    "preview": "```python r\"^<([a-z]+?)>(.*)</([a-z]+?)>$\" ```"
   },
   {
    "de": "c28.2",
    "kind": "prose",
    "digest": "4c394b446019d17f",
-   "en": "c28.1",
+   "en": "c28.2",
    "preview": "zerlegt `\"<p>html code</p>\"` in die drei Gruppen `\"p\"`, `\"html code\"` un…"
   },
   {
    "de": "c29.0",
    "kind": "prose",
    "digest": "89819952c122b689",
-   "en": "c28.2",
+   "en": "c29.0",
    "preview": "Mehr als diese Bausteine braucht man selten. Die folgende Tabelle ist di…"
   },
   {
    "de": "c29.1",
    "kind": "table",
    "digest": "3b25a75bd109e0ed",
-   "en": "c29.0",
+   "en": "c29.1",
    "preview": "| Baustein | Schreibweise | Beispiel | passt auf | |---|---|---|---| | A…"
   },
   {
    "de": "c29.2",
    "kind": "prose",
    "digest": "614a9e4d881f9b75",
-   "en": "c29.1",
+   "en": "c29.2",
    "preview": "Zeichen mit Sonderbedeutung (`.`, `*`, `+`, `?`, `(`, `)`, `[`, `]`, `|`…"
   },
   {
    "de": "c29.3",
    "kind": "prose",
    "digest": "3901c0eadbdb2bbe",
-   "en": "c29.2",
+   "en": "c29.3",
    "preview": "Wer regelmäßig damit arbeitet, sollte einmal das Buch von Friedl lesen {…"
   },
   {
    "de": "c29.4",
    "kind": "directive",
    "digest": "e0b0e330a1c257a4",
-   "en": "c29.3",
+   "en": "c29.4",
    "preview": ":::{admonition} Beispielaufgabe: Anreden im Titanic-Datensatz"
   },
   {
    "de": "c29.5",
    "kind": "prose",
    "digest": "036f73761bf3007b",
-   "en": "c29.4",
+   "en": "c29.5",
    "preview": ":class: tip Die Spalte `Name` der Titanic-Passagierliste hat die Form `N…"
   },
   {
    "de": "c29.6",
    "kind": "directive",
    "digest": "f1ae2a75ed1f9972",
-   "en": "c29.5",
+   "en": "c29.6",
    "preview": ":::"
   },
   {
    "de": "c30",
    "kind": "code",
    "digest": "0d0d6de59d4fd573",
-   "en": "c29.6",
+   "en": "c30",
    "preview": "titanic = pd.read_csv(\"titanic.csv\") titanic[\"Anrede\"] = titanic[\"Name\"]…"
   },
   {
    "de": "c31",
    "kind": "code",
    "digest": "165c0449be5bae69",
-   "en": "c30",
+   "en": "c31",
    "preview": "zusammen = {\"Mlle\": \"Miss\", \"Ms\": \"Miss\", \"Mme\": \"Mrs\", \"Dr\": \"Rang\", \"R…"
   },
   {
    "de": "c32.0",
    "kind": "directive",
    "digest": "bb3131ef0807dae6",
-   "en": "c31",
+   "en": "c32.0",
    "preview": ":::{admonition} Lösung"
   },
   {
    "de": "c32.1",
    "kind": "prose",
    "digest": "6b0822f2d9be708a",
-   "en": "c32.0",
+   "en": "c32.1",
    "preview": ":class: dropdown Die beiden ausgeblendeten Zellen oben enthalten den Cod…"
   },
   {
    "de": "c32.2",
    "kind": "directive",
    "digest": "f1ae2a75ed1f9972",
-   "en": "c32.1",
+   "en": "c32.2",
    "preview": ":::"
   },
   {
    "de": "c33.0",
    "kind": "prose",
    "digest": "e0f4e035a96d5324",
-   "en": "c32.2",
+   "en": "c33.0",
    "preview": "Reguläre Ausdrücke lernt man nicht durch Lesen. Zwei Seiten helfen beim …"
   },
   {
    "de": "c34.0",
    "kind": "heading",
    "digest": "b63dc29c350143d0",
-   "en": "c33.0",
+   "en": "c34.0",
    "preview": "## Datum, Uhrzeit und Zeitzonen"
   },
   {
    "de": "c34.1",
    "kind": "prose",
    "digest": "cb4f8af5d26bee68",
-   "en": "c34.0",
+   "en": "c34.1",
    "preview": "Datumsangaben sind Text in einem von Dutzenden Formaten: `20250115`, `15…"
   },
   {
    "de": "c35",
    "kind": "code",
    "digest": "bd9dcec7e8dc51c5",
-   "en": "c34.1",
+   "en": "c35",
    "preview": "bereinigt[\"datum\"] = pd.to_datetime(bereinigt[\"datum_roh\"], format=\"%Y%m…"
   },
   {
    "de": "c36.0",
    "kind": "prose",
    "digest": "049671528d6912b6",
-   "en": "c35",
+   "en": "c36.0",
    "preview": "Mit einem echten Datumstyp werden die nützlichen Fragen zu Einzeilern: W…"
   },
   {
    "de": "c37",
    "kind": "code",
    "digest": "716312c391e41227",
-   "en": "c36.0",
+   "en": "c37",
    "preview": "w = bereinigt.set_index(\"datum\") print(\"Wochentag des ersten Eintrags:\",…"
   },
   {
    "de": "c38.0",
    "kind": "prose",
    "digest": "297d0d13810e2eb6",
-   "en": "c37",
+   "en": "c38.0",
    "preview": "**Zeitzonen** sind die Stelle, an der die meisten Fehler passieren. Ein …"
   },
   {
    "de": "c39",
    "kind": "code",
    "digest": "50fece586fc85dfa",
-   "en": "c38.0",
+   "en": "c39",
    "preview": "zeiten = pd.to_datetime([\"2025-01-15 12:00\", \"2025-07-15 12:00\"]) # naiv…"
   },
   {
    "de": "c40.0",
    "kind": "prose",
    "digest": "175e1d54e9088cda",
-   "en": "c39",
+   "en": "c40.0",
    "preview": "Die Zeitzonenregeln samt aller Sommerzeit-Umstellungen der Vergangenheit…"
   },
   {
    "de": "c40.1",
    "kind": "heading",
    "digest": "f5ef31e5b79da9ed",
-   "en": "c40.0",
+   "en": "c40.1",
    "preview": "## Zusammenfassung"
   },
   {
    "de": "c40.2",
    "kind": "prose",
    "digest": "17f613cfdeb1f1e4",
-   "en": "c40.1",
+   "en": "c40.2",
    "preview": "Der bereinigte DataFrame trägt jetzt neben den Messwerten drei Spalten, …"
   },
   {
    "de": "c41",
    "kind": "code",
    "digest": "9a206db73c36698a",
-   "en": "c40.2",
+   "en": "c41",
    "preview": "bereinigt[[\"datum\", \"temp_mittel\", \"temp_mittel_fehlt\", \"temp_mittel_aus…"
   },
   {
    "de": "c42.0",
    "kind": "directive",
    "digest": "5879b3a79a1de27c",
-   "en": "c41",
+   "en": "c42.0",
    "preview": ":::{admonition} Take-Home-Message"
   },
   {
    "de": "c42.1",
    "kind": "prose",
    "digest": "1402cc206a5b80a4",
-   "en": "c42.0",
+   "en": "c42.1",
    "preview": "Putzen verfälscht immer. Erlaubt ist es, wenn jede Änderung im Code steh…"
   },
   {
    "de": "c42.2",
    "kind": "directive",
    "digest": "f1ae2a75ed1f9972",
-   "en": "c42.1",
+   "en": "c42.2",
    "preview": ":::"
   },
   {
    "de": "c42.3",
    "kind": "prose",
    "digest": "f587abe78e0caf6f",
-   "en": "c42.2",
+   "en": "c42.3",
    "preview": "Wie es weitergeht: Mit sauberen Tabellen können wir Zusammenhänge zwisch…"
   }
  ]

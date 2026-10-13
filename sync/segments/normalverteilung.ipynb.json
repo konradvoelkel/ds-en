@@ -22,833 +22,833 @@
    "de": "c1.0",
    "kind": "heading",
    "digest": "11ac75daf7987c59",
-   "en": "c0.1",
+   "en": "c1.0",
    "preview": "## Approximation der Binomialverteilung"
   },
   {
    "de": "c2.0",
    "kind": "prose",
    "digest": "09fedfc926a93418",
-   "en": "c1.0",
+   "en": "c2.0",
    "preview": "Betrachten wir eine Folge von Bernoulli-verteilten Zufallsvariablen $X_i…"
   },
   {
    "de": "c2.1",
    "kind": "prose",
    "digest": "46abefc584d1955d",
-   "en": "c2.0",
+   "en": "c2.1",
    "preview": "Für die konkreten Werte $n=100,\\ p=0.4$ sieht ein Histogramm von $100000…"
   },
   {
    "de": "c3",
    "kind": "code",
    "digest": "95ad63610b55fe4b",
-   "en": "c2.1",
+   "en": "c3",
    "preview": "import numpy as np from scipy.stats import binom, norm from matplotlib i…"
   },
   {
    "de": "c4.0",
    "kind": "prose",
    "digest": "d96dff4ef1da4ebf",
-   "en": "c3",
+   "en": "c4.0",
    "preview": "Da diese Form für große Stichproben stets so aussieht, unabhängig von $p…"
   },
   {
    "de": "c4.1",
    "kind": "prose",
    "digest": "642a4fb1c41d2b2d",
-   "en": "c4.0",
+   "en": "c4.1",
    "preview": "**Nebenbemerkung**: Tatsächlich gibt es zur Approximation der Fakultät a…"
   },
   {
    "de": "c4.2",
    "kind": "math",
    "digest": "1820ca6f625408fe",
-   "en": "c4.1",
+   "en": "c4.2",
    "preview": "$$ n! \\approx \\sqrt{2\\pi n} {\\left(\\frac{n}{e}\\right)}^n $$"
   },
   {
    "de": "c4.3",
    "kind": "prose",
    "digest": "0c64e2d9076e6f38",
-   "en": "c4.2",
+   "en": "c4.3",
    "preview": "Was uns für Binomialkoeffizienten direkt liefert: $\\binom{n}{k} \\approx …"
   },
   {
    "de": "c4.4",
    "kind": "prose",
    "digest": "fdf45561eaa5cf13",
-   "en": "c4.3",
+   "en": "c4.4",
    "preview": "Damit lässt sich nun (auch wenn es nicht ganz einfach ist) eine Approxim…"
   },
   {
    "de": "c5.0",
    "kind": "math",
    "digest": "59292725afb988f6",
-   "en": "c4.4",
+   "en": "c5.0",
    "preview": "$$ P(S_n = k) = \\binom{n}{k}p^k(1-p)^{n-k} \\sim \\frac{1}{\\sqrt{np(1-p)}}…"
   },
   {
    "de": "c6.0",
    "kind": "prose",
    "digest": "ff578491a9aad042",
-   "en": "c5.0",
+   "en": "c6.0",
    "preview": "wobei für $x$ auf der rechten Seite die Folge $x=x_n$ mit $x_n = x_n(k) …"
   },
   {
    "de": "c6.1",
    "kind": "prose",
    "digest": "588558c9beba8a1e",
-   "en": "c6.0",
+   "en": "c6.1",
    "preview": "Diese Approximation ist insofern hilfreich, als dass wir nun die Funktio…"
   },
   {
    "de": "c7.0",
    "kind": "heading",
    "digest": "e3c45d31346a5428",
-   "en": "c6.1",
+   "en": "c7.0",
    "preview": "## Ein Integral"
   },
   {
    "de": "c7.1",
    "kind": "prose",
    "digest": "4db67bc3359ecb49",
-   "en": "c7.0",
+   "en": "c7.1",
    "preview": "Um aus der Funktion $e^{-\\frac{x^2}{2}}$ eine Wahrscheinlichkeitsdichte …"
   },
   {
    "de": "c7.2",
    "kind": "directive",
    "digest": "8f4e565549eb919e",
-   "en": "c7.1",
+   "en": "c7.2",
    "preview": ":::{admonition} Lemma"
   },
   {
    "de": "c7.3",
    "kind": "prose",
    "digest": "d548f996aa7424ed",
-   "en": "c7.2",
+   "en": "c7.3",
    "preview": "Sei $v \\in \\mathbb{R}$ und $v > 0$. Dann gilt"
   },
   {
    "de": "c7.4",
    "kind": "math",
    "digest": "490b065e13d3f1ef",
-   "en": "c7.3",
+   "en": "c7.4",
    "preview": "$$ \\int_{-\\infty}^\\infty e^{-\\frac{x^2}{2v}} dx = \\sqrt{2\\pi v}. $$"
   },
   {
    "de": "c7.5",
    "kind": "directive",
    "digest": "f1ae2a75ed1f9972",
-   "en": "c7.4",
+   "en": "c7.5",
    "preview": ":::"
   },
   {
    "de": "c7.6",
    "kind": "directive",
    "digest": "d3c74271f8c77915",
-   "en": "c7.5",
+   "en": "c7.6",
    "preview": ":::{admonition} Beweis"
   },
   {
    "de": "c7.7",
    "kind": "prose",
    "digest": "7b55d50b3d05ebf8",
-   "en": "c7.6",
+   "en": "c7.7",
    "preview": "Da auf der rechten Seite eine Quadratwurzel steht, bietet es sich an, be…"
   },
   {
    "de": "c7.8",
    "kind": "math",
    "digest": "f89665a2106e3ebc",
-   "en": "c7.7",
+   "en": "c7.8",
    "preview": "$$ \\begin{aligned} & {\\left( \\int_{-\\infty}^\\infty e^{-\\frac{x^2}{2v}} d…"
   },
   {
    "de": "c7.9",
    "kind": "directive",
    "digest": "f1ae2a75ed1f9972",
-   "en": "c7.8",
+   "en": "c7.9",
    "preview": ":::"
   },
   {
    "de": "c8.0",
    "kind": "prose",
    "digest": "90ade3aee836d7cc",
-   "en": "c7.9",
+   "en": "c8.0",
    "preview": "Da Integrale in der Statistik häufiger vorkommen, ist es nicht ganz verk…"
   },
   {
    "de": "c9.0",
    "kind": "heading",
    "digest": "a2cd12a0ca7fa91b",
-   "en": "c8.0",
+   "en": "c9.0",
    "preview": "## Die eindimensionale Normalverteilung"
   },
   {
    "de": "c9.1",
    "kind": "directive",
    "digest": "053400a7b7d2fc03",
-   "en": "c9.0",
+   "en": "c9.1",
    "preview": ":::{admonition} Definition"
   },
   {
    "de": "c9.2",
    "kind": "prose",
    "digest": "1bf8d3fecf0ca047",
-   "en": "c9.1",
+   "en": "c9.2",
    "preview": "Seien $\\mu,\\sigma \\in \\mathbb{R}$ mit $\\sigma > 0$. Dann heißt die Verte…"
   },
   {
    "de": "c9.3",
    "kind": "math",
    "digest": "c03670b68467b6a0",
-   "en": "c9.2",
+   "en": "c9.3",
    "preview": "$$ \\phi(x) = \\phi(x,\\mu,\\sigma) = \\frac{1}{\\sigma\\sqrt{2\\pi}} e^{-\\frac{…"
   },
   {
    "de": "c9.4",
    "kind": "prose",
    "digest": "c5b5460ad4ac7cfb",
-   "en": "c9.3",
+   "en": "c9.4",
    "preview": "*Normalverteilung* und wir schreiben für eine reelle Zufallsvariable $X$…"
   },
   {
    "de": "c9.5",
    "kind": "directive",
    "digest": "f1ae2a75ed1f9972",
-   "en": "c9.4",
+   "en": "c9.5",
    "preview": ":::"
   },
   {
    "de": "c10",
    "kind": "code",
    "digest": "c935711b36a9c34d",
-   "en": "c9.5",
+   "en": "c10",
    "preview": "x = np.linspace(20,60,100) plt.hist(binom_samples, bins=40, density=True…"
   },
   {
    "de": "c11.0",
    "kind": "directive",
    "digest": "d8a9d8fddee7e0b1",
-   "en": "c10",
+   "en": "c11.0",
    "preview": ":::{admonition} Proposition"
   },
   {
    "de": "c11.1",
    "kind": "prose",
    "digest": "38db0adb5b88ab78",
-   "en": "c11.0",
+   "en": "c11.1",
    "preview": "Wenn $X \\sim \\mathcal{N}(\\mu,\\sigma^2)$, so ist $\\mathbb{E}(X) = \\mu$ un…"
   },
   {
    "de": "c11.2",
    "kind": "directive",
    "digest": "f1ae2a75ed1f9972",
-   "en": "c11.1",
+   "en": "c11.2",
    "preview": ":::"
   },
   {
    "de": "c11.3",
    "kind": "directive",
    "digest": "d3c74271f8c77915",
-   "en": "c11.2",
+   "en": "c11.3",
    "preview": ":::{admonition} Beweis"
   },
   {
    "de": "c11.4",
    "kind": "prose",
    "digest": "3aa20c255c001032",
-   "en": "c11.3",
+   "en": "c11.4",
    "preview": "Wir setzen die Dichte für $X$ in die Formel für $\\mathbb{E}(X)$ ein und …"
   },
   {
    "de": "c11.5",
    "kind": "math",
    "digest": "e29f5d7d16f19244",
-   "en": "c11.4",
+   "en": "c11.5",
    "preview": "$$ \\begin{aligned} \\mathbb{E}(X) &= \\int_{-\\infty}^{\\infty} x\\phi(x) dx …"
   },
   {
    "de": "c11.6",
    "kind": "prose",
    "digest": "7865a7b4b43d79a0",
-   "en": "c11.5",
+   "en": "c11.6",
    "preview": "Der Ausdruck nach dem $\\mu +$ ist einfach $0$, denn die Funktion ist pun…"
   },
   {
    "de": "c11.7",
    "kind": "prose",
    "digest": "3a654ef8233a4c0c",
-   "en": "c11.6",
+   "en": "c11.7",
    "preview": "Genau so kann man bei der Varianz verfahren, indem man diesen Ausdruck v…"
   },
   {
    "de": "c11.8",
    "kind": "math",
    "digest": "981e4b22a31a2ef6",
-   "en": "c11.7",
+   "en": "c11.8",
    "preview": "$$ \\begin{aligned} \\mathbb{V}(X) &= \\int_{-\\infty}^{\\infty} x^2\\phi(x) d…"
   },
   {
    "de": "c11.9",
    "kind": "prose",
    "digest": "5d21385ca5a6c9b4",
-   "en": "c11.8",
+   "en": "c11.9",
    "preview": "Nach derselben Substitution $x \\to x + \\mu$ und Ausmultiplizieren von $(…"
   },
   {
    "de": "c11.10",
    "kind": "directive",
    "digest": "f1ae2a75ed1f9972",
-   "en": "c11.9",
+   "en": "c11.10",
    "preview": ":::"
   },
   {
    "de": "c12.0",
    "kind": "directive",
    "digest": "053400a7b7d2fc03",
-   "en": "c11.10",
+   "en": "c12.0",
    "preview": ":::{admonition} Definition"
   },
   {
    "de": "c12.1",
    "kind": "prose",
    "digest": "796f0c013fa30dff",
-   "en": "c12.0",
+   "en": "c12.1",
    "preview": "Man nennt eine Zufallsvariable mit $X \\sim \\mathcal{N}(0,1)$ auch *stand…"
   },
   {
    "de": "c12.2",
    "kind": "directive",
    "digest": "f1ae2a75ed1f9972",
-   "en": "c12.1",
+   "en": "c12.2",
    "preview": ":::"
   },
   {
    "de": "c12.3",
    "kind": "directive",
    "digest": "d8a9d8fddee7e0b1",
-   "en": "c12.2",
+   "en": "c12.3",
    "preview": ":::{admonition} Proposition"
   },
   {
    "de": "c12.4",
    "kind": "prose",
    "digest": "12afb74673dc4256",
-   "en": "c12.3",
+   "en": "c12.4",
    "preview": "Wenn $X \\sim \\mathcal{N}(\\mu,\\sigma^2)$, so ist $\\frac{X - \\mu}{\\sigma} …"
   },
   {
    "de": "c12.5",
    "kind": "directive",
    "digest": "f1ae2a75ed1f9972",
-   "en": "c12.4",
+   "en": "c12.5",
    "preview": ":::"
   },
   {
    "de": "c12.6",
    "kind": "directive",
    "digest": "d3c74271f8c77915",
-   "en": "c12.5",
+   "en": "c12.6",
    "preview": ":::{admonition} Beweis"
   },
   {
    "de": "c12.7",
    "kind": "prose",
    "digest": "b6b16c5f3870c53e",
-   "en": "c12.6",
+   "en": "c12.7",
    "preview": "**Idee:** Es ist sofort klar, dass $\\mathbb{E}(X-\\mu) = 0$ und dass $\\ma…"
   },
   {
    "de": "c12.8",
    "kind": "directive",
    "digest": "f1ae2a75ed1f9972",
-   "en": "c12.7",
+   "en": "c12.8",
    "preview": ":::"
   },
   {
    "de": "c12.9",
    "kind": "prose",
    "digest": "8c35ccae1bcac5a5",
-   "en": "c12.8",
+   "en": "c12.9",
    "preview": "Die Standardisierung ist ein Spezialfall einer allgemeineren Aussage, di…"
   },
   {
    "de": "c12.10",
    "kind": "directive",
    "digest": "d8a9d8fddee7e0b1",
-   "en": "c12.9",
+   "en": "c12.10",
    "preview": ":::{admonition} Proposition"
   },
   {
    "de": "c12.11",
    "kind": "prose",
    "digest": "35d50407ff329a40",
-   "en": "c12.10",
+   "en": "c12.11",
    "preview": "Ist $X \\sim \\mathcal{N}(\\mu,\\sigma^2)$ und sind $a \\neq 0$, $b \\in \\math…"
   },
   {
    "de": "c12.12",
    "kind": "math",
    "digest": "4c7af60c75b27153",
-   "en": "c12.11",
+   "en": "c12.12",
    "preview": "$$ aX + b \\sim \\mathcal{N}\\left( a\\mu + b,\\ a^2\\sigma^2 \\right). $$"
   },
   {
    "de": "c12.13",
    "kind": "prose",
    "digest": "2e87f648e418e548",
-   "en": "c12.12",
+   "en": "c12.13",
    "preview": "Die Normalverteiltheit bleibt also unter affin-linearen Transformationen…"
   },
   {
    "de": "c12.14",
    "kind": "directive",
    "digest": "f1ae2a75ed1f9972",
-   "en": "c12.13",
+   "en": "c12.14",
    "preview": ":::"
   },
   {
    "de": "c12.15",
    "kind": "directive",
    "digest": "d3c74271f8c77915",
-   "en": "c12.14",
+   "en": "c12.15",
    "preview": ":::{admonition} Beweis"
   },
   {
    "de": "c12.16",
    "kind": "prose",
    "digest": "b6a6953d1e7d7f2c",
-   "en": "c12.15",
+   "en": "c12.16",
    "preview": "**Idee:** Erwartungswert und Varianz folgen aus den Rechenregeln des Kap…"
   },
   {
    "de": "c12.17",
    "kind": "math",
    "digest": "f5ab083cd4ad4066",
-   "en": "c12.16",
+   "en": "c12.17",
    "preview": "$$ p_Y(y) = \\dfrac{1}{|a|}\\, p_X\\!\\left( \\dfrac{y-b}{a} \\right) $$"
   },
   {
    "de": "c12.18",
    "kind": "prose",
    "digest": "77121946f64b5fbc",
-   "en": "c12.17",
+   "en": "c12.18",
    "preview": "(die Transformationsformel: Der Faktor $\\frac{1}{|a|}$ sorgt dafür, dass…"
   },
   {
    "de": "c12.19",
    "kind": "directive",
    "digest": "f1ae2a75ed1f9972",
-   "en": "c12.18",
+   "en": "c12.19",
    "preview": ":::"
   },
   {
    "de": "c12.20",
    "kind": "prose",
    "digest": "ce7f9cfaadd492ec",
-   "en": "c12.19",
+   "en": "c12.20",
    "preview": "Zwei Spezialfälle lohnen das Merken. Mit $a = \\frac1\\sigma$ und $b = -\\f…"
   },
   {
    "de": "c12.21",
    "kind": "prose",
    "digest": "5401fd7f760148e6",
-   "en": "c12.20",
+   "en": "c12.21",
    "preview": "Außerdem nutzen wir, dass die Summe von unabhängigen Zufallsvariablen mi…"
   },
   {
    "de": "c12.22",
    "kind": "directive",
    "digest": "f964f8dc481b2d41",
-   "en": "c12.21",
+   "en": "c12.22",
    "preview": ":::{admonition} Satz"
   },
   {
    "de": "c12.23",
    "kind": "prose",
    "digest": "33370790fd771030",
-   "en": "c12.22",
+   "en": "c12.23",
    "preview": "Unter allen **stetigen** Verteilungen reeller Zufallsvariablen $X$ mit *…"
   },
   {
    "de": "c12.24",
    "kind": "directive",
    "digest": "f1ae2a75ed1f9972",
-   "en": "c12.23",
+   "en": "c12.24",
    "preview": ":::"
   },
   {
    "de": "c12.25",
    "kind": "prose",
    "digest": "1de7333d3ca9a9cc",
-   "en": "c12.24",
+   "en": "c12.25",
    "preview": "Um diesen Satz überhaupt präzise formulieren zu können, benötigen wir ei…"
   },
   {
    "de": "c12.26",
    "kind": "directive",
    "digest": "d8a9d8fddee7e0b1",
-   "en": "c12.25",
+   "en": "c12.26",
    "preview": ":::{admonition} Proposition"
   },
   {
    "de": "c12.27",
    "kind": "prose",
    "digest": "9d3d2c2dcefcf3a5",
-   "en": "c12.26",
+   "en": "c12.27",
    "preview": "Sind $X \\sim \\mathcal{N}(\\mu_1, \\sigma_1^2)$ und $Y \\sim \\mathcal{N}(\\mu…"
   },
   {
    "de": "c12.28",
    "kind": "prose",
    "digest": "ba1e82a1cc32de08",
-   "en": "c12.27",
+   "en": "c12.28",
    "preview": "**Ohne Beweis**"
   },
   {
    "de": "c12.29",
    "kind": "directive",
    "digest": "f1ae2a75ed1f9972",
-   "en": "c12.28",
+   "en": "c12.29",
    "preview": ":::"
   },
   {
    "de": "c12.30",
    "kind": "prose",
    "digest": "a5e0252bf0a8d39a",
-   "en": "c12.29",
+   "en": "c12.30",
    "preview": "Erwartungswert und Varianz folgen aus den Rechenregeln im Kapitel [Erwar…"
   },
   {
    "de": "c12.31",
    "kind": "prose",
    "digest": "762a757b46fd67d4",
-   "en": "c12.30",
+   "en": "c12.31",
    "preview": "Wichtig ist aber die Take-Home-Message des Satzes: Wenn über eine stetig…"
   },
   {
    "de": "c12.32",
    "kind": "prose",
    "digest": "12190626131d0d72",
-   "en": "c12.31",
+   "en": "c12.32",
    "preview": "Die Einschränkung auf den Träger $\\mathbb{R}$ ist dabei keine Formalie, …"
   },
   {
    "de": "c12.33",
    "kind": "table",
    "digest": "e61f5a1b445150f1",
-   "en": "c12.32",
+   "en": "c12.33",
    "preview": "| Träger | was sonst bekannt ist | Verteilung mit maximaler Entropie | |…"
   },
   {
    "de": "c12.34",
    "kind": "prose",
    "digest": "ad95d14fdff33c36",
-   "en": "c12.33",
+   "en": "c12.34",
    "preview": "Die Steckbriefe der drei stetigen Verteilungen stehen im Kapitel [Wichti…"
   },
   {
    "de": "c12.35",
    "kind": "prose",
    "digest": "d6e05c0d6a4546a0",
-   "en": "c12.34",
+   "en": "c12.35",
    "preview": "Das Muster dahinter ist immer dasselbe: Maximale Entropie heißt „so weni…"
   },
   {
    "de": "c13.0",
    "kind": "heading",
    "digest": "7874c85b5e86589f",
-   "en": "c12.35",
+   "en": "c13.0",
    "preview": "## Der zentrale Grenzwertsatz"
   },
   {
    "de": "c13.1",
    "kind": "directive",
    "digest": "f964f8dc481b2d41",
-   "en": "c13.0",
+   "en": "c13.1",
    "preview": ":::{admonition} Satz"
   },
   {
    "de": "c13.2",
    "kind": "prose",
    "digest": "2a99903086873074",
-   "en": "c13.1",
+   "en": "c13.2",
    "preview": "Wenn $X_i$ eine Folge von identisch verteilten, voneinander unabhängigen…"
   },
   {
    "de": "c13.3",
    "kind": "math",
    "digest": "5cb4b00925516f4b",
-   "en": "c13.2",
+   "en": "c13.3",
    "preview": "$$ Z_N \\xrightarrow{N \\to \\infty} \\mathcal{N}(0,1) $$"
   },
   {
    "de": "c13.4",
    "kind": "directive",
    "digest": "f1ae2a75ed1f9972",
-   "en": "c13.3",
+   "en": "c13.4",
    "preview": ":::"
   },
   {
    "de": "c13.5",
    "kind": "prose",
    "digest": "996777874dc78dd3",
-   "en": "c13.4",
+   "en": "c13.5",
    "preview": "Der Buchstabe $Z$ soll daran erinnern, dass $Z_N$ die auf Erwartungswert…"
   },
   {
    "de": "c13.6",
    "kind": "prose",
    "digest": "0c14fcab85db43f7",
-   "en": "c13.5",
+   "en": "c13.6",
    "preview": "Konvergenz in Verteilung heißt, dass die Verteilungsfunktion von $Z_N$ g…"
   },
   {
    "de": "c13.7",
    "kind": "prose",
    "digest": "5b83b629d21554a6",
-   "en": "c13.6",
+   "en": "c13.7",
    "preview": "Von diesem Satz gibt es auch Abschwächungen, die gewisse Abhängigkeiten …"
   },
   {
    "de": "c13.8",
    "kind": "directive",
    "digest": "566676a32baee8ac",
-   "en": "c13.7",
+   "en": "c13.8",
    "preview": ":::{admonition} Bemerkung"
   },
   {
    "de": "c13.9",
    "kind": "prose",
    "digest": "a354e82285ddaba0",
-   "en": "c13.8",
+   "en": "c13.9",
    "preview": "Wichtig ist der Satz für uns, weil er erlaubt eine Summe unabhängiger Zu…"
   },
   {
    "de": "c13.10",
    "kind": "directive",
    "digest": "f1ae2a75ed1f9972",
-   "en": "c13.9",
+   "en": "c13.10",
    "preview": ":::"
   },
   {
    "de": "c13.11",
    "kind": "prose",
    "digest": "3c554a7a0d12cd48",
-   "en": "c13.10",
+   "en": "c13.11",
    "preview": "Um zwei konkrete Beispiele zu nennen: der Fehler bei der Ortsbestimmung …"
   },
   {
    "de": "c13.12",
    "kind": "directive",
    "digest": "566676a32baee8ac",
-   "en": "c13.11",
+   "en": "c13.12",
    "preview": ":::{admonition} Bemerkung"
   },
   {
    "de": "c13.13",
    "kind": "prose",
    "digest": "1f840fa7b3b1d735",
-   "en": "c13.12",
+   "en": "c13.13",
    "preview": "**Der Standardfehler.** Die wichtigste Anwendung für uns: Das Mittel $\\o…"
   },
   {
    "de": "c13.14",
    "kind": "directive",
    "digest": "f1ae2a75ed1f9972",
-   "en": "c13.13",
+   "en": "c13.14",
    "preview": ":::"
   },
   {
    "de": "c14.0",
    "kind": "prose",
    "digest": "87a35d53418d3ba4",
-   "en": "c13.14",
+   "en": "c14.0",
    "preview": "**Nebenbemerkung**: Man kann außerdem die Geschwindigkeit der Konvergenz…"
   },
   {
    "de": "c14.1",
    "kind": "directive",
    "digest": "06b47c61975e9704",
-   "en": "c14.0",
+   "en": "c14.1",
    "preview": ":::{admonition} Satz von Berry–Esseen"
   },
   {
    "de": "c14.2",
    "kind": "prose",
    "digest": "97d701455fc4c23e",
-   "en": "c14.1",
+   "en": "c14.2",
    "preview": "Es existiert eine Konstante $C$ mit $0{,}41 \\le C \\le 0{,}48$ und der fo…"
   },
   {
    "de": "c14.3",
    "kind": "prose",
    "digest": "3a2aa1b102d48b73",
-   "en": "c14.2",
+   "en": "c14.3",
    "preview": "Wenn $X_i$ eine Folge von iid Zufallsvariablen mit Erwartungswert $0$ un…"
   },
   {
    "de": "c14.4",
    "kind": "math",
    "digest": "1f69d5b003eed602",
-   "en": "c14.3",
+   "en": "c14.4",
    "preview": "$$ \\sup_{x \\in \\mathbb{R}} \\left| F_N(x) - \\Phi(x) \\right| \\ \\leq\\ \\dfra…"
   },
   {
    "de": "c14.5",
    "kind": "directive",
    "digest": "f1ae2a75ed1f9972",
-   "en": "c14.4",
+   "en": "c14.5",
    "preview": ":::"
   },
   {
    "de": "c14.6",
    "kind": "prose",
    "digest": "a31e17004cf94604",
-   "en": "c14.5",
+   "en": "c14.6",
    "preview": "Der genaue Wert von $C$ ist nicht bekannt; die angegebenen Schranken sin…"
   },
   {
    "de": "c14.7",
    "kind": "prose",
    "digest": "a64044dea2336c56",
-   "en": "c14.6",
+   "en": "c14.7",
    "preview": "Klar: Wenn der Erwartungswert nicht $0$ ist, lässt sich eine Variante al…"
   },
   {
    "de": "c15.0",
    "kind": "heading",
    "digest": "f63466fe0b1763bb",
-   "en": "c14.7",
+   "en": "c15.0",
    "preview": "## Praxisbeispiel: Der „$N \\ge 30$“-Mythos"
   },
   {
    "de": "c15.1",
    "kind": "prose",
    "digest": "e13bf72da62100d3",
-   "en": "c15.0",
+   "en": "c15.1",
    "preview": "In vielen Lehrbüchern, Statistik-Kursen und Auswertungsvorschriften steh…"
   },
   {
    "de": "c15.2",
    "kind": "prose",
    "digest": "5b9be9af28ce69d9",
-   "en": "c15.1",
+   "en": "c15.2",
    "preview": "Die Schranke oben lautet $\\frac{C\\rho}{\\sigma^3\\sqrt{N}}$. Darin steht $…"
   },
   {
    "de": "c15.3",
    "kind": "prose",
    "digest": "ae2d3e5731e5b56e",
-   "en": "c15.2",
+   "en": "c15.3",
    "preview": "Der wichtigste Fall in der Praxis ist ein binäres Merkmal: „Nebenwirkung…"
   },
   {
    "de": "c15.4",
    "kind": "math",
    "digest": "81d5a03c1c8c91c8",
-   "en": "c15.3",
+   "en": "c15.4",
    "preview": "$$ \\sigma^2 = p(1-p), \\qquad \\rho = \\mathbb{E}\\left|X - p\\right|^3 = p(1…"
   },
   {
    "de": "c15.5",
    "kind": "prose",
    "digest": "bb8c8605c55dcc2d",
-   "en": "c15.4",
+   "en": "c15.5",
    "preview": "also"
   },
   {
    "de": "c15.6",
    "kind": "math",
    "digest": "c7f8150ac904dc06",
-   "en": "c15.5",
+   "en": "c15.6",
    "preview": "$$ \\dfrac{\\rho}{\\sigma^3} = \\dfrac{(1-p)^2 + p^2}{\\sqrt{p(1-p)}}. $$"
   },
   {
    "de": "c15.7",
    "kind": "prose",
    "digest": "b6c41989446533ca",
-   "en": "c15.6",
+   "en": "c15.7",
    "preview": "Für ein ausgeglichenes Merkmal, $p = 0{,}5$, ist das genau $1$, und die …"
   },
   {
    "de": "c15.8",
    "kind": "math",
    "digest": "4f1c3ba11098367f",
-   "en": "c15.7",
+   "en": "c15.8",
    "preview": "$$ \\dfrac{0{,}44 \\cdot 9{,}85}{\\sqrt{30}} \\approx 0{,}79. $$"
   },
   {
    "de": "c15.9",
    "kind": "prose",
    "digest": "0eadbcaacd04c41e",
-   "en": "c15.8",
+   "en": "c15.9",
    "preview": "Eine Schranke von $0{,}79$ für eine Abweichung zwischen zwei Verteilungs…"
   },
   {
    "de": "c15.10",
    "kind": "directive",
    "digest": "9ed44466e76f639d",
-   "en": "c15.9",
+   "en": "c15.10",
    "preview": ":::{admonition} Faustregel"
   },
   {
    "de": "c15.11",
    "kind": "prose",
    "digest": "853236ca09b0a75d",
-   "en": "c15.10",
+   "en": "c15.11",
    "preview": "**Laplace-Bedingung.** Die Binomialverteilung $\\operatorname{Bin}(N,p)$ …"
   },
   {
    "de": "c15.12",
    "kind": "math",
    "digest": "73aa3381947bee05",
-   "en": "c15.11",
+   "en": "c15.12",
    "preview": "$$ N p \\ge 10 \\qquad \\text{und} \\qquad N(1-p) \\ge 10, $$"
   },
   {
    "de": "c15.13",
    "kind": "prose",
    "digest": "97236ccf703670a5",
-   "en": "c15.12",
+   "en": "c15.13",
    "preview": "wenn also *beide* Ausgänge im Mittel mindestens zehnmal vorkommen. Für $…"
   },
   {
    "de": "c15.14",
    "kind": "directive",
    "digest": "f1ae2a75ed1f9972",
-   "en": "c15.13",
+   "en": "c15.14",
    "preview": ":::"
   },
   {
    "de": "c15.15",
    "kind": "prose",
    "digest": "d46c76c5a44879b7",
-   "en": "c15.14",
+   "en": "c15.15",
    "preview": "Der Unterschied zur $N \\ge 30$-Regel ist also nicht akademisch: Bei eine…"
   },
   {
    "de": "c16",
    "kind": "code",
    "digest": "e74705a8308aa735",
-   "en": "c15.15",
+   "en": "c16",
    "preview": "fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(12, 4)) for ax, n in ((ax1…"
   },
   {
    "de": "c17.0",
    "kind": "prose",
    "digest": "3493f1c5f8c4472f",
-   "en": "c16",
+   "en": "c17.0",
    "preview": "Links, bei $N = 30$, liegt fast die ganze Wahrscheinlichkeitsmasse auf d…"
   },
   {
    "de": "c17.1",
    "kind": "prose",
    "digest": "c350b0c301232f50",
-   "en": "c17.0",
+   "en": "c17.1",
    "preview": "Die Moral ist allgemeiner als das Beispiel: Eine Faustregel, die nur die…"
   }
  ]

@@ -52,7 +52,7 @@
       "source": "wichtigste-stetige-verteilungen.ipynb"
     },
     "important-discrete-distributions.ipynb": {
-      "translated": false,
+      "translated": true,
       "style_pass": false,
       "source": "wichtigste-diskrete-verteilungen.ipynb"
     },
@@ -97,12 +97,12 @@
       "source": "model-selection.ipynb"
     },
     "multivariate-normal.ipynb": {
-      "translated": false,
+      "translated": true,
       "style_pass": false,
       "source": "multivariate-normalverteilung.ipynb"
     },
     "normal-distribution.ipynb": {
-      "translated": false,
+      "translated": true,
       "style_pass": false,
       "source": "normalverteilung.ipynb"
     },

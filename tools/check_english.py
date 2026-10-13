@@ -3,7 +3,8 @@
 Not a style checker and not a spell checker: this only looks for the handful of mistakes
 that are mechanical, frequent, and invisible on a quick read -- a German sentence left
 behind in a long chapter, a decimal comma that should be a point, German quotation marks,
-a Genderstern, an em dash where the book uses a spaced en dash.
+a Genderstern, an em dash where the book uses a spaced en dash. Code is skipped,
+with one exception: `{,}`, the LaTeX German decimal comma, which hides in f-strings.
 
     python3 tools/check_english.py            # every file listed in sync/progress.json
     python3 tools/check_english.py <file>...  # just these
@@ -80,6 +81,14 @@ def check(path: Path) -> list[tuple[str, str, str]]:
     findings = []
     for block in segment(path):
         if block.kind == "code":
+            # Code is not prose and is not searched for German -- except for one pattern
+            # that has no business in it at all: `{,}`, the LaTeX German decimal comma,
+            # which turns up in f-strings built to render numbers the German way.
+            for m in re.finditer(r"\{,\}", block.text):
+                if (block.bid, "German decimal comma in code") in skip:
+                    continue
+                findings.append((block.bid, "German decimal comma in code",
+                                 block.text[max(0, m.start() - 40):m.end() + 40]))
             continue
         masked = _mask(block.text)
         for pattern, label in CHECKS:

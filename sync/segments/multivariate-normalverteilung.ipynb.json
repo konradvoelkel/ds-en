@@ -22,490 +22,490 @@
    "de": "c1.0",
    "kind": "heading",
    "digest": "60054a8df772ba14",
-   "en": "c0.1",
+   "en": "c1.0",
    "preview": "## Dichten von multivariaten Verteilungen"
   },
   {
    "de": "c1.1",
    "kind": "prose",
    "digest": "db7e12dec823e764",
-   "en": "c1.0",
+   "en": "c1.1",
    "preview": "Wir erinnern uns: Bei einer Dichtefunktion $f \\colon \\mathbb{R} \\to [0,\\…"
   },
   {
    "de": "c1.2",
    "kind": "prose",
    "digest": "f84e8c6a473a7692",
-   "en": "c1.1",
+   "en": "c1.2",
    "preview": "Wenn wir das auf zwei Dimensionen verallgemeinern wollen, also eine Zufa…"
   },
   {
    "de": "c1.3",
    "kind": "prose",
    "digest": "ee502b6e9a496703",
-   "en": "c1.2",
+   "en": "c1.3",
    "preview": "Daran sehen wir: die Dichtefunktion muss die Signatur $f \\colon \\mathbb{…"
   },
   {
    "de": "c1.4",
    "kind": "prose",
    "digest": "ec8ff82347d0b0dd",
-   "en": "c1.3",
+   "en": "c1.4",
    "preview": "Allgemeiner definiert eine Funktion $f \\colon \\mathbb{R}^n \\to [0,\\infty…"
   },
   {
    "de": "c2.0",
    "kind": "heading",
    "digest": "514bfdcfd029714e",
-   "en": "c1.4",
+   "en": "c2.0",
    "preview": "## Herleitung: von der Symmetrie zur Formel"
   },
   {
    "de": "c2.1",
    "kind": "prose",
    "digest": "d7217602c55a36c5",
-   "en": "c2.0",
+   "en": "c2.1",
    "preview": "Bevor wir die mehrdimensionale Normalverteilung definieren, wollen wir s…"
   },
   {
    "de": "c2.2",
    "kind": "prose",
    "digest": "83c29f4ec5d0b837",
-   "en": "c2.1",
+   "en": "c2.2",
    "preview": "Wir kennen bereits einen Weg, aus zwei eindimensionalen Verteilungen ein…"
   },
   {
    "de": "c3",
    "kind": "code",
    "digest": "0890c120abf05ecb",
-   "en": "c2.2",
+   "en": "c3",
    "preview": "import numpy as np import scipy.stats as st import matplotlib.pyplot as …"
   },
   {
    "de": "c4.0",
    "kind": "prose",
    "digest": "0ae225655e978231",
-   "en": "c3",
+   "en": "c4.0",
    "preview": "Nur das dritte Bild ist **drehsymmetrisch**: Man kann es um den Ursprung…"
   },
   {
    "de": "c4.1",
    "kind": "math",
    "digest": "1f6b4aab626ba5cd",
-   "en": "c4.0",
+   "en": "c4.1",
    "preview": "$$ \\phi(x)\\,\\phi(y) = \\frac{1}{2\\pi}\\, e^{-x^2/2}\\, e^{-y^2/2} = \\frac{1…"
   },
   {
    "de": "c4.2",
    "kind": "prose",
    "digest": "453cdcfe4fd68907",
-   "en": "c4.1",
+   "en": "c4.2",
    "preview": "die Dichte hängt nur vom Abstand $r$ zum Ursprung ab. Das Produkt zweier…"
   },
   {
    "de": "c4.3",
    "kind": "prose",
    "digest": "207b8a2d61aa2e1b",
-   "en": "c4.2",
+   "en": "c4.3",
    "preview": "Alle anderen Normalverteilungen entstehen daraus durch drei Operationen,…"
   },
   {
    "de": "c4.4",
    "kind": "prose",
    "digest": "4d47df5af5e0852d",
-   "en": "c4.3",
+   "en": "c4.4",
    "preview": "1. **Verschieben:** $X = Z + \\mu$ hat Erwartungswert $\\mu$. In der Dicht…"
   },
   {
    "de": "c4.5",
    "kind": "prose",
    "digest": "6d2ebf76952e6265",
-   "en": "c4.4",
+   "en": "c4.5",
    "preview": "Zusammen: $X = A Z + \\mu$ mit $A = R D$. Welche Dichte hat $X$? Wir müss…"
   },
   {
    "de": "c4.6",
    "kind": "math",
    "digest": "7a7d71ebc8bf7e11",
-   "en": "c4.5",
+   "en": "c4.6",
    "preview": "$$ \\lVert M z \\rVert^2 = (Mz)^T (Mz) = z^T M^T M z, $$"
   },
   {
    "de": "c4.7",
    "kind": "prose",
    "digest": "fb41758bc7523a86",
-   "en": "c4.6",
+   "en": "c4.7",
    "preview": "denn beim Transponieren eines Produkts dreht sich die Reihenfolge um. Mi…"
   },
   {
    "de": "c4.8",
    "kind": "math",
    "digest": "ed211ef291a20b5f",
-   "en": "c4.7",
+   "en": "c4.8",
    "preview": "$$ \\Sigma := A A^T = R D^2 R^T $$"
   },
   {
    "de": "c4.9",
    "kind": "prose",
    "digest": "c6a796be26092f2f",
-   "en": "c4.8",
+   "en": "c4.9",
    "preview": "ist genau die Kovarianzmatrix von $X$ (das rechnet man mit den Rechenreg…"
   },
   {
    "de": "c4.10",
    "kind": "prose",
    "digest": "a569459fdc4e27ed",
-   "en": "c4.9",
+   "en": "c4.10",
    "preview": "Das lässt sich am Rechner nachvollziehen: Wir ziehen eine Standardnormal…"
   },
   {
    "de": "c5",
    "kind": "code",
    "digest": "86ab34ea58d62ca4",
-   "en": "c4.10",
+   "en": "c5",
    "preview": "rng = np.random.default_rng(1) z = rng.standard_normal((2000, 2)) # Stan…"
   },
   {
    "de": "c6.0",
    "kind": "prose",
    "digest": "58a8530764816018",
-   "en": "c5",
+   "en": "c6.0",
    "preview": "Die schwarzen Achsen sind die Eigenvektoren von $\\Sigma$, skaliert mit d…"
   },
   {
    "de": "c7.0",
    "kind": "heading",
    "digest": "da518702ea712559",
-   "en": "c6.0",
+   "en": "c7.0",
    "preview": "## Die Multivariate Normalverteilung"
   },
   {
    "de": "c7.1",
    "kind": "directive",
    "digest": "053400a7b7d2fc03",
-   "en": "c7.0",
+   "en": "c7.1",
    "preview": ":::{admonition} Definition"
   },
   {
    "de": "c7.2",
    "kind": "prose",
    "digest": "194c9be18cd8d214",
-   "en": "c7.1",
+   "en": "c7.2",
    "preview": "Sei $n \\in \\mathbb{N}$, $\\mu \\in \\mathbb{R}^n$ und $\\Sigma \\in Mat(n \\ti…"
   },
   {
    "de": "c7.3",
    "kind": "prose",
    "digest": "28f8dea6a519297b",
-   "en": "c7.2",
+   "en": "c7.3",
    "preview": "Dann heißt die Verteilung zur Dichtefunktion"
   },
   {
    "de": "c7.4",
    "kind": "math",
    "digest": "0814b0d55cd4971c",
-   "en": "c7.3",
+   "en": "c7.4",
    "preview": "$$ \\phi(x) = \\dfrac{1}{\\sqrt{(2\\pi)^{n}\\det(\\Sigma)}} \\exp\\left( -\\dfrac…"
   },
   {
    "de": "c7.5",
    "kind": "prose",
    "digest": "c09ea77ab8cc88d8",
-   "en": "c7.4",
+   "en": "c7.5",
    "preview": "*n-dimensionale (multivariate) Normalverteilung mit Erwartungswert $\\mu$…"
   },
   {
    "de": "c7.6",
    "kind": "directive",
    "digest": "f1ae2a75ed1f9972",
-   "en": "c7.5",
+   "en": "c7.6",
    "preview": ":::"
   },
   {
    "de": "c7.7",
    "kind": "prose",
    "digest": "97c85e9b49040e11",
-   "en": "c7.6",
+   "en": "c7.7",
    "preview": "Diese Verteilung hat in der Tat den Erwartungswert und die Kovarianzmatr…"
   },
   {
    "de": "c7.8",
    "kind": "prose",
    "digest": "ece7de0e01af3999",
-   "en": "c7.7",
+   "en": "c7.8",
    "preview": "Im Deep Learning modelliert ein *Variational Autoencoder* jeden Datenpun…"
   },
   {
    "de": "c8",
    "kind": "code",
    "digest": "b124783fec555f8f",
-   "en": "c7.8",
+   "en": "c8",
    "preview": "import numpy as np import scipy.stats as st import matplotlib.pyplot as …"
   },
   {
    "de": "c9",
    "kind": "code",
    "digest": "dc4c577b30aa76a4",
-   "en": "c8",
+   "en": "c9",
    "preview": "# Bivariate Normalverteilung instantiieren: def getmvn_by_rho(rho=0.7): …"
   },
   {
    "de": "c10",
    "kind": "code",
    "digest": "0b56b7a9ec22da22",
-   "en": "c9",
+   "en": "c10",
    "preview": "# Stichprobe ziehen: def samplexy(Sigma, Z, size=1000000): sample = Z.rv…"
   },
   {
    "de": "c11.0",
    "kind": "prose",
    "digest": "bd38ebf61ae7b9f0",
-   "en": "c10",
+   "en": "c11.0",
    "preview": "Tipp: Lesen Sie nach, wie in Numpy *meshgrids* (und damit verbunden die …"
   },
   {
    "de": "c12",
    "kind": "code",
    "digest": "5901a5b8f10e1d9c",
-   "en": "c11.0",
+   "en": "c12",
    "preview": "# 2D Plotten: def plotalot(x, y, Z): fig, axs = plt.subplots(2,2, figsiz…"
   },
   {
    "de": "c13",
    "kind": "code",
    "digest": "608dd784573b9c21",
-   "en": "c12",
+   "en": "c13",
    "preview": "# negativ korreliert sieht es so aus: plot_by_rho(-0.7)"
   },
   {
    "de": "c14.0",
    "kind": "prose",
    "digest": "4cad7af0a3a4eef7",
-   "en": "c13",
+   "en": "c14.0",
    "preview": "Wir sehen also, die Marginalverteilungen sehen exakt gleich aus - man ka…"
   },
   {
    "de": "c14.1",
    "kind": "prose",
    "digest": "843a691cabc44a7e",
-   "en": "c14.0",
+   "en": "c14.1",
    "preview": "Die Kovarianzmatrix hat eine direkte geometrische Interpretation, denn j…"
   },
   {
    "de": "c14.2",
    "kind": "prose",
    "digest": "d819d097c50cf687",
-   "en": "c14.1",
+   "en": "c14.2",
    "preview": "In der Formel, die die Dichte der multivariaten Normalverteilung definie…"
   },
   {
    "de": "c14.3",
    "kind": "directive",
    "digest": "566676a32baee8ac",
-   "en": "c14.2",
+   "en": "c14.3",
    "preview": ":::{admonition} Bemerkung"
   },
   {
    "de": "c14.4",
    "kind": "prose",
    "digest": "5a85c1e65853376d",
-   "en": "c14.3",
+   "en": "c14.4",
    "preview": "**Die multivariate Normalverteilung ist immer unimodal.** Weil $\\Sigma^{…"
   },
   {
    "de": "c14.5",
    "kind": "directive",
    "digest": "f1ae2a75ed1f9972",
-   "en": "c14.4",
+   "en": "c14.5",
    "preview": ":::"
   },
   {
    "de": "c14.6",
    "kind": "prose",
    "digest": "095bffc722e1ee33",
-   "en": "c14.5",
+   "en": "c14.6",
    "preview": "Die Kovarianzmatrix kodiert genau, wie die Ellipse aus einem perfekten K…"
   },
   {
    "de": "c14.7",
    "kind": "prose",
    "digest": "ee6696c49d348c76",
-   "en": "c14.6",
+   "en": "c14.7",
    "preview": "Um die Geometrie besser verstehen zu können, empfiehlt es sich mit bivar…"
   },
   {
    "de": "c15",
    "kind": "code",
    "digest": "c70b29a73d9e54d9",
-   "en": "c14.7",
+   "en": "c15",
    "preview": "rho = 0.7 Sigma, Z = getmvn_by_rho(rho) Sigma_inv = np.linalg.inv(Sigma)…"
   },
   {
    "de": "c16.0",
    "kind": "prose",
    "digest": "6a8636208c6437b3",
-   "en": "c15",
+   "en": "c16.0",
    "preview": "Die Achsen der Ellipsen kann man auch ausrechnen: Sie sind die Eigenvekt…"
   },
   {
    "de": "c17",
    "kind": "code",
    "digest": "d8bd1f6740c5d3b1",
-   "en": "c16.0",
+   "en": "c17",
    "preview": "werte, vektoren = np.linalg.eigh(Sigma) # Sigma ist symmetrisch, daher e…"
   },
   {
    "de": "c18.0",
    "kind": "prose",
    "digest": "47e86c8f2a6f59ba",
-   "en": "c17",
+   "en": "c18.0",
    "preview": "Damit wir auch das dreidimensionale Plotten mit matplotlib kennen lernen…"
   },
   {
    "de": "c19",
    "kind": "code",
    "digest": "fb477507d2fb499e",
-   "en": "c18.0",
+   "en": "c19",
    "preview": "# 3D Plotten: from mpl_toolkits.mplot3d import axes3d rho = 0.5 Sigma, Z…"
   },
   {
    "de": "c20",
    "kind": "code",
    "digest": "e1e6ca049fadffad",
-   "en": "c19",
+   "en": "c20",
    "preview": "fig=plt.figure(figsize=(15,15)) plot3dangles(25, 85, fig, 111) plt.show(…"
   },
   {
    "de": "c21",
    "kind": "code",
    "digest": "e36b49b3e8508a78",
-   "en": "c20",
+   "en": "c21",
    "preview": "fig=plt.figure(figsize=(10,10)) plot3dangles(80, 50, fig, 141) plot3dang…"
   },
   {
    "de": "c22.0",
    "kind": "directive",
    "digest": "8f4e565549eb919e",
-   "en": "c21",
+   "en": "c22.0",
    "preview": ":::{admonition} Lemma"
   },
   {
    "de": "c22.1",
    "kind": "prose",
    "digest": "83287e0bd582ab08",
-   "en": "c22.0",
+   "en": "c22.1",
    "preview": "Die multivariate Normalverteilung mit Erwartungswert $\\mu$ und Kovarianz…"
   },
   {
    "de": "c22.2",
    "kind": "directive",
    "digest": "f1ae2a75ed1f9972",
-   "en": "c22.1",
+   "en": "c22.2",
    "preview": ":::"
   },
   {
    "de": "c23.0",
    "kind": "directive",
    "digest": "8f4e565549eb919e",
-   "en": "c22.2",
+   "en": "c23.0",
    "preview": ":::{admonition} Lemma"
   },
   {
    "de": "c23.1",
    "kind": "prose",
    "digest": "0c53e16203bfbc8a",
-   "en": "c23.0",
+   "en": "c23.1",
    "preview": "Ein Zufallsvektor $X = (X_1,\\dots,X_n)$ (d.h. eine multivariate Verteilu…"
   },
   {
    "de": "c23.2",
    "kind": "directive",
    "digest": "f1ae2a75ed1f9972",
-   "en": "c23.1",
+   "en": "c23.2",
    "preview": ":::"
   },
   {
    "de": "c23.3",
    "kind": "prose",
    "digest": "7cf88b4764197ac5",
-   "en": "c23.2",
+   "en": "c23.3",
    "preview": "**Achtung**"
   },
   {
    "de": "c23.4",
    "kind": "prose",
    "digest": "ca519bb910ddf516",
-   "en": "c23.3",
+   "en": "c23.4",
    "preview": "Das heißt nicht, dass alle Linearkombinationen von normalverteilten Zufa…"
   },
   {
    "de": "c24",
    "kind": "code",
    "digest": "5b522eb1cab1e4a3",
-   "en": "c23.4",
+   "en": "c24",
    "preview": "# plot the weirdo sample: def plotalot2(x, y): fig, axs = plt.subplots(2…"
   },
   {
    "de": "c25.0",
    "kind": "prose",
    "digest": "940d6378b5b2835c",
-   "en": "c24",
+   "en": "c25.0",
    "preview": "[Die Wikipedia hat einen schönen Artikel dazu, dass normalverteilte unko…"
   },
   {
    "de": "c25.1",
    "kind": "prose",
    "digest": "a91add9e0ab3c2fe",
-   "en": "c25.0",
+   "en": "c25.1",
    "preview": "Die Zufallsvariablen X, Y aus dem vorigen Plot sind genau so ein Beispie…"
   },
   {
    "de": "c25.2",
    "kind": "prose",
    "digest": "52a3c06d81c0653d",
-   "en": "c25.1",
+   "en": "c25.2",
    "preview": "Umgekehrt gibt es eine Aussage mit starken Voraussetzungen:"
   },
   {
    "de": "c25.3",
    "kind": "directive",
    "digest": "8f4e565549eb919e",
-   "en": "c25.2",
+   "en": "c25.3",
    "preview": ":::{admonition} Lemma"
   },
   {
    "de": "c25.4",
    "kind": "prose",
    "digest": "b526c9a38f65cab2",
-   "en": "c25.3",
+   "en": "c25.4",
    "preview": "Sind $X$ und $Y$ zwei reelle Zufallsvariable, die gemeinsam bivariat nor…"
   },
   {
    "de": "c25.5",
    "kind": "prose",
    "digest": "f72b152fa790c5fb",
-   "en": "c25.4",
+   "en": "c25.5",
    "preview": "Es gilt auch die Umkehrung: wenn $X$ und $Y$ einzeln univariat normalver…"
   },
   {
    "de": "c25.6",
    "kind": "directive",
    "digest": "f1ae2a75ed1f9972",
-   "en": "c25.5",
+   "en": "c25.6",
    "preview": ":::"
   },
   {
    "de": "c25.7",
    "kind": "prose",
    "digest": "4f077a5ce527f83c",
-   "en": "c25.6",
+   "en": "c25.7",
    "preview": "**Aufgabe**:"
   },
   {
    "de": "c25.8",
    "kind": "prose",
    "digest": "8a9cdbc6cf218bba",
-   "en": "c25.7",
+   "en": "c25.8",
    "preview": "Machen Sie sich klar, wie die Kovarianzmatrix im Fall der Unabhängigkeit…"
   }
  ]

@@ -88,6 +88,7 @@ translations, no improvisation:
 | Korollar | Corollary | | Merke | Remember |
 | Grundsatz | Principle | | Ausblick | Looking ahead |
 | Faustregel | Rule of thumb | | Take-Home-Message | Take-home message |
+| Achtung | Caution | | Hinweis | Note |
 
 `:::{note}` keeps its meaning from the original: "optional, not part of the course proper".
 
