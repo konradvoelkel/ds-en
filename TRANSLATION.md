@@ -1,6 +1,6 @@
 # How this edition is translated
 
-Rules, not suggestions. Everyone translating a chapter — human or agent — follows these,
+Rules, not suggestions. Everyone translating a chapter – human or agent – follows these,
 because the sync machinery and the consistency of the book both depend on them.
 
 ## 1. Block alignment
@@ -12,9 +12,12 @@ block, a `:::` delimiter line, a notebook cell.
 * Never merge two source blocks into one, never split one into two, never reorder them.
 * Inside a block, rewrite as freely as good English requires. Sentence order, sentence
   count and phrasing are the translator's business.
-* A block that is **deliberately absent** from the English edition (see §2) is recorded as
-  `"dropped"` in `sync/segments/<german-file>.json`. Dropping a block is a decision, not a
-  side effect: it has to be written down there, or the alignment check fails.
+* A block that is **deliberately absent** from the English edition (see §2) is declared in
+  `sync/drops.json`, with a reason. Dropping a block is a decision, not a side effect: it has
+  to be written down, or the alignment check fails.
+* A block that exists **only in English** – a translator's note, nothing more – is declared
+  the same way in `sync/additions.json`. Keep these rare: this is a translation, not a
+  rewrite.
 * Notebook cells are never added, removed, merged or retyped. `tools/nbtext.py` refuses
   the import if they are.
 
@@ -30,7 +33,7 @@ This edition is a standalone book, not courseware for the Düsseldorf lecture ha
   reader of this edition; those blocks are dropped.
 * **The slides page.** `folien.md` links PDF decks that are not mirrored here. Dropped
   from the table of contents; the landing page points at the German edition instead.
-* Nothing else. Course organisation, module competencies and exam references stay —
+* Nothing else. Course organisation, module competencies and exam references stay –
   they are part of what these notes are, and a reader is entitled to know the context
   they were written in.
 
@@ -45,6 +48,10 @@ This edition is a standalone book, not courseware for the Düsseldorf lecture ha
 * **Quoted German**: legal terms, book and lecture titles, anything shown as an example of
   German usage. Quote the German and gloss it in English where the reader needs it.
 * **Proper names**, including HHU, the module name and the author.
+
+German-language *links*, on the other hand, are handled: a link to German Wikipedia is
+replaced by its English counterpart where one exists, and a link that stays German (a German
+course, a German video) is marked "(in German)" so the reader is not sent somewhere useless.
 
 ## 4. What is translated that is easy to forget
 
@@ -83,22 +90,22 @@ translations, no improvisation:
 * **Decimal separator**: German `0,25` becomes `0.25`. This applies in prose, in maths and
   in figure captions. Watch for thousands separators going the other way: `1.000` → `1,000`.
 * **Quotation marks**: `„…“`, `,,…''` and `»…«` all become plain `"…"`.
-* **Dashes**: German `--` / `—` as a parenthetical dash becomes an em dash without spaces
-  or an en dash with spaces; pick one per chapter and keep it.
-* **Genderstern**: `Teilnehmer\*innen` has no English equivalent and needs none —
+* **Dashes**: the German parenthetical dash (`—`, ` - `) becomes a **spaced en dash** ` – `
+  throughout the book. One rule, not a per-chapter choice, so that 31 files look like one book.
+* **Genderstern**: `Teilnehmer\*innen` has no English equivalent and needs none –
   "participants". Never "participants (m/f)".
 * **Address**: the German "Sie" becomes "you"; the German "wir" stays "we". The book's
   voice is a lecturer thinking alongside the reader, and that survives translation.
 * **Dates**: `25.09.2026` → `25 September 2026`.
 * **Spelling**: British or American, but one of them. This edition uses **British**
-  spelling (`behaviour`, `modelling`, `centre`) with `-ize` endings (`normalize`), i.e.
-  Oxford spelling, because the maths and ML literature the reader will go on to read is
-  mixed and `-ize` is the safer habit.
+  spelling throughout, with `-ise` rather than `-ize`: `visualisation`, `normalisation`,
+  `optimisation`, `generalise`, `behaviour`, `modelling`. American spellings that are part
+  of a name or of code stay as they are (`scikit-learn`'s `normalize`, `color=`).
 
 ## 7. Terminology
 
 `TERMINOLOGY.md` is binding. If a term is not in it and you had to think about it for more
-than a moment, add it there in the same commit — that is how the glossary grows into
+than a moment, add it there in the same commit – that is how the glossary grows into
 something the later chapters can rely on.
 
 Specifically: the German "Stochastik" covers probability theory *and* statistics and has no
@@ -106,10 +113,10 @@ English equivalent. Translate what is meant, never "stochastics".
 
 ## 8. Review passes
 
-1. **Translation** (Opus, one agent per chapter) — against `TERMINOLOGY.md`, obeying §1.
-2. **Consistency** — terminology actually used as declared; cross-references intact.
-3. **Style** (Fable) — English that reads as English. Still obeying §1: no merging or
+1. **Translation** (Opus, one agent per chapter) – against `TERMINOLOGY.md`, obeying §1.
+2. **Consistency** – terminology actually used as declared; cross-references intact.
+3. **Style** (Fable) – English that reads as English. Still obeying §1: no merging or
    splitting of blocks.
-4. **Mechanical checks** — `tools/check_align.py`, the build, the link check and a
+4. **Mechanical checks** – `tools/sync.py align`, the build, the link check and a
    leftover-German scan.
 5. **Human review.**

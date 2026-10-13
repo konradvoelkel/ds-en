@@ -29,12 +29,12 @@ project:
       output: exports/ds-en.pdf
   toc:
     - file: landing-page.md
-    - title: Einführung
+    - title: Introduction
       children:
         - file: what-is-data-science.md
         - file: intro-probability.md
         - file: intro-python.ipynb
-    - title: Diskrete Stochastik und Numpy
+    - title: Discrete probability and Numpy
       children:
         - file: programming-probability.ipynb
         - file: random-variables-distributions.md
@@ -42,27 +42,27 @@ project:
         - file: numpy.ipynb
         - file: important-discrete-distributions.ipynb
         - file: titanic-eda-numpy.ipynb
-    - title: Stetige Stochastik und Scipy
+    - title: Continuous probability and Scipy
       children:
         - file: continuous-distributions.md
         - file: normal-distribution.ipynb
         - file: important-continuous-distributions.ipynb
-    - title: Explorative Datenanalyse
+    - title: Exploratory data analysis
       children:
         - file: descriptive-statistics.md
         - file: eda-examples.ipynb
         - file: iris.ipynb
         - file: pandas.ipynb
         - file: data-cleaning.ipynb
-    - title: Multivariate Stochastik
+    - title: Multivariate probability
       children:
         - file: covariance.md
         - file: multivariate-normal.ipynb
         - file: relative-entropy.md
-    - title: Datenschutz
+    - title: Data protection
       children:
         - file: data-protection.md
-    - title: Maschinelles Lernen
+    - title: Machine learning
       children:
         - file: kmeans.ipynb
         - file: statistical-models.md

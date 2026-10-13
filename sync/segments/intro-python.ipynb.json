@@ -14,77 +14,78 @@
    "de": "c0.1",
    "kind": "prose",
    "digest": "f3fa25a509ee91c2",
-   "en": "c0.1",
+   "en": null,
+   "dropped": "link to the German HHU lecture recording",
    "preview": "[Vorlesungsaufzeichnung Python in der REPL](https://media.hhu.de/channel…"
   },
   {
    "de": "c0.2",
    "kind": "heading",
    "digest": "6bcaaea1cf1da8b1",
-   "en": "c0.2",
+   "en": "c0.1",
    "preview": "## Einordnung"
   },
   {
    "de": "c0.3",
    "kind": "prose",
    "digest": "2258707040d8af0c",
-   "en": "c0.3",
+   "en": "c0.2",
    "preview": "Python hat eine andere Designphilosophie als C, C++, Perl, Lisp, Pascal,…"
   },
   {
    "de": "c0.4",
    "kind": "prose",
    "digest": "270b47af7b10c7e1",
-   "en": "c0.4",
+   "en": "c0.3",
    "preview": "Python ist konzipiert als Sprache, die besonders gut lesbar ist, und der…"
   },
   {
    "de": "c0.5",
    "kind": "prose",
    "digest": "534f37e7087c636f",
-   "en": "c0.5",
+   "en": "c0.4",
    "preview": "Mit Python lassen sich funktionale Programmierparadigmen verwenden wie i…"
   },
   {
    "de": "c0.6",
    "kind": "prose",
    "digest": "4f9635a1bf46f85d",
-   "en": "c0.6",
+   "en": "c0.5",
    "preview": "Es gibt zwei klassische Arten, Python zu verwenden. Mit einer REPL (read…"
   },
   {
    "de": "c0.7",
    "kind": "prose",
    "digest": "f707f6fa54c09159",
-   "en": "c0.7",
+   "en": "c0.6",
    "preview": "Durch kompilieren eines Programms (.py) zu Python Bytecode (.pyc) und au…"
   },
   {
    "de": "c0.8",
    "kind": "prose",
    "digest": "efface3036ed5cfb",
-   "en": "c0.8",
+   "en": "c0.7",
    "preview": "Ursprünglich nutzte man zum Hinzufügen von Paketen (so heißen libraries …"
   },
   {
    "de": "c0.9",
    "kind": "prose",
    "digest": "d8f4693de7dc5dae",
-   "en": "c0.9",
+   "en": "c0.8",
    "preview": "Damit sich die Pakete verschiedener Projekte nicht in die Quere kommen, …"
   },
   {
    "de": "c0.10",
    "kind": "prose",
    "digest": "ceaafd5b4db11cd9",
-   "en": "c0.10",
+   "en": "c0.9",
    "preview": "Ein (Jupyter/IPython) Notebook ist ein Dokument, welches aus mehreren Ze…"
   },
   {
    "de": "c0.11",
    "kind": "prose",
    "digest": "66eb029ea8ecf285",
-   "en": "c0.11",
+   "en": "c0.10",
    "preview": "Dieses Buch ist auch eine Sammlung von Notebooks, die von Jupyter-Books …"
   },
   {

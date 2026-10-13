@@ -70,6 +70,11 @@ def dropped(de_file: str) -> dict[str, str]:
     return {d["block"]: d["reason"] for d in _load("drops.json")["drops"].get(de_file, [])}
 
 
+def added(en_file: str) -> dict[str, str]:
+    """block id -> reason, for English blocks with no German counterpart (translator's notes)."""
+    return {a["block"]: a["reason"] for a in _load("additions.json")["additions"].get(en_file, [])}
+
+
 def expected_blocks(de_file: str, commit: str) -> list[Block]:
     drops = dropped(de_file)
     return [b for b in segment_text(de_file, german(de_file, commit)) if b.bid not in drops]
@@ -88,20 +93,24 @@ def cmd_align() -> int:
             bad += 1
             continue
         have = segment(path)
-        if len(want) != len(have):
-            print(f"✗ {en_file}: {len(have)} blocks, expected {len(want)} "
-                  f"({len(want) + len(dropped(de_file))} in {de_file} minus {len(dropped(de_file))} dropped)")
+        extra = added(en_file)
+        paired = [b for b in have if b.bid not in extra]
+        if len(want) != len(paired):
+            print(f"✗ {en_file}: {len(paired)} translated blocks, expected {len(want)} "
+                  f"({len(want) + len(dropped(de_file))} in {de_file}, "
+                  f"{len(dropped(de_file))} dropped, {len(extra)} English-only)")
             bad += 1
             continue
-        kinds = [(i, w, h) for i, (w, h) in enumerate(zip(want, have)) if w.kind != h.kind]
+        kinds = [(i, w, h) for i, (w, h) in enumerate(zip(want, paired)) if w.kind != h.kind]
         if kinds:
             i, w, h = kinds[0]
-            print(f"✗ {en_file}: block {i} is {h.kind}, the German block {w.bid} is {w.kind}")
+            print(f"✗ {en_file}: block {h.bid} is {h.kind}, the German block {w.bid} is {w.kind}")
             print(f"    German:  {w.preview()}")
             print(f"    English: {h.preview()}")
             bad += 1
             continue
-        print(f"✓ {en_file}: {len(have)} blocks aligned")
+        note = f", {len(extra)} English-only" if extra else ""
+        print(f"✓ {en_file}: {len(paired)} blocks aligned{note}")
     print(f"-- {len(pairs()) - bad}/{len(pairs())} files aligned")
     return 1 if bad else 0
 
@@ -114,7 +123,9 @@ def cmd_manifest() -> int:
     for de_file, en_file in pairs():
         drops = dropped(de_file)
         de_blocks = segment_text(de_file, german(de_file, commit))
-        en_blocks = segment(ROOT / en_file) if (ROOT / en_file).exists() else []
+        extra = added(en_file)
+        en_blocks = [b for b in segment(ROOT / en_file) if b.bid not in extra] \
+            if (ROOT / en_file).exists() else []
         entries, pos = [], 0
         for b in de_blocks:
             if b.bid in drops:

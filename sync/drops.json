@@ -18,6 +18,28 @@
         "block": "c0.1",
         "reason": "link to the German HHU lecture recording"
       }
+    ],
+    "landing-page.md": [
+      {
+        "block": "1",
+        "reason": "link to the PDF build of the German edition"
+      },
+      {
+        "block": "2",
+        "reason": "link to the web build of the German edition"
+      },
+      {
+        "block": "3",
+        "reason": "heading of the lecture-recordings section"
+      },
+      {
+        "block": "4",
+        "reason": "link to the German HHU Mediathek channel"
+      },
+      {
+        "block": "28",
+        "reason": "slides section; the German slide decks are not mirrored here"
+      }
     ]
   }
 }
