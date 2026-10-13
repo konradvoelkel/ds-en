@@ -11,7 +11,7 @@ a Genderstern, an em dash where the book uses a spaced en dash.
 Findings are heuristics. Quoted German is legitimate (see TRANSLATION.md section 3), so a
 hit is a question, not a verdict. Silence a deliberate one by putting the German in
 backticks or quotation marks, which this tool skips, or -- when the German has to stand in
-the open -- by recording it with a reason in sync/check-ignore.json.
+the open -- by recording it with a reason in sync/check-ignore/<file>.json.
 """
 
 from __future__ import annotations
@@ -69,11 +69,10 @@ def _mask(text: str) -> str:
 
 
 def ignored(name: str) -> set[tuple[str, str]]:
-    path = ROOT / "sync" / "check-ignore.json"
+    path = ROOT / "sync" / "check-ignore" / f"{name}.json"
     if not path.exists():
         return set()
-    entries = json.loads(path.read_text())["ignore"].get(name, [])
-    return {(e["block"], e["label"]) for e in entries}
+    return {(e["block"], e["label"]) for e in json.loads(path.read_text())["ignore"]}
 
 
 def check(path: Path) -> list[tuple[str, str, str]]:

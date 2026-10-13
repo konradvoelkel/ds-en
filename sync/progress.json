@@ -56,15 +56,15 @@
       "style_pass": false,
       "source": "wichtigste-diskrete-verteilungen.ipynb"
     },
-    "intro-probability.md": {
-      "translated": true,
-      "style_pass": false,
-      "source": "intro-stochastik.md"
-    },
     "intro-python.ipynb": {
       "translated": true,
       "style_pass": false,
       "source": "intro-python.ipynb"
+    },
+    "intro-stochastics.md": {
+      "translated": true,
+      "style_pass": false,
+      "source": "intro-stochastik.md"
     },
     "iris.ipynb": {
       "translated": false,
@@ -116,7 +116,7 @@
       "style_pass": false,
       "source": "pandas.ipynb"
     },
-    "programming-probability.ipynb": {
+    "programming-stochastics.ipynb": {
       "translated": false,
       "style_pass": false,
       "source": "stochastik-programmieren.ipynb"

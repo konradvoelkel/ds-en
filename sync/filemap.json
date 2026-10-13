@@ -3,9 +3,9 @@
   "map": {
     "landing-page.md": "landing-page.md",
     "was-ist-data-science.md": "what-is-data-science.md",
-    "intro-stochastik.md": "intro-probability.md",
+    "intro-stochastik.md": "intro-stochastics.md",
     "intro-python.ipynb": "intro-python.ipynb",
-    "stochastik-programmieren.ipynb": "programming-probability.ipynb",
+    "stochastik-programmieren.ipynb": "programming-stochastics.ipynb",
     "zufallsvariablen-verteilungen.md": "random-variables-distributions.md",
     "erwartungswert.md": "expectation-variance.md",
     "numpy.ipynb": "numpy.ipynb",

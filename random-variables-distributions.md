@@ -28,7 +28,7 @@ An drei Stellen begegnet er uns trotzdem ganz konkret:
 
 - **Bei der Auswahl.** Wenn wir aus vorhandenen Daten eine Teilmenge ziehen — eine Stichprobe, ein Mini-Batch, eine Aufteilung in Trainings- und Testdaten —, dann ist der Zufall der unsere. Wir ziehen absichtlich zufällig, damit die Auswahl keine Struktur mitbringt, die wir hinterher für ein Ergebnis halten.
 - **Beim Sampling aus einem Modell.** Aus einer Modellverteilung zu ziehen, erzeugt synthetische Daten. Auch dieser Zufall ist unserer.
-- **Im Rechner gar nicht.** Beides läuft auf einem deterministischen Gerät, das nur *Pseudozufall* erzeugt: eine Zahlenfolge, die zufällig aussieht, aber vollständig durch ihren Startwert (den *Seed*) bestimmt ist. Das ist kein Mangel, sondern der Grund, warum Auswertungen reproduzierbar sind (siehe [Stochastik programmieren](programming-probability.ipynb)).
+- **Im Rechner gar nicht.** Beides läuft auf einem deterministischen Gerät, das nur *Pseudozufall* erzeugt: eine Zahlenfolge, die zufällig aussieht, aber vollständig durch ihren Startwert (den *Seed*) bestimmt ist. Das ist kein Mangel, sondern der Grund, warum Auswertungen reproduzierbar sind (siehe [Stochastik programmieren](programming-stochastics.ipynb)).
 
 Der Weg, den die Daten dabei nehmen, lässt sich in drei Bildern erzählen. Zuerst die Erhebung: Aus der Welt wird ein Ausschnitt gewählt, über den Rohdaten anfallen, und aus den Rohdaten werden durch Bereinigung die Daten, mit denen man arbeitet.
 
@@ -162,7 +162,7 @@ Ein anderer gebräuchlicher Name für die pmf ist *Zähldichte*.
 
 Die pmf der Gleichverteilung auf $\Omega$ ist $p(\omega) = \frac{1}{|\Omega|}$.
 
-Die pmf der Dirac-Verteilung mit Masse an einem festen $\xi \in \Omega$ (siehe [Formalismus der Stochastik](intro-probability.md)) ist
+Die pmf der Dirac-Verteilung mit Masse an einem festen $\xi \in \Omega$ (siehe [Formalismus der Stochastik](intro-stochastics.md)) ist
 
 $$
 p(\omega) = \begin{cases} 1 & \omega = \xi,\\ 0 & \text{sonst.} \end{cases}
@@ -311,7 +311,7 @@ Die Verteilung der Daten ist jetzt $\left(\frac{3}{5},\frac{1}{5},\frac{1}{5}\ri
 Ein Modell lässt sich in beide Richtungen benutzen. Aus Daten eine Modellverteilung zu bestimmen, ist das Schätzproblem, mit dem sich das Kapitel [Statistische Modelle und Schätzer](statistical-models.md) beschäftigt. Umgekehrt kann man aus einer Modellverteilung ziehen und erhält **synthetische Daten**: einen Datensatz, der aussieht wie ein echter, aber keiner ist. Synthetische Daten sind das Standardwerkzeug, um ein Auswertungsverfahren zu prüfen — denn hier kennt man die richtige Antwort und kann nachsehen, ob das Verfahren sie findet.
 
 :::{admonition} Übung
-Ziehen Sie $1000$ synthetische Farbwerte zur Modellverteilung $p = \left(\frac{1}{2},\frac{1}{4},\frac{1}{4}\right)$ und bestimmen Sie die Verteilung der so erzeugten Daten. Wie weit weicht sie von $p$ ab, und wie ändert sich das bei nur $10$ gezogenen Werten? In der Standardbibliothek zieht `random.choices(werte, weights=..., k=1000)`, in Numpy `rng.choice(werte, size=1000, p=...)` (`random.choices` im Kapitel [Stochastik programmieren](programming-probability.ipynb), `rng.choice` im Kapitel [Numpy](numpy.ipynb), Abschnitt *Wahrscheinlichkeitsvektoren*).
+Ziehen Sie $1000$ synthetische Farbwerte zur Modellverteilung $p = \left(\frac{1}{2},\frac{1}{4},\frac{1}{4}\right)$ und bestimmen Sie die Verteilung der so erzeugten Daten. Wie weit weicht sie von $p$ ab, und wie ändert sich das bei nur $10$ gezogenen Werten? In der Standardbibliothek zieht `random.choices(werte, weights=..., k=1000)`, in Numpy `rng.choice(werte, size=1000, p=...)` (`random.choices` im Kapitel [Stochastik programmieren](programming-stochastics.ipynb), `rng.choice` im Kapitel [Numpy](numpy.ipynb), Abschnitt *Wahrscheinlichkeitsvektoren*).
 :::
 
 Damit liegen zwei Verteilungen auf demselben $\Omega$ vor: die der Daten und die des Modells. Die nächste Frage ist die nach der Güte des Modells — sehen die Daten so aus, als wären sie aus dem Modell gezogen worden? Auf Englisch fragt man *how likely is that?*, und die Zahl, die das beantwortet, heißt **Likelihood**: die Wahrscheinlichkeit, genau die beobachteten Daten zu sehen, wenn das Modell stimmt. Ein Modell, das diese Zahl möglichst groß macht, ist nach dem **Maximum-Likelihood-Prinzip** das beste; dieses Prinzip zieht sich durch den Rest des Kurses und bekommt im Kapitel [Statistische Modelle und Schätzer](statistical-models.md) einen eigenen Abschnitt. Es ist nicht der einzige Weg, den Unterschied zwischen zwei Verteilungen zu beziffern: Das Kapitel [Erwartungswert und Varianz](expectation-variance.md) misst den Abstand zwischen Daten und synthetischen Daten direkt im Datenraum, und das Kapitel [Relative Entropie](relative-entropy.md) misst ihn zwischen den Verteilungen selbst.

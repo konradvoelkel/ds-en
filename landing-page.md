@@ -17,13 +17,13 @@ reads oddly, or a formula or a figure looks wrong, it is worth checking against 
 
 In this text we assume that we have all taken three semesters of foundational mathematics and know what a vector is, what a matrix is, and what the derivative of a function of several real variables is. We have also all learned a programming language already and are familiar with basic data structures.
 
-You may well have had a first brush with probability and statistics at school. We will introduce the foundations systematically, so that no prior knowledge beyond "mathematics for computer scientists" should be necessary, but we will do so at the brisk pace that mathematicians and computer scientists are used to. If you would like an overview first of what you could have learned at school, the [Online Mathematik Brückenkurs Plus](https://www.ombplus.de/ombplus/link/OmbpluModuleStocha/Ueberb) is an excellent address for it (free, in German, didactically sound, and in the same notation as these notes).
+You may well have had a first brush with stochastics, statistics and probability theory at school. We will introduce the foundations systematically, so that no prior knowledge beyond "mathematics for computer scientists" should be necessary, but we will do so at the brisk pace that mathematicians and computer scientists are used to. If you would like an overview first of what you could have learned at school, the [Online Mathematik Brückenkurs Plus](https://www.ombplus.de/ombplus/link/OmbpluModuleStocha/Ueberb) is an excellent address for it (free, in German, didactically sound, and in the same notation as these notes).
 
 ## Aims
 
 Our aim is an introduction to "data science".
 It should give orientation and an overview, and make first applications possible in descriptive, exploratory and inferential data analysis, with a particular eye on machine learning.
-Along the way we take care of the necessary theoretical background in probability and some practical exercises in Python.
+Along the way we take care of the necessary theoretical background in stochastics and some practical exercises in Python.
 Building on that, one could then go deeper into artificial intelligence. HHU has the [master's programme "Artificial Intelligence and Data Science"](https://www.heicad.hhu.de/lehre/masters-programme-ai-and-data-science) for that.
 
 If you want to be able to work as a data scientist across the full breadth of the field, then in addition to this course you should also know the content of courses on statistics, databases and machine learning, and have some practice on concrete projects. Depending on where you end up, you will also need knowledge of algorithms for distributed systems (Data Science 2) or of deep learning. To be able to work flexibly on other people's projects you should be able to read R code (and Julia may well become more important in future); for deepening the programming itself there is the course *Einführung in Python* with notes of its own, [Einführung in Python](https://eipy-skript-7dd28c.pages.cs.uni-duesseldorf.de/) (in German, under construction).
@@ -70,13 +70,13 @@ The chapters follow this order; the table of contents below lists them individua
 flowchart TB
   subgraph E["Introduction"]
     direction LR
-    E1["What is Data Science?"] --> E2["Probability"] --> E3["Python"]
+    E1["What is Data Science?"] --> E2["Stochastics"] --> E3["Python"]
   end
-  subgraph D["Discrete probability and Numpy"]
+  subgraph D["Discrete stochastics and Numpy"]
     direction LR
     D1["Random variables, distributions,<br/>expected value"] --> D2["Numpy"] --> D3["Discrete distributions,<br/>first exploration"]
   end
-  subgraph S["Continuous probability and Scipy"]
+  subgraph S["Continuous stochastics and Scipy"]
     direction LR
     S1["Continuous distributions,<br/>normal distribution, Scipy"]
   end
@@ -84,7 +84,7 @@ flowchart TB
     direction LR
     X1["Descriptive statistics,<br/>examples, Iris"] --> X2["Pandas, data cleaning"]
   end
-  subgraph M["Multivariate probability"]
+  subgraph M["Multivariate stochastics"]
     direction LR
     M1["Covariance, multivariate<br/>normal distribution, relative entropy"]
   end
@@ -105,9 +105,6 @@ All the mathematical foundations you need for working on the exercises are conta
 
 **Why notes at all**
 one might also ask. Mainly the notes serve us as a reference and a guide for the exercises. There are indeed excellent MOOCs (massive open online courses) freely available on the web, especially if your English is good. Unlike a MOOC, though, these notes accompany a taught course with exercises. Working on the exercises with commitment, and exchanging ideas freely with fellow students, is decisive for success in learning. Teachers can only teach; the learning students still have to do themselves.
-
-**AI tools**
-On the exercise sheets you may use AI tools such as chatbots and code assistants, but you have to declare it: say with your submission which tool you used for what. In the exam and the midterm, AI tools are not allowed. The reason is the same one that the exercises exist for in the first place: try it yourself first, otherwise the only one learning is the chatbot.
 
 
 ## Licence

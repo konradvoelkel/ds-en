@@ -1,0 +1,15 @@
+{
+  "file": "what-is-data-science.md",
+  "ignore": [
+    {
+      "block": "6",
+      "label": "German function word",
+      "reason": "the German book title 'Vorlesungen über Informatik' is quoted, not translated"
+    },
+    {
+      "block": "17",
+      "label": "German quotation marks",
+      "reason": "typographic quotes inside the verbatim English quotation from DJ Patil"
+    }
+  ]
+}

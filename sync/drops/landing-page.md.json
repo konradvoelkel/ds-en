@@ -1,0 +1,29 @@
+{
+  "file": "landing-page.md",
+  "drops": [
+    {
+      "block": "1",
+      "reason": "link to the PDF build of the German edition"
+    },
+    {
+      "block": "2",
+      "reason": "link to the web build of the German edition"
+    },
+    {
+      "block": "3",
+      "reason": "heading of the lecture-recordings section"
+    },
+    {
+      "block": "4",
+      "reason": "link to the German HHU Mediathek channel"
+    },
+    {
+      "block": "27",
+      "reason": "course administration: the AI-tool policy for exercise sheets, midterm and exam"
+    },
+    {
+      "block": "28",
+      "reason": "slides section; the German slide decks are not mirrored here"
+    }
+  ]
+}

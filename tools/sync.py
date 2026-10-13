@@ -65,14 +65,22 @@ def pairs() -> list[tuple[str, str]]:
     return [(de, en) for de, en in _load("filemap.json")["map"].items() if en]
 
 
+def _declared(kind: str, name: str, key: str) -> dict[str, str]:
+    """One declaration file per chapter: parallel translators never touch the same JSON."""
+    path = SYNC / kind / f"{name}.json"
+    if not path.exists():
+        return {}
+    return {e["block"]: e["reason"] for e in json.loads(path.read_text())[key]}
+
+
 def dropped(de_file: str) -> dict[str, str]:
     """block id -> reason, for blocks deliberately absent from the English edition."""
-    return {d["block"]: d["reason"] for d in _load("drops.json")["drops"].get(de_file, [])}
+    return _declared("drops", de_file, "drops")
 
 
 def added(en_file: str) -> dict[str, str]:
     """block id -> reason, for English blocks with no German counterpart (translator's notes)."""
-    return {a["block"]: a["reason"] for a in _load("additions.json")["additions"].get(en_file, [])}
+    return _declared("additions", en_file, "additions")
 
 
 def expected_blocks(de_file: str, commit: str) -> list[Block]:
@@ -82,10 +90,20 @@ def expected_blocks(de_file: str, commit: str) -> list[Block]:
 
 # --------------------------------------------------------------------------- align
 
+def translated() -> set[str]:
+    return {f for f, s in _load("progress.json")["files"].items() if s.get("translated")}
+
+
 def cmd_align() -> int:
     commit = _load("upstream.json")["commit"]
-    bad = 0
+    done = translated()
+    bad = pending = 0
     for de_file, en_file in pairs():
+        # A chapter still in German is trivially "misaligned": its declared drops (the
+        # recording link, say) have not been applied yet. Pending, not broken.
+        if en_file not in done:
+            pending += 1
+            continue
         want = expected_blocks(de_file, commit)
         path = ROOT / en_file
         if not path.exists():
@@ -111,7 +129,8 @@ def cmd_align() -> int:
             continue
         note = f", {len(extra)} English-only" if extra else ""
         print(f"✓ {en_file}: {len(paired)} blocks aligned{note}")
-    print(f"-- {len(pairs()) - bad}/{len(pairs())} files aligned")
+    checked = len(done)
+    print(f"-- {checked - bad}/{checked} translated files aligned, {pending} not translated yet")
     return 1 if bad else 0
 
 

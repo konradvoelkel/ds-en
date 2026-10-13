@@ -257,7 +257,7 @@ Der Erwartungswert eines fairen Würfels ist also $3{,}5$, eine Zahl, die der W�
 Ein gezinkter Würfel mit $p = \left(\frac{1}{10},\frac{1}{10},\frac{1}{10},\frac{1}{10},\frac{1}{10},\frac{5}{10}\right)$ hat $N = 10$, das idealisierte Sample $(1,2,3,4,5,6,6,6,6,6)$ und damit den Erwartungswert $\frac{45}{10} = 4{,}5$.
 :::
 
-Der Spezialfall $k = 1$ ist die Probe aufs Exempel: Eine Verteilung, die einen einzigen Wert $y_1$ mit Wahrscheinlichkeit $1$ annimmt — das Dirac-Maß $\delta_{y_1}$ aus dem Kapitel [Formalismus der Stochastik](intro-probability.md) — hat das idealisierte Sample $(y_1,\dots,y_1)$ und folglich den Erwartungswert $y_1$. Ein konstantes Modell und der Wert, den es vorhersagt, sind dasselbe. In der Sprache des vorigen Abschnitts: Das beste konstante Modell für den quadratischen Fehler war der Mittelwert der Daten, und als Verteilung gelesen ist ein konstantes Modell ein Dirac-Maß.
+Der Spezialfall $k = 1$ ist die Probe aufs Exempel: Eine Verteilung, die einen einzigen Wert $y_1$ mit Wahrscheinlichkeit $1$ annimmt — das Dirac-Maß $\delta_{y_1}$ aus dem Kapitel [Formalismus der Stochastik](intro-stochastics.md) — hat das idealisierte Sample $(y_1,\dots,y_1)$ und folglich den Erwartungswert $y_1$. Ein konstantes Modell und der Wert, den es vorhersagt, sind dasselbe. In der Sprache des vorigen Abschnitts: Das beste konstante Modell für den quadratischen Fehler war der Mittelwert der Daten, und als Verteilung gelesen ist ein konstantes Modell ein Dirac-Maß.
 
 :::{admonition} Beispiel
 Auf $\Omega = \{0,1,\dots,n-1\}$ — genau das, was `range(n)` in Python aufzählt — sei $P$ die Gleichverteilung. Für $Y(\omega) := \omega$ ist
@@ -680,7 +680,7 @@ $$
 
 Die beiden Ereignisse sind also *nicht* unabhängig. Das ist auch inhaltlich richtig: Wenn zuerst das rote Bonbon gezogen wurde, bleiben nur noch grün und blau übrig, und grün ist im zweiten Zug auf einmal wahrscheinlicher geworden — von $\frac13$ auf $\frac12$. Genau diese Zahl bekommt weiter unten einen Namen, sie ist die bedingte Wahrscheinlichkeit $P(B \mid A)$.
 
-Ziehen ohne Zurücklegen ist in Python `random.sample`, Ziehen mit Zurücklegen `random.choices` (siehe [Stochastik programmieren](programming-probability.ipynb)) — der Unterschied zwischen den beiden Funktionen ist genau der Unterschied zwischen abhängig und unabhängig.
+Ziehen ohne Zurücklegen ist in Python `random.sample`, Ziehen mit Zurücklegen `random.choices` (siehe [Stochastik programmieren](programming-stochastics.ipynb)) — der Unterschied zwischen den beiden Funktionen ist genau der Unterschied zwischen abhängig und unabhängig.
 :::
 
 :::{admonition} Definition

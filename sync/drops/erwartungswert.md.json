@@ -1,0 +1,13 @@
+{
+  "file": "erwartungswert.md",
+  "drops": [
+    {
+      "block": "1",
+      "reason": "link to the German HHU lecture recording"
+    },
+    {
+      "block": "235",
+      "reason": "link to the German HHU lecture recording"
+    }
+  ]
+}

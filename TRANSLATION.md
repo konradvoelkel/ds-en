@@ -13,10 +13,10 @@ block, a `:::` delimiter line, a notebook cell.
 * Inside a block, rewrite as freely as good English requires. Sentence order, sentence
   count and phrasing are the translator's business.
 * A block that is **deliberately absent** from the English edition (see §2) is declared in
-  `sync/drops.json`, with a reason. Dropping a block is a decision, not a side effect: it has
+  `sync/drops/<german-file>.json`, with a reason. Dropping a block is a decision, not a side effect: it has
   to be written down, or the alignment check fails.
 * A block that exists **only in English** – a translator's note, nothing more – is declared
-  the same way in `sync/additions.json`. Keep these rare: this is a translation, not a
+  the same way in `sync/additions/<english-file>.json`. Keep these rare: this is a translation, not a
   rewrite.
 * Notebook cells are never added, removed, merged or retyped. `tools/nbtext.py` refuses
   the import if they are.
@@ -33,9 +33,15 @@ This edition is a standalone book, not courseware for the Düsseldorf lecture ha
   reader of this edition; those blocks are dropped.
 * **The slides page.** `folien.md` links PDF decks that are not mirrored here. Dropped
   from the table of contents; the landing page points at the German edition instead.
-* Nothing else. Course organisation, module competencies and exam references stay –
-  they are part of what these notes are, and a reader is entitled to know the context
-  they were written in.
+* **The exercise and exam apparatus.** Exercise sheets, midterm and exam are not part of
+  this edition. The landing page's AI-tool policy, which is about submissions and the
+  exam, is dropped; and the German marker "nicht klausurrelevant" ("not examinable")
+  becomes a plain "not part of the course proper", which is what it means to a reader who
+  will never sit the exam. Passing mentions of the course's exercises stay – they are part
+  of the honest account of what these notes are – but nothing points the reader at a sheet
+  they cannot have.
+* Nothing else. Course organisation and the module competencies stay: a reader is entitled
+  to know the context these notes were written in.
 
 ## 3. What is not translated
 
@@ -108,8 +114,8 @@ translations, no improvisation:
 than a moment, add it there in the same commit – that is how the glossary grows into
 something the later chapters can rely on.
 
-Specifically: the German "Stochastik" covers probability theory *and* statistics and has no
-English equivalent. Translate what is meant, never "stochastics".
+Specifically: "Stochastik" is **stochastics**, clunky or not. It names the field that holds
+probability theory and statistics together, and the book needs that name.
 
 ## 8. Review passes
 

@@ -1,15 +1,15 @@
-# Deriving the mathematical formalism of probability
+# Deriving the mathematical formalism of stochastics
 
 You have already met the basics of (discrete) probability theory in Mathematics for Computer Scientists 3. We will go over them again, as far as we need them. In this course we will mostly use the notions of the probability mass function (for discrete random variables) and the probability density function (for continuous random variables), both of which build on the notion of a probability measure. At this point there is a short digression to explain why it is done exactly this way, and how one might arrive at the notion of a probability measure. The notions of a sigma-algebra ($\sigma$-algebra) and of measurable functions are essential for carrying out proofs in probability theory, and also for introducing more complex notions (such as those needed in mathematical finance or in the theory of machine learning) – here we can content ourselves with taking away when we are allowed to read over these notions.
 
-The German word "Stochastik" is an umbrella term for probability theory and statistics together, and English has no equivalent. Statistics is concerned with probabilistic models developed from observations, and draws conclusions from them. Probability theory is concerned with investigating those models and the theory behind them.
+Stochastics can be understood as an umbrella term for probability theory and statistics. Statistics is concerned with probabilistic models developed from observations, and draws conclusions from them. Probability theory is concerned with investigating those models and the theory behind them.
 
 ```{figure} images/stochastik-statistik-wtheorie.png
 :width: 480px
 :align: center
 :name: stochastik-uebersicht
 
-Probability theory and statistics under one roof: statistics works on a section of reality, probability theory works on the models.
+Stochastics as the umbrella term: statistics works on a section of reality, probability theory works on the models.
 ```
 
 The two arrows in the middle are what the picture is really saying, and they run in opposite directions. From the section of reality to the models leads **modelling**: you observe, collect data and set up a model that fits. From the models back to reality leads **prediction**: you calculate within the model and assert something about the world that can be checked. Both directions are needed, and this book walks each of them several times.
@@ -73,7 +73,7 @@ We will now approach the modern version of the notion of probability. The notion
 ## Digression (optional): the measure problem
 
 :::{note}
-This digression and the next are pure background reading and **not part of the course** (not examinable). They explain why the definitions in the section *Formalism* look the way they do. If you skip them, you can carry straight on at the section *Formalism*.
+This digression and the next are pure background reading and **not part of the course proper**. They explain why the definitions in the section *Formalism* look the way they do. If you skip them, you can carry straight on at the section *Formalism*.
 :::
 
 For a die or a coin it is reasonably clear how we model the probability and how we can set up a statistical model that we can also implement. In theory, though, the question soon arises of what happens with, say, an experiment repeated infinitely often. That is not a purely theoretical question, because we are interested in the asymptotics, that is, in how an experiment repeated sufficiently often behaves approximately.
@@ -180,7 +180,7 @@ This shows where the real work of modelling lies: not in distributing the number
 :::{admonition} Example
 On a finite set $\Omega$ of cardinality $N := |\Omega|$ (that is, with $N$ elements), $\mathcal{F} := \mathcal{P}(\Omega)$ together with $P(A) := |A| / N$ defines a probability measure, which we call the *uniform distribution*.
 
-The fair die is the case $\Omega = \{1,\dots,6\}$: the event "even number of pips" is $\{2,4,6\}$ and has probability $P(\{2,4,6\}) = \frac{3}{6} = \frac12$. This can also be checked in code, see [Programming with probability](programming-probability.ipynb).
+The fair die is the case $\Omega = \{1,\dots,6\}$: the event "even number of pips" is $\{2,4,6\}$ and has probability $P(\{2,4,6\}) = \frac{3}{6} = \frac12$. This can also be checked in code, see [Programming with stochastics](programming-stochastics.ipynb).
 :::
 
 :::{admonition} Example
@@ -241,8 +241,8 @@ Finally, it should not go unmentioned that there is a legitimate objection to th
 
 So you can now pick up a probability textbook, find a theorem there saying "let X be a set with a $\sigma$-algebra ..." and read over the $\sigma$-algebra part for the time being, since in practice you will not run into non-measurable sets (that is, into those that are not part of the system of sets called a $\sigma$-algebra). In other words: as a first approximation, imagine that "measurable" is no restriction at all. What we should take away from this chapter at the very least is the notion of a random variable, the rules of calculation for probability measures $P$, and the important example of the uniform distribution.
 
-If you would like to approach probability through interactive playthings as the course goes on, [Random Services](
+If you would like to approach stochastics through interactive playthings as the course goes on, [Random Services](
 https://randomservices.org/random/prob/index.html) is just the thing for you.
-If you prefer things elegant and visual, [Seeing Theory](https://seeing-theory.brown.edu/) will accompany you through the probability part of the course.
+If you prefer things elegant and visual, [Seeing Theory](https://seeing-theory.brown.edu/) will accompany you through the stochastics part of the course.
 
 [If you would like the throw of a die (the uniform distribution, also called a Laplace experiment) explained to you again by somebody else in six minutes, you can find that on YouTube on the channel musstewissen Mathe](https://www.youtube.com/watch?v=zPcjFWQa6Uc) (in German).

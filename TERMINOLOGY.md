@@ -4,12 +4,14 @@ Binding for every chapter. If a term is missing and you had to think about it, a
 the same commit you used it in. Grown chapter by chapter, so entries carry the chapter
 that first needed them.
 
-## The one that has no translation
+## The umbrella term
 
-**Stochastik** — covers probability theory *and* statistics and has no English equivalent.
-Never "stochastics". Translate what is meant: "probability", "probability and statistics",
-or, where the German means the mathematical field as a whole, "probability theory and
-statistics". `Stochastik programmieren` → "programming with probability".
+**Stochastik** → **stochastics**. Clunky in English, but it is the word, and the book needs
+a name for the field that contains both probability theory and statistics – the opening
+figure of `intro-stochastics.md` is precisely about that containment. So: "stochastics" for
+the field, "probability theory" for *Wahrscheinlichkeitstheorie*, "statistics" for
+*Statistik*, and "probability" for *Wahrscheinlichkeit* the quantity. `Stochastik
+programmieren` → "programming with stochastics".
 
 ## Probability and statistics
 

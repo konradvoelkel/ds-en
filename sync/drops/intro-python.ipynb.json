@@ -1,0 +1,9 @@
+{
+  "file": "intro-python.ipynb",
+  "drops": [
+    {
+      "block": "c0.1",
+      "reason": "link to the German HHU lecture recording"
+    }
+  ]
+}

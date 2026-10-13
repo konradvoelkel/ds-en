@@ -32,17 +32,17 @@ project:
     - title: Introduction
       children:
         - file: what-is-data-science.md
-        - file: intro-probability.md
+        - file: intro-stochastics.md
         - file: intro-python.ipynb
-    - title: Discrete probability and Numpy
+    - title: Discrete stochastics and Numpy
       children:
-        - file: programming-probability.ipynb
+        - file: programming-stochastics.ipynb
         - file: random-variables-distributions.md
         - file: expectation-variance.md
         - file: numpy.ipynb
         - file: important-discrete-distributions.ipynb
         - file: titanic-eda-numpy.ipynb
-    - title: Continuous probability and Scipy
+    - title: Continuous stochastics and Scipy
       children:
         - file: continuous-distributions.md
         - file: normal-distribution.ipynb
@@ -54,7 +54,7 @@ project:
         - file: iris.ipynb
         - file: pandas.ipynb
         - file: data-cleaning.ipynb
-    - title: Multivariate probability
+    - title: Multivariate stochastics
       children:
         - file: covariance.md
         - file: multivariate-normal.ipynb

@@ -1,0 +1,21 @@
+{
+  "file": "landing-page.md",
+  "additions": [
+    {
+      "block": "1",
+      "reason": "translator's note: opening of the :::{note} about this edition"
+    },
+    {
+      "block": "2",
+      "reason": "translator's note: what this edition is and where the German original lives"
+    },
+    {
+      "block": "3",
+      "reason": "translator's note: that the translation is machine-made and the original governs"
+    },
+    {
+      "block": "4",
+      "reason": "translator's note: closing of the :::{note}"
+    }
+  ]
+}

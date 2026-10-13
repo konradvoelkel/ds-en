@@ -128,7 +128,7 @@ $$
 :::{admonition} Bemerkung
 **Nullmengen.** Für $X \sim U([a,b])$ und $a \leq c < d \leq b$ ist $P(c \leq X \leq d) = \int_c^d \frac{dx}{b-a} = \frac{d-c}{b-a}$, und dasselbe Integral ergibt sich für $P(c < X < d)$, $P(c \leq X < d)$ und $P(c < X \leq d)$: Ob die Intervallgrenzen dazugehören oder nicht, ändert am Integral nichts. Insbesondere ist $P(X = c) = \int_c^c f(x) dx = 0$ für jeden einzelnen Punkt $c$, obwohl $f(c) = \frac{1}{b-a} \neq 0$ ist.
 
-Das gilt für jede Verteilung mit Dichte: Einzelne Punkte haben Wahrscheinlichkeit $0$, wegen der endlichen Additivität also auch jede endliche Menge, und wegen der $\sigma$-Additivität aus dem Kapitel [Herleitung des mathematischen Formalismus der Stochastik](intro-probability.md) auch jede abzählbare Menge $A = \{a_1, a_2, \dots\}$, denn $P(X \in A) = \sum_{i} P(X = a_i) = 0$. Mengen mit Wahrscheinlichkeit $0$ nennt man *Nullmengen*. Ändert man eine Dichte $f$ auf einer Nullmenge ab (etwa an endlich vielen Stellen), so ändert sich kein einziges Integral $\int_A f(x) dx$, also auch nicht das zugehörige Wahrscheinlichkeitsmaß.
+Das gilt für jede Verteilung mit Dichte: Einzelne Punkte haben Wahrscheinlichkeit $0$, wegen der endlichen Additivität also auch jede endliche Menge, und wegen der $\sigma$-Additivität aus dem Kapitel [Herleitung des mathematischen Formalismus der Stochastik](intro-stochastics.md) auch jede abzählbare Menge $A = \{a_1, a_2, \dots\}$, denn $P(X \in A) = \sum_{i} P(X = a_i) = 0$. Mengen mit Wahrscheinlichkeit $0$ nennt man *Nullmengen*. Ändert man eine Dichte $f$ auf einer Nullmenge ab (etwa an endlich vielen Stellen), so ändert sich kein einziges Integral $\int_A f(x) dx$, also auch nicht das zugehörige Wahrscheinlichkeitsmaß.
 :::
 
 :::{admonition} Beispiel
