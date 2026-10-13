@@ -1,0 +1,364 @@
+{
+ "source": "datenschutz.md",
+ "target": "data-protection.md",
+ "upstream": "c7247a99ef28b04050ef09ba376ac6e32025456a",
+ "blocks": [
+  {
+   "de": "0",
+   "kind": "heading",
+   "digest": "75f5f158e4f66921",
+   "en": "0",
+   "preview": "# Datenschutz"
+  },
+  {
+   "de": "1",
+   "kind": "prose",
+   "digest": "0175e156b49b908e",
+   "en": "1",
+   "preview": "[Vorlesungsaufzeichnung Datenschutz](https://media.hhu.de/channel/video/…"
+  },
+  {
+   "de": "2",
+   "kind": "prose",
+   "digest": "1ad5e49b9c1a4a95",
+   "en": "2",
+   "preview": "In der Informatik ist der **verantwortungsvolle Umgang mit personenbezog…"
+  },
+  {
+   "de": "3",
+   "kind": "prose",
+   "digest": "1c64dc6143dada91",
+   "en": "3",
+   "preview": "Das Kapitel steht an dieser Stelle, weil wir ab dem nächsten Kapitel mit…"
+  },
+  {
+   "de": "4",
+   "kind": "heading",
+   "digest": "4c712b3ff9d83091",
+   "en": "4",
+   "preview": "## Personenbezogene Daten"
+  },
+  {
+   "de": "5",
+   "kind": "prose",
+   "digest": "c4c3dc3475a20c77",
+   "en": "5",
+   "preview": "**Personenbezogene Daten** sind alle Informationen, die sich auf eine id…"
+  },
+  {
+   "de": "6",
+   "kind": "prose",
+   "digest": "1c1f134594621e21",
+   "en": "6",
+   "preview": "Auch **pseudonymisierte** oder **verschlüsselte** Daten fallen unter den…"
+  },
+  {
+   "de": "7",
+   "kind": "prose",
+   "digest": "23c40d582fa2f085",
+   "en": "7",
+   "preview": "Beispiele: - Die Lieblingsfarbe von Gummibärchen ist kein personenbezoge…"
+  },
+  {
+   "de": "8",
+   "kind": "heading",
+   "digest": "7dfb11ff70521c01",
+   "en": "8",
+   "preview": "## Vorgeschichte der DSGVO"
+  },
+  {
+   "de": "9",
+   "kind": "prose",
+   "digest": "51f88d5978cb00ef",
+   "en": "9",
+   "preview": "Die DSGVO ist 2018 nicht aus dem Nichts entstanden. Vier Stationen erklä…"
+  },
+  {
+   "de": "10",
+   "kind": "prose",
+   "digest": "027f759cdebbf39d",
+   "en": "10",
+   "preview": "- **Recht auf informationelle Selbstbestimmung**: Das Bundesverfassungsg…"
+  },
+  {
+   "de": "11",
+   "kind": "heading",
+   "digest": "a9baef1af1f0fd65",
+   "en": "11",
+   "preview": "## Zentrale Begriffe"
+  },
+  {
+   "de": "12",
+   "kind": "prose",
+   "digest": "0fd49c139ab6319a",
+   "en": "12",
+   "preview": "- **Anwendungsbereich** (Art. 2 Abs. 1 DSGVO): Die Verordnung gilt für d…"
+  },
+  {
+   "de": "13",
+   "kind": "prose",
+   "digest": "08d314038b416188",
+   "en": "13",
+   "preview": "Beispiel für Verantwortlicher und Auftragsverarbeiter: Ein Onlineshop is…"
+  },
+  {
+   "de": "14",
+   "kind": "heading",
+   "digest": "62f7cdb54d3067b8",
+   "en": "14",
+   "preview": "## Grundprinzipien der DSGVO (Art. 5)"
+  },
+  {
+   "de": "15",
+   "kind": "prose",
+   "digest": "103047f31220eec2",
+   "en": "15",
+   "preview": "1. **Rechtmäßigkeit, Verarbeitung nach Treu und Glauben, Transparenz** (…"
+  },
+  {
+   "de": "16",
+   "kind": "prose",
+   "digest": "47f4fd361b23d58e",
+   "en": "16",
+   "preview": "Dazu kommt in Art. 5 Abs. 2 die **Rechenschaftspflicht**: Der Verantwort…"
+  },
+  {
+   "de": "17",
+   "kind": "prose",
+   "digest": "759f20b776294a08",
+   "en": "17",
+   "preview": "Beispiele zu den Prinzipien: - *Zweckbindung:* Wer für ein KI-generierte…"
+  },
+  {
+   "de": "18",
+   "kind": "heading",
+   "digest": "9dffefd7cccafa8b",
+   "en": "18",
+   "preview": "## Rechtsgrundlagen (Art. 6) und besondere Kategorien (Art. 9)"
+  },
+  {
+   "de": "19",
+   "kind": "prose",
+   "digest": "df9e7429da44c1fa",
+   "en": "19",
+   "preview": "- **Rechtsgrundlage**: Eine Verarbeitung personenbezogener Daten ist nur…"
+  },
+  {
+   "de": "20",
+   "kind": "prose",
+   "digest": "242f74c93769e1ac",
+   "en": "20",
+   "preview": "Die Einwilligung ist also nur *eine* von sechs möglichen Grundlagen – ei…"
+  },
+  {
+   "de": "21",
+   "kind": "prose",
+   "digest": "71b6aaa9b4640bf9",
+   "en": "21",
+   "preview": "Die teuersten Fälle in Deutschland entstanden aus fehlender Rechtsgrundl…"
+  },
+  {
+   "de": "22",
+   "kind": "prose",
+   "digest": "846e3fc08ec6913d",
+   "en": "22",
+   "preview": "- **Besondere Kategorien personenbezogener Daten** (Art. 9 DSGVO, umgang…"
+  },
+  {
+   "de": "23",
+   "kind": "heading",
+   "digest": "1b1bf39ae5411168",
+   "en": "23",
+   "preview": "## Privacy by Design und by Default"
+  },
+  {
+   "de": "24",
+   "kind": "prose",
+   "digest": "7c975860ae33b8ce",
+   "en": "24",
+   "preview": "- **Privacy by Design** (Art. 25 Abs. 1): Datenschutz muss schon bei der…"
+  },
+  {
+   "de": "25",
+   "kind": "prose",
+   "digest": "87aeb3c6b440f08c",
+   "en": "25",
+   "preview": "Beispiele: Voreinstellungen dürfen keine unnötige Datenerhebung zulassen…"
+  },
+  {
+   "de": "26",
+   "kind": "heading",
+   "digest": "927a4bb18820f640",
+   "en": "26",
+   "preview": "## Datenminimierung in der Praxis"
+  },
+  {
+   "de": "27",
+   "kind": "prose",
+   "digest": "925893e59d7ff367",
+   "en": "27",
+   "preview": "Datenminimierung (Art. 5 Abs. 1 lit. c; im alten BDSG hieß dasselbe Prin…"
+  },
+  {
+   "de": "28",
+   "kind": "prose",
+   "digest": "9818dd47c0ea70c8",
+   "en": "28",
+   "preview": "Die praktische Regel für Data-Science-Projekte lautet: Bei jedem persone…"
+  },
+  {
+   "de": "29",
+   "kind": "heading",
+   "digest": "6a7690aa00616327",
+   "en": "29",
+   "preview": "## Weiterführende Begriffe und Konzepte"
+  },
+  {
+   "de": "30",
+   "kind": "prose",
+   "digest": "8b30b36f73b11405",
+   "en": "30",
+   "preview": "- **Pseudonymisierung**: Verarbeitung in einer Weise, dass Daten ohne zu…"
+  },
+  {
+   "de": "31",
+   "kind": "prose",
+   "digest": "7ae03245b17a1e2a",
+   "en": "31",
+   "preview": "Dazu kommt die **Haftung** (Art. 82): Wer durch einen Verstoß einen mate…"
+  },
+  {
+   "de": "32",
+   "kind": "heading",
+   "digest": "e2d4f9c32f1f5513",
+   "en": "32",
+   "preview": "## Bußgelder und Durchsetzung"
+  },
+  {
+   "de": "33",
+   "kind": "prose",
+   "digest": "2d0e976480957056",
+   "en": "33",
+   "preview": "Die Neuerung der DSGVO gegenüber der Richtlinie von 1995 sind weniger di…"
+  },
+  {
+   "de": "34",
+   "kind": "prose",
+   "digest": "f3f039e7d2c69fd0",
+   "en": "34",
+   "preview": "**Geldbußen** (Art. 83) sollen „wirksam, verhältnismäßig und abschrecken…"
+  },
+  {
+   "de": "35",
+   "kind": "prose",
+   "digest": "09818ad35c4ef25f",
+   "en": "35",
+   "preview": "Neben der Aufsicht steht die Selbstregulierung: **Verhaltensregeln** (Ar…"
+  },
+  {
+   "de": "36",
+   "kind": "prose",
+   "digest": "4caf31d11ac842c8",
+   "en": "36",
+   "preview": "Zwei Missverständnisse sind damit erledigt: Datenschutz ist weder zu kom…"
+  },
+  {
+   "de": "37",
+   "kind": "table",
+   "digest": "455fb6f07b2945f6",
+   "en": "37",
+   "preview": "| Fall | Jahr | Betrag | Worum es ging | Tracker | |---|---|---|---|---|…"
+  },
+  {
+   "de": "38",
+   "kind": "prose",
+   "digest": "6154fcb40c521897",
+   "en": "38",
+   "preview": "Alltagsfälle ohne Bußgeld, die man kennen sollte: Eine Dashcam darf laut…"
+  },
+  {
+   "de": "39",
+   "kind": "directive",
+   "digest": "9eb07094c33a180a",
+   "en": "39",
+   "preview": ":::{admonition} Aufgabe: Der Enforcement Tracker als Datensatz"
+  },
+  {
+   "de": "40",
+   "kind": "prose",
+   "digest": "7a4429a49b3c66d7",
+   "en": "40",
+   "preview": ":class: tip Der Enforcement Tracker ist selbst eine Tabelle mit über 300…"
+  },
+  {
+   "de": "41",
+   "kind": "directive",
+   "digest": "f1ae2a75ed1f9972",
+   "en": "41",
+   "preview": ":::"
+  },
+  {
+   "de": "42",
+   "kind": "directive",
+   "digest": "ee384990dc569b7d",
+   "en": "42",
+   "preview": ":::{admonition} Lösungshinweis"
+  },
+  {
+   "de": "43",
+   "kind": "prose",
+   "digest": "5ee81779c069f29b",
+   "en": "43",
+   "preview": ":class: dropdown Die Beträge sind extrem rechtsschief (wenige Fälle über…"
+  },
+  {
+   "de": "44",
+   "kind": "directive",
+   "digest": "f1ae2a75ed1f9972",
+   "en": "44",
+   "preview": ":::"
+  },
+  {
+   "de": "45",
+   "kind": "heading",
+   "digest": "56ad4e8d97073b16",
+   "en": "45",
+   "preview": "## Rechtsrahmen der EU jenseits der DSGVO"
+  },
+  {
+   "de": "46",
+   "kind": "prose",
+   "digest": "a8169e4e4bb0d349",
+   "en": "46",
+   "preview": "Die DSGVO schützt personenbezogene Daten. Seit 2020 verfolgt die EU mit …"
+  },
+  {
+   "de": "47",
+   "kind": "prose",
+   "digest": "5a62baf8c88ec293",
+   "en": "47",
+   "preview": "- **KI-Verordnung / AI Act** ([Verordnung (EU) 2024/1689](https://eur-le…"
+  },
+  {
+   "de": "48",
+   "kind": "prose",
+   "digest": "260d429482c948ec",
+   "en": "48",
+   "preview": "Für die tägliche Arbeit mit Daten bleibt die DSGVO der Maßstab; die übri…"
+  },
+  {
+   "de": "49",
+   "kind": "heading",
+   "digest": "efa9c194544ba2f7",
+   "en": "49",
+   "preview": "## Weiterführende Ressourcen"
+  },
+  {
+   "de": "50",
+   "kind": "prose",
+   "digest": "d3b0238a5fc7ab6f",
+   "en": "50",
+   "preview": "- [DSGVO in einfachen Worten](https://eu-datenschutz-grundverordnung.net…"
+  }
+ ]
+}

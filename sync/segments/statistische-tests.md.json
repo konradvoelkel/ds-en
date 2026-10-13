@@ -1,0 +1,1575 @@
+{
+ "source": "statistische-tests.md",
+ "target": "statistical-tests.md",
+ "upstream": "c7247a99ef28b04050ef09ba376ac6e32025456a",
+ "blocks": [
+  {
+   "de": "0",
+   "kind": "heading",
+   "digest": "6b477019fbc8925f",
+   "en": "0",
+   "preview": "# Statistische Tests"
+  },
+  {
+   "de": "1",
+   "kind": "prose",
+   "digest": "be3c7f1f9538cc63",
+   "en": "1",
+   "preview": "[Vorlesungsaufzeichnung Tests und Signifikanz (VL 21, ab Minute 34)](htt…"
+  },
+  {
+   "de": "2",
+   "kind": "prose",
+   "digest": "2f313874b828ca09",
+   "en": "2",
+   "preview": "Bei der explorativen Datenanalyse kommen wir zu Hypothesen, welche Zusam…"
+  },
+  {
+   "de": "3",
+   "kind": "prose",
+   "digest": "5a0f9f300fd1a7b2",
+   "en": "3",
+   "preview": "Tests treten dabei in zwei ganz verschiedenen Rollen auf, und es hilft, …"
+  },
+  {
+   "de": "4",
+   "kind": "prose",
+   "digest": "264640da26eb1340",
+   "en": "4",
+   "preview": "Genau genommen gehören statistische Tests nicht in das Gebiet \"maschinel…"
+  },
+  {
+   "de": "5",
+   "kind": "prose",
+   "digest": "41145983f183664f",
+   "en": "5",
+   "preview": "Ein Test lässt sich interpretieren als ein Schätzer, der keinen einzelne…"
+  },
+  {
+   "de": "6",
+   "kind": "heading",
+   "digest": "ad414a7f3bcf0d90",
+   "en": "6",
+   "preview": "## Prognoseintervalle"
+  },
+  {
+   "de": "7",
+   "kind": "prose",
+   "digest": "d7b7dc046894473f",
+   "en": "7",
+   "preview": "Wir betrachten zur Motivation die Grafik {ref}`warming-without-confidenc…"
+  },
+  {
+   "de": "8",
+   "kind": "directive",
+   "digest": "84d9a497798233d3",
+   "en": "8",
+   "preview": "```{figure} images/global_warming_without_confidence.png :width: 280px :…"
+  },
+  {
+   "de": "9",
+   "kind": "prose",
+   "digest": "db7e2202fdc1ec12",
+   "en": "9",
+   "preview": "Gezeigt ist eine Projektion eines statistischen Modells zur Vorhersage d…"
+  },
+  {
+   "de": "10",
+   "kind": "prose",
+   "digest": "e5a0228eb306669b",
+   "en": "10",
+   "preview": "Betrachten wir diese Grafik mit den Data Science Augen: was gäbe es dara…"
+  },
+  {
+   "de": "11",
+   "kind": "prose",
+   "digest": "1fccf39d2c2946c6",
+   "en": "11",
+   "preview": "Ein häufiger Einwand gegenüber solchen Modellen und Grafiken ist, dass e…"
+  },
+  {
+   "de": "12",
+   "kind": "prose",
+   "digest": "2a98456c49f7b185",
+   "en": "12",
+   "preview": "Um Entscheidungen auf Grundlage einer statistischen Vorhersage treffen z…"
+  },
+  {
+   "de": "13",
+   "kind": "directive",
+   "digest": "527e4a51aec378a7",
+   "en": "13",
+   "preview": "```{figure} images/global_warming_with_confidence.png :width: 480px :ali…"
+  },
+  {
+   "de": "14",
+   "kind": "prose",
+   "digest": "515170ebaf56f4d6",
+   "en": "14",
+   "preview": "Um diese Grafik richtig lesen zu können, müssen wir noch die *IPCC Calib…"
+  },
+  {
+   "de": "15",
+   "kind": "directive",
+   "digest": "9dbf6c316f5e5dd7",
+   "en": "15",
+   "preview": "```{figure} images/likelihood-scale.png :width: 560px :align: center :na…"
+  },
+  {
+   "de": "16",
+   "kind": "prose",
+   "digest": "6ee95eb81f6b2230",
+   "en": "16",
+   "preview": "Nun sehen wir, dass es sich beim grau schattierten Bereich um den Bereic…"
+  },
+  {
+   "de": "17",
+   "kind": "prose",
+   "digest": "81085ba4062322a3",
+   "en": "17",
+   "preview": "Wir verweisen für die mathematische Theorie von Bereichsschätzern / Konf…"
+  },
+  {
+   "de": "18",
+   "kind": "heading",
+   "digest": "21f51b1e723b6c4b",
+   "en": "18",
+   "preview": "## Von der Stichprobe auf die Population"
+  },
+  {
+   "de": "19",
+   "kind": "prose",
+   "digest": "d97b6de40a0c5e1a",
+   "en": "19",
+   "preview": "Bevor wir Tests definieren, halten wir fest, was wir eigentlich wollen. …"
+  },
+  {
+   "de": "20",
+   "kind": "prose",
+   "digest": "64a534186cb2949d",
+   "en": "20",
+   "preview": "1. **Schätzen:** die Kennzahl aus der Stichprobe berechnen (den Anteil, …"
+  },
+  {
+   "de": "21",
+   "kind": "prose",
+   "digest": "5542004c42db8918",
+   "en": "21",
+   "preview": "Für Schritt 2 gibt es zwei Wege."
+  },
+  {
+   "de": "22",
+   "kind": "prose",
+   "digest": "772d70ca1c5edcb7",
+   "en": "22",
+   "preview": "**Der Standardfehler.** Nach dem [zentralen Grenzwertsatz](normalverteil…"
+  },
+  {
+   "de": "23",
+   "kind": "math",
+   "digest": "78824f6d75d2878e",
+   "en": "23",
+   "preview": "$$ \\texttt{mean}(x) \\pm 1{,}96 \\cdot \\dfrac{\\sigma}{\\sqrt{n}}, $$"
+  },
+  {
+   "de": "24",
+   "kind": "prose",
+   "digest": "75187b6d492bb12f",
+   "en": "24",
+   "preview": "wobei man $\\sigma$ durch die Stichprobenstandardabweichung ersetzt. Für …"
+  },
+  {
+   "de": "25",
+   "kind": "prose",
+   "digest": "aaf09a96f4d8182b",
+   "en": "25",
+   "preview": "**Der Bootstrap.** Für Kennzahlen, für die es keine Formel gibt oder man…"
+  },
+  {
+   "de": "26",
+   "kind": "code",
+   "digest": "4efe043331fb71ad",
+   "en": "26",
+   "preview": "```python rng = np.random.default_rng(0) f = survived[sex == 'female'] m…"
+  },
+  {
+   "de": "27",
+   "kind": "code",
+   "digest": "b8fba17d92f90e86",
+   "en": "27",
+   "preview": "``` 0.553 [0.495 0.609] ```"
+  },
+  {
+   "de": "28",
+   "kind": "prose",
+   "digest": "5c6ae4ee637824d0",
+   "en": "28",
+   "preview": "Die Überlebensrate der Frauen liegt um $55$ Prozentpunkte über der der M…"
+  },
+  {
+   "de": "29",
+   "kind": "prose",
+   "digest": "baad94c2c15aab3f",
+   "en": "29",
+   "preview": "**Was das Rezept voraussetzt.** Beide Wege setzen voraus, dass die Stich…"
+  },
+  {
+   "de": "30",
+   "kind": "prose",
+   "digest": "7c762f5e1239e93a",
+   "en": "30",
+   "preview": "Ein statistischer **Test**, das Thema dieses Kapitels, ist Schritt 3 in …"
+  },
+  {
+   "de": "31",
+   "kind": "heading",
+   "digest": "b0cd6f8c944059e0",
+   "en": "31",
+   "preview": "## Ausblick: Konfidenzintervalle"
+  },
+  {
+   "de": "32",
+   "kind": "directive",
+   "digest": "06a8d19c25859d91",
+   "en": "32",
+   "preview": ":::{note}"
+  },
+  {
+   "de": "33",
+   "kind": "prose",
+   "digest": "ae77f23e1163f4ca",
+   "en": "33",
+   "preview": "**Ausblick (nicht klausurrelevant):** Dieser Abschnitt und die beiden Ab…"
+  },
+  {
+   "de": "34",
+   "kind": "directive",
+   "digest": "f1ae2a75ed1f9972",
+   "en": "34",
+   "preview": ":::"
+  },
+  {
+   "de": "35",
+   "kind": "directive",
+   "digest": "053400a7b7d2fc03",
+   "en": "35",
+   "preview": ":::{admonition} Definition"
+  },
+  {
+   "de": "36",
+   "kind": "prose",
+   "digest": "e6b74f1db8a4f900",
+   "en": "36",
+   "preview": "Sei $(\\mathcal{X}, P_\\theta : \\theta \\in \\Theta)$ ein statistisches Mode…"
+  },
+  {
+   "de": "37",
+   "kind": "math",
+   "digest": "9ace94d095fbb657",
+   "en": "37",
+   "preview": "$$ \\inf_{\\theta \\in \\Theta} P_{\\theta}\\left( x \\in \\mathcal{X} \\colon \\t…"
+  },
+  {
+   "de": "38",
+   "kind": "prose",
+   "digest": "d5e21afe82da2a4b",
+   "en": "38",
+   "preview": "Wenn außerdem $\\Sigma = \\mathbb{R}$ und jedes $C(x)$ ein Intervall ist, …"
+  },
+  {
+   "de": "39",
+   "kind": "directive",
+   "digest": "f1ae2a75ed1f9972",
+   "en": "39",
+   "preview": ":::"
+  },
+  {
+   "de": "40",
+   "kind": "directive",
+   "digest": "0feec534fa43b536",
+   "en": "40",
+   "preview": ":::{admonition} Beispiel"
+  },
+  {
+   "de": "41",
+   "kind": "prose",
+   "digest": "948d035ceced5efe",
+   "en": "41",
+   "preview": "**Trivialer Fall:** Der konstante Konfidenzbereich $C(x) := \\Sigma$ erfü…"
+  },
+  {
+   "de": "42",
+   "kind": "directive",
+   "digest": "f1ae2a75ed1f9972",
+   "en": "42",
+   "preview": ":::"
+  },
+  {
+   "de": "43",
+   "kind": "directive",
+   "digest": "0feec534fa43b536",
+   "en": "43",
+   "preview": ":::{admonition} Beispiel"
+  },
+  {
+   "de": "44",
+   "kind": "prose",
+   "digest": "6ca5069e6987f446",
+   "en": "44",
+   "preview": "**Münzwurf:** Der $n$-fach wiederholte Münzwurf einer unfairen Münze mit…"
+  },
+  {
+   "de": "45",
+   "kind": "prose",
+   "digest": "2cb856f59958aa1a",
+   "en": "45",
+   "preview": "Den Maximum-Likelihood-Schätzer für $\\theta$ haben wir dort schon berech…"
+  },
+  {
+   "de": "46",
+   "kind": "directive",
+   "digest": "f1ae2a75ed1f9972",
+   "en": "46",
+   "preview": ":::"
+  },
+  {
+   "de": "47",
+   "kind": "prose",
+   "digest": "02c687f6a4e3f0a4",
+   "en": "47",
+   "preview": "Was aber ist unsere Konfidenz (unser Vertrauen)? Halten wir Werte weit w…"
+  },
+  {
+   "de": "48",
+   "kind": "prose",
+   "digest": "5c8fb35eadc11c76",
+   "en": "48",
+   "preview": "Wir wollen nun Intervalle $C(x) = (\\frac{x}{n} - \\epsilon, \\frac{x}{n} +…"
+  },
+  {
+   "de": "49",
+   "kind": "math",
+   "digest": "03ee010cc8904161",
+   "en": "49",
+   "preview": "$$ \\begin{aligned} & \\inf_{\\theta \\in \\Theta} P_{\\theta}\\left( x \\in \\ma…"
+  },
+  {
+   "de": "50",
+   "kind": "prose",
+   "digest": "59d5750963181e0c",
+   "en": "50",
+   "preview": "Übersetzt: $\\epsilon$ soll so bestimmt werden (in Abhängigkeit von $\\alp…"
+  },
+  {
+   "de": "51",
+   "kind": "prose",
+   "digest": "9373298a26e21ad9",
+   "en": "51",
+   "preview": "Die Form der Ungleichung darf uns an die Tschebyscheff-Ungleichung erinn…"
+  },
+  {
+   "de": "52",
+   "kind": "math",
+   "digest": "f0bdf53b6bebdf88",
+   "en": "52",
+   "preview": "$$ P_{\\theta}\\left( \\left|\\mathbb{E}(T) - T\\right| \\geq c \\right) \\leq \\…"
+  },
+  {
+   "de": "53",
+   "kind": "prose",
+   "digest": "e9e27525f54bf271",
+   "en": "53",
+   "preview": "Wir wollen natürlich gerne $c=\\epsilon$ verwenden, und das $\\epsilon$ in…"
+  },
+  {
+   "de": "54",
+   "kind": "prose",
+   "digest": "8548e7e032e24d94",
+   "en": "54",
+   "preview": "Daher schätzen wir $\\theta(1-\\theta) \\leq \\frac{1}{4}$ ab (klar: bei $\\t…"
+  },
+  {
+   "de": "55",
+   "kind": "prose",
+   "digest": "6651316efbd918b5",
+   "en": "55",
+   "preview": "Insgesamt erhalten wir also: $\\epsilon$ ist gut gewählt, wenn"
+  },
+  {
+   "de": "56",
+   "kind": "math",
+   "digest": "e066aa18dee6b99c",
+   "en": "56",
+   "preview": "$$ \\begin{aligned} & \\dfrac{\\mathbb{V}T}{\\epsilon^2} \\leq \\alpha \\\\ \\Lef…"
+  },
+  {
+   "de": "57",
+   "kind": "prose",
+   "digest": "aa552eac96cdc133",
+   "en": "57",
+   "preview": "Im konkreten Beispiel mit $\\alpha = 0.05$ und $n=100$ erfüllt also $\\eps…"
+  },
+  {
+   "de": "58",
+   "kind": "prose",
+   "digest": "f814d0baa7afbc04",
+   "en": "58",
+   "preview": "Daran sehen wir, dass die Bestimmung von Konfidenzintervallen mit der Ts…"
+  },
+  {
+   "de": "59",
+   "kind": "prose",
+   "digest": "1116995d4123c7e6",
+   "en": "59",
+   "preview": "Wir sehen aber auch einen einfachen Zusammenhang zwischen $\\epsilon, n$ …"
+  },
+  {
+   "de": "60",
+   "kind": "prose",
+   "digest": "43a4c7b727d38b74",
+   "en": "60",
+   "preview": "Damit lässt sich z.B. berechnen, wie groß die Stichprobe ausfallen muss,…"
+  },
+  {
+   "de": "61",
+   "kind": "math",
+   "digest": "afd1abdee9d22dc3",
+   "en": "61",
+   "preview": "$$ \\begin{aligned} & 0.45 + \\epsilon < 0.5 \\\\ \\Leftrightarrow & 0.45 + \\…"
+  },
+  {
+   "de": "62",
+   "kind": "prose",
+   "digest": "4f52ce8415a0d050",
+   "en": "62",
+   "preview": "setzen wir noch $\\alpha = 0.05$ ein, ergibt sich, dass die Stichprobe gr…"
+  },
+  {
+   "de": "63",
+   "kind": "directive",
+   "digest": "0feec534fa43b536",
+   "en": "63",
+   "preview": ":::{admonition} Beispiel"
+  },
+  {
+   "de": "64",
+   "kind": "prose",
+   "digest": "b6ecf5f5c55956a9",
+   "en": "64",
+   "preview": "**Stichprobe einer Normalverteilung:** Angenommen, die reelle Zufallsvar…"
+  },
+  {
+   "de": "65",
+   "kind": "prose",
+   "digest": "264f39143e2bd647",
+   "en": "65",
+   "preview": "Wir bezeichnen mit $\\texttt{mean}(X) = \\sum_{i=1}^n \\frac{X_i}{n}$ den S…"
+  },
+  {
+   "de": "66",
+   "kind": "directive",
+   "digest": "f1ae2a75ed1f9972",
+   "en": "66",
+   "preview": ":::"
+  },
+  {
+   "de": "67",
+   "kind": "prose",
+   "digest": "c3a92f3dd7d6e00a",
+   "en": "67",
+   "preview": "Wir möchten nun wissen, wie gut wir mit $\\texttt{mean}(X)$ denn $\\mu(Z)$…"
+  },
+  {
+   "de": "68",
+   "kind": "prose",
+   "digest": "c56e7c1c7f1f252c",
+   "en": "68",
+   "preview": "Die Zufallsvariable $\\texttt{mean}(X)$ ist normalverteilt, mit Mittelwer…"
+  },
+  {
+   "de": "69",
+   "kind": "math",
+   "digest": "22eccb05c02e7f4e",
+   "en": "69",
+   "preview": "$$ \\dfrac{\\texttt{mean}(X) - \\mu(Z)}{\\sigma(Z)/\\sqrt{n}} $$"
+  },
+  {
+   "de": "70",
+   "kind": "prose",
+   "digest": "6325e57748fd7e37",
+   "en": "70",
+   "preview": "und das ist demnach standardnormalverteilt. Diese Größe hat noch das Pro…"
+  },
+  {
+   "de": "71",
+   "kind": "prose",
+   "digest": "3d584601e4f4934f",
+   "en": "71",
+   "preview": "Die Zufallsvariable 'Stichprobenvarianz' $S^\\ast(X)^2$ ist so verteilt, …"
+  },
+  {
+   "de": "72",
+   "kind": "prose",
+   "digest": "b06547c369f12288",
+   "en": "72",
+   "preview": "Die Wahrscheinlichkeitsdichtefunktion der $\\chi^2$-Verteilung ist für un…"
+  },
+  {
+   "de": "73",
+   "kind": "math",
+   "digest": "7a51849a74f44e0e",
+   "en": "73",
+   "preview": "$$ f(x) = \\dfrac{1}{2^{\\frac{k}{2}} \\Gamma\\left( \\frac{k}{2} \\right)} x^…"
+  },
+  {
+   "de": "74",
+   "kind": "directive",
+   "digest": "de7f0c4157e13949",
+   "en": "74",
+   "preview": "```{figure} images/chi-quadrat-verteilungen.png :width: 420px :align: ce…"
+  },
+  {
+   "de": "75",
+   "kind": "prose",
+   "digest": "614e154954ca8de3",
+   "en": "75",
+   "preview": "Der Unterschied zwischen dem geschätzten Mittelwert und dem tatsächliche…"
+  },
+  {
+   "de": "76",
+   "kind": "math",
+   "digest": "023cf87a0e642240",
+   "en": "76",
+   "preview": "$$ T = \\dfrac{\\texttt{mean}(X) - \\mu(Z)}{S^\\ast(X)/\\sqrt{n}}. $$"
+  },
+  {
+   "de": "77",
+   "kind": "prose",
+   "digest": "f310e16358042771",
+   "en": "77",
+   "preview": "Die Zufallsvariable $T$ folgt einer sogenannten **Student t-Verteilung**…"
+  },
+  {
+   "de": "78",
+   "kind": "prose",
+   "digest": "b750548aac438f93",
+   "en": "78",
+   "preview": "Die Wahrscheinlichkeitsdichtefunktion der Student t-Verteilung ist für u…"
+  },
+  {
+   "de": "79",
+   "kind": "math",
+   "digest": "71b748c435c227d6",
+   "en": "79",
+   "preview": "$$ f(t) = \\dfrac{1}{\\sqrt{\\nu} B\\left(\\frac{1}{2}, \\frac{\\nu}{2}\\right)}…"
+  },
+  {
+   "de": "80",
+   "kind": "prose",
+   "digest": "1c4557f467ac0491",
+   "en": "80",
+   "preview": "wobei $B(x,y) = \\dfrac{\\Gamma(x)\\Gamma(y)}{\\Gamma(x+y)}$ die Beta-Funkti…"
+  },
+  {
+   "de": "81",
+   "kind": "prose",
+   "digest": "93e66f33df477fe9",
+   "en": "81",
+   "preview": "Für $n \\to \\infty$ konvergiert die Student t-Verteilung gegen die Standa…"
+  },
+  {
+   "de": "82",
+   "kind": "directive",
+   "digest": "497246ab3b8c514c",
+   "en": "82",
+   "preview": "```{figure} images/student-t-verteilungen.png :width: 420px :align: cent…"
+  },
+  {
+   "de": "83",
+   "kind": "prose",
+   "digest": "885824088a26d5a2",
+   "en": "83",
+   "preview": "Wir sind nun daran interessiert, wo die Wahrscheinlichkeit für einen gro…"
+  },
+  {
+   "de": "84",
+   "kind": "prose",
+   "digest": "58d10609c3484c10",
+   "en": "84",
+   "preview": "Zu $\\alpha$ wählen wir nun $t$ als das $(1-\\frac{\\alpha}{2})$-*Quantil* …"
+  },
+  {
+   "de": "85",
+   "kind": "math",
+   "digest": "66c5c8b93d267a91",
+   "en": "85",
+   "preview": "$$ C(x) = (\\texttt{mean}(x) - \\epsilon, \\texttt{mean}(x) + \\epsilon). $$"
+  },
+  {
+   "de": "86",
+   "kind": "prose",
+   "digest": "2caf263fbd2b18f4",
+   "en": "86",
+   "preview": "Wir sehen also, dass es schnell kompliziert werden kann, wenn man einen …"
+  },
+  {
+   "de": "87",
+   "kind": "prose",
+   "digest": "726715ea4fa1c6a8",
+   "en": "87",
+   "preview": "Mit der Approximation der Binomialverteilung durch eine Normalverteilung…"
+  },
+  {
+   "de": "88",
+   "kind": "prose",
+   "digest": "23b475ce2da12580",
+   "en": "88",
+   "preview": "Uns soll genügen, dass wir nun wissen, wo die $\\chi^2$-Verteilung und di…"
+  },
+  {
+   "de": "89",
+   "kind": "heading",
+   "digest": "8b1a2bca483ccee0",
+   "en": "89",
+   "preview": "## Tests"
+  },
+  {
+   "de": "90",
+   "kind": "directive",
+   "digest": "053400a7b7d2fc03",
+   "en": "90",
+   "preview": ":::{admonition} Definition"
+  },
+  {
+   "de": "91",
+   "kind": "prose",
+   "digest": "84831e868dab7622",
+   "en": "91",
+   "preview": "Sei $(\\mathcal{X}, P_\\theta : \\theta \\in \\Theta)$ ein statistisches Mode…"
+  },
+  {
+   "de": "92",
+   "kind": "directive",
+   "digest": "f1ae2a75ed1f9972",
+   "en": "92",
+   "preview": ":::"
+  },
+  {
+   "de": "93",
+   "kind": "directive",
+   "digest": "0feec534fa43b536",
+   "en": "93",
+   "preview": ":::{admonition} Beispiel"
+  },
+  {
+   "de": "94",
+   "kind": "prose",
+   "digest": "be8f47bfb2cd0dc2",
+   "en": "94",
+   "preview": "**Äpfel wiegen.** Ein Lieferant verspricht Äpfel von mindestens $150\\,\\m…"
+  },
+  {
+   "de": "95",
+   "kind": "prose",
+   "digest": "d9c31f303e3e0291",
+   "en": "95",
+   "preview": "1. $\\Theta_0 = (-\\infty, 150]$ („die Äpfel wiegen im Mittel höchstens $1…"
+  },
+  {
+   "de": "96",
+   "kind": "prose",
+   "digest": "2f774d3c67b4b919",
+   "en": "96",
+   "preview": "Die nächste Definition gibt den beiden Fehlern aus Variante 2 Namen; Var…"
+  },
+  {
+   "de": "97",
+   "kind": "directive",
+   "digest": "f1ae2a75ed1f9972",
+   "en": "97",
+   "preview": ":::"
+  },
+  {
+   "de": "98",
+   "kind": "directive",
+   "digest": "053400a7b7d2fc03",
+   "en": "98",
+   "preview": ":::{admonition} Definition"
+  },
+  {
+   "de": "99",
+   "kind": "prose",
+   "digest": "9846ad5dfe6e8525",
+   "en": "99",
+   "preview": "Die Wahrscheinlichkeit für einen **Fehler erster Art**, das bedeutet Abl…"
+  },
+  {
+   "de": "100",
+   "kind": "prose",
+   "digest": "281f093da8afc5fd",
+   "en": "100",
+   "preview": "Die Funktion $G_\\phi \\colon \\Theta \\to [0,1]$, gegeben durch $G_\\phi(\\th…"
+  },
+  {
+   "de": "101",
+   "kind": "directive",
+   "digest": "f1ae2a75ed1f9972",
+   "en": "101",
+   "preview": ":::"
+  },
+  {
+   "de": "102",
+   "kind": "prose",
+   "digest": "a93dd356fc74a90e",
+   "en": "102",
+   "preview": "Im Äpfel-Beispiel hat der Test mit Schwelle $160$ ein kleineres effektiv…"
+  },
+  {
+   "de": "103",
+   "kind": "directive",
+   "digest": "053400a7b7d2fc03",
+   "en": "103",
+   "preview": ":::{admonition} Definition"
+  },
+  {
+   "de": "104",
+   "kind": "prose",
+   "digest": "33f232e9ac835b20",
+   "en": "104",
+   "preview": "Ein Test $\\phi$ heißt **gleichmäßig bester Test zum Niveau $\\alpha$**, w…"
+  },
+  {
+   "de": "105",
+   "kind": "directive",
+   "digest": "f1ae2a75ed1f9972",
+   "en": "105",
+   "preview": ":::"
+  },
+  {
+   "de": "106",
+   "kind": "prose",
+   "digest": "4c97d2d2c665a241",
+   "en": "106",
+   "preview": "So ein gleichmäßig bester Test hat also höchstens $\\alpha$ Wahrscheinlic…"
+  },
+  {
+   "de": "107",
+   "kind": "heading",
+   "digest": "9204034bbc15e158",
+   "en": "107",
+   "preview": "## Ausblick: Vom Bereichsschätzer zum Test"
+  },
+  {
+   "de": "108",
+   "kind": "directive",
+   "digest": "06a8d19c25859d91",
+   "en": "108",
+   "preview": ":::{note}"
+  },
+  {
+   "de": "109",
+   "kind": "prose",
+   "digest": "d7c32df30cff513b",
+   "en": "109",
+   "preview": "Ausblick, nicht klausurrelevant (siehe Hinweis bei *Konfidenzintervalle*…"
+  },
+  {
+   "de": "110",
+   "kind": "directive",
+   "digest": "f1ae2a75ed1f9972",
+   "en": "110",
+   "preview": ":::"
+  },
+  {
+   "de": "111",
+   "kind": "prose",
+   "digest": "7346854a11a8c477",
+   "en": "111",
+   "preview": "Wir haben bereits bei der Diskussion eines Konfidenzintervalls für das B…"
+  },
+  {
+   "de": "112",
+   "kind": "prose",
+   "digest": "effb48e014dace93",
+   "en": "112",
+   "preview": "Man kann diesen Zusammenhang systematisieren, und mit der Begrifflichkei…"
+  },
+  {
+   "de": "113",
+   "kind": "prose",
+   "digest": "3bc5c4464d492aed",
+   "en": "113",
+   "preview": "Die Ausgangssituation soll (der Einfachheit halber) ein parametrisches s…"
+  },
+  {
+   "de": "114",
+   "kind": "prose",
+   "digest": "d8b2571c5526a8ff",
+   "en": "114",
+   "preview": "Die Hypothese ist nun, dass $\\theta_0$ der wahre Parameter ist. Während …"
+  },
+  {
+   "de": "115",
+   "kind": "prose",
+   "digest": "2040b337b723f06f",
+   "en": "115",
+   "preview": "Daraus konstruieren wir den Test $T_C \\colon \\mathcal{X} \\to [0,1]$ durc…"
+  },
+  {
+   "de": "116",
+   "kind": "math",
+   "digest": "2975e4a1df422f57",
+   "en": "116",
+   "preview": "$$ T_C := 1_{\\{ x \\in \\mathcal{X} | \\theta_0 \\notin C(x) \\}} \\text{ (Ind…"
+  },
+  {
+   "de": "117",
+   "kind": "math",
+   "digest": "35f950a52fb79658",
+   "en": "117",
+   "preview": "$$ T_C(x) = \\begin{cases} 0 & \\theta_0 \\in C(x) \\\\ 1 & \\theta_0 \\notin C…"
+  },
+  {
+   "de": "118",
+   "kind": "prose",
+   "digest": "436757469ab69868",
+   "en": "118",
+   "preview": "Das Vorgehen ist also: wir berechnen aus den Daten $x \\in \\mathcal{X}$ d…"
+  },
+  {
+   "de": "119",
+   "kind": "prose",
+   "digest": "8fc0931d0d5d4750",
+   "en": "119",
+   "preview": "Wichtig ist, dass $\\theta_0$ nicht selbst aus denselben Daten geschätzt …"
+  },
+  {
+   "de": "120",
+   "kind": "heading",
+   "digest": "33cdfe348fa7dd38",
+   "en": "120",
+   "preview": "## Ausblick: Beste einfache Tests"
+  },
+  {
+   "de": "121",
+   "kind": "directive",
+   "digest": "06a8d19c25859d91",
+   "en": "121",
+   "preview": ":::{note}"
+  },
+  {
+   "de": "122",
+   "kind": "prose",
+   "digest": "d7c32df30cff513b",
+   "en": "122",
+   "preview": "Ausblick, nicht klausurrelevant (siehe Hinweis bei *Konfidenzintervalle*…"
+  },
+  {
+   "de": "123",
+   "kind": "directive",
+   "digest": "f1ae2a75ed1f9972",
+   "en": "123",
+   "preview": ":::"
+  },
+  {
+   "de": "124",
+   "kind": "prose",
+   "digest": "40ee34bb837d807f",
+   "en": "124",
+   "preview": "Wir haben bereits die Definition von Niveau und Macht gesehen, und das ü…"
+  },
+  {
+   "de": "125",
+   "kind": "directive",
+   "digest": "053400a7b7d2fc03",
+   "en": "125",
+   "preview": ":::{admonition} Definition"
+  },
+  {
+   "de": "126",
+   "kind": "prose",
+   "digest": "9eeb4949db785ed2",
+   "en": "126",
+   "preview": "Wenn es nur zwei mögliche Parameter gibt (man spricht von **einfachen Hy…"
+  },
+  {
+   "de": "127",
+   "kind": "math",
+   "digest": "1f51ebec991aa4b7",
+   "en": "127",
+   "preview": "$$ R(x) := \\dfrac{f_1(x)}{f_0(x)} $$"
+  },
+  {
+   "de": "128",
+   "kind": "prose",
+   "digest": "ee4aa6920dbe869c",
+   "en": "128",
+   "preview": "den **Likelihood-Quotienten** und ein Test $\\phi \\colon \\mathcal{X} \\to …"
+  },
+  {
+   "de": "129",
+   "kind": "math",
+   "digest": "20720558ac3f4d78",
+   "en": "129",
+   "preview": "$$ \\phi(x) = \\begin{cases} 0 & R(x) < c \\\\ 1 & R(x) > c \\end{cases} $$"
+  },
+  {
+   "de": "130",
+   "kind": "prose",
+   "digest": "0c4bbb64fedd426f",
+   "en": "130",
+   "preview": "mit $c \\in \\mathbb{R}$ heißt **Neyman-Pearson-Test** zum Schwellwert $c$…"
+  },
+  {
+   "de": "131",
+   "kind": "directive",
+   "digest": "f1ae2a75ed1f9972",
+   "en": "131",
+   "preview": ":::"
+  },
+  {
+   "de": "132",
+   "kind": "prose",
+   "digest": "b7f779ca31452f00",
+   "en": "132",
+   "preview": "Warum heißt $R(x)$ Likelihood-Quotient? Weil $f_1(x)$ ein Maß für die Wa…"
+  },
+  {
+   "de": "133",
+   "kind": "prose",
+   "digest": "b55a0d42b66067db",
+   "en": "133",
+   "preview": "Der Fall $R(x) = c$ hat meist Wahrscheinlichkeit $0$, kann aber auch ges…"
+  },
+  {
+   "de": "134",
+   "kind": "prose",
+   "digest": "fbc804243a39346b",
+   "en": "134",
+   "preview": "Das **Neyman-Pearson-Lemma** besagt, dass es zu jeder einfachen Hypothes…"
+  },
+  {
+   "de": "135",
+   "kind": "prose",
+   "digest": "d367db73fc18819c",
+   "en": "135",
+   "preview": "Das **Lemma von Stein** macht eine Aussage darüber, wie nützlich zusätzl…"
+  },
+  {
+   "de": "136",
+   "kind": "math",
+   "digest": "a4c02257db8c005d",
+   "en": "136",
+   "preview": "$$ \\lim_{n \\to \\infty} \\frac{1}{n} \\log\\left( 1 - \\mathbb{E}_1(\\phi_n) \\…"
+  },
+  {
+   "de": "137",
+   "kind": "prose",
+   "digest": "a90e0cf8d98bf8c2",
+   "en": "137",
+   "preview": "Je höher also die relative Entropie der beiden möglichen Verteilungen $H…"
+  },
+  {
+   "de": "138",
+   "kind": "prose",
+   "digest": "66c5e74a2ee104d1",
+   "en": "138",
+   "preview": "Der Zusammenhang liegt in der Definition von Neyman-Pearson-Tests und de…"
+  },
+  {
+   "de": "139",
+   "kind": "prose",
+   "digest": "99f6ce0e9ff1d6b3",
+   "en": "139",
+   "preview": "Die Take-Home-Message ist: für einfache Hypothesen gibt es immer beste T…"
+  },
+  {
+   "de": "140",
+   "kind": "heading",
+   "digest": "c70a8ff9f26fe9a7",
+   "en": "140",
+   "preview": "## Der z-Test"
+  },
+  {
+   "de": "141",
+   "kind": "prose",
+   "digest": "b4eeab174b74339b",
+   "en": "141",
+   "preview": "Wenn man Daten hat, deren einzelne Datenpunkte unabhängig (und identisch…"
+  },
+  {
+   "de": "142",
+   "kind": "prose",
+   "digest": "acb28797eada363c",
+   "en": "142",
+   "preview": "Bei diesem Test möchte man herausfinden, ob ein Sample $x$ einer Normalv…"
+  },
+  {
+   "de": "143",
+   "kind": "prose",
+   "digest": "ee0e4e5eae0efd60",
+   "en": "143",
+   "preview": "Die **z-Statistik** ist"
+  },
+  {
+   "de": "144",
+   "kind": "math",
+   "digest": "4ee7646289fe7d55",
+   "en": "144",
+   "preview": "$$ Z(x) = \\dfrac{\\texttt{mean}(x) - \\mu_0}{\\sigma/\\sqrt{n}} $$"
+  },
+  {
+   "de": "145",
+   "kind": "prose",
+   "digest": "d0157586e24d7097",
+   "en": "145",
+   "preview": "Beim z-Test wird $\\sigma$ als bekannt behandelt; bei großen Stichproben …"
+  },
+  {
+   "de": "146",
+   "kind": "prose",
+   "digest": "ffc3df7755d7e196",
+   "en": "146",
+   "preview": "Bei einem beidseitigem z-Test ist die Nullhypothese $H_0 := (\\mu = \\mu_0…"
+  },
+  {
+   "de": "147",
+   "kind": "prose",
+   "digest": "c758c346498c5184",
+   "en": "147",
+   "preview": "Wir wählen ein Niveau $\\alpha$, z.B. $\\alpha = 0.05$. Da wir einen beids…"
+  },
+  {
+   "de": "148",
+   "kind": "prose",
+   "digest": "9be59dd123c30271",
+   "en": "148",
+   "preview": "Wir berechnen also die z-Statistik unseres Samples und vergleichen das E…"
+  },
+  {
+   "de": "149",
+   "kind": "heading",
+   "digest": "ab9f846c7ba6d9d6",
+   "en": "149",
+   "preview": "## Der Student t-Test"
+  },
+  {
+   "de": "150",
+   "kind": "prose",
+   "digest": "a5b0e13cfd1376ce",
+   "en": "150",
+   "preview": "Die beiden Tests im Vergleich:"
+  },
+  {
+   "de": "151",
+   "kind": "table",
+   "digest": "6785ba0d869b22fc",
+   "en": "151",
+   "preview": "| | z-Test | t-Test | |---|---|---| | $\\sigma$ | bekannt (bei großem $n$…"
+  },
+  {
+   "de": "152",
+   "kind": "prose",
+   "digest": "ea238a63efea18be",
+   "en": "152",
+   "preview": "Bei kleinen Stichproben macht sich die Verzerrung der geschätzten Parame…"
+  },
+  {
+   "de": "153",
+   "kind": "math",
+   "digest": "36ab39436c1bb0a5",
+   "en": "153",
+   "preview": "$$ t(x) = \\dfrac{\\texttt{mean}(x) - \\mu_0}{\\sigma^\\ast(x)/\\sqrt{n}} $$"
+  },
+  {
+   "de": "154",
+   "kind": "prose",
+   "digest": "43b343eebe05e42d",
+   "en": "154",
+   "preview": "Dabei ist $\\sigma^\\ast(x)$ der erwartungstreue Schätzer für $\\sigma$."
+  },
+  {
+   "de": "155",
+   "kind": "prose",
+   "digest": "0dd3e9a962b1d710",
+   "en": "155",
+   "preview": "Wie zuvor bei der Konstruktion von Konfidenzintervallen besprochen, folg…"
+  },
+  {
+   "de": "156",
+   "kind": "prose",
+   "digest": "96bdf7cf26b62eda",
+   "en": "156",
+   "preview": "Wir berechnen die t-Statistik auf den Daten $x$ und vergleichen sie mit …"
+  },
+  {
+   "de": "157",
+   "kind": "prose",
+   "digest": "05641db1eae504bc",
+   "en": "157",
+   "preview": "Diesen beidseitigen t-Test können wir auch direkt mit SciPy ausrechnen l…"
+  },
+  {
+   "de": "158",
+   "kind": "prose",
+   "digest": "13bf8f276125ba13",
+   "en": "158",
+   "preview": "Genau genommen kann dieser t-Test noch mehr: anstatt die Verteilung von …"
+  },
+  {
+   "de": "159",
+   "kind": "prose",
+   "digest": "c5f4523634f51809",
+   "en": "159",
+   "preview": "Der Rückgabewert von `scipy.stats.ttest_1samp(x, mu)` ist ein `TtestResu…"
+  },
+  {
+   "de": "160",
+   "kind": "prose",
+   "digest": "779046d726a487c2",
+   "en": "160",
+   "preview": "Für das Äpfel-Beispiel aus dem Abschnitt *Tests*, mit einer simulierten …"
+  },
+  {
+   "de": "161",
+   "kind": "code",
+   "digest": "0101d65bfbf41f83",
+   "en": "161",
+   "preview": "```python from scipy.stats import ttest_1samp, norm x = norm.rvs(155, 20…"
+  },
+  {
+   "de": "162",
+   "kind": "code",
+   "digest": "99f750998760316c",
+   "en": "162",
+   "preview": "``` (3.3007, 0.00207, 39, ConfidenceInterval(low=154.36, high=168.15)) `…"
+  },
+  {
+   "de": "163",
+   "kind": "prose",
+   "digest": "49e0c49839a4b8da",
+   "en": "163",
+   "preview": "Der p-Wert liegt unter $0{,}05$, also verwerfen wir $\\mu_0 = 150$; passe…"
+  },
+  {
+   "de": "164",
+   "kind": "prose",
+   "digest": "b6581b266a2802d6",
+   "en": "164",
+   "preview": "Für den Zwei-Stichproben-Fall gibt es außerdem die Variante, die nur Ken…"
+  },
+  {
+   "de": "165",
+   "kind": "code",
+   "digest": "0d58352f8f9e185f",
+   "en": "165",
+   "preview": "```python ttest_ind_from_stats(mean1, std1, nobs1, mean2, std2, nobs2, e…"
+  },
+  {
+   "de": "166",
+   "kind": "prose",
+   "digest": "f2b99e4beef018ff",
+   "en": "166",
+   "preview": "und mit `alternative` wird kodiert, ob ein beidseitiger oder einseitiger…"
+  },
+  {
+   "de": "167",
+   "kind": "prose",
+   "digest": "22c5c5a141c4793c",
+   "en": "167",
+   "preview": "Wenn die Grundannahme gleicher Varianz bei zwei Samples nicht zutrifft, …"
+  },
+  {
+   "de": "168",
+   "kind": "heading",
+   "digest": "1a8f53da470e83b2",
+   "en": "168",
+   "preview": "## Ausblick: ANOVA"
+  },
+  {
+   "de": "169",
+   "kind": "prose",
+   "digest": "ff3c3bf7c5dc3ce5",
+   "en": "169",
+   "preview": "Eine Verallgemeinerung des t-Tests auf mehr als $2$ Stichprobengruppen i…"
+  },
+  {
+   "de": "170",
+   "kind": "prose",
+   "digest": "c586ba09a5cdcdcf",
+   "en": "170",
+   "preview": "* Die Beobachtungen sind unabhängig voneinander * Die Residuen (das sind…"
+  },
+  {
+   "de": "171",
+   "kind": "prose",
+   "digest": "4320e3d6023e619f",
+   "en": "171",
+   "preview": "Die Anwendung ist in der Regel auf eine kategorielle Variable mit $k$ Au…"
+  },
+  {
+   "de": "172",
+   "kind": "prose",
+   "digest": "bb0936fd5edc918e",
+   "en": "172",
+   "preview": "Wenn keine signifikante Abweichung auftaucht (p-Wert größergleich $0.05$…"
+  },
+  {
+   "de": "173",
+   "kind": "prose",
+   "digest": "d1bad7e0ccaa49ec",
+   "en": "173",
+   "preview": "Vorsicht: das bedeutet nicht, dass die kategorielle Variable keinen Einf…"
+  },
+  {
+   "de": "174",
+   "kind": "prose",
+   "digest": "69ca3eb01383e75e",
+   "en": "174",
+   "preview": "In Python benutzen wir `scipy.stats.f_oneway`."
+  },
+  {
+   "de": "175",
+   "kind": "prose",
+   "digest": "34412a10e53a6588",
+   "en": "175",
+   "preview": "(signifikanz)= ## Signifikanz"
+  },
+  {
+   "de": "176",
+   "kind": "prose",
+   "digest": "945e1a2fcc648bcc",
+   "en": "176",
+   "preview": "Von allen Begriffen dieses Kapitels ist dieser der wichtigste, denn er v…"
+  },
+  {
+   "de": "177",
+   "kind": "directive",
+   "digest": "053400a7b7d2fc03",
+   "en": "177",
+   "preview": ":::{admonition} Definition"
+  },
+  {
+   "de": "178",
+   "kind": "prose",
+   "digest": "5e53d3885a8e1931",
+   "en": "178",
+   "preview": "Ein Ergebnis eines statistischen Tests heißt **statistisch signifikant**…"
+  },
+  {
+   "de": "179",
+   "kind": "directive",
+   "digest": "f1ae2a75ed1f9972",
+   "en": "179",
+   "preview": ":::"
+  },
+  {
+   "de": "180",
+   "kind": "directive",
+   "digest": "566676a32baee8ac",
+   "en": "180",
+   "preview": ":::{admonition} Bemerkung"
+  },
+  {
+   "de": "181",
+   "kind": "prose",
+   "digest": "88e6fa9ee40edbb3",
+   "en": "181",
+   "preview": "In dieser Definition steckt keine Zahl. Die Regel darf beliebig streng o…"
+  },
+  {
+   "de": "182",
+   "kind": "directive",
+   "digest": "f1ae2a75ed1f9972",
+   "en": "182",
+   "preview": ":::"
+  },
+  {
+   "de": "183",
+   "kind": "prose",
+   "digest": "ced30010fc1f3621",
+   "en": "183",
+   "preview": "Die übliche Regel ist \"$p < \\alpha$\" mit dem Niveau $\\alpha = 0{,}05$. D…"
+  },
+  {
+   "de": "184",
+   "kind": "prose",
+   "digest": "e029470b540fef81",
+   "en": "184",
+   "preview": "Drei Warnungen gehören zur Definition:"
+  },
+  {
+   "de": "185",
+   "kind": "prose",
+   "digest": "517bf95c51978f3e",
+   "en": "185",
+   "preview": "1. **Verwerfen von $H_0$ heißt nicht Annehmen von $H_1$.** Der Test hat …"
+  },
+  {
+   "de": "186",
+   "kind": "prose",
+   "digest": "14d60c1e630e5b4e",
+   "en": "186",
+   "preview": "Nochmal zur Erinnerung: **Fehler erster Art** ist falsche Ablehnung der …"
+  },
+  {
+   "de": "187",
+   "kind": "directive",
+   "digest": "633985f3aab411b1",
+   "en": "187",
+   "preview": "```{figure} images/xkcd-significant.png :width: 300px :align: center :na…"
+  },
+  {
+   "de": "188",
+   "kind": "prose",
+   "digest": "2082a91602ec0a6b",
+   "en": "188",
+   "preview": "Zur Publikation in wichtigen Fachzeitschriften müssen Studien oft signif…"
+  },
+  {
+   "de": "189",
+   "kind": "prose",
+   "digest": "41349c2761916ce7",
+   "en": "189",
+   "preview": "* auch signifikante Ergebnisse können völlig zufällig sein (der Comic), …"
+  },
+  {
+   "de": "190",
+   "kind": "prose",
+   "digest": "4205f693426949db",
+   "en": "190",
+   "preview": "**Most Published Research Findings Are False**"
+  },
+  {
+   "de": "191",
+   "kind": "prose",
+   "digest": "eedb8f0783268c9e",
+   "en": "191",
+   "preview": "[Ioannidis JPA (2005) Why Most Published Research Findings Are False. PL…"
+  },
+  {
+   "de": "192",
+   "kind": "prose",
+   "digest": "c6c5ec10dbc677d5",
+   "en": "192",
+   "preview": "> \"the probability that a research finding is indeed true depends on the…"
+  },
+  {
+   "de": "193",
+   "kind": "prose",
+   "digest": "c80f24bcbe5636db",
+   "en": "193",
+   "preview": "Je unplausibler die Hypothese (niedrige prior probability), desto höher …"
+  },
+  {
+   "de": "194",
+   "kind": "prose",
+   "digest": "df988358774ae94f",
+   "en": "194",
+   "preview": "Ein sehr wichtiger Baustein, um p-value hacking zu unterbinden, ist die …"
+  },
+  {
+   "de": "195",
+   "kind": "directive",
+   "digest": "37b14df8f9efa2af",
+   "en": "195",
+   "preview": "```{figure} images/pvalue-hacking.png :width: 600px :align: center :name…"
+  },
+  {
+   "de": "196",
+   "kind": "heading",
+   "digest": "8799c5bfd0eeef10",
+   "en": "196",
+   "preview": "## Was als Hypothese formulieren, was als Alternative?"
+  },
+  {
+   "de": "197",
+   "kind": "prose",
+   "digest": "df124be5d3fcc660",
+   "en": "197",
+   "preview": "Das übliche Vorgehen ist, dass man eine wissenschaftliche Erkenntnis, di…"
+  },
+  {
+   "de": "198",
+   "kind": "directive",
+   "digest": "0feec534fa43b536",
+   "en": "198",
+   "preview": ":::{admonition} Beispiel"
+  },
+  {
+   "de": "199",
+   "kind": "prose",
+   "digest": "9dc5f4eb46dc0e13",
+   "en": "199",
+   "preview": "Stellen wir uns vor, wir hätten ein neues Medikament gefunden, von dem w…"
+  },
+  {
+   "de": "200",
+   "kind": "prose",
+   "digest": "bf1fedcba2d5137d",
+   "en": "200",
+   "preview": "Die Nullhypothese ist nun: das Medikament wirkt nicht. Die Alternative i…"
+  },
+  {
+   "de": "201",
+   "kind": "directive",
+   "digest": "f1ae2a75ed1f9972",
+   "en": "201",
+   "preview": ":::"
+  },
+  {
+   "de": "202",
+   "kind": "prose",
+   "digest": "95fc77481bc759b4",
+   "en": "202",
+   "preview": "Wenn $p < 0.05$ ist, kann natürlich immer noch ein Fehler erster Art auf…"
+  },
+  {
+   "de": "203",
+   "kind": "prose",
+   "digest": "4c5b6b4aee4ab6ff",
+   "en": "203",
+   "preview": "Man sieht diese Nicht-Vertauschbarkeit auch bei der natürlichsprachlich …"
+  },
+  {
+   "de": "204",
+   "kind": "prose",
+   "digest": "a99f3b3aca3f5791",
+   "en": "204",
+   "preview": "Was man wiederum machen kann ist ein Test auf einen explizit beschrieben…"
+  },
+  {
+   "de": "205",
+   "kind": "heading",
+   "digest": "75c63c3d6359332d",
+   "en": "205",
+   "preview": "## Ausblick: Anwendung weiterer nützlicher Tests"
+  },
+  {
+   "de": "206",
+   "kind": "prose",
+   "digest": "f135a59068eb4ccf",
+   "en": "206",
+   "preview": "Wir könnten noch eine ganze Reihe Tests benötigen, und deren Voraussetzu…"
+  },
+  {
+   "de": "207",
+   "kind": "prose",
+   "digest": "96ec10e15c168de0",
+   "en": "207",
+   "preview": "**Ein Sample untersuchen**"
+  },
+  {
+   "de": "208",
+   "kind": "prose",
+   "digest": "d93b67e4a20cc311",
+   "en": "208",
+   "preview": "* Shapiro-Wilk: $H_0$: Das Sample ist normalverteilt Voraussetzung: Samp…"
+  },
+  {
+   "de": "209",
+   "kind": "prose",
+   "digest": "9ddfa36a50cfe2e1",
+   "en": "209",
+   "preview": "**Zwei Samples vergleichen**"
+  },
+  {
+   "de": "210",
+   "kind": "prose",
+   "digest": "ac2c7ecc43f91d7b",
+   "en": "210",
+   "preview": "* Pearson's Korrelation: $H_0$: Die zwei Samples sind unkorreliert ($\\rh…"
+  },
+  {
+   "de": "211",
+   "kind": "heading",
+   "digest": "617626295867c7fb",
+   "en": "211",
+   "preview": "## Exkurs: Konnte eine Umfrage die Fünf-Prozent-Frage beantworten?"
+  },
+  {
+   "de": "212",
+   "kind": "directive",
+   "digest": "06a8d19c25859d91",
+   "en": "212",
+   "preview": ":::{note}"
+  },
+  {
+   "de": "213",
+   "kind": "prose",
+   "digest": "23b298bef1bb78f9",
+   "en": "213",
+   "preview": "**Exkurs (nicht klausurrelevant):** eine Anwendung des Abschnitts *Von d…"
+  },
+  {
+   "de": "214",
+   "kind": "directive",
+   "digest": "f1ae2a75ed1f9972",
+   "en": "214",
+   "preview": ":::"
+  },
+  {
+   "de": "215",
+   "kind": "prose",
+   "digest": "572e697dfcff9440",
+   "en": "215",
+   "preview": "Bei der Bundestagswahl am 23. Februar 2025 kam das Bündnis Sahra Wagenkn…"
+  },
+  {
+   "de": "216",
+   "kind": "prose",
+   "digest": "086845144d9d07c8",
+   "en": "216",
+   "preview": "Rechnen wir mit dem Rezept nach. Ein Anteil $\\hat p = 0{,}05$ hat bei $n…"
+  },
+  {
+   "de": "217",
+   "kind": "code",
+   "digest": "674025bae10a8d10",
+   "en": "217",
+   "preview": "```python import numpy as np p = 0.05 for n in [1000, 2000]: se = np.sqr…"
+  },
+  {
+   "de": "218",
+   "kind": "code",
+   "digest": "317aa5eefc860df6",
+   "en": "218",
+   "preview": "``` 1000 Befragte: Standardfehler 0.69 Punkte, 95-%-Intervall ± 1.35 Pun…"
+  },
+  {
+   "de": "219",
+   "kind": "prose",
+   "digest": "84b9c1c5b920652a",
+   "en": "219",
+   "preview": "Eine Umfrage mit $2000$ Befragten, die $5\\,\\%$ meldet, sagt also: irgend…"
+  },
+  {
+   "de": "220",
+   "kind": "math",
+   "digest": "5359d663c68ed654",
+   "en": "220",
+   "preview": "$$ n \\geq \\left( \\dfrac{1{,}96 \\cdot \\sqrt{0{,}05 \\cdot 0{,}95}}{0{,}000…"
+  },
+  {
+   "de": "221",
+   "kind": "prose",
+   "digest": "a5c29579c96b36c2",
+   "en": "221",
+   "preview": "also fast jede zehnte wahlberechtigte Person. Das ist keine Umfrage mehr…"
+  },
+  {
+   "de": "222",
+   "kind": "prose",
+   "digest": "2eda0cb189ad985c",
+   "en": "222",
+   "preview": "Das Rezept liefert dabei nur die *untere* Schranke für die Unsicherheit,…"
+  },
+  {
+   "de": "223",
+   "kind": "prose",
+   "digest": "f4128d0ec2d1babf",
+   "en": "223",
+   "preview": "Für die Lektüre von Umfragen bleibt: Ein Wert ohne Fehlerangabe ist unvo…"
+  }
+ ]
+}

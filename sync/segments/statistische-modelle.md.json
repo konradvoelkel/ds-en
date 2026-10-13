@@ -1,0 +1,1022 @@
+{
+ "source": "statistische-modelle.md",
+ "target": "statistical-models.md",
+ "upstream": "c7247a99ef28b04050ef09ba376ac6e32025456a",
+ "blocks": [
+  {
+   "de": "0",
+   "kind": "heading",
+   "digest": "ecdbbb87915653f4",
+   "en": "0",
+   "preview": "# Statistische Modelle und Schätzer"
+  },
+  {
+   "de": "1",
+   "kind": "prose",
+   "digest": "3e99f20ab5eab355",
+   "en": "1",
+   "preview": "[Vorlesungsaufzeichnung Statistische Modelle und Maximum Likelihood (VL …"
+  },
+  {
+   "de": "2",
+   "kind": "prose",
+   "digest": "831eb47a4195d27f",
+   "en": "2",
+   "preview": "Im Data Science Prozess, also dem Weg von den Daten zu einem Produkt (se…"
+  },
+  {
+   "de": "3",
+   "kind": "prose",
+   "digest": "7067396f828d66bb",
+   "en": "3",
+   "preview": "Der klassische (also historisch älteste) Zugang beginnt mit der Formalis…"
+  },
+  {
+   "de": "4",
+   "kind": "prose",
+   "digest": "e2ee5d03c08d6436",
+   "en": "4",
+   "preview": "Die Lösung ist, sich auf solche statistischen Modelle einzuschränken, wo…"
+  },
+  {
+   "de": "5",
+   "kind": "prose",
+   "digest": "be1fc4678a514641",
+   "en": "5",
+   "preview": "Ein sehr konkretes Beispiel vorab: Gegeben Daten, die als Vektor $x$ der…"
+  },
+  {
+   "de": "6",
+   "kind": "math",
+   "digest": "209c5102f4fce04f",
+   "en": "6",
+   "preview": "$$ \\sigma(x)^2 = \\dfrac{1}{n} \\sum_{i=1}^n (x_i-\\mu)^2,\\qquad \\sigma^\\as…"
+  },
+  {
+   "de": "7",
+   "kind": "prose",
+   "digest": "43159b1fa5548f94",
+   "en": "7",
+   "preview": "Ganz konkret, für eine Stichprobe von $n = 48$ Werten, die tatsächlich a…"
+  },
+  {
+   "de": "8",
+   "kind": "code",
+   "digest": "e6ab6ec1ce7ea688",
+   "en": "8",
+   "preview": "```python import numpy as np x = np.array([6.5281, 3.8003, 4.9575, 7.481…"
+  },
+  {
+   "de": "9",
+   "kind": "prose",
+   "digest": "7ea604e2553b3fa5",
+   "en": "9",
+   "preview": "Die beiden Formeln liefern also merklich verschiedene Zahlen — gut zwei …"
+  },
+  {
+   "de": "10",
+   "kind": "prose",
+   "digest": "f4cc1aa785391653",
+   "en": "10",
+   "preview": "In diesen Formeln muss man nun etwas aufpassen, wenn man das praktisch i…"
+  },
+  {
+   "de": "11",
+   "kind": "prose",
+   "digest": "97f0e29563b7462f",
+   "en": "11",
+   "preview": "Wenn man statistische Modelle formal definiert hat, kann man auch sehr g…"
+  },
+  {
+   "de": "12",
+   "kind": "prose",
+   "digest": "5b76ce3e92559c1e",
+   "en": "12",
+   "preview": "Als Landkarte für die folgenden Definitionen — links, worüber man redet,…"
+  },
+  {
+   "de": "13",
+   "kind": "table",
+   "digest": "a5a1f97f5a4a782b",
+   "en": "13",
+   "preview": "| umgangssprachlich | formal | |---|---| | eine Familie von Verteilungen…"
+  },
+  {
+   "de": "14",
+   "kind": "prose",
+   "digest": "c989e848525dd196",
+   "en": "14",
+   "preview": "Der Stichprobenraum $\\mathcal{X}$ ist dabei nicht der Raum eines einzeln…"
+  },
+  {
+   "de": "15",
+   "kind": "prose",
+   "digest": "1175af67db32a323",
+   "en": "15",
+   "preview": "Der entscheidende Kunstgriff steht in der letzten Zeile. Weil die Stichp…"
+  },
+  {
+   "de": "16",
+   "kind": "heading",
+   "digest": "ee6eb1ee96f55d29",
+   "en": "16",
+   "preview": "## Statistische Modelle"
+  },
+  {
+   "de": "17",
+   "kind": "directive",
+   "digest": "053400a7b7d2fc03",
+   "en": "17",
+   "preview": ":::{admonition} Definition"
+  },
+  {
+   "de": "18",
+   "kind": "prose",
+   "digest": "38b23243206163b7",
+   "en": "18",
+   "preview": "Ein statistisches Modell ist ein Tripel $(\\mathcal{X}, \\mathcal{F}, P_\\t…"
+  },
+  {
+   "de": "19",
+   "kind": "directive",
+   "digest": "f1ae2a75ed1f9972",
+   "en": "19",
+   "preview": ":::"
+  },
+  {
+   "de": "20",
+   "kind": "directive",
+   "digest": "566676a32baee8ac",
+   "en": "20",
+   "preview": ":::{admonition} Bemerkung"
+  },
+  {
+   "de": "21",
+   "kind": "prose",
+   "digest": "6a1d2aa7a5fa1caa",
+   "en": "21",
+   "preview": "Bei einem statistischen Modell handelt es sich also noch nicht um das 'f…"
+  },
+  {
+   "de": "22",
+   "kind": "directive",
+   "digest": "f1ae2a75ed1f9972",
+   "en": "22",
+   "preview": ":::"
+  },
+  {
+   "de": "23",
+   "kind": "directive",
+   "digest": "053400a7b7d2fc03",
+   "en": "23",
+   "preview": ":::{admonition} Definition"
+  },
+  {
+   "de": "24",
+   "kind": "prose",
+   "digest": "5af892450c643c81",
+   "en": "24",
+   "preview": "Ein statistisches Modell heißt **parametrisches Modell**, wenn die Param…"
+  },
+  {
+   "de": "25",
+   "kind": "prose",
+   "digest": "0bfacd3b83d067b2",
+   "en": "25",
+   "preview": "Wenn die Stichprobenmenge $\\mathcal{X}$ diskret ist (höchstens abzählbar…"
+  },
+  {
+   "de": "26",
+   "kind": "prose",
+   "digest": "68ae3fa51bdba021",
+   "en": "26",
+   "preview": "Wenn die Stichprobenmenge $\\mathcal{X}$ eine (Borel)-meßbare Teilmenge d…"
+  },
+  {
+   "de": "27",
+   "kind": "prose",
+   "digest": "5322537296dffa87",
+   "en": "27",
+   "preview": "Ein statistisches Modell, welches entweder diskret oder stetig ist, nenn…"
+  },
+  {
+   "de": "28",
+   "kind": "directive",
+   "digest": "f1ae2a75ed1f9972",
+   "en": "28",
+   "preview": ":::"
+  },
+  {
+   "de": "29",
+   "kind": "directive",
+   "digest": "566676a32baee8ac",
+   "en": "29",
+   "preview": ":::{admonition} Bemerkung"
+  },
+  {
+   "de": "30",
+   "kind": "prose",
+   "digest": "e428d3efd267c467",
+   "en": "30",
+   "preview": "Den Stichprobenraum können wir uns in erster Näherung vorstellen wie die…"
+  },
+  {
+   "de": "31",
+   "kind": "math",
+   "digest": "f2cef4561b7ef35b",
+   "en": "31",
+   "preview": "$$ (\\mathcal{X}^N, \\mathcal{F}^{\\otimes N}, P_{\\theta}^{\\otimes N} : \\th…"
+  },
+  {
+   "de": "32",
+   "kind": "prose",
+   "digest": "7ff3a3902c72c621",
+   "en": "32",
+   "preview": "Die Projektionen $X_i \\colon \\mathcal{X}^N \\to \\mathcal{X}$ sind dann un…"
+  },
+  {
+   "de": "33",
+   "kind": "directive",
+   "digest": "f1ae2a75ed1f9972",
+   "en": "33",
+   "preview": ":::"
+  },
+  {
+   "de": "34",
+   "kind": "directive",
+   "digest": "0feec534fa43b536",
+   "en": "34",
+   "preview": ":::{admonition} Beispiel"
+  },
+  {
+   "de": "35",
+   "kind": "prose",
+   "digest": "55ce39884d82ffce",
+   "en": "35",
+   "preview": "Wir modellieren einen Würfelwurf eines potentiell unfairen Würfels mit e…"
+  },
+  {
+   "de": "36",
+   "kind": "directive",
+   "digest": "f1ae2a75ed1f9972",
+   "en": "36",
+   "preview": ":::"
+  },
+  {
+   "de": "37",
+   "kind": "directive",
+   "digest": "0feec534fa43b536",
+   "en": "37",
+   "preview": ":::{admonition} Beispiel"
+  },
+  {
+   "de": "38",
+   "kind": "prose",
+   "digest": "0d38db3ba5568cb9",
+   "en": "38",
+   "preview": "Den zweifach wiederholten Würfelwurf modellieren wir also mit $\\mathcal{…"
+  },
+  {
+   "de": "39",
+   "kind": "directive",
+   "digest": "f1ae2a75ed1f9972",
+   "en": "39",
+   "preview": ":::"
+  },
+  {
+   "de": "40",
+   "kind": "directive",
+   "digest": "0feec534fa43b536",
+   "en": "40",
+   "preview": ":::{admonition} Beispiel"
+  },
+  {
+   "de": "41",
+   "kind": "prose",
+   "digest": "b9056ef4da781b60",
+   "en": "41",
+   "preview": "Wir können auch modellieren, ob beim zweifachen Wurf ein Pasch gewürfelt…"
+  },
+  {
+   "de": "42",
+   "kind": "directive",
+   "digest": "f1ae2a75ed1f9972",
+   "en": "42",
+   "preview": ":::"
+  },
+  {
+   "de": "43",
+   "kind": "directive",
+   "digest": "0feec534fa43b536",
+   "en": "43",
+   "preview": ":::{admonition} Beispiel"
+  },
+  {
+   "de": "44",
+   "kind": "prose",
+   "digest": "e867bcf8d1c62a12",
+   "en": "44",
+   "preview": "Stellen wir uns vor: Wir haben irgendwelche Daten $x$ in der Wildnis (li…"
+  },
+  {
+   "de": "45",
+   "kind": "math",
+   "digest": "a4f09f69056843d2",
+   "en": "45",
+   "preview": "$$ \\Theta = \\{\\text{uni}\\} \\times \\{0\\} \\cup \\{\\text{norm}\\} \\times \\{\\s…"
+  },
+  {
+   "de": "46",
+   "kind": "prose",
+   "digest": "5f470d6b711acc4d",
+   "en": "46",
+   "preview": "Die erste Komponente von $\\Theta$ ist die Art der Verteilung $\\{\\text{un…"
+  },
+  {
+   "de": "47",
+   "kind": "directive",
+   "digest": "f1ae2a75ed1f9972",
+   "en": "47",
+   "preview": ":::"
+  },
+  {
+   "de": "48",
+   "kind": "directive",
+   "digest": "0feec534fa43b536",
+   "en": "48",
+   "preview": ":::{admonition} Beispiel"
+  },
+  {
+   "de": "49",
+   "kind": "prose",
+   "digest": "920f4b047bbc1041",
+   "en": "49",
+   "preview": "$\\mathcal{X}=\\mathbb{R}^N$ mit $\\Theta = \\mathbb{R} \\times \\mathbb{R}_{>…"
+  },
+  {
+   "de": "50",
+   "kind": "directive",
+   "digest": "f1ae2a75ed1f9972",
+   "en": "50",
+   "preview": ":::"
+  },
+  {
+   "de": "51",
+   "kind": "directive",
+   "digest": "053400a7b7d2fc03",
+   "en": "51",
+   "preview": ":::{admonition} Definition"
+  },
+  {
+   "de": "52",
+   "kind": "prose",
+   "digest": "6a8cf2bc00d1c394",
+   "en": "52",
+   "preview": "Sei $(\\mathcal{X}, P_\\theta : \\theta \\in \\Theta)$ ein statistisches Mode…"
+  },
+  {
+   "de": "53",
+   "kind": "directive",
+   "digest": "f1ae2a75ed1f9972",
+   "en": "53",
+   "preview": ":::"
+  },
+  {
+   "de": "54",
+   "kind": "directive",
+   "digest": "566676a32baee8ac",
+   "en": "54",
+   "preview": ":::{admonition} Bemerkung"
+  },
+  {
+   "de": "55",
+   "kind": "prose",
+   "digest": "f0666795fd5e24f7",
+   "en": "55",
+   "preview": "Wie auch beim Begriff der Zufallsvariablen selbst stellt sich die Frage,…"
+  },
+  {
+   "de": "56",
+   "kind": "directive",
+   "digest": "f1ae2a75ed1f9972",
+   "en": "56",
+   "preview": ":::"
+  },
+  {
+   "de": "57",
+   "kind": "heading",
+   "digest": "12826a1b3d1f4dfc",
+   "en": "57",
+   "preview": "## Schätzer"
+  },
+  {
+   "de": "58",
+   "kind": "directive",
+   "digest": "053400a7b7d2fc03",
+   "en": "58",
+   "preview": ":::{admonition} Definition"
+  },
+  {
+   "de": "59",
+   "kind": "prose",
+   "digest": "a3eb40cd7f530a6d",
+   "en": "59",
+   "preview": "Sei $(\\mathcal{X}, P_\\theta : \\theta \\in \\Theta)$ ein statistisches Mode…"
+  },
+  {
+   "de": "60",
+   "kind": "directive",
+   "digest": "f1ae2a75ed1f9972",
+   "en": "60",
+   "preview": ":::"
+  },
+  {
+   "de": "61",
+   "kind": "directive",
+   "digest": "566676a32baee8ac",
+   "en": "61",
+   "preview": ":::{admonition} Bemerkung"
+  },
+  {
+   "de": "62",
+   "kind": "prose",
+   "digest": "0c8a94cec27b2506",
+   "en": "62",
+   "preview": "Niemand hat gesagt, dass $T$ ein vernünftiger, guter Schätzer sein muss …"
+  },
+  {
+   "de": "63",
+   "kind": "directive",
+   "digest": "f1ae2a75ed1f9972",
+   "en": "63",
+   "preview": ":::"
+  },
+  {
+   "de": "64",
+   "kind": "directive",
+   "digest": "0feec534fa43b536",
+   "en": "64",
+   "preview": ":::{admonition} Beispiel"
+  },
+  {
+   "de": "65",
+   "kind": "prose",
+   "digest": "bcf120e0268673ed",
+   "en": "65",
+   "preview": "Im Standardmodell einer univariaten Normalverteilung mit Stichprobengröß…"
+  },
+  {
+   "de": "66",
+   "kind": "directive",
+   "digest": "f1ae2a75ed1f9972",
+   "en": "66",
+   "preview": ":::"
+  },
+  {
+   "de": "67",
+   "kind": "directive",
+   "digest": "0feec534fa43b536",
+   "en": "67",
+   "preview": ":::{admonition} Beispiel"
+  },
+  {
+   "de": "68",
+   "kind": "prose",
+   "digest": "960ef8d802488b08",
+   "en": "68",
+   "preview": "In den meisten statistischen Modellen können wir die Abbildung $\\sigma \\…"
+  },
+  {
+   "de": "69",
+   "kind": "directive",
+   "digest": "f1ae2a75ed1f9972",
+   "en": "69",
+   "preview": ":::"
+  },
+  {
+   "de": "70",
+   "kind": "heading",
+   "digest": "7a4d1c0322ee8c61",
+   "en": "70",
+   "preview": "### Erwartungstreue"
+  },
+  {
+   "de": "71",
+   "kind": "directive",
+   "digest": "053400a7b7d2fc03",
+   "en": "71",
+   "preview": ":::{admonition} Definition"
+  },
+  {
+   "de": "72",
+   "kind": "prose",
+   "digest": "1663b7e3d49db036",
+   "en": "72",
+   "preview": "Ein Schätzer $T \\colon \\mathcal{X} \\to \\Sigma$ für $\\tau \\colon \\Theta \\…"
+  },
+  {
+   "de": "73",
+   "kind": "prose",
+   "digest": "b7a603e88625a2ee",
+   "en": "73",
+   "preview": "Der **mittlere quadratische Fehler** des Schätzers zum zu schätzenden We…"
+  },
+  {
+   "de": "74",
+   "kind": "math",
+   "digest": "152c3aeb747aa337",
+   "en": "74",
+   "preview": "$$ \\texttt{mse}(T,\\theta) := \\mathbb{E}_\\theta\\left ( (T-\\tau(\\theta))^2…"
+  },
+  {
+   "de": "75",
+   "kind": "prose",
+   "digest": "86b6b849086cddff",
+   "en": "75",
+   "preview": "Eine Folge von Schätzern $T_n \\colon \\mathcal{X}^n \\to \\Sigma$ für $\\tau…"
+  },
+  {
+   "de": "76",
+   "kind": "prose",
+   "digest": "dc0332a177446b91",
+   "en": "76",
+   "preview": "Die Folge $T_n$ heißt **asymptotisch erwartungstreu**, wenn $\\lim_{n\\to\\…"
+  },
+  {
+   "de": "77",
+   "kind": "directive",
+   "digest": "f1ae2a75ed1f9972",
+   "en": "77",
+   "preview": ":::"
+  },
+  {
+   "de": "78",
+   "kind": "directive",
+   "digest": "0feec534fa43b536",
+   "en": "78",
+   "preview": ":::{admonition} Beispiel"
+  },
+  {
+   "de": "79",
+   "kind": "prose",
+   "digest": "c8463abe411237e0",
+   "en": "79",
+   "preview": "Im Standardmodell einer $N$-fach wiederholten univariaten Normalverteilu…"
+  },
+  {
+   "de": "80",
+   "kind": "directive",
+   "digest": "f1ae2a75ed1f9972",
+   "en": "80",
+   "preview": ":::"
+  },
+  {
+   "de": "81",
+   "kind": "directive",
+   "digest": "0feec534fa43b536",
+   "en": "81",
+   "preview": ":::{admonition} Beispiel"
+  },
+  {
+   "de": "82",
+   "kind": "prose",
+   "digest": "dca48a01f7d1c7a5",
+   "en": "82",
+   "preview": "Für die Varianz ist der Schätzer $\\sigma_N^2 = \\frac{1}{N} \\sum_{i=1}^N …"
+  },
+  {
+   "de": "83",
+   "kind": "prose",
+   "digest": "2dc42e896ba79ab0",
+   "en": "83",
+   "preview": "Der durch die *Bessel-Korrektur* angepasste Schätzer $\\frac{N}{N-1} \\sig…"
+  },
+  {
+   "de": "84",
+   "kind": "prose",
+   "digest": "0a04c0901dbce9a3",
+   "en": "84",
+   "preview": "Der Bias entsteht dabei ausschließlich dadurch, dass $\\mu$ mitgeschätzt …"
+  },
+  {
+   "de": "85",
+   "kind": "math",
+   "digest": "2cc2abc795227df6",
+   "en": "85",
+   "preview": "$$ \\dfrac{1}{N} \\sum_{i=1}^N {\\left(X_i - \\mu(X)\\right)}^2 $$"
+  },
+  {
+   "de": "86",
+   "kind": "prose",
+   "digest": "4e9ca5d770a75bf7",
+   "en": "86",
+   "preview": "erwartungstreu, denn $\\mathbb{E}\\left((X_i-\\mu(X))^2\\right) = \\sigma^2(X…"
+  },
+  {
+   "de": "87",
+   "kind": "directive",
+   "digest": "f1ae2a75ed1f9972",
+   "en": "87",
+   "preview": ":::"
+  },
+  {
+   "de": "88",
+   "kind": "directive",
+   "digest": "053400a7b7d2fc03",
+   "en": "88",
+   "preview": ":::{admonition} Definition"
+  },
+  {
+   "de": "89",
+   "kind": "prose",
+   "digest": "184cb00a29187ebe",
+   "en": "89",
+   "preview": "Ein zu einer zu schätzenden Funktion $\\tau \\colon \\Theta \\to \\mathbb{R}$…"
+  },
+  {
+   "de": "90",
+   "kind": "directive",
+   "digest": "f1ae2a75ed1f9972",
+   "en": "90",
+   "preview": ":::"
+  },
+  {
+   "de": "91",
+   "kind": "prose",
+   "digest": "f548143fba176638",
+   "en": "91",
+   "preview": "Ein solcher Schätzer hat also minimale Streuung um den zu schätzenden We…"
+  },
+  {
+   "de": "92",
+   "kind": "directive",
+   "digest": "06a8d19c25859d91",
+   "en": "92",
+   "preview": ":::{note}"
+  },
+  {
+   "de": "93",
+   "kind": "prose",
+   "digest": "b437b7f0d9831363",
+   "en": "93",
+   "preview": "**Ausblick (nicht klausurrelevant):** Die Cramér-Rao-Ungleichung und die…"
+  },
+  {
+   "de": "94",
+   "kind": "directive",
+   "digest": "f1ae2a75ed1f9972",
+   "en": "94",
+   "preview": ":::"
+  },
+  {
+   "de": "95",
+   "kind": "prose",
+   "digest": "201a1d7a9cce8bee",
+   "en": "95",
+   "preview": "Im Allgemeinen ist es sehr schwer, gleichmäßig beste erwartungstreue Sch…"
+  },
+  {
+   "de": "96",
+   "kind": "math",
+   "digest": "018174ff0681b1a7",
+   "en": "96",
+   "preview": "$$ \\mathbb{V}_\\theta(T) \\geq \\frac{1}{I(\\theta)}, \\qquad I(\\theta) := \\m…"
+  },
+  {
+   "de": "97",
+   "kind": "prose",
+   "digest": "b19ad88ddb9eab3c",
+   "en": "97",
+   "preview": "wobei $I(\\theta)$ die *Fisher-Information* ist. Ein erwartungstreuer Sch…"
+  },
+  {
+   "de": "98",
+   "kind": "prose",
+   "digest": "b0b7fc8984dcd506",
+   "en": "98",
+   "preview": "Für viele praktisch wichtige Modelle gibt es aber gar keine geschlossene…"
+  },
+  {
+   "de": "99",
+   "kind": "heading",
+   "digest": "73a5f16e3f72b9de",
+   "en": "99",
+   "preview": "### Maximum Likelihood"
+  },
+  {
+   "de": "100",
+   "kind": "directive",
+   "digest": "053400a7b7d2fc03",
+   "en": "100",
+   "preview": ":::{admonition} Definition"
+  },
+  {
+   "de": "101",
+   "kind": "prose",
+   "digest": "1a56cc8b4b45ad3a",
+   "en": "101",
+   "preview": "Gegeben ein statistisches Standardmodell $(\\mathcal{X}, P_\\theta : \\thet…"
+  },
+  {
+   "de": "102",
+   "kind": "directive",
+   "digest": "f1ae2a75ed1f9972",
+   "en": "102",
+   "preview": ":::"
+  },
+  {
+   "de": "103",
+   "kind": "prose",
+   "digest": "b5f27642fc77b129",
+   "en": "103",
+   "preview": "Wenn wir also Daten $x$ gegeben haben, drückt die Likelihood-Funktion zu…"
+  },
+  {
+   "de": "104",
+   "kind": "directive",
+   "digest": "053400a7b7d2fc03",
+   "en": "104",
+   "preview": ":::{admonition} Definition"
+  },
+  {
+   "de": "105",
+   "kind": "prose",
+   "digest": "83a4d9149e6f35ed",
+   "en": "105",
+   "preview": "Ein Schätzer $T \\colon \\mathcal{X} \\to \\Theta$ für den Parameter $\\theta…"
+  },
+  {
+   "de": "106",
+   "kind": "math",
+   "digest": "71abcb5971d3f85a",
+   "en": "106",
+   "preview": "$$ L_x(T(x)) = \\max_{\\theta \\in \\Theta} L_x(\\theta), $$"
+  },
+  {
+   "de": "107",
+   "kind": "prose",
+   "digest": "04778cc0568ec74c",
+   "en": "107",
+   "preview": "wenn also $T(x)$ die Likelihood von $x$ maximiert, und zwar für jedes $x…"
+  },
+  {
+   "de": "108",
+   "kind": "math",
+   "digest": "4a38080b42ab7e54",
+   "en": "108",
+   "preview": "$$ T(x) = \\operatorname*{argmax}_{\\theta \\in \\Theta} L_x(\\theta). $$"
+  },
+  {
+   "de": "109",
+   "kind": "directive",
+   "digest": "f1ae2a75ed1f9972",
+   "en": "109",
+   "preview": ":::"
+  },
+  {
+   "de": "110",
+   "kind": "prose",
+   "digest": "7cf9ad1ed06a616c",
+   "en": "110",
+   "preview": "Ein erstes Beispiel dafür haben wir bereits gerechnet, ohne den Namen zu…"
+  },
+  {
+   "de": "111",
+   "kind": "directive",
+   "digest": "0feec534fa43b536",
+   "en": "111",
+   "preview": ":::{admonition} Beispiel"
+  },
+  {
+   "de": "112",
+   "kind": "prose",
+   "digest": "82c204f6e1889b65",
+   "en": "112",
+   "preview": "Im $N$-fachen univariat normalverteilten Modell ist $x \\mapsto (\\texttt{…"
+  },
+  {
+   "de": "113",
+   "kind": "directive",
+   "digest": "f1ae2a75ed1f9972",
+   "en": "113",
+   "preview": ":::"
+  },
+  {
+   "de": "114",
+   "kind": "directive",
+   "digest": "566676a32baee8ac",
+   "en": "114",
+   "preview": ":::{admonition} Bemerkung"
+  },
+  {
+   "de": "115",
+   "kind": "prose",
+   "digest": "3f8d0e5003900729",
+   "en": "115",
+   "preview": "Mit Hilfe der relativen Entropie lässt sich beweisen, dass unter schwach…"
+  },
+  {
+   "de": "116",
+   "kind": "prose",
+   "digest": "5757a9d5a0016781",
+   "en": "116",
+   "preview": "Das bedeutet: Schätzt man eine Verteilung so, dass die Wahrscheinlichkei…"
+  },
+  {
+   "de": "117",
+   "kind": "directive",
+   "digest": "f1ae2a75ed1f9972",
+   "en": "117",
+   "preview": ":::"
+  },
+  {
+   "de": "118",
+   "kind": "directive",
+   "digest": "566676a32baee8ac",
+   "en": "118",
+   "preview": ":::{admonition} Bemerkung"
+  },
+  {
+   "de": "119",
+   "kind": "prose",
+   "digest": "86b85bc528150852",
+   "en": "119",
+   "preview": "Wir sind also für eine Familie von Verteilungen $P_\\theta$ mit Dichten $…"
+  },
+  {
+   "de": "120",
+   "kind": "directive",
+   "digest": "f1ae2a75ed1f9972",
+   "en": "120",
+   "preview": ":::"
+  },
+  {
+   "de": "121",
+   "kind": "prose",
+   "digest": "376391d410b8dc3f",
+   "en": "121",
+   "preview": "**Trick**"
+  },
+  {
+   "de": "122",
+   "kind": "prose",
+   "digest": "d5e55c451bc918b4",
+   "en": "122",
+   "preview": "Anstatt die Likelihood von $x$ über alle möglichen $\\theta$ zu maximiere…"
+  },
+  {
+   "de": "123",
+   "kind": "prose",
+   "digest": "3bb814f954cca65d",
+   "en": "123",
+   "preview": "Wenn z.B. $\\rho$ die Form $e^{A}e^{B}$ hat (etwa bei einem $2$-fachen Pr…"
+  },
+  {
+   "de": "124",
+   "kind": "directive",
+   "digest": "0feec534fa43b536",
+   "en": "124",
+   "preview": ":::{admonition} Beispiel"
+  },
+  {
+   "de": "125",
+   "kind": "prose",
+   "digest": "0270ed7e4a04dfbe",
+   "en": "125",
+   "preview": "**Maximum Likelihood für die Exponentialverteilung.** Wir beobachten $n$…"
+  },
+  {
+   "de": "126",
+   "kind": "math",
+   "digest": "7e43c9c9285a2734",
+   "en": "126",
+   "preview": "$$ L(\\lambda) = \\prod_{i=1}^n \\lambda e^{-\\lambda x_i} = \\lambda^n e^{-\\…"
+  },
+  {
+   "de": "127",
+   "kind": "prose",
+   "digest": "433cb55d22c5f2f9",
+   "en": "127",
+   "preview": "Hier lohnt sich der Trick sofort — aus dem Produkt wird eine Summe:"
+  },
+  {
+   "de": "128",
+   "kind": "math",
+   "digest": "093362ea13d1bbad",
+   "en": "128",
+   "preview": "$$ \\ell(\\lambda) := \\log L(\\lambda) = n\\log\\lambda - \\lambda \\sum_{i=1}^…"
+  },
+  {
+   "de": "129",
+   "kind": "prose",
+   "digest": "66e533fd9f7ea242",
+   "en": "129",
+   "preview": "Ableiten und gleich $0$ setzen liefert"
+  },
+  {
+   "de": "130",
+   "kind": "math",
+   "digest": "54c5b510ce49f211",
+   "en": "130",
+   "preview": "$$ \\ell'(\\lambda) = \\frac{n}{\\lambda} - \\sum_{i=1}^n x_i \\overset{!}{=} …"
+  },
+  {
+   "de": "131",
+   "kind": "prose",
+   "digest": "a3d8275d0bfbcd3e",
+   "en": "131",
+   "preview": "Wegen $\\ell''(\\lambda) = -\\frac{n}{\\lambda^2} < 0$ ist das tatsächlich e…"
+  },
+  {
+   "de": "132",
+   "kind": "directive",
+   "digest": "f1ae2a75ed1f9972",
+   "en": "132",
+   "preview": ":::"
+  },
+  {
+   "de": "133",
+   "kind": "directive",
+   "digest": "d8a9d8fddee7e0b1",
+   "en": "133",
+   "preview": ":::{admonition} Proposition"
+  },
+  {
+   "de": "134",
+   "kind": "prose",
+   "digest": "c96185931899ff67",
+   "en": "134",
+   "preview": "Wenn $\\theta_0$ der 'wahre' Parameter für $X$ ist (mit dem $x$ gesampelt…"
+  },
+  {
+   "de": "135",
+   "kind": "directive",
+   "digest": "f1ae2a75ed1f9972",
+   "en": "135",
+   "preview": ":::"
+  },
+  {
+   "de": "136",
+   "kind": "directive",
+   "digest": "0feec534fa43b536",
+   "en": "136",
+   "preview": ":::{admonition} Beispiel"
+  },
+  {
+   "de": "137",
+   "kind": "prose",
+   "digest": "4fcbfa700c6460bb",
+   "en": "137",
+   "preview": "**Anwendung: Server-Logfiles.** Aus den Zeitstempeln einer Web-Anwendung…"
+  },
+  {
+   "de": "138",
+   "kind": "directive",
+   "digest": "f1ae2a75ed1f9972",
+   "en": "138",
+   "preview": ":::"
+  },
+  {
+   "de": "139",
+   "kind": "directive",
+   "digest": "0feec534fa43b536",
+   "en": "139",
+   "preview": ":::{admonition} Beispiel"
+  },
+  {
+   "de": "140",
+   "kind": "prose",
+   "digest": "5d779d96ef0e743a",
+   "en": "140",
+   "preview": "Der k-Means-Algorithmus (siehe das Kapitel [k-Means](kmeans.ipynb)) kann…"
+  },
+  {
+   "de": "141",
+   "kind": "prose",
+   "digest": "61423a69844dd5bd",
+   "en": "141",
+   "preview": "Der Parameterraum ist $\\mathbb{R}^{nk}$ und die Verteilung zu einem Para…"
+  },
+  {
+   "de": "142",
+   "kind": "prose",
+   "digest": "6e7a52f568708c06",
+   "en": "142",
+   "preview": "Die 'perfekte' k-Means-Lösung, also die Zentroide $(c_1,\\dots,c_k)$, die…"
+  },
+  {
+   "de": "143",
+   "kind": "directive",
+   "digest": "f1ae2a75ed1f9972",
+   "en": "143",
+   "preview": ":::"
+  },
+  {
+   "de": "144",
+   "kind": "prose",
+   "digest": "692c4ff856b38b49",
+   "en": "144",
+   "preview": "Das führt uns auf eine offensichtliche Verallgemeinerung des k-Means-Ver…"
+  }
+ ]
+}

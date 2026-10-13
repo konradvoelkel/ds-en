@@ -1,0 +1,2408 @@
+{
+ "source": "erwartungswert.md",
+ "target": "expectation-variance.md",
+ "upstream": "c7247a99ef28b04050ef09ba376ac6e32025456a",
+ "blocks": [
+  {
+   "de": "0",
+   "kind": "heading",
+   "digest": "016be8da36e90d9c",
+   "en": "0",
+   "preview": "# Erwartungswert und Varianz"
+  },
+  {
+   "de": "1",
+   "kind": "prose",
+   "digest": "2e8e051366f2a8a5",
+   "en": "1",
+   "preview": "[Vorlesungsaufzeichnung Erwartungswert und Varianz](https://media.hhu.de…"
+  },
+  {
+   "de": "2",
+   "kind": "heading",
+   "digest": "2328d865a992b65b",
+   "en": "2",
+   "preview": "## Abweichung quantifizieren"
+  },
+  {
+   "de": "3",
+   "kind": "prose",
+   "digest": "8f7300dd58d03e23",
+   "en": "3",
+   "preview": "Am Ende des vorigen Kapitels standen zwei Verteilungen nebeneinander: di…"
+  },
+  {
+   "de": "4",
+   "kind": "prose",
+   "digest": "7053cfad73b10aa3",
+   "en": "4",
+   "preview": "Gegeben zwei Vektoren $v,w \\in \\mathbb{R}^n$ (wir stellen uns vor: $v$ s…"
+  },
+  {
+   "de": "5",
+   "kind": "heading",
+   "digest": "8cd45c6e26441312",
+   "en": "5",
+   "preview": "### Absolute Abweichung"
+  },
+  {
+   "de": "6",
+   "kind": "directive",
+   "digest": "053400a7b7d2fc03",
+   "en": "6",
+   "preview": ":::{admonition} Definition"
+  },
+  {
+   "de": "7",
+   "kind": "prose",
+   "digest": "7a3f4292d9750db5",
+   "en": "7",
+   "preview": "Die *mittlere absolute Abweichung* (mean absolute error) ist $\\texttt{ma…"
+  },
+  {
+   "de": "8",
+   "kind": "prose",
+   "digest": "97bd89b299ce81f2",
+   "en": "8",
+   "preview": "Für eine Zahl $c \\in \\mathbb{R}$ schreiben wir auch $\\texttt{mae}(v,c):=…"
+  },
+  {
+   "de": "9",
+   "kind": "directive",
+   "digest": "f1ae2a75ed1f9972",
+   "en": "9",
+   "preview": ":::"
+  },
+  {
+   "de": "10",
+   "kind": "directive",
+   "digest": "0feec534fa43b536",
+   "en": "10",
+   "preview": ":::{admonition} Beispiel"
+  },
+  {
+   "de": "11",
+   "kind": "prose",
+   "digest": "7b34839745fdbaad",
+   "en": "11",
+   "preview": "Wenn $v = (1,2,3,4)$ und $c=2$, so ist $\\texttt{mae}(v,c) = \\sum_{i=1}^4…"
+  },
+  {
+   "de": "12",
+   "kind": "directive",
+   "digest": "f1ae2a75ed1f9972",
+   "en": "12",
+   "preview": ":::"
+  },
+  {
+   "de": "13",
+   "kind": "prose",
+   "digest": "65a06dd75281216e",
+   "en": "13",
+   "preview": "Die Summe ohne den Faktor $\\frac1n$ ist die $1$-Norm der Differenz,"
+  },
+  {
+   "de": "14",
+   "kind": "math",
+   "digest": "6d1551882e939a9a",
+   "en": "14",
+   "preview": "$$ d_1(v,w) := \\sum_{i=1}^n \\left| v_i - w_i \\right| = \\left\\| v - w \\ri…"
+  },
+  {
+   "de": "15",
+   "kind": "prose",
+   "digest": "022189bd85cc6556",
+   "en": "15",
+   "preview": "und der Faktor $\\frac1n$ in der Definition ist genau das, was $\\texttt{m…"
+  },
+  {
+   "de": "16",
+   "kind": "directive",
+   "digest": "0feec534fa43b536",
+   "en": "16",
+   "preview": ":::{admonition} Beispiel"
+  },
+  {
+   "de": "17",
+   "kind": "prose",
+   "digest": "2e94209f5636403f",
+   "en": "17",
+   "preview": "Bis hierher war $w$ konstant. Es muss aber nicht konstant sein: Seien $v…"
+  },
+  {
+   "de": "18",
+   "kind": "table",
+   "digest": "3195ccf09dacdf48",
+   "en": "18",
+   "preview": "| $i$ | 1 | 2 | 3 | 4 | |---|---|---|---|---| | $v_i$ (gemessen) | 178 |…"
+  },
+  {
+   "de": "19",
+   "kind": "prose",
+   "digest": "912be9e4c8a49338",
+   "en": "19",
+   "preview": "Es ist $d_1(v,w) = 0 + 5 + 5 + 6 = 16$ und damit $\\texttt{mae}(v,w) = \\f…"
+  },
+  {
+   "de": "20",
+   "kind": "prose",
+   "digest": "9b92def4e805faa0",
+   "en": "20",
+   "preview": "Die mittlere Abweichung *ohne* Betrag, mit der wir diesen Abschnitt bego…"
+  },
+  {
+   "de": "21",
+   "kind": "directive",
+   "digest": "f1ae2a75ed1f9972",
+   "en": "21",
+   "preview": ":::"
+  },
+  {
+   "de": "22",
+   "kind": "prose",
+   "digest": "05c394813966b714",
+   "en": "22",
+   "preview": "Es ist natürlich sofort für einen Vektor $v$ interessant, welcher Vektor…"
+  },
+  {
+   "de": "23",
+   "kind": "directive",
+   "digest": "0feec534fa43b536",
+   "en": "23",
+   "preview": ":::{admonition} Beispiel"
+  },
+  {
+   "de": "24",
+   "kind": "prose",
+   "digest": "6af211b9e6fe1afa",
+   "en": "24",
+   "preview": "Nehmen wir für die Körpergrößen $v = (178, 160, 155, 174)$ das konstante…"
+  },
+  {
+   "de": "25",
+   "kind": "math",
+   "digest": "ffd5f9b7d793638f",
+   "en": "25",
+   "preview": "$$ d_1(v,165) = 13 + 5 + 10 + 9 = 37, \\qquad \\texttt{mae}(v,165) = \\dfra…"
+  },
+  {
+   "de": "26",
+   "kind": "prose",
+   "digest": "df1bf37e4dbc4abc",
+   "en": "26",
+   "preview": "Ist $165$ die beste Wahl? Das ist genau die Frage nach dem Minimum, und …"
+  },
+  {
+   "de": "27",
+   "kind": "directive",
+   "digest": "f1ae2a75ed1f9972",
+   "en": "27",
+   "preview": ":::"
+  },
+  {
+   "de": "28",
+   "kind": "directive",
+   "digest": "053400a7b7d2fc03",
+   "en": "28",
+   "preview": ":::{admonition} Definition"
+  },
+  {
+   "de": "29",
+   "kind": "prose",
+   "digest": "5ce770e73167fbe5",
+   "en": "29",
+   "preview": "$\\texttt{median}(v) := \\arg\\min_{c \\in \\mathbb{R}} \\texttt{mae}(v,c)$ is…"
+  },
+  {
+   "de": "30",
+   "kind": "directive",
+   "digest": "f1ae2a75ed1f9972",
+   "en": "30",
+   "preview": ":::"
+  },
+  {
+   "de": "31",
+   "kind": "prose",
+   "digest": "70c2a436fc462597",
+   "en": "31",
+   "preview": "Das bedeutet also, der Median ist definiert als eine Zahl $c \\in \\mathbb…"
+  },
+  {
+   "de": "32",
+   "kind": "prose",
+   "digest": "a5fe592d8f7a1c90",
+   "en": "32",
+   "preview": "Diese Definition mag ungewohnt sein, aber sie erfüllt die folgende Eigen…"
+  },
+  {
+   "de": "33",
+   "kind": "directive",
+   "digest": "d8a9d8fddee7e0b1",
+   "en": "33",
+   "preview": ":::{admonition} Proposition"
+  },
+  {
+   "de": "34",
+   "kind": "prose",
+   "digest": "7b6afe7171162e21",
+   "en": "34",
+   "preview": "Wenn $n \\geq 3$ und $v \\in \\mathbb{R}^n$ sortiert ist, also $v_i < v_j$ …"
+  },
+  {
+   "de": "35",
+   "kind": "prose",
+   "digest": "ac7c4ec4e8f5ecdf",
+   "en": "35",
+   "preview": "$\\texttt{mae}(v,c) = \\texttt{mae}(v',c) + \\dfrac{v_n - v_1}{n}$."
+  },
+  {
+   "de": "36",
+   "kind": "directive",
+   "digest": "f1ae2a75ed1f9972",
+   "en": "36",
+   "preview": ":::"
+  },
+  {
+   "de": "37",
+   "kind": "prose",
+   "digest": "d8514ca8af80f60e",
+   "en": "37",
+   "preview": "Da der zweite Summand nicht von $c$ abhängt, ist er für die Bestimmung d…"
+  },
+  {
+   "de": "38",
+   "kind": "directive",
+   "digest": "d3c74271f8c77915",
+   "en": "38",
+   "preview": ":::{admonition} Beweis"
+  },
+  {
+   "de": "39",
+   "kind": "math",
+   "digest": "b05af96d21359dae",
+   "en": "39",
+   "preview": "$$ \\begin{aligned} \\texttt{mae}(v,c) &= \\phantom{\\dfrac{|v_1 - c|}{n} +\\…"
+  },
+  {
+   "de": "40",
+   "kind": "directive",
+   "digest": "f1ae2a75ed1f9972",
+   "en": "40",
+   "preview": ":::"
+  },
+  {
+   "de": "41",
+   "kind": "prose",
+   "digest": "5c02510f59bea27a",
+   "en": "41",
+   "preview": "Da der Median also relativ schlecht die Daten widerspiegelt (von den mei…"
+  },
+  {
+   "de": "42",
+   "kind": "heading",
+   "digest": "7d61a9c895dee20a",
+   "en": "42",
+   "preview": "### Quadratische Abweichung"
+  },
+  {
+   "de": "43",
+   "kind": "directive",
+   "digest": "053400a7b7d2fc03",
+   "en": "43",
+   "preview": ":::{admonition} Definition"
+  },
+  {
+   "de": "44",
+   "kind": "prose",
+   "digest": "772fd408c8642dea",
+   "en": "44",
+   "preview": "Für Vektoren $v,w \\in \\mathbb{R}^n$ ist die *mittlere quadratische Abwei…"
+  },
+  {
+   "de": "45",
+   "kind": "math",
+   "digest": "afadaa0a1ae0e8b3",
+   "en": "45",
+   "preview": "$$ \\texttt{mse}(v,w) := \\sum_{i=1}^n \\dfrac{{\\left(v_i - w_i\\right)}^2}{…"
+  },
+  {
+   "de": "46",
+   "kind": "prose",
+   "digest": "ac602a45af2ee6dd",
+   "en": "46",
+   "preview": "und für $c \\in \\mathbb{R}$ schreiben wir $\\texttt{mse}(v,c) := \\texttt{m…"
+  },
+  {
+   "de": "47",
+   "kind": "directive",
+   "digest": "f1ae2a75ed1f9972",
+   "en": "47",
+   "preview": ":::"
+  },
+  {
+   "de": "48",
+   "kind": "prose",
+   "digest": "033c1d0422ac5d00",
+   "en": "48",
+   "preview": "Wie bei der absoluten Abweichung ist die Summe ohne $\\frac1n$ eine Norm,…"
+  },
+  {
+   "de": "49",
+   "kind": "math",
+   "digest": "a5df5ca95418fbae",
+   "en": "49",
+   "preview": "$$ d_2(v,w)^2 := \\sum_{i=1}^n {\\left( v_i - w_i \\right)}^2 = \\left\\| v -…"
+  },
+  {
+   "de": "50",
+   "kind": "prose",
+   "digest": "cfa05b629a1ce66c",
+   "en": "50",
+   "preview": "Der $\\texttt{mse}$ hat gegenüber dem $\\texttt{mae}$ die Einheit zum Quad…"
+  },
+  {
+   "de": "51",
+   "kind": "directive",
+   "digest": "d8a9d8fddee7e0b1",
+   "en": "51",
+   "preview": ":::{admonition} Proposition"
+  },
+  {
+   "de": "52",
+   "kind": "prose",
+   "digest": "728afc5004a0be4d",
+   "en": "52",
+   "preview": "Für einen Vektor $v \\in \\mathbb{R}^n$ minimiert der (arithmetische) *Mit…"
+  },
+  {
+   "de": "53",
+   "kind": "prose",
+   "digest": "e70ed8ea5b080865",
+   "en": "53",
+   "preview": "$\\texttt{mean}(v) := \\sum_{i=1}^n \\dfrac{v_i}{n} = \\arg\\min_{c \\in \\math…"
+  },
+  {
+   "de": "54",
+   "kind": "directive",
+   "digest": "f1ae2a75ed1f9972",
+   "en": "54",
+   "preview": ":::"
+  },
+  {
+   "de": "55",
+   "kind": "directive",
+   "digest": "d3c74271f8c77915",
+   "en": "55",
+   "preview": ":::{admonition} Beweis"
+  },
+  {
+   "de": "56",
+   "kind": "prose",
+   "digest": "45839a2915e73ab7",
+   "en": "56",
+   "preview": "Wir schreiben ein beliebiges $c \\in \\mathbb{R}$ als $c = \\texttt{mean}(v…"
+  },
+  {
+   "de": "57",
+   "kind": "math",
+   "digest": "8912f42e3e8b044b",
+   "en": "57",
+   "preview": "$$ \\begin{aligned} \\texttt{mse}(v,c) &= \\texttt{mse}(v,\\texttt{mean}(v) …"
+  },
+  {
+   "de": "58",
+   "kind": "prose",
+   "digest": "c18121cefcda9027",
+   "en": "58",
+   "preview": "und dieser Ausdruck wird nur für $\\delta=0$ minimal, weil $\\delta^2 \\geq…"
+  },
+  {
+   "de": "59",
+   "kind": "directive",
+   "digest": "f1ae2a75ed1f9972",
+   "en": "59",
+   "preview": ":::"
+  },
+  {
+   "de": "60",
+   "kind": "directive",
+   "digest": "0feec534fa43b536",
+   "en": "60",
+   "preview": ":::{admonition} Beispiel"
+  },
+  {
+   "de": "61",
+   "kind": "prose",
+   "digest": "61e1c61aa4e053f0",
+   "en": "61",
+   "preview": "Dieselben vier Körpergrößen, jetzt quadratisch gemessen. Für die Modellv…"
+  },
+  {
+   "de": "62",
+   "kind": "math",
+   "digest": "7d5e22ecae01fade",
+   "en": "62",
+   "preview": "$$ d_2(v,w)^2 = 0^2 + 5^2 + 5^2 + (-6)^2 = 86, \\qquad \\texttt{mse}(v,w) …"
+  },
+  {
+   "de": "63",
+   "kind": "prose",
+   "digest": "b76f4db222df4346",
+   "en": "63",
+   "preview": "Interessanter ist der Vergleich der konstanten Modelle. Der Mittelwert i…"
+  },
+  {
+   "de": "64",
+   "kind": "table",
+   "digest": "1b506ef950b139ca",
+   "en": "64",
+   "preview": "| $c$ | $\\texttt{mae}(v,c)$ | $\\texttt{mse}(v,c)$ | |---|---|---| | $165…"
+  },
+  {
+   "de": "65",
+   "kind": "prose",
+   "digest": "5178a26c66105b5c",
+   "en": "65",
+   "preview": "In der mittleren Spalte steht dreimal dasselbe: Jede Zahl zwischen $160$…"
+  },
+  {
+   "de": "66",
+   "kind": "directive",
+   "digest": "f1ae2a75ed1f9972",
+   "en": "66",
+   "preview": ":::"
+  },
+  {
+   "de": "67",
+   "kind": "heading",
+   "digest": "849fcdf3a94beaab",
+   "en": "67",
+   "preview": "### Sample-Standardabweichung"
+  },
+  {
+   "de": "68",
+   "kind": "directive",
+   "digest": "053400a7b7d2fc03",
+   "en": "68",
+   "preview": ":::{admonition} Definition"
+  },
+  {
+   "de": "69",
+   "kind": "prose",
+   "digest": "1b38642dbd447036",
+   "en": "69",
+   "preview": "Sei $v \\in \\mathbb{R}^n$. Die Quadratwurzel der mittleren quadratischen …"
+  },
+  {
+   "de": "70",
+   "kind": "prose",
+   "digest": "9ea33feb536b5c8f",
+   "en": "70",
+   "preview": "$\\texttt{rmse}(v) = \\sqrt{\\texttt{mse}\\left( v, \\texttt{mean}(v) \\right)…"
+  },
+  {
+   "de": "71",
+   "kind": "prose",
+   "digest": "6e6f197551c5d50f",
+   "en": "71",
+   "preview": "Man schreibt dafür auch $\\sigma(v)$, die *Standardabweichung* des Sample…"
+  },
+  {
+   "de": "72",
+   "kind": "directive",
+   "digest": "f1ae2a75ed1f9972",
+   "en": "72",
+   "preview": ":::"
+  },
+  {
+   "de": "73",
+   "kind": "prose",
+   "digest": "699347e871c66257",
+   "en": "73",
+   "preview": "Zum Ausrechnen ist die Definition unpraktisch, weil man erst den Mittelw…"
+  },
+  {
+   "de": "74",
+   "kind": "directive",
+   "digest": "8f4e565549eb919e",
+   "en": "74",
+   "preview": ":::{admonition} Lemma"
+  },
+  {
+   "de": "75",
+   "kind": "prose",
+   "digest": "ed0a172469f4da48",
+   "en": "75",
+   "preview": "**(Verschiebungssatz)**"
+  },
+  {
+   "de": "76",
+   "kind": "prose",
+   "digest": "50f40c6adf055766",
+   "en": "76",
+   "preview": "Für $v \\in \\mathbb{R}^n$ ist"
+  },
+  {
+   "de": "77",
+   "kind": "math",
+   "digest": "ceb04994ee590c62",
+   "en": "77",
+   "preview": "$$ \\texttt{rmse}(v)^2 = \\texttt{mse}\\left( v, \\texttt{mean}(v) \\right) =…"
+  },
+  {
+   "de": "78",
+   "kind": "prose",
+   "digest": "8a2cbe2280f8a5c8",
+   "en": "78",
+   "preview": "wobei $v^2 := {\\left( v_i^2 \\right)}_{i=1}^n$ komponentenweise zu lesen …"
+  },
+  {
+   "de": "79",
+   "kind": "directive",
+   "digest": "f1ae2a75ed1f9972",
+   "en": "79",
+   "preview": ":::"
+  },
+  {
+   "de": "80",
+   "kind": "directive",
+   "digest": "d3c74271f8c77915",
+   "en": "80",
+   "preview": ":::{admonition} Beweis"
+  },
+  {
+   "de": "81",
+   "kind": "prose",
+   "digest": "eaa165dae29d1af1",
+   "en": "81",
+   "preview": "Mit $m := \\texttt{mean}(v)$ ist"
+  },
+  {
+   "de": "82",
+   "kind": "math",
+   "digest": "fc128424995c42e9",
+   "en": "82",
+   "preview": "$$ \\texttt{mse}(v, m) = \\dfrac{1}{n} \\sum_{i=1}^n \\left( v_i^2 - 2 m v_i…"
+  },
+  {
+   "de": "83",
+   "kind": "directive",
+   "digest": "f1ae2a75ed1f9972",
+   "en": "83",
+   "preview": ":::"
+  },
+  {
+   "de": "84",
+   "kind": "directive",
+   "digest": "d8a9d8fddee7e0b1",
+   "en": "84",
+   "preview": ":::{admonition} Proposition"
+  },
+  {
+   "de": "85",
+   "kind": "prose",
+   "digest": "21df509152a667db",
+   "en": "85",
+   "preview": "Für $v \\in \\mathbb{R}^n$, $v \\neq 0$, mit $\\texttt{mean}(v)=0$ (ein *zen…"
+  },
+  {
+   "de": "86",
+   "kind": "directive",
+   "digest": "f1ae2a75ed1f9972",
+   "en": "86",
+   "preview": ":::"
+  },
+  {
+   "de": "87",
+   "kind": "directive",
+   "digest": "d3c74271f8c77915",
+   "en": "87",
+   "preview": ":::{admonition} Beweis"
+  },
+  {
+   "de": "88",
+   "kind": "prose",
+   "digest": "e710ca4b84b04913",
+   "en": "88",
+   "preview": "Das rechnet man direkt nach. Dass das zentrierte $v = w - (\\texttt{mean}…"
+  },
+  {
+   "de": "89",
+   "kind": "directive",
+   "digest": "f1ae2a75ed1f9972",
+   "en": "89",
+   "preview": ":::"
+  },
+  {
+   "de": "90",
+   "kind": "directive",
+   "digest": "566676a32baee8ac",
+   "en": "90",
+   "preview": ":::{admonition} Bemerkung"
+  },
+  {
+   "de": "91",
+   "kind": "prose",
+   "digest": "5e64ebe54447d274",
+   "en": "91",
+   "preview": "Das Zentrieren lohnt eine eigene Schreibweise. Für $v \\in \\mathbb{R}^n$ …"
+  },
+  {
+   "de": "92",
+   "kind": "math",
+   "digest": "64e41dc8ded3666b",
+   "en": "92",
+   "preview": "$$ \\tilde{v} := v - \\left( \\texttt{mean}(v) \\right)_{i=1}^n, \\qquad \\tex…"
+  },
+  {
+   "de": "93",
+   "kind": "prose",
+   "digest": "513b40698f3b0a4d",
+   "en": "93",
+   "preview": "und nennt $\\tilde{v}$ das *zentrierte* $v$. Mit dem Verschiebungssatz vo…"
+  },
+  {
+   "de": "94",
+   "kind": "math",
+   "digest": "e2c3d4a30fc951b0",
+   "en": "94",
+   "preview": "$$ \\sigma(v) = \\texttt{rmse}(v) = \\dfrac{1}{\\sqrt{n}} \\left\\| \\tilde{v} …"
+  },
+  {
+   "de": "95",
+   "kind": "prose",
+   "digest": "6a81f8ab0ccc5616",
+   "en": "95",
+   "preview": "In der Sprache der linearen Algebra ist die Sample-Standardabweichung al…"
+  },
+  {
+   "de": "96",
+   "kind": "directive",
+   "digest": "f1ae2a75ed1f9972",
+   "en": "96",
+   "preview": ":::"
+  },
+  {
+   "de": "97",
+   "kind": "prose",
+   "digest": "c8f8e3c0fe6bcde8",
+   "en": "97",
+   "preview": "Diese Sichtweise trägt weiter, als sie zunächst aussieht. Im Kapitel [Ko…"
+  },
+  {
+   "de": "98",
+   "kind": "heading",
+   "digest": "7121a81ead55e4ca",
+   "en": "98",
+   "preview": "### Informationsgehalt"
+  },
+  {
+   "de": "99",
+   "kind": "prose",
+   "digest": "3015fb672cba0735",
+   "en": "99",
+   "preview": "Ob ein Vektor $v \\in \\mathbb{R}^n$ für uns Informationen enthält, hängt …"
+  },
+  {
+   "de": "100",
+   "kind": "heading",
+   "digest": "16002ae2619b3c19",
+   "en": "100",
+   "preview": "### Lagemaße zentraler Tendenz"
+  },
+  {
+   "de": "101",
+   "kind": "prose",
+   "digest": "57c115bda36417f7",
+   "en": "101",
+   "preview": "Zu Median und Mittelwert gehört traditionell noch der **Modus**, der häu…"
+  },
+  {
+   "de": "102",
+   "kind": "heading",
+   "digest": "9e9cd0a07f5546b8",
+   "en": "102",
+   "preview": "## Momente einer Zufallsvariable"
+  },
+  {
+   "de": "103",
+   "kind": "heading",
+   "digest": "265e528a8eee3cd6",
+   "en": "103",
+   "preview": "### Vom Mittelwert zum Erwartungswert"
+  },
+  {
+   "de": "104",
+   "kind": "prose",
+   "digest": "0594f04580acdd24",
+   "en": "104",
+   "preview": "Bis hierher haben wir mit Samples gerechnet: $\\texttt{mean}(v)$ ist eine…"
+  },
+  {
+   "de": "105",
+   "kind": "prose",
+   "digest": "20a4fc54386a148b",
+   "en": "105",
+   "preview": "Sei $X$ eine Zufallsvariable mit endlich vielen Werten $y_1,\\dots,y_k$ u…"
+  },
+  {
+   "de": "106",
+   "kind": "prose",
+   "digest": "613f4243d8be9e83",
+   "en": "106",
+   "preview": "Den Mittelwert dieses idealisierten Samples können wir direkt hinschreib…"
+  },
+  {
+   "de": "107",
+   "kind": "math",
+   "digest": "6cc0202a45fd598f",
+   "en": "107",
+   "preview": "$$ \\texttt{mean}(\\tilde{D}) = \\dfrac{1}{N} \\sum_{j=1}^k a_j y_j = \\sum_{…"
+  },
+  {
+   "de": "108",
+   "kind": "prose",
+   "digest": "4ad2395353bc46b1",
+   "en": "108",
+   "preview": "Rechts steht keine Stichprobe mehr, sondern nur noch die Verteilung. Dam…"
+  },
+  {
+   "de": "109",
+   "kind": "directive",
+   "digest": "0feec534fa43b536",
+   "en": "109",
+   "preview": ":::{admonition} Beispiel"
+  },
+  {
+   "de": "110",
+   "kind": "prose",
+   "digest": "92de97cd55179dbc",
+   "en": "110",
+   "preview": "Ein fairer Würfel hat $p = \\left(\\frac16,\\dots,\\frac16\\right)$, also $N …"
+  },
+  {
+   "de": "111",
+   "kind": "math",
+   "digest": "84fb1035feccfa2b",
+   "en": "111",
+   "preview": "$$\\texttt{mean}(\\tilde{D}) = \\dfrac{1+2+3+4+5+6}{6} = \\dfrac{21}{6} = 3{…"
+  },
+  {
+   "de": "112",
+   "kind": "prose",
+   "digest": "517af55496b1617c",
+   "en": "112",
+   "preview": "Der Erwartungswert eines fairen Würfels ist also $3{,}5$, eine Zahl, die…"
+  },
+  {
+   "de": "113",
+   "kind": "prose",
+   "digest": "ee509cfa3f4d0f9c",
+   "en": "113",
+   "preview": "Ein gezinkter Würfel mit $p = \\left(\\frac{1}{10},\\frac{1}{10},\\frac{1}{1…"
+  },
+  {
+   "de": "114",
+   "kind": "directive",
+   "digest": "f1ae2a75ed1f9972",
+   "en": "114",
+   "preview": ":::"
+  },
+  {
+   "de": "115",
+   "kind": "prose",
+   "digest": "5be4cf20a178ae6d",
+   "en": "115",
+   "preview": "Der Spezialfall $k = 1$ ist die Probe aufs Exempel: Eine Verteilung, die…"
+  },
+  {
+   "de": "116",
+   "kind": "directive",
+   "digest": "0feec534fa43b536",
+   "en": "116",
+   "preview": ":::{admonition} Beispiel"
+  },
+  {
+   "de": "117",
+   "kind": "prose",
+   "digest": "145075f2334d8577",
+   "en": "117",
+   "preview": "Auf $\\Omega = \\{0,1,\\dots,n-1\\}$ — genau das, was `range(n)` in Python a…"
+  },
+  {
+   "de": "118",
+   "kind": "math",
+   "digest": "b5b3ccdc4a11e4c6",
+   "en": "118",
+   "preview": "$$\\mathbb{E}(Y) = \\sum_{\\omega=0}^{n-1} \\dfrac{\\omega}{n} = \\dfrac{1}{n}…"
+  },
+  {
+   "de": "119",
+   "kind": "prose",
+   "digest": "1e54d3fcbcc8f77b",
+   "en": "119",
+   "preview": "für $X(\\omega) := \\omega + 1$ dagegen $\\mathbb{E}(X) = \\mathbb{E}(Y) + 1…"
+  },
+  {
+   "de": "120",
+   "kind": "directive",
+   "digest": "f1ae2a75ed1f9972",
+   "en": "120",
+   "preview": ":::"
+  },
+  {
+   "de": "121",
+   "kind": "prose",
+   "digest": "10a95758a1abde66",
+   "en": "121",
+   "preview": "Damit können wir die Formel als Definition festhalten. Sie funktioniert …"
+  },
+  {
+   "de": "122",
+   "kind": "heading",
+   "digest": "79ccc8919567d698",
+   "en": "122",
+   "preview": "### Erwartungswert, diskret"
+  },
+  {
+   "de": "123",
+   "kind": "directive",
+   "digest": "053400a7b7d2fc03",
+   "en": "123",
+   "preview": ":::{admonition} Definition"
+  },
+  {
+   "de": "124",
+   "kind": "prose",
+   "digest": "2ea2957edb08c831",
+   "en": "124",
+   "preview": "Sei $X \\colon \\Omega \\to \\mathbb{R}$ eine diskrete reelle Zufallsvariabl…"
+  },
+  {
+   "de": "125",
+   "kind": "math",
+   "digest": "fa1bb41f8d4783d4",
+   "en": "125",
+   "preview": "$$ \\mathbb{E}X := \\mathbb{E}(X) := \\sum_{\\omega \\in \\Omega} X(\\omega) P(…"
+  },
+  {
+   "de": "126",
+   "kind": "prose",
+   "digest": "e4eddfa3ef8349d7",
+   "en": "126",
+   "preview": "Wenn man nicht \"in $\\Omega$\" arbeiten möchte, kann man diese Summe auch …"
+  },
+  {
+   "de": "127",
+   "kind": "directive",
+   "digest": "f1ae2a75ed1f9972",
+   "en": "127",
+   "preview": ":::"
+  },
+  {
+   "de": "128",
+   "kind": "prose",
+   "digest": "476e7dc8d4653d2c",
+   "en": "128",
+   "preview": "Der Erwartungswert ist also das mit den Wahrscheinlichkeiten gewichtete …"
+  },
+  {
+   "de": "129",
+   "kind": "prose",
+   "digest": "cb7484fe97318002",
+   "en": "129",
+   "preview": "Für endliches $\\Omega$ ist die Summe endlich und existiert immer. Ist $\\…"
+  },
+  {
+   "de": "130",
+   "kind": "prose",
+   "digest": "aca57e2cbd336601",
+   "en": "130",
+   "preview": "Festhalten lässt sich: Nimmt $X$ nur endlich viele Werte an, so existier…"
+  },
+  {
+   "de": "131",
+   "kind": "prose",
+   "digest": "98a2f3908e7ce312",
+   "en": "131",
+   "preview": "Für stetige Zufallsvariablen, die überabzählbar viele Werte annehmen, tr…"
+  },
+  {
+   "de": "132",
+   "kind": "heading",
+   "digest": "7c05d30f0a62eb57",
+   "en": "132",
+   "preview": "### Exkurs: Erwartungswert allgemein"
+  },
+  {
+   "de": "133",
+   "kind": "directive",
+   "digest": "5a29b2de559bbcfa",
+   "en": "133",
+   "preview": "::::{note}"
+  },
+  {
+   "de": "134",
+   "kind": "prose",
+   "digest": "95e0454766ee05a9",
+   "en": "134",
+   "preview": "**Exkurs (nicht klausurrelevant):** Summe und Dichte-Integral sind zwei …"
+  },
+  {
+   "de": "135",
+   "kind": "directive",
+   "digest": "053400a7b7d2fc03",
+   "en": "135",
+   "preview": ":::{admonition} Definition"
+  },
+  {
+   "de": "136",
+   "kind": "prose",
+   "digest": "cb71a833726f96f9",
+   "en": "136",
+   "preview": "Sei $X \\colon \\Omega \\to \\mathbb{R}$ eine reelle Zufallsvariable, dann i…"
+  },
+  {
+   "de": "137",
+   "kind": "prose",
+   "digest": "b0a00c2d580c19c2",
+   "en": "137",
+   "preview": "$\\mathbb{E}X := \\mathbb{E}(X) := \\int_{\\Omega} X dP = \\int_{\\Omega} X(\\o…"
+  },
+  {
+   "de": "138",
+   "kind": "prose",
+   "digest": "00cb8b53bc23b0a4",
+   "en": "138",
+   "preview": "also als das Integral der Abbildung $X$ bezüglich des Maßes $P$."
+  },
+  {
+   "de": "139",
+   "kind": "directive",
+   "digest": "f1ae2a75ed1f9972",
+   "en": "139",
+   "preview": ":::"
+  },
+  {
+   "de": "140",
+   "kind": "prose",
+   "digest": "38e28e2ea886e63e",
+   "en": "140",
+   "preview": "Dieses Integral (das Lebesgue-Integral bezüglich $P$) existiert im Allge…"
+  },
+  {
+   "de": "141",
+   "kind": "directive",
+   "digest": "d00d9be38948fb14",
+   "en": "141",
+   "preview": "::::"
+  },
+  {
+   "de": "142",
+   "kind": "prose",
+   "digest": "5e0ad81a59fec44b",
+   "en": "142",
+   "preview": "Es gibt einen inneren Zusammenhang zwischen dem Erwartungswert und den S…"
+  },
+  {
+   "de": "143",
+   "kind": "directive",
+   "digest": "f964f8dc481b2d41",
+   "en": "143",
+   "preview": ":::{admonition} Satz"
+  },
+  {
+   "de": "144",
+   "kind": "prose",
+   "digest": "e6e9f8d61b9aea1d",
+   "en": "144",
+   "preview": "**Gesetz der großen Zahlen**"
+  },
+  {
+   "de": "145",
+   "kind": "prose",
+   "digest": "8f2f675d6d2ae41f",
+   "en": "145",
+   "preview": "Ist eine unendliche Folge $(X_i)_{i \\in \\mathbb{N}}$ von Zufallsvariable…"
+  },
+  {
+   "de": "146",
+   "kind": "prose",
+   "digest": "d95b614626199b9d",
+   "en": "146",
+   "preview": "Wenn die $X_i$ nun unabhängig und identisch verteilt sind (kurz *iid*: j…"
+  },
+  {
+   "de": "147",
+   "kind": "directive",
+   "digest": "f1ae2a75ed1f9972",
+   "en": "147",
+   "preview": ":::"
+  },
+  {
+   "de": "148",
+   "kind": "prose",
+   "digest": "82b8df2b1598f848",
+   "en": "148",
+   "preview": "Aus der $P$-fast sicheren Konvergenz folgt auch die stochastische Konver…"
+  },
+  {
+   "de": "149",
+   "kind": "prose",
+   "digest": "2beb5d82bc1f9574",
+   "en": "149",
+   "preview": "Wir wollen uns im Folgenden nicht mehr über Konvergenzbegriffe der Stoch…"
+  },
+  {
+   "de": "150",
+   "kind": "prose",
+   "digest": "b65ca271722f8431",
+   "en": "150",
+   "preview": "Damit schließt sich der Kreis zum idealisierten Sample vom Anfang des Ab…"
+  },
+  {
+   "de": "151",
+   "kind": "directive",
+   "digest": "8f4e565549eb919e",
+   "en": "151",
+   "preview": ":::{admonition} Lemma"
+  },
+  {
+   "de": "152",
+   "kind": "prose",
+   "digest": "f60b78f4f68a6f36",
+   "en": "152",
+   "preview": "**Rechenregeln für den Erwartungswert:**"
+  },
+  {
+   "de": "153",
+   "kind": "prose",
+   "digest": "18e0e2c40466f188",
+   "en": "153",
+   "preview": "1. Linearität: Der Erwartungswert ist linear in $X$, also für $\\alpha,\\b…"
+  },
+  {
+   "de": "154",
+   "kind": "math",
+   "digest": "5fb5a2911aee156d",
+   "en": "154",
+   "preview": "$$ \\mathbb{E}\\left( \\alpha X + \\beta Y \\right) = \\alpha \\mathbb{E} X + \\…"
+  },
+  {
+   "de": "155",
+   "kind": "prose",
+   "digest": "60de59ef10eea32e",
+   "en": "155",
+   "preview": "2. Monotonie: Der Erwartungswert ist monoton in $X$, also für $X \\leq Y$…"
+  },
+  {
+   "de": "156",
+   "kind": "prose",
+   "digest": "3bea7dc8b289670d",
+   "en": "156",
+   "preview": "3. $\\sigma$-Additivität: für eine Folge $X_i \\geq 0$ ist $\\mathbb{E}(\\su…"
+  },
+  {
+   "de": "157",
+   "kind": "prose",
+   "digest": "585015080bedda17",
+   "en": "157",
+   "preview": "4. Produktregel: Sind $X$ und $Y$ unabhängig, so ist $\\mathbb{E}(XY) = \\…"
+  },
+  {
+   "de": "158",
+   "kind": "prose",
+   "digest": "ba1e82a1cc32de08",
+   "en": "158",
+   "preview": "**Ohne Beweis**"
+  },
+  {
+   "de": "159",
+   "kind": "directive",
+   "digest": "f1ae2a75ed1f9972",
+   "en": "159",
+   "preview": ":::"
+  },
+  {
+   "de": "160",
+   "kind": "prose",
+   "digest": "3cad6a2d9e4711f3",
+   "en": "160",
+   "preview": "Dabei haben wir noch nicht erklärt, was *unabhängig* bedeutet (unabhängi…"
+  },
+  {
+   "de": "161",
+   "kind": "heading",
+   "digest": "69b6c9f2bc599b92",
+   "en": "161",
+   "preview": "### Varianz"
+  },
+  {
+   "de": "162",
+   "kind": "directive",
+   "digest": "053400a7b7d2fc03",
+   "en": "162",
+   "preview": ":::{admonition} Definition"
+  },
+  {
+   "de": "163",
+   "kind": "prose",
+   "digest": "941967b7fe076031",
+   "en": "163",
+   "preview": "Sei $X \\colon \\Omega \\to \\mathbb{R}$ eine Zufallsvariable. Dann heißt"
+  },
+  {
+   "de": "164",
+   "kind": "prose",
+   "digest": "769fa078ddc8990d",
+   "en": "164",
+   "preview": "$\\mathbb{V}X := \\mathbb{V}(X) := Var(X) := \\mathbb{E}\\left( {\\left(X - \\…"
+  },
+  {
+   "de": "165",
+   "kind": "directive",
+   "digest": "f1ae2a75ed1f9972",
+   "en": "165",
+   "preview": ":::"
+  },
+  {
+   "de": "166",
+   "kind": "directive",
+   "digest": "d8a9d8fddee7e0b1",
+   "en": "166",
+   "preview": ":::{admonition} Proposition"
+  },
+  {
+   "de": "167",
+   "kind": "prose",
+   "digest": "ed0a172469f4da48",
+   "en": "167",
+   "preview": "**(Verschiebungssatz)**"
+  },
+  {
+   "de": "168",
+   "kind": "prose",
+   "digest": "8d761cba17141044",
+   "en": "168",
+   "preview": "Es ist $\\mathbb{V}(X) = \\mathbb{E}\\left( X^2 \\right) - {\\left(\\mathbb{E}…"
+  },
+  {
+   "de": "169",
+   "kind": "directive",
+   "digest": "f1ae2a75ed1f9972",
+   "en": "169",
+   "preview": ":::"
+  },
+  {
+   "de": "170",
+   "kind": "directive",
+   "digest": "d3c74271f8c77915",
+   "en": "170",
+   "preview": ":::{admonition} Beweis"
+  },
+  {
+   "de": "171",
+   "kind": "prose",
+   "digest": "48f2d356aa65e76d",
+   "en": "171",
+   "preview": "Es ist ${\\left(X - \\mathbb{E}X\\right)}^2 = X^2 - 2X\\mathbb{E}X + {\\left(…"
+  },
+  {
+   "de": "172",
+   "kind": "math",
+   "digest": "fdfab37bfc7e23ed",
+   "en": "172",
+   "preview": "$$ \\begin{aligned} \\mathbb{V}(X) &= \\mathbb{E}\\left( {\\left(X - \\mathbb{…"
+  },
+  {
+   "de": "173",
+   "kind": "directive",
+   "digest": "f1ae2a75ed1f9972",
+   "en": "173",
+   "preview": ":::"
+  },
+  {
+   "de": "174",
+   "kind": "prose",
+   "digest": "1d3aebf12001e522",
+   "en": "174",
+   "preview": "Das ist das Gegenstück zum Verschiebungssatz $\\texttt{rmse}(v)^2 = \\text…"
+  },
+  {
+   "de": "175",
+   "kind": "directive",
+   "digest": "053400a7b7d2fc03",
+   "en": "175",
+   "preview": ":::{admonition} Definition"
+  },
+  {
+   "de": "176",
+   "kind": "prose",
+   "digest": "b57c654bf7e6766f",
+   "en": "176",
+   "preview": "Man nennt allgemein auch $\\mathbb{E}(X^n)$ das $n$-te *Moment* und $\\mat…"
+  },
+  {
+   "de": "177",
+   "kind": "directive",
+   "digest": "f1ae2a75ed1f9972",
+   "en": "177",
+   "preview": ":::"
+  },
+  {
+   "de": "178",
+   "kind": "prose",
+   "digest": "1c7c46ee58d527f8",
+   "en": "178",
+   "preview": "Die Varianz hilft uns bei der Einschätzung, wie wahrscheinlich gewisse A…"
+  },
+  {
+   "de": "179",
+   "kind": "directive",
+   "digest": "f964f8dc481b2d41",
+   "en": "179",
+   "preview": ":::{admonition} Satz"
+  },
+  {
+   "de": "180",
+   "kind": "prose",
+   "digest": "e3a64aa968778dd2",
+   "en": "180",
+   "preview": "**(Markov-Ungleichung)**"
+  },
+  {
+   "de": "181",
+   "kind": "prose",
+   "digest": "1aaedba77cfc07bf",
+   "en": "181",
+   "preview": "Für $X$ eine reelle Zufallsvariable mit $X \\geq 0$ und $c > 0$ ist"
+  },
+  {
+   "de": "182",
+   "kind": "math",
+   "digest": "5bbb1532ddd3d0ad",
+   "en": "182",
+   "preview": "$$ P\\left( X \\geq c \\right) \\leq \\dfrac{\\mathbb{E}X}{c}. $$"
+  },
+  {
+   "de": "183",
+   "kind": "directive",
+   "digest": "f1ae2a75ed1f9972",
+   "en": "183",
+   "preview": ":::"
+  },
+  {
+   "de": "184",
+   "kind": "directive",
+   "digest": "d3c74271f8c77915",
+   "en": "184",
+   "preview": ":::{admonition} Beweis"
+  },
+  {
+   "de": "185",
+   "kind": "prose",
+   "digest": "102d936710ef6fd4",
+   "en": "185",
+   "preview": "Sei $1_{\\{X \\geq c\\}} \\colon \\Omega \\to \\{0,1\\}$ die Indikatorfunktion d…"
+  },
+  {
+   "de": "186",
+   "kind": "math",
+   "digest": "2ed0d8675e4c0c67",
+   "en": "186",
+   "preview": "$$ c \\cdot P(X \\geq c) = \\mathbb{E}\\left( c \\cdot 1_{\\{X \\geq c\\}} \\righ…"
+  },
+  {
+   "de": "187",
+   "kind": "prose",
+   "digest": "f3ba8c161bdc26ab",
+   "en": "187",
+   "preview": "und Teilen durch $c > 0$ liefert die Behauptung."
+  },
+  {
+   "de": "188",
+   "kind": "directive",
+   "digest": "f1ae2a75ed1f9972",
+   "en": "188",
+   "preview": ":::"
+  },
+  {
+   "de": "189",
+   "kind": "prose",
+   "digest": "a1f6591215881fb2",
+   "en": "189",
+   "preview": "Die Markov-Ungleichung ist grob, aber sie liefert sofort die Ungleichung…"
+  },
+  {
+   "de": "190",
+   "kind": "directive",
+   "digest": "f964f8dc481b2d41",
+   "en": "190",
+   "preview": ":::{admonition} Satz"
+  },
+  {
+   "de": "191",
+   "kind": "prose",
+   "digest": "8dd268d78f8476c9",
+   "en": "191",
+   "preview": "**(Tschebyscheff-Ungleichung)**"
+  },
+  {
+   "de": "192",
+   "kind": "prose",
+   "digest": "cfc3931ad411ed5f",
+   "en": "192",
+   "preview": "Für $X$ eine reelle Zufallsvariable, $c > 0$ ist"
+  },
+  {
+   "de": "193",
+   "kind": "math",
+   "digest": "bc8f064841133317",
+   "en": "193",
+   "preview": "$$ P\\left( | X - \\mathbb{E} X | \\geq c \\right) \\leq \\dfrac{\\mathbb{V}X}{…"
+  },
+  {
+   "de": "194",
+   "kind": "directive",
+   "digest": "f1ae2a75ed1f9972",
+   "en": "194",
+   "preview": ":::"
+  },
+  {
+   "de": "195",
+   "kind": "directive",
+   "digest": "d3c74271f8c77915",
+   "en": "195",
+   "preview": ":::{admonition} Beweis"
+  },
+  {
+   "de": "196",
+   "kind": "prose",
+   "digest": "749cfaa446561228",
+   "en": "196",
+   "preview": "Die Zufallsvariable $Y := {\\left( X - \\mathbb{E}X \\right)}^2$ ist nichtn…"
+  },
+  {
+   "de": "197",
+   "kind": "math",
+   "digest": "30185919d5aafb83",
+   "en": "197",
+   "preview": "$$ P\\left( {\\left( X - \\mathbb{E}X \\right)}^2 \\geq c^2 \\right) \\leq \\dfr…"
+  },
+  {
+   "de": "198",
+   "kind": "prose",
+   "digest": "3384309b6a6f436f",
+   "en": "198",
+   "preview": "Weil $c > 0$ ist, gilt ${\\left( X - \\mathbb{E}X \\right)}^2 \\geq c^2$ gen…"
+  },
+  {
+   "de": "199",
+   "kind": "directive",
+   "digest": "f1ae2a75ed1f9972",
+   "en": "199",
+   "preview": ":::"
+  },
+  {
+   "de": "200",
+   "kind": "prose",
+   "digest": "e24c268c851bc248",
+   "en": "200",
+   "preview": "Dabei ist der Spezialfall $c=\\sigma$ trivial, weil auf der rechten Seite…"
+  },
+  {
+   "de": "201",
+   "kind": "math",
+   "digest": "f78939ed9e14bd36",
+   "en": "201",
+   "preview": "$$ P\\left( | X - \\mathbb{E} X | \\geq k\\sigma \\right) \\leq \\dfrac{1}{k^2}…"
+  },
+  {
+   "de": "202",
+   "kind": "prose",
+   "digest": "d587d7e98533bb1d",
+   "en": "202",
+   "preview": "Daran sehen wir: Abweichungen von $2\\sigma$ haben eine Wahrscheinlichkei…"
+  },
+  {
+   "de": "203",
+   "kind": "prose",
+   "digest": "12231205b8a9446b",
+   "en": "203",
+   "preview": "Die wichtigste Anwendung der Ungleichung ist das Stichprobenmittel selbs…"
+  },
+  {
+   "de": "204",
+   "kind": "directive",
+   "digest": "f964f8dc481b2d41",
+   "en": "204",
+   "preview": ":::{admonition} Satz"
+  },
+  {
+   "de": "205",
+   "kind": "prose",
+   "digest": "58a6a29a97eaa578",
+   "en": "205",
+   "preview": "**(Schwaches Gesetz der großen Zahlen)**"
+  },
+  {
+   "de": "206",
+   "kind": "prose",
+   "digest": "bd25aa31dffe1fe1",
+   "en": "206",
+   "preview": "Seien $X_1, \\dots, X_n$ unabhängig und identisch verteilt wie $X$ (kurz:…"
+  },
+  {
+   "de": "207",
+   "kind": "math",
+   "digest": "b36f572ead3aeaa9",
+   "en": "207",
+   "preview": "$$ P\\left( | \\overline{X_n} - \\mathbb{E} X | \\geq c \\right) \\leq \\dfrac{…"
+  },
+  {
+   "de": "208",
+   "kind": "directive",
+   "digest": "f1ae2a75ed1f9972",
+   "en": "208",
+   "preview": ":::"
+  },
+  {
+   "de": "209",
+   "kind": "directive",
+   "digest": "d3c74271f8c77915",
+   "en": "209",
+   "preview": ":::{admonition} Beweis"
+  },
+  {
+   "de": "210",
+   "kind": "prose",
+   "digest": "8877a9384847fb14",
+   "en": "210",
+   "preview": "Nach der Linearität des Erwartungswerts ist $\\mathbb{E}\\overline{X_n} = …"
+  },
+  {
+   "de": "211",
+   "kind": "math",
+   "digest": "a2b7c9321da6af6b",
+   "en": "211",
+   "preview": "$$ \\mathbb{V}\\overline{X_n} = \\dfrac{1}{n^2} \\mathbb{V}\\left( \\sum_{i=1}…"
+  },
+  {
+   "de": "212",
+   "kind": "prose",
+   "digest": "204b267d00cc8dea",
+   "en": "212",
+   "preview": "Die Tschebyscheff-Ungleichung für $\\overline{X_n}$ liefert nun $P(|\\over…"
+  },
+  {
+   "de": "213",
+   "kind": "directive",
+   "digest": "f1ae2a75ed1f9972",
+   "en": "213",
+   "preview": ":::"
+  },
+  {
+   "de": "214",
+   "kind": "prose",
+   "digest": "769ca96ea9c589ee",
+   "en": "214",
+   "preview": "Das ist genau die stochastische Konvergenz, die wir oben aus dem (unbewi…"
+  },
+  {
+   "de": "215",
+   "kind": "prose",
+   "digest": "8472976e9bb85fbd",
+   "en": "215",
+   "preview": "Das schwache Gesetz ist außerdem das Gesetz der großen Zahlen mit einer …"
+  },
+  {
+   "de": "216",
+   "kind": "directive",
+   "digest": "566676a32baee8ac",
+   "en": "216",
+   "preview": ":::{admonition} Bemerkung"
+  },
+  {
+   "de": "217",
+   "kind": "prose",
+   "digest": "ab64c454b32c0480",
+   "en": "217",
+   "preview": "Im Deep Learning ist der wahre Loss eines Modells der Erwartungswert der…"
+  },
+  {
+   "de": "218",
+   "kind": "directive",
+   "digest": "f1ae2a75ed1f9972",
+   "en": "218",
+   "preview": ":::"
+  },
+  {
+   "de": "219",
+   "kind": "prose",
+   "digest": "9071b5fe64dd365f",
+   "en": "219",
+   "preview": "Wendet man das Gesetz der großen Zahlen auf die Zufallsvariable ${\\left(…"
+  },
+  {
+   "de": "220",
+   "kind": "heading",
+   "digest": "8ebf7706a08cfbde",
+   "en": "220",
+   "preview": "### Einschub: Logarithmus"
+  },
+  {
+   "de": "221",
+   "kind": "prose",
+   "digest": "3e752067e2c8e230",
+   "en": "221",
+   "preview": "Der nächste Abschnitt rechnet durchgehend mit Logarithmen. Weil die aus …"
+  },
+  {
+   "de": "222",
+   "kind": "directive",
+   "digest": "053400a7b7d2fc03",
+   "en": "222",
+   "preview": ":::{admonition} Definition"
+  },
+  {
+   "de": "223",
+   "kind": "prose",
+   "digest": "ace231f145200afd",
+   "en": "223",
+   "preview": "Für $b > 0$, $b \\neq 1$, ist der *Logarithmus zur Basis $b$* die Umkehru…"
+  },
+  {
+   "de": "224",
+   "kind": "prose",
+   "digest": "e4c3b02fc4b99e15",
+   "en": "224",
+   "preview": "Drei Basen haben eigene Namen: $\\ln := \\log_e$ (der *natürliche* Logarit…"
+  },
+  {
+   "de": "225",
+   "kind": "directive",
+   "digest": "f1ae2a75ed1f9972",
+   "en": "225",
+   "preview": ":::"
+  },
+  {
+   "de": "226",
+   "kind": "prose",
+   "digest": "dd040003cd555604",
+   "en": "226",
+   "preview": "Der Logarithmus zählt Größenordnungen. Zur Basis $10$ kann man das direk…"
+  },
+  {
+   "de": "227",
+   "kind": "prose",
+   "digest": "a5f18c46a1923f8e",
+   "en": "227",
+   "preview": "Die Rechenregeln folgen alle aus $e^{\\ln(y)} = y$ und $\\ln(e^x) = x$ sow…"
+  },
+  {
+   "de": "228",
+   "kind": "math",
+   "digest": "eddc5de6c055bc80",
+   "en": "228",
+   "preview": "$$ \\begin{aligned} b^x &= \\left( e^{\\ln b} \\right)^x = e^{\\ln(b)\\, x}, \\…"
+  },
+  {
+   "de": "229",
+   "kind": "prose",
+   "digest": "99d384dec2169c57",
+   "en": "229",
+   "preview": "Die letzte Zeile ist die *Basiswechselformel*: Logarithmen zu verschiede…"
+  },
+  {
+   "de": "230",
+   "kind": "directive",
+   "digest": "0feec534fa43b536",
+   "en": "230",
+   "preview": ":::{admonition} Beispiel"
+  },
+  {
+   "de": "231",
+   "kind": "prose",
+   "digest": "18b4df687c3fa84a",
+   "en": "231",
+   "preview": "Die Zahl $77$ ist binär $1001101_2$, also $64 + 8 + 4 + 1$, und braucht …"
+  },
+  {
+   "de": "232",
+   "kind": "directive",
+   "digest": "f1ae2a75ed1f9972",
+   "en": "232",
+   "preview": ":::"
+  },
+  {
+   "de": "233",
+   "kind": "prose",
+   "digest": "cd91cd4cec6cf46f",
+   "en": "233",
+   "preview": "In Numpy heißen die drei Funktionen `np.log` (natürlich, *nicht* dekadis…"
+  },
+  {
+   "de": "234",
+   "kind": "heading",
+   "digest": "890abfcfd9202d80",
+   "en": "234",
+   "preview": "## Entropie"
+  },
+  {
+   "de": "235",
+   "kind": "prose",
+   "digest": "007a10fc40af6f79",
+   "en": "235",
+   "preview": "[Vorlesungsaufzeichnung Entropie](https://media.hhu.de/channel/video/dat…"
+  },
+  {
+   "de": "236",
+   "kind": "directive",
+   "digest": "5a29b2de559bbcfa",
+   "en": "236",
+   "preview": "::::{note}"
+  },
+  {
+   "de": "237",
+   "kind": "prose",
+   "digest": "99fd45580e548ac8",
+   "en": "237",
+   "preview": "**Ausblick (nicht klausurrelevant): Woher das Wort kommt.** Der Begriff …"
+  },
+  {
+   "de": "238",
+   "kind": "prose",
+   "digest": "b6a1a178407f0dce",
+   "en": "238",
+   "preview": "Denken Sie sich zwei baugleiche Behälter mit derselben Anzahl Gasteilche…"
+  },
+  {
+   "de": "239",
+   "kind": "directive",
+   "digest": "f24be786b5ef4852",
+   "en": "239",
+   "preview": "```{figure} images/entropie-gas-hoch.png :width: 360px :align: center :n…"
+  },
+  {
+   "de": "240",
+   "kind": "directive",
+   "digest": "0ea8a7613a5f9815",
+   "en": "240",
+   "preview": "```{figure} images/entropie-gas-niedrig.png :width: 360px :align: center…"
+  },
+  {
+   "de": "241",
+   "kind": "prose",
+   "digest": "2ff7089d5b888216",
+   "en": "241",
+   "preview": "Der zweite Zustand überrascht uns, der erste nicht. Und wir wissen auch,…"
+  },
+  {
+   "de": "242",
+   "kind": "prose",
+   "digest": "e802f8a8dc0f7df3",
+   "en": "242",
+   "preview": "Naheliegend, aber irreführend ist die Übersetzung „Entropie = Unordnung“…"
+  },
+  {
+   "de": "243",
+   "kind": "math",
+   "digest": "e8247441b5c660d9",
+   "en": "243",
+   "preview": "$$ S = k_B \\ln W $$"
+  },
+  {
+   "de": "244",
+   "kind": "prose",
+   "digest": "aacbe4ea87ae0a6a",
+   "en": "244",
+   "preview": "gegossen, wobei $W$ die Anzahl der Mikrozustände zum gegebenen Makrozust…"
+  },
+  {
+   "de": "245",
+   "kind": "directive",
+   "digest": "4e9f06b45c199f49",
+   "en": "245",
+   "preview": "```{figure} images/entropie-gas-hoch-geteilt.png :width: 360px :align: c…"
+  },
+  {
+   "de": "246",
+   "kind": "directive",
+   "digest": "2573e55b6eb4c58d",
+   "en": "246",
+   "preview": "```{figure} images/entropie-gas-niedrig-geteilt.png :width: 360px :align…"
+  },
+  {
+   "de": "247",
+   "kind": "directive",
+   "digest": "3fe03556caf89307",
+   "en": "247",
+   "preview": ":::{admonition} Merke"
+  },
+  {
+   "de": "248",
+   "kind": "prose",
+   "digest": "8ebcdad732498dba",
+   "en": "248",
+   "preview": "Entropie ist immer *relativ zu einem Makrozustand* definiert. Wir zählen…"
+  },
+  {
+   "de": "249",
+   "kind": "directive",
+   "digest": "f1ae2a75ed1f9972",
+   "en": "249",
+   "preview": ":::"
+  },
+  {
+   "de": "250",
+   "kind": "prose",
+   "digest": "ecba3f4b3bf9a7db",
+   "en": "250",
+   "preview": "Diesen Satz können Sie unverändert mitnehmen, wenn Sie gleich die Defini…"
+  },
+  {
+   "de": "251",
+   "kind": "directive",
+   "digest": "d00d9be38948fb14",
+   "en": "251",
+   "preview": "::::"
+  },
+  {
+   "de": "252",
+   "kind": "prose",
+   "digest": "933f039deda43539",
+   "en": "252",
+   "preview": "Von der Physik in die Nachrichtentechnik gebracht hat den Begriff Claude…"
+  },
+  {
+   "de": "253",
+   "kind": "directive",
+   "digest": "053400a7b7d2fc03",
+   "en": "253",
+   "preview": ":::{admonition} Definition"
+  },
+  {
+   "de": "254",
+   "kind": "prose",
+   "digest": "40227456ea0b7654",
+   "en": "254",
+   "preview": "Bei einem diskreten Wahrscheinlichkeitsraum $\\Omega$ nennen wir für $x \\…"
+  },
+  {
+   "de": "255",
+   "kind": "math",
+   "digest": "858bc8d54d0bd4d8",
+   "en": "255",
+   "preview": "$$ I(x) := -\\log_b(P(\\{x\\})). $$"
+  },
+  {
+   "de": "256",
+   "kind": "prose",
+   "digest": "d4826991455a9297",
+   "en": "256",
+   "preview": "Dabei ist die Basis $b$ des Logarithmus in der Regel $2$, aber letztlich…"
+  },
+  {
+   "de": "257",
+   "kind": "math",
+   "digest": "dc53b267a353ecb3",
+   "en": "257",
+   "preview": "$$ \\begin{aligned} H(X) := \\mathbb{E}\\left( I(X) \\right) &= \\sum_{\\omega…"
+  },
+  {
+   "de": "258",
+   "kind": "directive",
+   "digest": "f1ae2a75ed1f9972",
+   "en": "258",
+   "preview": ":::"
+  },
+  {
+   "de": "259",
+   "kind": "directive",
+   "digest": "566676a32baee8ac",
+   "en": "259",
+   "preview": ":::{admonition} Bemerkung"
+  },
+  {
+   "de": "260",
+   "kind": "prose",
+   "digest": "6d87961daa993f18",
+   "en": "260",
+   "preview": "In der Summe für $H(X)$ steht ein Problem: Für $P(\\{\\omega\\}) = 0$ ist $…"
+  },
+  {
+   "de": "261",
+   "kind": "math",
+   "digest": "d1bd65704a995f77",
+   "en": "261",
+   "preview": "$$ \\lim_{x \\to 0^+} x \\log x = 0 $$"
+  },
+  {
+   "de": "262",
+   "kind": "prose",
+   "digest": "6beabb4f76b3a997",
+   "en": "262",
+   "preview": "(mit l'Hospital auf $\\frac{\\log x}{1/x}$), und vereinbart $0 \\log 0 := 0…"
+  },
+  {
+   "de": "263",
+   "kind": "directive",
+   "digest": "f1ae2a75ed1f9972",
+   "en": "263",
+   "preview": ":::"
+  },
+  {
+   "de": "264",
+   "kind": "directive",
+   "digest": "0feec534fa43b536",
+   "en": "264",
+   "preview": ":::{admonition} Beispiel"
+  },
+  {
+   "de": "265",
+   "kind": "prose",
+   "digest": "651ad19a5317998c",
+   "en": "265",
+   "preview": "Bei einer Gleichverteilung auf $\\Omega = \\{1,\\dots,n\\}$ ist für $x\\in\\Om…"
+  },
+  {
+   "de": "266",
+   "kind": "directive",
+   "digest": "f1ae2a75ed1f9972",
+   "en": "266",
+   "preview": ":::"
+  },
+  {
+   "de": "267",
+   "kind": "directive",
+   "digest": "0feec534fa43b536",
+   "en": "267",
+   "preview": ":::{admonition} Beispiel"
+  },
+  {
+   "de": "268",
+   "kind": "prose",
+   "digest": "c9bf21a502ca0254",
+   "en": "268",
+   "preview": "**Wie viel Information steckt in einem Buchstaben?** Zählt man die Häufi…"
+  },
+  {
+   "de": "269",
+   "kind": "prose",
+   "digest": "85a4a795598c9b13",
+   "en": "269",
+   "preview": "Berücksichtigt man zusätzlich, welche Buchstaben *vorangegangen* sind, s…"
+  },
+  {
+   "de": "270",
+   "kind": "prose",
+   "digest": "1216f8f43100880d",
+   "en": "270",
+   "preview": "Was das praktisch bedeutet, sieht man am Raten. Eine zufällige Zeichenke…"
+  },
+  {
+   "de": "271",
+   "kind": "directive",
+   "digest": "f1ae2a75ed1f9972",
+   "en": "271",
+   "preview": ":::"
+  },
+  {
+   "de": "272",
+   "kind": "prose",
+   "digest": "0e0b4859887ff097",
+   "en": "272",
+   "preview": "Genau diese Überlegung ist der Kern eines der bekanntesten Comics zum Th…"
+  },
+  {
+   "de": "273",
+   "kind": "directive",
+   "digest": "0a7f79264eb8d255",
+   "en": "273",
+   "preview": "```{figure} images/xkcd-password-strength.png :width: 480px :align: cent…"
+  },
+  {
+   "de": "274",
+   "kind": "prose",
+   "digest": "d2711f92fca35016",
+   "en": "274",
+   "preview": "Das Passwort `Tr0ub4dor&3` sieht kompliziert aus, ist aber nach einem Ve…"
+  },
+  {
+   "de": "275",
+   "kind": "prose",
+   "digest": "e6c29e61e6f1135f",
+   "en": "275",
+   "preview": "Die Lehre ist dieselbe wie beim Beispiel davor: Die Entropie hängt nicht…"
+  },
+  {
+   "de": "276",
+   "kind": "prose",
+   "digest": "773aed82d58daad0",
+   "en": "276",
+   "preview": "Am anderen Ende der Skala steht die Dirac-Verteilung: Ist $P(\\{\\xi\\}) = …"
+  },
+  {
+   "de": "277",
+   "kind": "prose",
+   "digest": "86cb97d76f1d6f37",
+   "en": "277",
+   "preview": "Am besten versteht man die Entropie als eine relative Größe, und das wer…"
+  },
+  {
+   "de": "278",
+   "kind": "heading",
+   "digest": "3b2422b7993684eb",
+   "en": "278",
+   "preview": "## Unabhängigkeit"
+  },
+  {
+   "de": "279",
+   "kind": "directive",
+   "digest": "053400a7b7d2fc03",
+   "en": "279",
+   "preview": ":::{admonition} Definition"
+  },
+  {
+   "de": "280",
+   "kind": "prose",
+   "digest": "a20c5bbfe1d0f09c",
+   "en": "280",
+   "preview": "Sei $\\Omega$ ein Wahrscheinlichkeitsraum. Ereignisse $A,B \\subseteq \\Ome…"
+  },
+  {
+   "de": "281",
+   "kind": "math",
+   "digest": "ca3aa4477dca6287",
+   "en": "281",
+   "preview": "$$ P(A\\cap B) = P(A) \\cdot P(B). $$"
+  },
+  {
+   "de": "282",
+   "kind": "prose",
+   "digest": "52730e4631e9b1f1",
+   "en": "282",
+   "preview": "Allgemeiner heißt eine Familie $(A_i)_{i\\in I}$, $A_i \\subseteq \\Omega$ …"
+  },
+  {
+   "de": "283",
+   "kind": "math",
+   "digest": "f11477ccf67555ff",
+   "en": "283",
+   "preview": "$$ P\\left( \\bigcap_{j \\in J} A_j \\right) = \\prod_{j\\in J} P(A_j). $$"
+  },
+  {
+   "de": "284",
+   "kind": "directive",
+   "digest": "f1ae2a75ed1f9972",
+   "en": "284",
+   "preview": ":::"
+  },
+  {
+   "de": "285",
+   "kind": "prose",
+   "digest": "3fc12ac537f2dfe7",
+   "en": "285",
+   "preview": "Dabei macht es im Allgemeinen einen echten Unterschied, ob eine Familie …"
+  },
+  {
+   "de": "286",
+   "kind": "directive",
+   "digest": "0feec534fa43b536",
+   "en": "286",
+   "preview": ":::{admonition} Beispiel"
+  },
+  {
+   "de": "287",
+   "kind": "prose",
+   "digest": "d2c943ef23dc6264",
+   "en": "287",
+   "preview": "**Unabhängig: zwei Würfel.** Wir werfen zwei faire sechsseitige Würfel. …"
+  },
+  {
+   "de": "288",
+   "kind": "math",
+   "digest": "6e8746a80d7d55fd",
+   "en": "288",
+   "preview": "$$ P(A) = \\dfrac{18}{36} = \\dfrac{1}{2}, \\qquad P(B) = \\dfrac{6}{36} = \\…"
+  },
+  {
+   "de": "289",
+   "kind": "prose",
+   "digest": "49ae0fb99345ecfb",
+   "en": "289",
+   "preview": "Für den Schnitt zählen wir aus, statt eine Formel zu benutzen: $A \\cap B…"
+  },
+  {
+   "de": "290",
+   "kind": "prose",
+   "digest": "725e78d1a9a36ea0",
+   "en": "290",
+   "preview": "Dass wir ausgezählt haben, ist wichtig: Hätten wir $P(A\\cap B)$ gleich a…"
+  },
+  {
+   "de": "291",
+   "kind": "directive",
+   "digest": "f1ae2a75ed1f9972",
+   "en": "291",
+   "preview": ":::"
+  },
+  {
+   "de": "292",
+   "kind": "directive",
+   "digest": "0feec534fa43b536",
+   "en": "292",
+   "preview": ":::{admonition} Beispiel"
+  },
+  {
+   "de": "293",
+   "kind": "prose",
+   "digest": "38ff802144fa36d6",
+   "en": "293",
+   "preview": "**Abhängig: Bonbons ohne Zurücklegen.** In einer Tüte liegen drei Bonbon…"
+  },
+  {
+   "de": "294",
+   "kind": "math",
+   "digest": "833134335c058385",
+   "en": "294",
+   "preview": "$$ \\Omega = \\{(r,g),(r,b),(g,r),(g,b),(b,r),(b,g)\\}, $$"
+  },
+  {
+   "de": "295",
+   "kind": "prose",
+   "digest": "788e3eb210566dae",
+   "en": "295",
+   "preview": "wieder mit der Gleichverteilung. Sei $A$ das Ereignis „das erste Bonbon …"
+  },
+  {
+   "de": "296",
+   "kind": "math",
+   "digest": "9293ca44e84c53ff",
+   "en": "296",
+   "preview": "$$ P(A \\cap B) = \\dfrac{1}{6} \\neq \\dfrac{1}{9} = P(A)\\,P(B). $$"
+  },
+  {
+   "de": "297",
+   "kind": "prose",
+   "digest": "125cede94462b23a",
+   "en": "297",
+   "preview": "Die beiden Ereignisse sind also *nicht* unabhängig. Das ist auch inhaltl…"
+  },
+  {
+   "de": "298",
+   "kind": "prose",
+   "digest": "9cf16d9c5f8a6d1a",
+   "en": "298",
+   "preview": "Ziehen ohne Zurücklegen ist in Python `random.sample`, Ziehen mit Zurück…"
+  },
+  {
+   "de": "299",
+   "kind": "directive",
+   "digest": "f1ae2a75ed1f9972",
+   "en": "299",
+   "preview": ":::"
+  },
+  {
+   "de": "300",
+   "kind": "directive",
+   "digest": "053400a7b7d2fc03",
+   "en": "300",
+   "preview": ":::{admonition} Definition"
+  },
+  {
+   "de": "301",
+   "kind": "prose",
+   "digest": "507d4e029e8a72c1",
+   "en": "301",
+   "preview": "Sei $\\Omega$ ein Wahrscheinlichkeitsraum. Eine Familie von Zufallsvariab…"
+  },
+  {
+   "de": "302",
+   "kind": "directive",
+   "digest": "f1ae2a75ed1f9972",
+   "en": "302",
+   "preview": ":::"
+  },
+  {
+   "de": "303",
+   "kind": "directive",
+   "digest": "566676a32baee8ac",
+   "en": "303",
+   "preview": ":::{admonition} Bemerkung"
+  },
+  {
+   "de": "304",
+   "kind": "prose",
+   "digest": "d08a7da749e1b7fe",
+   "en": "304",
+   "preview": "Für zwei Zufallsvariablen $X, Y \\colon \\Omega \\to \\mathbb{R}$ liest sich…"
+  },
+  {
+   "de": "305",
+   "kind": "math",
+   "digest": "6ed41300032f73b3",
+   "en": "305",
+   "preview": "$$ P(X \\in A,\\ Y \\in B) = P(X \\in A)\\,P(Y \\in B) $$"
+  },
+  {
+   "de": "306",
+   "kind": "prose",
+   "digest": "226c7ea208ca8520",
+   "en": "306",
+   "preview": "für alle Ereignisse $A, B$ gilt. Die linke Seite ist dabei eine Abkürzun…"
+  },
+  {
+   "de": "307",
+   "kind": "prose",
+   "digest": "35b3e86e3f057256",
+   "en": "307",
+   "preview": "Wichtig ist die Reihenfolge: Die gemeinsame Verteilung ist die eigentlic…"
+  },
+  {
+   "de": "308",
+   "kind": "directive",
+   "digest": "f1ae2a75ed1f9972",
+   "en": "308",
+   "preview": ":::"
+  },
+  {
+   "de": "309",
+   "kind": "directive",
+   "digest": "0feec534fa43b536",
+   "en": "309",
+   "preview": ":::{admonition} Beispiel"
+  },
+  {
+   "de": "310",
+   "kind": "prose",
+   "digest": "44ef833a264c2d32",
+   "en": "310",
+   "preview": "Für $I = \\{1,\\dots,n\\}$ und $\\Omega_i$ jeweils diskret ist $Y_1,\\dots,Y_…"
+  },
+  {
+   "de": "311",
+   "kind": "math",
+   "digest": "b217fc2a4914fdf2",
+   "en": "311",
+   "preview": "$$ P(Y_1=\\omega_1, \\dots, Y_n=\\omega_n) = \\prod_{i=1}^n P(Y_i = \\omega_i…"
+  },
+  {
+   "de": "312",
+   "kind": "directive",
+   "digest": "f1ae2a75ed1f9972",
+   "en": "312",
+   "preview": ":::"
+  },
+  {
+   "de": "313",
+   "kind": "prose",
+   "digest": "82c7e6e82868aad3",
+   "en": "313",
+   "preview": "In diesem Zusammenhang taucht auch sehr oft ein weiterer Begriff auf:"
+  },
+  {
+   "de": "314",
+   "kind": "directive",
+   "digest": "053400a7b7d2fc03",
+   "en": "314",
+   "preview": ":::{admonition} Definition"
+  },
+  {
+   "de": "315",
+   "kind": "prose",
+   "digest": "7d94e7e5fe03fcdf",
+   "en": "315",
+   "preview": "Sei $\\Omega$ ein Wahrscheinlichkeitsraum. Für Ereignisse $A,B \\subseteq …"
+  },
+  {
+   "de": "316",
+   "kind": "math",
+   "digest": "82c34fe41879e212",
+   "en": "316",
+   "preview": "$$ P(A | B) := \\dfrac{P(A\\cap B)}{P(B)} $$"
+  },
+  {
+   "de": "317",
+   "kind": "prose",
+   "digest": "1a384602e84bfa8e",
+   "en": "317",
+   "preview": "die *bedingte Wahrscheinlichkeit* von $A$ bedingt $B$."
+  },
+  {
+   "de": "318",
+   "kind": "directive",
+   "digest": "f1ae2a75ed1f9972",
+   "en": "318",
+   "preview": ":::"
+  },
+  {
+   "de": "319",
+   "kind": "prose",
+   "digest": "102db261e0ab6c2e",
+   "en": "319",
+   "preview": "Klar: Für $P(B) > 0$ sind $A$ und $B$ unabhängig voneinander genau dann,…"
+  },
+  {
+   "de": "320",
+   "kind": "directive",
+   "digest": "1f167b3c10466d59",
+   "en": "320",
+   "preview": ":::{admonition} Ausblick"
+  },
+  {
+   "de": "321",
+   "kind": "prose",
+   "digest": "18b45bb06165edf8",
+   "en": "321",
+   "preview": "Unabhängigkeit ist eine Alles-oder-nichts-Eigenschaft; in echten Daten i…"
+  },
+  {
+   "de": "322",
+   "kind": "prose",
+   "digest": "f315e74e578de0ec",
+   "en": "322",
+   "preview": "Das erste ist die **Kovarianz** und der aus ihr gebildete Korrelationsko…"
+  },
+  {
+   "de": "323",
+   "kind": "prose",
+   "digest": "6545138792054de9",
+   "en": "323",
+   "preview": "Das zweite Maß erfasst Abhängigkeit beliebiger Form: die **relative Entr…"
+  },
+  {
+   "de": "324",
+   "kind": "directive",
+   "digest": "f1ae2a75ed1f9972",
+   "en": "324",
+   "preview": ":::"
+  },
+  {
+   "de": "325",
+   "kind": "heading",
+   "digest": "92d9b77c7c5f6057",
+   "en": "325",
+   "preview": "### Rechenregeln für die Varianz"
+  },
+  {
+   "de": "326",
+   "kind": "prose",
+   "digest": "7df868201111e882",
+   "en": "326",
+   "preview": "Der Erwartungswert ist linear, die Varianz ist es nicht. Stattdessen gel…"
+  },
+  {
+   "de": "327",
+   "kind": "directive",
+   "digest": "8f4e565549eb919e",
+   "en": "327",
+   "preview": ":::{admonition} Lemma"
+  },
+  {
+   "de": "328",
+   "kind": "prose",
+   "digest": "b5ca1acb1417c220",
+   "en": "328",
+   "preview": "Sei $X \\colon \\Omega \\to \\mathbb{R}$ eine Zufallsvariable mit endlicher …"
+  },
+  {
+   "de": "329",
+   "kind": "prose",
+   "digest": "daf244ead7d6c7e9",
+   "en": "329",
+   "preview": "1. Für $a,b \\in \\mathbb{R}$ ist $\\mathbb{V}(aX+b) = a^2\\,\\mathbb{V}(X)$."
+  },
+  {
+   "de": "330",
+   "kind": "prose",
+   "digest": "5eeb0e13f84e6945",
+   "en": "330",
+   "preview": "2. Sind $X$ und $Y$ unabhängig, so ist $\\mathbb{V}(X+Y) = \\mathbb{V}(X) …"
+  },
+  {
+   "de": "331",
+   "kind": "math",
+   "digest": "b681933507b6fd28",
+   "en": "331",
+   "preview": "$$ \\mathbb{V}\\left( \\sum_{i=1}^n X_i \\right) = \\sum_{i=1}^n \\mathbb{V}(X…"
+  },
+  {
+   "de": "332",
+   "kind": "directive",
+   "digest": "f1ae2a75ed1f9972",
+   "en": "332",
+   "preview": ":::"
+  },
+  {
+   "de": "333",
+   "kind": "directive",
+   "digest": "d3c74271f8c77915",
+   "en": "333",
+   "preview": ":::{admonition} Beweis"
+  },
+  {
+   "de": "334",
+   "kind": "prose",
+   "digest": "a63341fd21b39e61",
+   "en": "334",
+   "preview": "(1) Nach der Linearität des Erwartungswerts ist $\\mathbb{E}(aX+b) = a\\,\\…"
+  },
+  {
+   "de": "335",
+   "kind": "math",
+   "digest": "726dbf7418f34690",
+   "en": "335",
+   "preview": "$$ aX + b - \\mathbb{E}(aX+b) = a\\left( X - \\mathbb{E}X \\right) $$"
+  },
+  {
+   "de": "336",
+   "kind": "prose",
+   "digest": "6be1baa264a44078",
+   "en": "336",
+   "preview": "und damit $\\mathbb{V}(aX+b) = \\mathbb{E}\\left( a^2 {\\left( X - \\mathbb{E…"
+  },
+  {
+   "de": "337",
+   "kind": "prose",
+   "digest": "a4c483bde3f19a10",
+   "en": "337",
+   "preview": "(2) Wir multiplizieren aus und nutzen die Linearität:"
+  },
+  {
+   "de": "338",
+   "kind": "math",
+   "digest": "9cc347dd47fdb9da",
+   "en": "338",
+   "preview": "$$ \\begin{aligned} \\mathbb{V}(X+Y) &= \\mathbb{E}\\left( {\\left( (X - \\mat…"
+  },
+  {
+   "de": "339",
+   "kind": "prose",
+   "digest": "bb8b3221ed12e33f",
+   "en": "339",
+   "preview": "Sind $X$ und $Y$ unabhängig, so ist der Klammerausdruck nach der Produkt…"
+  },
+  {
+   "de": "340",
+   "kind": "directive",
+   "digest": "f1ae2a75ed1f9972",
+   "en": "340",
+   "preview": ":::"
+  },
+  {
+   "de": "341",
+   "kind": "prose",
+   "digest": "d5688783d3c0f463",
+   "en": "341",
+   "preview": "Der Term $\\mathbb{E}(XY) - \\mathbb{E}(X)\\mathbb{E}(Y)$, der hier gerade …"
+  },
+  {
+   "de": "342",
+   "kind": "prose",
+   "digest": "aaef29fdc0e31778",
+   "en": "342",
+   "preview": "Regel (2) ist der Grund dafür, dass sich die Varianz einer Summe unabhän…"
+  }
+ ]
+}

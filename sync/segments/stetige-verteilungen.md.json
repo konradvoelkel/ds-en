@@ -1,0 +1,658 @@
+{
+ "source": "stetige-verteilungen.md",
+ "target": "continuous-distributions.md",
+ "upstream": "c7247a99ef28b04050ef09ba376ac6e32025456a",
+ "blocks": [
+  {
+   "de": "0",
+   "kind": "heading",
+   "digest": "5eb1376e7f6a7340",
+   "en": "0",
+   "preview": "# Stetige Verteilungen"
+  },
+  {
+   "de": "1",
+   "kind": "prose",
+   "digest": "40e1cdd03e68e60e",
+   "en": "1",
+   "preview": "[Vorlesungsaufzeichnung Stetige Verteilungen](https://media.hhu.de/chann…"
+  },
+  {
+   "de": "2",
+   "kind": "directive",
+   "digest": "053400a7b7d2fc03",
+   "en": "2",
+   "preview": ":::{admonition} Definition"
+  },
+  {
+   "de": "3",
+   "kind": "prose",
+   "digest": "663ba2442c260a4e",
+   "en": "3",
+   "preview": "Sei $X \\colon \\Omega \\to \\mathbb{R}$ eine Zufallsvariable, d.h. $\\Omega$…"
+  },
+  {
+   "de": "4",
+   "kind": "prose",
+   "digest": "4403e45aeb20e289",
+   "en": "4",
+   "preview": "Wenn $\\Omega$ kein diskreter Wahrscheinlichkeitsraum ist (z.B. weil $\\Om…"
+  },
+  {
+   "de": "5",
+   "kind": "directive",
+   "digest": "f1ae2a75ed1f9972",
+   "en": "5",
+   "preview": ":::"
+  },
+  {
+   "de": "6",
+   "kind": "directive",
+   "digest": "053400a7b7d2fc03",
+   "en": "6",
+   "preview": ":::{admonition} Definition"
+  },
+  {
+   "de": "7",
+   "kind": "prose",
+   "digest": "c0ed05e3244fd668",
+   "en": "7",
+   "preview": "Der *Träger* von $X$ ist die kleinste **abgeschlossene** Menge $A \\subse…"
+  },
+  {
+   "de": "8",
+   "kind": "math",
+   "digest": "631acb3cd854136c",
+   "en": "8",
+   "preview": "$$ \\operatorname{supp}(X) = \\bigcap \\{ A \\subseteq \\mathbb{R} \\text{ abg…"
+  },
+  {
+   "de": "9",
+   "kind": "directive",
+   "digest": "f1ae2a75ed1f9972",
+   "en": "9",
+   "preview": ":::"
+  },
+  {
+   "de": "10",
+   "kind": "prose",
+   "digest": "2cc3f238741d4f52",
+   "en": "10",
+   "preview": "Das Wort *abgeschlossen* ist dabei keine Dekoration. Ohne es wäre der Sc…"
+  },
+  {
+   "de": "11",
+   "kind": "directive",
+   "digest": "053400a7b7d2fc03",
+   "en": "11",
+   "preview": ":::{admonition} Definition"
+  },
+  {
+   "de": "12",
+   "kind": "prose",
+   "digest": "60d6f9cb3c927f53",
+   "en": "12",
+   "preview": "Eine Menge $M \\subseteq \\mathbb{R}^n$ heißt *abgeschlossen*, wenn sie di…"
+  },
+  {
+   "de": "13",
+   "kind": "directive",
+   "digest": "f1ae2a75ed1f9972",
+   "en": "13",
+   "preview": ":::"
+  },
+  {
+   "de": "14",
+   "kind": "prose",
+   "digest": "284848b0f5af6d7d",
+   "en": "14",
+   "preview": "Abgeschlossen sind zum Beispiel jedes Intervall der Form $[a,b]$, ganz $…"
+  },
+  {
+   "de": "15",
+   "kind": "prose",
+   "digest": "579db4a48d09addd",
+   "en": "15",
+   "preview": "Für eine diskrete Verteilung mit pmf $p$ und endlich vielen Werten verei…"
+  },
+  {
+   "de": "16",
+   "kind": "math",
+   "digest": "a1ee49e69178f859",
+   "en": "16",
+   "preview": "$$ \\operatorname{supp}(X) = \\{\\, x \\ \\mid\\ p(x) > 0 \\,\\}, $$"
+  },
+  {
+   "de": "17",
+   "kind": "prose",
+   "digest": "982a6d36577b250d",
+   "en": "17",
+   "preview": "also zu der Menge der Werte, die überhaupt vorkommen können (bei unendli…"
+  },
+  {
+   "de": "18",
+   "kind": "directive",
+   "digest": "0feec534fa43b536",
+   "en": "18",
+   "preview": ":::{admonition} Beispiel"
+  },
+  {
+   "de": "19",
+   "kind": "prose",
+   "digest": "adfabbd4691e8241",
+   "en": "19",
+   "preview": "Die Gleichverteilung auf $\\Omega = \\{1,\\dots,n\\}$ hat als Verteilung *au…"
+  },
+  {
+   "de": "20",
+   "kind": "prose",
+   "digest": "e092ec36caa3aeaf",
+   "en": "20",
+   "preview": "Dieselbe Verteilung lässt sich aber auch als Verteilung auf $\\mathbb{R}$…"
+  },
+  {
+   "de": "21",
+   "kind": "directive",
+   "digest": "f1ae2a75ed1f9972",
+   "en": "21",
+   "preview": ":::"
+  },
+  {
+   "de": "22",
+   "kind": "prose",
+   "digest": "c6e3b1c767a28760",
+   "en": "22",
+   "preview": "Der Träger ist auch für diskrete reelle Zufallsvariablen definiert - der…"
+  },
+  {
+   "de": "23",
+   "kind": "heading",
+   "digest": "fc74ef4e30c456c9",
+   "en": "23",
+   "preview": "## Dichtefunktionen"
+  },
+  {
+   "de": "24",
+   "kind": "directive",
+   "digest": "053400a7b7d2fc03",
+   "en": "24",
+   "preview": ":::{admonition} Definition"
+  },
+  {
+   "de": "25",
+   "kind": "prose",
+   "digest": "c1988785fe160b33",
+   "en": "25",
+   "preview": "Sei $D \\subseteq \\mathbb{R}^n$ und $f \\colon D \\to [0,\\infty)$ eine inte…"
+  },
+  {
+   "de": "26",
+   "kind": "math",
+   "digest": "a181999fb66df379",
+   "en": "26",
+   "preview": "$$ \\text{für } A \\subseteq D \\text{ Ereignis } P(A) := \\int_A f(x) dx $$"
+  },
+  {
+   "de": "27",
+   "kind": "prose",
+   "digest": "e47152294ec79473",
+   "en": "27",
+   "preview": "Wir nennen für jedes Wahrscheinlichkeitsmaß $P$, welches sich so schreib…"
+  },
+  {
+   "de": "28",
+   "kind": "directive",
+   "digest": "f1ae2a75ed1f9972",
+   "en": "28",
+   "preview": ":::"
+  },
+  {
+   "de": "29",
+   "kind": "prose",
+   "digest": "ff37dba7a66bb8a1",
+   "en": "29",
+   "preview": "Gegeben eine reelle Zufallsvariable $X \\colon \\Omega \\to \\mathbb{R}$, de…"
+  },
+  {
+   "de": "30",
+   "kind": "math",
+   "digest": "3c4c5ef25a10f21b",
+   "en": "30",
+   "preview": "$$ \\int_{X^{-1}(A)} dP(\\omega) = P(X \\in A) = P_X(A) = \\int_A f(x) dx $$"
+  },
+  {
+   "de": "31",
+   "kind": "prose",
+   "digest": "8238c3cdd1601f24",
+   "en": "31",
+   "preview": "Dieses rechte Integral ist nun ein Integral im Wertebereich von $X$. Ana…"
+  },
+  {
+   "de": "32",
+   "kind": "directive",
+   "digest": "053400a7b7d2fc03",
+   "en": "32",
+   "preview": ":::{admonition} Definition"
+  },
+  {
+   "de": "33",
+   "kind": "prose",
+   "digest": "ba13319514a7056a",
+   "en": "33",
+   "preview": "Sei $X$ eine stetige Zufallsvariable, deren Verteilung durch eine Dichte…"
+  },
+  {
+   "de": "34",
+   "kind": "math",
+   "digest": "d5123918891870cb",
+   "en": "34",
+   "preview": "$$ \\mathbb{E}(X) = \\int_\\Omega X(\\omega)\\, dP(\\omega) = \\int_D x f(x) dx…"
+  },
+  {
+   "de": "35",
+   "kind": "prose",
+   "digest": "04b2faf4c6aa1537",
+   "en": "35",
+   "preview": "der *Erwartungswert* von $X$ und"
+  },
+  {
+   "de": "36",
+   "kind": "math",
+   "digest": "279c5e4609008ba6",
+   "en": "36",
+   "preview": "$$ \\mathbb{V}(X) = \\int_\\Omega \\left(X(\\omega)-\\mathbb{E}(X)\\right)^2 dP…"
+  },
+  {
+   "de": "37",
+   "kind": "prose",
+   "digest": "e64ba9e97143891e",
+   "en": "37",
+   "preview": "die *Varianz* von $X$, sofern diese Integrale existieren. Für $D = \\math…"
+  },
+  {
+   "de": "38",
+   "kind": "directive",
+   "digest": "f1ae2a75ed1f9972",
+   "en": "38",
+   "preview": ":::"
+  },
+  {
+   "de": "39",
+   "kind": "prose",
+   "digest": "859dbe4c60733694",
+   "en": "39",
+   "preview": "Das ist das stetige Gegenstück zur Summe über die Wahrscheinlichkeitsmas…"
+  },
+  {
+   "de": "40",
+   "kind": "directive",
+   "digest": "ad543847cc2c8712",
+   "en": "40",
+   "preview": ":::{admonition} Satz (Transformationsformel)"
+  },
+  {
+   "de": "41",
+   "kind": "prose",
+   "digest": "0cdafb7d708d13ea",
+   "en": "41",
+   "preview": "Sei $X$ eine stetige Zufallsvariable mit Dichte $f \\colon D \\to [0,\\inft…"
+  },
+  {
+   "de": "42",
+   "kind": "math",
+   "digest": "de5f5bec3ed6fec1",
+   "en": "42",
+   "preview": "$$ \\mathbb{E}(g(X)) = \\int_D g(x) f(x) dx, $$"
+  },
+  {
+   "de": "43",
+   "kind": "prose",
+   "digest": "bf0548d8e6cfe31d",
+   "en": "43",
+   "preview": "sofern das Integral existiert. Für eine diskrete Zufallsvariable mit pmf…"
+  },
+  {
+   "de": "44",
+   "kind": "directive",
+   "digest": "f1ae2a75ed1f9972",
+   "en": "44",
+   "preview": ":::"
+  },
+  {
+   "de": "45",
+   "kind": "prose",
+   "digest": "9c77ebc8a71a3710",
+   "en": "45",
+   "preview": "Wir beweisen den Satz nicht (er folgt aus dem Transformationssatz für In…"
+  },
+  {
+   "de": "46",
+   "kind": "math",
+   "digest": "d78c7d5386014777",
+   "en": "46",
+   "preview": "$$ \\mathbb{V}(X) = \\mathbb{E}(X^2) - {\\left( \\mathbb{E}(X) \\right)}^2 = …"
+  },
+  {
+   "de": "47",
+   "kind": "prose",
+   "digest": "4bde84e213bc27ef",
+   "en": "47",
+   "preview": "Allgemein heißt $\\mathbb{E}(X^k) = \\int_D x^k f(x) dx$ das *$k$-te Momen…"
+  },
+  {
+   "de": "48",
+   "kind": "directive",
+   "digest": "0feec534fa43b536",
+   "en": "48",
+   "preview": ":::{admonition} Beispiel"
+  },
+  {
+   "de": "49",
+   "kind": "prose",
+   "digest": "b8c6b2e947b6bc7a",
+   "en": "49",
+   "preview": "Seien $a < b \\in \\mathbb{R}$. Mit $D = \\mathbb{R}$ und $f \\colon \\mathbb…"
+  },
+  {
+   "de": "50",
+   "kind": "math",
+   "digest": "1583d21aba1af770",
+   "en": "50",
+   "preview": "$$ f(x) = \\begin{cases} \\frac{1}{b-a}, & \\text{ wenn } x \\in [a,b] \\\\ 0 …"
+  },
+  {
+   "de": "51",
+   "kind": "prose",
+   "digest": "ccdc37592af51d23",
+   "en": "51",
+   "preview": "ist ein Wahrscheinlichkeitsmaß auf $\\mathbb{R}$ definiert, die *stetige …"
+  },
+  {
+   "de": "52",
+   "kind": "math",
+   "digest": "e5caa6f4494ac31f",
+   "en": "52",
+   "preview": "$$ \\int_{-\\infty}^{\\infty} xf(x) dx = \\int_a^b \\frac{xdx}{b-a} = \\frac{1…"
+  },
+  {
+   "de": "53",
+   "kind": "prose",
+   "digest": "46cdda892cff15de",
+   "en": "53",
+   "preview": "Das zweite Moment ist"
+  },
+  {
+   "de": "54",
+   "kind": "math",
+   "digest": "5ef2e4c0c791c0b0",
+   "en": "54",
+   "preview": "$$ \\mathbb{E}(X^2) = \\int_{-\\infty}^\\infty x^2 f(x)dx = \\left[ \\frac{x^3…"
+  },
+  {
+   "de": "55",
+   "kind": "prose",
+   "digest": "ce5c0b050433e8c0",
+   "en": "55",
+   "preview": "Die Varianz ist"
+  },
+  {
+   "de": "56",
+   "kind": "math",
+   "digest": "8ba9b6fb04b4f9aa",
+   "en": "56",
+   "preview": "$$ \\mathbb{V}(X) = \\mathbb{E}(X^2) - {\\left(\\mathbb{E}(X)\\right)}^2 = \\f…"
+  },
+  {
+   "de": "57",
+   "kind": "directive",
+   "digest": "f1ae2a75ed1f9972",
+   "en": "57",
+   "preview": ":::"
+  },
+  {
+   "de": "58",
+   "kind": "directive",
+   "digest": "566676a32baee8ac",
+   "en": "58",
+   "preview": ":::{admonition} Bemerkung"
+  },
+  {
+   "de": "59",
+   "kind": "prose",
+   "digest": "df916acad11aa176",
+   "en": "59",
+   "preview": "**Nullmengen.** Für $X \\sim U([a,b])$ und $a \\leq c < d \\leq b$ ist $P(c…"
+  },
+  {
+   "de": "60",
+   "kind": "prose",
+   "digest": "ca5af3d886d360c4",
+   "en": "60",
+   "preview": "Das gilt für jede Verteilung mit Dichte: Einzelne Punkte haben Wahrschei…"
+  },
+  {
+   "de": "61",
+   "kind": "directive",
+   "digest": "f1ae2a75ed1f9972",
+   "en": "61",
+   "preview": ":::"
+  },
+  {
+   "de": "62",
+   "kind": "directive",
+   "digest": "0feec534fa43b536",
+   "en": "62",
+   "preview": ":::{admonition} Beispiel"
+  },
+  {
+   "de": "63",
+   "kind": "prose",
+   "digest": "e64d016961678c52",
+   "en": "63",
+   "preview": "Die Menge $\\mathbb{Q} \\cap [0,1]$ der rationalen Zahlen zwischen $0$ und…"
+  },
+  {
+   "de": "64",
+   "kind": "directive",
+   "digest": "f1ae2a75ed1f9972",
+   "en": "64",
+   "preview": ":::"
+  },
+  {
+   "de": "65",
+   "kind": "directive",
+   "digest": "0feec534fa43b536",
+   "en": "65",
+   "preview": ":::{admonition} Beispiel"
+  },
+  {
+   "de": "66",
+   "kind": "prose",
+   "digest": "28b78e059eef68ca",
+   "en": "66",
+   "preview": "Nicht jedes Wahrscheinlichkeitsmaß erlaubt eine Darstellung mit einer Di…"
+  },
+  {
+   "de": "67",
+   "kind": "math",
+   "digest": "88c67da5724d2a6a",
+   "en": "67",
+   "preview": "$$ P(A) = \\begin{cases} 1 & \\text{ wenn } 0 \\in A \\\\ 0 & \\text{ sonst} \\…"
+  },
+  {
+   "de": "68",
+   "kind": "prose",
+   "digest": "aeb87e7b072912bb",
+   "en": "68",
+   "preview": "Diese Verteilung heißt *Dirac-Verteilung* mit Masse bei $0$. Eine Dichte…"
+  },
+  {
+   "de": "69",
+   "kind": "directive",
+   "digest": "f1ae2a75ed1f9972",
+   "en": "69",
+   "preview": ":::"
+  },
+  {
+   "de": "70",
+   "kind": "directive",
+   "digest": "0feec534fa43b536",
+   "en": "70",
+   "preview": ":::{admonition} Beispiel"
+  },
+  {
+   "de": "71",
+   "kind": "prose",
+   "digest": "c85a9dd5de006c94",
+   "en": "71",
+   "preview": "Umgekehrt lässt sich aus einer diskreten Verteilung leicht eine stetige …"
+  },
+  {
+   "de": "72",
+   "kind": "math",
+   "digest": "a58a8e0b1bc2c814",
+   "en": "72",
+   "preview": "$$ f(x) = \\begin{cases} \\frac{4}{7}, & \\text{ wenn } x \\in [5,6) \\\\ \\fra…"
+  },
+  {
+   "de": "73",
+   "kind": "prose",
+   "digest": "57f24466c3717c00",
+   "en": "73",
+   "preview": "denn für $x \\in [5,6)$ ist $P(5 \\leq X \\leq x) = P(Y = 5) \\cdot P(Z \\leq…"
+  },
+  {
+   "de": "74",
+   "kind": "math",
+   "digest": "50294ccfacbb0ff4",
+   "en": "74",
+   "preview": "$$ \\mathbb{E}(X) = \\int_5^8 x f(x) dx = \\frac{4}{7} \\cdot \\frac{11}{2} +…"
+  },
+  {
+   "de": "75",
+   "kind": "prose",
+   "digest": "e2af4f1c4f97f610",
+   "en": "75",
+   "preview": "denn auf jedem Teilintervall $[k, k+1)$ ist $\\int_k^{k+1} x\\, dx = k + \\…"
+  },
+  {
+   "de": "76",
+   "kind": "directive",
+   "digest": "f1ae2a75ed1f9972",
+   "en": "76",
+   "preview": ":::"
+  },
+  {
+   "de": "77",
+   "kind": "directive",
+   "digest": "053400a7b7d2fc03",
+   "en": "77",
+   "preview": ":::{admonition} Definition"
+  },
+  {
+   "de": "78",
+   "kind": "prose",
+   "digest": "25f30b299e590a25",
+   "en": "78",
+   "preview": "Sei $(\\Omega, P)$ ein Wahrscheinlichkeitsraum, dann nennen wir für eine …"
+  },
+  {
+   "de": "79",
+   "kind": "math",
+   "digest": "568f2ceb5c937eac",
+   "en": "79",
+   "preview": "$$ F \\colon \\mathbb{R} \\to [0,1],\\qquad x \\mapsto P(X \\leq x) $$"
+  },
+  {
+   "de": "80",
+   "kind": "prose",
+   "digest": "46f6185841a3bbe9",
+   "en": "80",
+   "preview": "die *kumulative Wahrscheinlichkeitsverteilungsfunktion* oder auch *Verte…"
+  },
+  {
+   "de": "81",
+   "kind": "directive",
+   "digest": "f1ae2a75ed1f9972",
+   "en": "81",
+   "preview": ":::"
+  },
+  {
+   "de": "82",
+   "kind": "directive",
+   "digest": "0feec534fa43b536",
+   "en": "82",
+   "preview": ":::{admonition} Beispiel"
+  },
+  {
+   "de": "83",
+   "kind": "prose",
+   "digest": "57379f70f8a4583e",
+   "en": "83",
+   "preview": "Wenn $P_X$ eine Dichte $f \\colon \\mathbb{R} \\to [0,\\infty)$ hat, also $P…"
+  },
+  {
+   "de": "84",
+   "kind": "math",
+   "digest": "a86ca0d2cd9fa655",
+   "en": "84",
+   "preview": "$$ F(x) = \\int_{-\\infty}^{x} f(t)dt. $$"
+  },
+  {
+   "de": "85",
+   "kind": "prose",
+   "digest": "21bdaf038b83f090",
+   "en": "85",
+   "preview": "Ob man hier $P(X \\leq x)$ oder $P(X < x)$ schreibt, macht nach der Nullm…"
+  },
+  {
+   "de": "86",
+   "kind": "directive",
+   "digest": "f1ae2a75ed1f9972",
+   "en": "86",
+   "preview": ":::"
+  },
+  {
+   "de": "87",
+   "kind": "directive",
+   "digest": "f964f8dc481b2d41",
+   "en": "87",
+   "preview": ":::{admonition} Satz"
+  },
+  {
+   "de": "88",
+   "kind": "prose",
+   "digest": "23337831e7ab8170",
+   "en": "88",
+   "preview": "Hat $P_X$ eine Dichte $f$, so ist die Verteilungsfunktion $F$ eine Stamm…"
+  },
+  {
+   "de": "89",
+   "kind": "math",
+   "digest": "e8098c6310a76dea",
+   "en": "89",
+   "preview": "$$ P(a < X \\leq b) = F(b) - F(a), $$"
+  },
+  {
+   "de": "90",
+   "kind": "prose",
+   "digest": "c413bda5547b1697",
+   "en": "90",
+   "preview": "und mit Dichte ist das gerade $\\int_a^b f(t)dt$."
+  },
+  {
+   "de": "91",
+   "kind": "directive",
+   "digest": "f1ae2a75ed1f9972",
+   "en": "91",
+   "preview": ":::"
+  },
+  {
+   "de": "92",
+   "kind": "prose",
+   "digest": "f6b5ecd8908c37f6",
+   "en": "92",
+   "preview": "Die cdf steigt also genau dort steil an, wo die Dichte groß ist. Im Kapi…"
+  }
+ ]
+}

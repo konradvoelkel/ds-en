@@ -1,0 +1,175 @@
+{
+ "source": "stochastik-programmieren.ipynb",
+ "target": "programming-probability.ipynb",
+ "upstream": "c7247a99ef28b04050ef09ba376ac6e32025456a",
+ "blocks": [
+  {
+   "de": "c0.0",
+   "kind": "heading",
+   "digest": "bf58a40c55722c97",
+   "en": "c0.0",
+   "preview": "# Stochastik programmieren"
+  },
+  {
+   "de": "c1.0",
+   "kind": "prose",
+   "digest": "46171caf4f014e38",
+   "en": "c1.0",
+   "preview": "Wir wollen uns nun kurz damit beschäftigen, wie sich mit Python Stichpro…"
+  },
+  {
+   "de": "c1.1",
+   "kind": "prose",
+   "digest": "b0844274e9ca1ee2",
+   "en": "c1.1",
+   "preview": "Verwendete Python-Konstrukte: [Module/import](https://docs.python.org/3/…"
+  },
+  {
+   "de": "c1.2",
+   "kind": "heading",
+   "digest": "7549775e0785cb6e",
+   "en": "c1.2",
+   "preview": "## Wahrscheinlichkeitsmaß implementieren"
+  },
+  {
+   "de": "c2",
+   "kind": "code",
+   "digest": "77c49629324f4a1a",
+   "en": "c2",
+   "preview": "from fractions import Fraction def P(A, Omega): \"\"\"Die Wahrscheinlichkei…"
+  },
+  {
+   "de": "c3.0",
+   "kind": "prose",
+   "digest": "00830a8a812751ac",
+   "en": "c3.0",
+   "preview": "Wir werden damit nun einen Würfelwurf programmieren:"
+  },
+  {
+   "de": "c4",
+   "kind": "code",
+   "digest": "b21e7e41b52562d3",
+   "en": "c4",
+   "preview": "W = {1, 2, 3, 4, 5, 6} gerade = set((x*2 for x in range(1,4))) print(\"Ge…"
+  },
+  {
+   "de": "c5.0",
+   "kind": "prose",
+   "digest": "5e6c6596554fc489",
+   "en": "c5.0",
+   "preview": "Damit haben wir nun das Wahrscheinlichkeitsmaß. Wenn wir eine Stichprobe…"
+  },
+  {
+   "de": "c5.1",
+   "kind": "heading",
+   "digest": "0c1e103967330595",
+   "en": "c5.1",
+   "preview": "## Zufall importieren"
+  },
+  {
+   "de": "c5.2",
+   "kind": "prose",
+   "digest": "f05e917d76723e9f",
+   "en": "c5.2",
+   "preview": "Python bietet mit dem `random`-Modul eine Schnittstelle zu Pseudozufalls…"
+  },
+  {
+   "de": "c6",
+   "kind": "code",
+   "digest": "474a23ec673541f0",
+   "en": "c6",
+   "preview": "from random import random as r help(r) print(\"1\", r()) print(\"2\", r()) i…"
+  },
+  {
+   "de": "c7.0",
+   "kind": "prose",
+   "digest": "c07683c0881b9a09",
+   "en": "c7.0",
+   "preview": "![XKCD 221: Random Number](images/random_number.png \"RFC 1149.5 specifie…"
+  },
+  {
+   "de": "c7.1",
+   "kind": "prose",
+   "digest": "e82fd415d1bfca32",
+   "en": "c7.1",
+   "preview": "Randall Munroe, [xkcd 221 „Random Number“](https://xkcd.com/221/) (CC BY…"
+  },
+  {
+   "de": "c7.2",
+   "kind": "prose",
+   "digest": "ad593104ed50cab5",
+   "en": "c7.2",
+   "preview": "Aus einer (Pseudo)zufallszahl zwischen $0$ und $1$ (man beachte: evtl. $…"
+  },
+  {
+   "de": "c8",
+   "kind": "code",
+   "digest": "8f00467f7f2f1ec8",
+   "en": "c8",
+   "preview": "from math import floor def transform_unit_to_dice(x): return floor(1 + 6…"
+  },
+  {
+   "de": "c9.0",
+   "kind": "prose",
+   "digest": "ee0236a047979270",
+   "en": "c9.0",
+   "preview": "Zählen wir, wie oft jede Augenzahl gefallen ist. Die *relative Häufigkei…"
+  },
+  {
+   "de": "c10",
+   "kind": "code",
+   "digest": "a92d52f06e7d37d5",
+   "en": "c10",
+   "preview": "from collections import Counter häufigkeiten = Counter(würfe) for augenz…"
+  },
+  {
+   "de": "c11.0",
+   "kind": "prose",
+   "digest": "78e357f82ae9ce73",
+   "en": "c11.0",
+   "preview": "Damit man solche Transformationen nicht andauernd programmieren muss, ka…"
+  },
+  {
+   "de": "c11.1",
+   "kind": "prose",
+   "digest": "bcdfcdd337ad52da",
+   "en": "c11.1",
+   "preview": "Wir wollen aber festhalten: gegeben eine gleichverteilte \"Zufallsvariabl…"
+  },
+  {
+   "de": "c11.2",
+   "kind": "prose",
+   "digest": "c8e0260267415f6d",
+   "en": "c11.2",
+   "preview": "Nun könnte man sich beschweren: `random.random()` nimmt gar keinen Param…"
+  },
+  {
+   "de": "c12.0",
+   "kind": "heading",
+   "digest": "8ebcc45b93f76e7b",
+   "en": "c12.0",
+   "preview": "## Größere Stichproben"
+  },
+  {
+   "de": "c13.0",
+   "kind": "prose",
+   "digest": "81521ab749a06307",
+   "en": "c13.0",
+   "preview": "Die Methode `random.sample(population, k)` erlaubt es eine Stichprobe de…"
+  },
+  {
+   "de": "c14.0",
+   "kind": "heading",
+   "digest": "fe6326521cf847ef",
+   "en": "c14.0",
+   "preview": "## Ausblick"
+  },
+  {
+   "de": "c14.1",
+   "kind": "prose",
+   "digest": "8d4373474eb5263e",
+   "en": "c14.1",
+   "preview": "Die relativen Häufigkeiten, die wir in diesem Notebook für die Augenzahl…"
+  }
+ ]
+}

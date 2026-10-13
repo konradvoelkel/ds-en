@@ -1,0 +1,651 @@
+{
+ "source": "model-selection.ipynb",
+ "target": "model-selection.ipynb",
+ "upstream": "c7247a99ef28b04050ef09ba376ac6e32025456a",
+ "blocks": [
+  {
+   "de": "c0.0",
+   "kind": "heading",
+   "digest": "e70c0f654662d314",
+   "en": "c0.0",
+   "preview": "# Modell-Auswahl"
+  },
+  {
+   "de": "c0.1",
+   "kind": "prose",
+   "digest": "7956946487200772",
+   "en": "c0.1",
+   "preview": "Bei Verfahren, die einen oder mehrere Parameter zur Auswahl lassen, gibt…"
+  },
+  {
+   "de": "c0.2",
+   "kind": "prose",
+   "digest": "c4a86b916c46280b",
+   "en": "c0.2",
+   "preview": "Bei vielen konkreten Datensätzen sind mehrere Modelle denkbar und es gib…"
+  },
+  {
+   "de": "c0.3",
+   "kind": "prose",
+   "digest": "2c290b387f87abb4",
+   "en": "c0.3",
+   "preview": "Um zu bewerten, welches Modell 'besser' ist als andere, gibt es verschie…"
+  },
+  {
+   "de": "c1.0",
+   "kind": "heading",
+   "digest": "e04f5b2ce7982cf6",
+   "en": "c1.0",
+   "preview": "## Training, Test und neue Daten"
+  },
+  {
+   "de": "c1.1",
+   "kind": "prose",
+   "digest": "7715958501942df3",
+   "en": "c1.1",
+   "preview": "Die 'klassische Situation' beim maschinellen Lernen ist, dass man zur Ze…"
+  },
+  {
+   "de": "c1.2",
+   "kind": "prose",
+   "digest": "ebd93fe3f1eb1112",
+   "en": "c1.2",
+   "preview": "Da man bei ungelabelten Daten nicht beurteilen kann, wie gut das ML-Syst…"
+  },
+  {
+   "de": "c1.3",
+   "kind": "prose",
+   "digest": "3d28766bd4250b59",
+   "en": "c1.3",
+   "preview": "Wir haben dazu bereits `train_test_split` kennen gelernt."
+  },
+  {
+   "de": "c1.4",
+   "kind": "prose",
+   "digest": "19e73c9d633d70cd",
+   "en": "c1.4",
+   "preview": "![Hyperparameter Tuning](images/grid_search_workflow.png \"Splitten der D…"
+  },
+  {
+   "de": "c1.5",
+   "kind": "prose",
+   "digest": "634d55b9f24d4e68",
+   "en": "c1.5",
+   "preview": "(Grafik aus der [Scikit-Learn-Dokumentation](https://scikit-learn.org/st…"
+  },
+  {
+   "de": "c2",
+   "kind": "code",
+   "digest": "2394bcf3a00c157d",
+   "en": "c2",
+   "preview": "import numpy as np from matplotlib import pyplot as plt from sklearn.dat…"
+  },
+  {
+   "de": "c3.0",
+   "kind": "heading",
+   "digest": "7878ab02e33cbf12",
+   "en": "c3.0",
+   "preview": "### Training, Validation und Test"
+  },
+  {
+   "de": "c3.1",
+   "kind": "prose",
+   "digest": "993bd73ee1aaa635",
+   "en": "c3.1",
+   "preview": "Wenn man bei der Entwicklung eines ML-Systems 200 verschiedene Varianten…"
+  },
+  {
+   "de": "c3.2",
+   "kind": "prose",
+   "digest": "e246000127fb927c",
+   "en": "c3.2",
+   "preview": "Damit man einerseits Varianten vergleichen kann, andererseits aber auch …"
+  },
+  {
+   "de": "c3.3",
+   "kind": "prose",
+   "digest": "40ac79d67dfa91c3",
+   "en": "c3.3",
+   "preview": "Ein typisches Setting ist, in Wettbewerben die Target-Variable im Test-D…"
+  },
+  {
+   "de": "c3.4",
+   "kind": "prose",
+   "digest": "ac2e5153976e8e71",
+   "en": "c3.4",
+   "preview": "Die Vorlesung *Einführung in Deep Learning* setzt Train-Test-Split, Vali…"
+  },
+  {
+   "de": "c4.0",
+   "kind": "heading",
+   "digest": "698cbafc59b720d4",
+   "en": "c4.0",
+   "preview": "### k-fold Cross Validation"
+  },
+  {
+   "de": "c4.1",
+   "kind": "prose",
+   "digest": "39557a91a2da294e",
+   "en": "c4.1",
+   "preview": "Bei der Auswahl eines Test- bzw. eines Validation-Datensatzes gibt es zw…"
+  },
+  {
+   "de": "c4.2",
+   "kind": "prose",
+   "digest": "5ce5ef75569ad574",
+   "en": "c4.2",
+   "preview": "* man könnte Pech haben und sehr wenig repräsentative Teil-Datensätze er…"
+  },
+  {
+   "de": "c4.3",
+   "kind": "prose",
+   "digest": "2f52a94c24c413c1",
+   "en": "c4.3",
+   "preview": "Bei der **k-fachen Kreuzvalidierung** versucht man diese beiden Probleme…"
+  },
+  {
+   "de": "c4.4",
+   "kind": "prose",
+   "digest": "c96dcbd40e633615",
+   "en": "c4.4",
+   "preview": "Damit optimiert man auf Modelle, die gut auf unbekannte Daten verallgeme…"
+  },
+  {
+   "de": "c5",
+   "kind": "code",
+   "digest": "2d4bde482e9969da",
+   "en": "c5",
+   "preview": "from sklearn.model_selection import KFold from sklearn.datasets import l…"
+  },
+  {
+   "de": "c6.0",
+   "kind": "heading",
+   "digest": "d72de069ceacfc88",
+   "en": "c6.0",
+   "preview": "### Stratified k-fold Cross Validation"
+  },
+  {
+   "de": "c6.1",
+   "kind": "prose",
+   "digest": "0c5155b2dd8b1d0f",
+   "en": "c6.1",
+   "preview": "Wenn man im supervised learning Setting arbeitet, also gelabelte Trainin…"
+  },
+  {
+   "de": "c7",
+   "kind": "code",
+   "digest": "8f5fd182a4d8b1e5",
+   "en": "c7",
+   "preview": "from sklearn.model_selection import StratifiedKFold cv = StratifiedKFold…"
+  },
+  {
+   "de": "c8.0",
+   "kind": "heading",
+   "digest": "55008b06803cdd53",
+   "en": "c8.0",
+   "preview": "### Zeitreihen-sensible Kreuzvalidierung"
+  },
+  {
+   "de": "c8.1",
+   "kind": "prose",
+   "digest": "59a0f9f7f47a6211",
+   "en": "c8.1",
+   "preview": "Die zuvor diskutierten Kreuzvalidierungsverfahren gehen davon aus, dass …"
+  },
+  {
+   "de": "c8.2",
+   "kind": "prose",
+   "digest": "7803de3658f715a6",
+   "en": "c8.2",
+   "preview": "Der naive Ansatz wäre nun, die erste Hälfte (zeitlich gesehen) der Daten…"
+  },
+  {
+   "de": "c8.3",
+   "kind": "directive",
+   "digest": "398a7b6896bbd3f3",
+   "en": "c8.3",
+   "preview": "```{admonition} Beispiel Ein Modell zur Vorhersage der mittleren Tempera…"
+  },
+  {
+   "de": "c8.4",
+   "kind": "prose",
+   "digest": "ba027c758e423e5e",
+   "en": "c8.4",
+   "preview": "Mit Scikit-learn kann man `TimeSeriesSplit` verwenden, dessen Syntax und…"
+  },
+  {
+   "de": "c9.0",
+   "kind": "heading",
+   "digest": "592fb75a0a3b8726",
+   "en": "c9.0",
+   "preview": "### Visualisierung der Kreuzvalidierungsstrategien"
+  },
+  {
+   "de": "c9.1",
+   "kind": "prose",
+   "digest": "ef12823103fd1841",
+   "en": "c9.1",
+   "preview": "Auszug [aus der Scikit-learn-Dokumentation](https://scikit-learn.org/sta…"
+  },
+  {
+   "de": "c9.2",
+   "kind": "prose",
+   "digest": "5fcd5fadd82a9e97",
+   "en": "c9.2",
+   "preview": "![KFold](images/sphx_glr_plot_cv_indices_006.png)"
+  },
+  {
+   "de": "c9.3",
+   "kind": "prose",
+   "digest": "d09b80b27e53f023",
+   "en": "c9.3",
+   "preview": "![StratifiedKFold](images/sphx_glr_plot_cv_indices_009.png)"
+  },
+  {
+   "de": "c9.4",
+   "kind": "prose",
+   "digest": "d5639dd86847df59",
+   "en": "c9.4",
+   "preview": "![TimeSeriesSplit](images/sphx_glr_plot_cv_indices_013.png)"
+  },
+  {
+   "de": "c10.0",
+   "kind": "heading",
+   "digest": "956aa1585e760d9d",
+   "en": "c10.0",
+   "preview": "## Bewertung der Modellperformance"
+  },
+  {
+   "de": "c10.1",
+   "kind": "prose",
+   "digest": "8faf8baa1657a330",
+   "en": "c10.1",
+   "preview": "Wir haben bereits drei wesentliche Ansätze zur Bewertung der Güte von Mo…"
+  },
+  {
+   "de": "c10.2",
+   "kind": "prose",
+   "digest": "65e1a3f6bc5b59ed",
+   "en": "c10.2",
+   "preview": "* Bei gleicher Zuordnung der Label, also wenn zu Klassen $1,2,..$ mit ur…"
+  },
+  {
+   "de": "c10.3",
+   "kind": "math",
+   "digest": "86dafc41be6e91d7",
+   "en": "c10.3",
+   "preview": "$$ NMI(U, V) = \\dfrac{ I(U;V) }{ \\texttt{mean}\\big( H(U), H(V) \\big) }, …"
+  },
+  {
+   "de": "c10.4",
+   "kind": "prose",
+   "digest": "1316516858163659",
+   "en": "c10.4",
+   "preview": "mit der *gemeinsamen Information* $I(U;V)$ aus dem Kapitel [Relative Ent…"
+  },
+  {
+   "de": "c11.0",
+   "kind": "heading",
+   "digest": "afe80555bc6a7f09",
+   "en": "c11.0",
+   "preview": "### Bewertung von Clustering"
+  },
+  {
+   "de": "c11.1",
+   "kind": "prose",
+   "digest": "aab4f96c9ea6c3ff",
+   "en": "c11.1",
+   "preview": "Kennt man die wahren Klassen, kann man bewerten, ob die Cluster jeweils …"
+  },
+  {
+   "de": "c12",
+   "kind": "code",
+   "digest": "e7be4a95cbe3d32a",
+   "en": "c12",
+   "preview": "from sklearn.cluster import KMeans y_pred = KMeans().fit(x).predict(x) f…"
+  },
+  {
+   "de": "c13.0",
+   "kind": "prose",
+   "digest": "7af14ba45d23c799",
+   "en": "c13.0",
+   "preview": "Warum ist die Completeness im Beispiel so schlecht? Das liegt daran, das…"
+  },
+  {
+   "de": "c14",
+   "kind": "code",
+   "digest": "b582d445b3dfb2d5",
+   "en": "c14",
+   "preview": "print(\"Anzahl Cluster:\", np.max(y_pred)+1) print(\"Anzahl Klassen:\", np.m…"
+  },
+  {
+   "de": "c15.0",
+   "kind": "prose",
+   "digest": "7ac370baf0824e1a",
+   "en": "c15.0",
+   "preview": "Wir wiederholen das nun mit $3$ Clustern und beobachten, wie sich die Vo…"
+  },
+  {
+   "de": "c16",
+   "kind": "code",
+   "digest": "d51d172dda47ef15",
+   "en": "c16",
+   "preview": "y_pred = KMeans(3).fit(x).predict(x) assert np.max(y) == np.max(y_pred) …"
+  },
+  {
+   "de": "c17.0",
+   "kind": "prose",
+   "digest": "7838f9e445e4f412",
+   "en": "c17.0",
+   "preview": "Das harmonische (potentiell gewichtete) Mittel aus Homogenität und Volls…"
+  },
+  {
+   "de": "c17.1",
+   "kind": "prose",
+   "digest": "3ab860c6f84ddbed",
+   "en": "c17.1",
+   "preview": "Eine andere Zusammenfassung der Klassifikationsgüte beim Clustering:"
+  },
+  {
+   "de": "c18",
+   "kind": "code",
+   "digest": "51045dff887d9ec9",
+   "en": "c18",
+   "preview": "from sklearn.metrics import classification_report print(classification_r…"
+  },
+  {
+   "de": "c19.0",
+   "kind": "prose",
+   "digest": "32779ac618a85837",
+   "en": "c19.0",
+   "preview": "Die Spalten des `classification_report` sind die Kennzahlen aus dem Kapi…"
+  },
+  {
+   "de": "c19.1",
+   "kind": "prose",
+   "digest": "a5ef65ce18a83d4f",
+   "en": "c19.1",
+   "preview": "Bei einem Clustering muss man diese Zahlen mit Vorsicht lesen: Trägt der…"
+  },
+  {
+   "de": "c20",
+   "kind": "code",
+   "digest": "91239f485b6e2dd2",
+   "en": "c20",
+   "preview": "from sklearn.metrics import confusion_matrix, ConfusionMatrixDisplay pri…"
+  },
+  {
+   "de": "c21.0",
+   "kind": "heading",
+   "digest": "398b522ec12e4bf0",
+   "en": "c21.0",
+   "preview": "### Bewertung einer Regression"
+  },
+  {
+   "de": "c21.1",
+   "kind": "prose",
+   "digest": "d69b977ba3f4ee1a",
+   "en": "c21.1",
+   "preview": "Zur Bewertung einer Regression verwendet man den $R^2$-Wert `r2_score`."
+  },
+  {
+   "de": "c21.2",
+   "kind": "prose",
+   "digest": "dff19efc8d700d95",
+   "en": "c21.2",
+   "preview": "Im Gegensatz zur Intuition hinter dem Namen kann der $R^2$-Wert durchaus…"
+  },
+  {
+   "de": "c21.3",
+   "kind": "math",
+   "digest": "551b5dae21983c64",
+   "en": "c21.3",
+   "preview": "$$ R^2 = 1 - \\dfrac{\\sum_i {\\left(y_i - f(x_i, \\beta)\\right)}^2}{\\sum_i …"
+  },
+  {
+   "de": "c21.4",
+   "kind": "prose",
+   "digest": "1cf75ec581678205",
+   "en": "c21.4",
+   "preview": "Wenn das Modell perfekt die Daten vorhersagt, so ist der Zähler, die Sum…"
+  },
+  {
+   "de": "c21.5",
+   "kind": "prose",
+   "digest": "dcf1d1c7cb6ca94e",
+   "en": "c21.5",
+   "preview": "Das konstante Modell, welches stets $f(x_i, \\beta) = \\texttt{mean}(y)$ i…"
+  },
+  {
+   "de": "c22.0",
+   "kind": "heading",
+   "digest": "514effd4548a02f6",
+   "en": "c22.0",
+   "preview": "## Hyperparametersuche"
+  },
+  {
+   "de": "c22.1",
+   "kind": "prose",
+   "digest": "a7fe759b17686938",
+   "en": "c22.1",
+   "preview": "Wenn man sich überlegt hat, welche Schätzer / Verfahren man gerne verwen…"
+  },
+  {
+   "de": "c22.2",
+   "kind": "prose",
+   "digest": "c58ce6022ef634b5",
+   "en": "c22.2",
+   "preview": "Eine Möglichkeit wäre, zufällig zwei verschiedene Hyperparameter zu verw…"
+  },
+  {
+   "de": "c22.3",
+   "kind": "directive",
+   "digest": "9ff3a219aed336ea",
+   "en": "c22.3",
+   "preview": "```{admonition} Beispiel Hyperparameter sind etwa die Anzahl Cluster bei…"
+  },
+  {
+   "de": "c23.0",
+   "kind": "heading",
+   "digest": "9a6ec7ad54349560",
+   "en": "c23.0",
+   "preview": "### Gittersuche"
+  },
+  {
+   "de": "c23.1",
+   "kind": "prose",
+   "digest": "e819954206807d60",
+   "en": "c23.1",
+   "preview": "Wenn wir mehrere Parameter zugleich optimieren wollen, wäre eine Möglich…"
+  },
+  {
+   "de": "c23.2",
+   "kind": "prose",
+   "digest": "7b4b2cda1a5ca8fd",
+   "en": "c23.2",
+   "preview": "Als Beispiel nehmen wir eine Kernel-Ridge-Regression mit RBF-Kernel (sie…"
+  },
+  {
+   "de": "c24",
+   "kind": "code",
+   "digest": "46bcc999d98a4f0f",
+   "en": "c24",
+   "preview": "from sklearn.model_selection import GridSearchCV from sklearn.kernel_rid…"
+  },
+  {
+   "de": "c25.0",
+   "kind": "heading",
+   "digest": "00532907517b2ab9",
+   "en": "c25.0",
+   "preview": "### Randomisierte Suche"
+  },
+  {
+   "de": "c25.1",
+   "kind": "prose",
+   "digest": "9b383adca14ab603",
+   "en": "c25.1",
+   "preview": "Man kann auch Paare von Parametern untersuchen, die zufällig aus einer g…"
+  },
+  {
+   "de": "c26",
+   "kind": "code",
+   "digest": "d72e60fe7a1d0cc0",
+   "en": "c26",
+   "preview": "from sklearn.model_selection import RandomizedSearchCV from scipy.stats …"
+  },
+  {
+   "de": "c27.0",
+   "kind": "heading",
+   "digest": "4871caa750fc55a6",
+   "en": "c27.0",
+   "preview": "## Anwendungsbeispiel: Fashion MNIST"
+  },
+  {
+   "de": "c27.1",
+   "kind": "prose",
+   "digest": "9732d54fbaa7f5d9",
+   "en": "c27.1",
+   "preview": "Je drei Zeilen bilden eine Klasse (T-Shirts, Hosen, etc.). Die Daten kom…"
+  },
+  {
+   "de": "c27.2",
+   "kind": "prose",
+   "digest": "ff0170370cb2eff1",
+   "en": "c27.2",
+   "preview": "![Fashion MNIST](https://github.com/zalandoresearch/fashion-mnist/raw/ma…"
+  },
+  {
+   "de": "c28",
+   "kind": "code",
+   "digest": "99f86e52b853d2ea",
+   "en": "c28",
+   "preview": "from itertools import product import numpy as np # Der Lader steckt in f…"
+  },
+  {
+   "de": "c29",
+   "kind": "code",
+   "digest": "8bb4ca00b71d6947",
+   "en": "c29",
+   "preview": "x_train, y_train = load_mnist(kind='train') x_test, y_test = load_mnist(…"
+  },
+  {
+   "de": "c30.0",
+   "kind": "prose",
+   "digest": "952f786ad8570296",
+   "en": "c30.0",
+   "preview": "Wir müssen die Dimensionalität reduzieren, sonst dauert das Training zu …"
+  },
+  {
+   "de": "c31",
+   "kind": "code",
+   "digest": "15a1da885e89c74e",
+   "en": "c31",
+   "preview": "from sklearn.decomposition import PCA pca = PCA(40).fit(x_train) x_train…"
+  },
+  {
+   "de": "c32.0",
+   "kind": "prose",
+   "digest": "b31f88fd587486fb",
+   "en": "c32.0",
+   "preview": "Wir werfen einen ersten Blick auf das Ergebnis einer Support Vector Clas…"
+  },
+  {
+   "de": "c33",
+   "kind": "code",
+   "digest": "b1eea087a2230648",
+   "en": "c33",
+   "preview": "from sklearn.svm import SVC # trim down some more dimensions to speed th…"
+  },
+  {
+   "de": "c34",
+   "kind": "code",
+   "digest": "cfaadc890664d10d",
+   "en": "c34",
+   "preview": "from sklearn.metrics import normalized_mutual_info_score print(classific…"
+  },
+  {
+   "de": "c35",
+   "kind": "code",
+   "digest": "632529b28079d1d3",
+   "en": "c35",
+   "preview": "fig, axs = plt.subplots(1, 2, figsize=(10, 5)) axs[0].scatter(x_test_pc2…"
+  },
+  {
+   "de": "c36.0",
+   "kind": "prose",
+   "digest": "1798b7baee7b935f",
+   "en": "c36.0",
+   "preview": "Was die einzelnen Datenpunkte bedeuten, können wir auch visualisieren:"
+  },
+  {
+   "de": "c37",
+   "kind": "code",
+   "digest": "92b320fe519714b0",
+   "en": "c37",
+   "preview": "from matplotlib.offsetbox import OffsetImage, AnnotationBbox def imscatt…"
+  },
+  {
+   "de": "c38.0",
+   "kind": "prose",
+   "digest": "e67079cee85deaca",
+   "en": "c38.0",
+   "preview": "Jetzt suchen wir gute Werte für die Hyperparameter $C, \\gamma$ der SVC. …"
+  },
+  {
+   "de": "c38.1",
+   "kind": "prose",
+   "digest": "0d565aaed45a478e",
+   "en": "c38.1",
+   "preview": "* Für die Suche genügt eine Teilstichprobe; das Training auf allen 60000…"
+  },
+  {
+   "de": "c39",
+   "kind": "code",
+   "digest": "82e2984408c1eb65",
+   "en": "c39",
+   "preview": "from sklearn.model_selection import train_test_split, RandomizedSearchCV…"
+  },
+  {
+   "de": "c40.0",
+   "kind": "prose",
+   "digest": "38f1ed1355ca62a5",
+   "en": "c40.0",
+   "preview": "Wie empfindlich ist das Ergebnis gegenüber den Parametern? Ein Blick auf…"
+  },
+  {
+   "de": "c41",
+   "kind": "code",
+   "digest": "99bb980cd9fbc97c",
+   "en": "c41",
+   "preview": "import pandas as pd results = pd.DataFrame(random_search.cv_results_) re…"
+  },
+  {
+   "de": "c42.0",
+   "kind": "prose",
+   "digest": "3144fbfb68ae2daa",
+   "en": "c42.0",
+   "preview": "Mit den gefundenen Parametern trainieren wir jetzt auf allen Samples. Di…"
+  },
+  {
+   "de": "c43",
+   "kind": "code",
+   "digest": "2ea651b81375a7ca",
+   "en": "c43",
+   "preview": "from sklearn.metrics import f1_score best = random_search.best_estimator…"
+  },
+  {
+   "de": "c44",
+   "kind": "code",
+   "digest": "d197e477528288e3",
+   "en": "c44",
+   "preview": "y_wrong_indices = (y_test != y_pred) y_wrong = y_test[y_wrong_indices] x…"
+  },
+  {
+   "de": "c45.0",
+   "kind": "prose",
+   "digest": "b902b245ec69fe0b",
+   "en": "c45.0",
+   "preview": "Schaffen Sie eine bessere Klassifikation (mit F1-Score $> 0.85$)? Ideen:…"
+  }
+ ]
+}

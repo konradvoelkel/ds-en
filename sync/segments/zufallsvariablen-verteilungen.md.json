@@ -1,0 +1,1015 @@
+{
+ "source": "zufallsvariablen-verteilungen.md",
+ "target": "random-variables-distributions.md",
+ "upstream": "c7247a99ef28b04050ef09ba376ac6e32025456a",
+ "blocks": [
+  {
+   "de": "0",
+   "kind": "heading",
+   "digest": "24d07680094155a9",
+   "en": "0",
+   "preview": "# Zufallsvariablen und Verteilungen"
+  },
+  {
+   "de": "1",
+   "kind": "prose",
+   "digest": "c653a310ef837b79",
+   "en": "1",
+   "preview": "[Vorlesungsaufzeichnung Zufallsvariablen und Verteilungen](https://media…"
+  },
+  {
+   "de": "2",
+   "kind": "prose",
+   "digest": "a1a8805a506a387d",
+   "en": "2",
+   "preview": "Das typische 'Interface' für Wahrscheinlichkeitsverteilungen sind Zufall…"
+  },
+  {
+   "de": "3",
+   "kind": "heading",
+   "digest": "31ab3d0c31cd7418",
+   "en": "3",
+   "preview": "## Zufallsvariablen"
+  },
+  {
+   "de": "4",
+   "kind": "prose",
+   "digest": "ba92ed5ce31528a0",
+   "en": "4",
+   "preview": "Wir erinnern an die Definition, nun in der Notation, die wir im weiteren…"
+  },
+  {
+   "de": "5",
+   "kind": "directive",
+   "digest": "053400a7b7d2fc03",
+   "en": "5",
+   "preview": ":::{admonition} Definition"
+  },
+  {
+   "de": "6",
+   "kind": "prose",
+   "digest": "d19aedc37416d581",
+   "en": "6",
+   "preview": "Gegeben eine Menge $\\Omega$ mit einem Wahrscheinlichkeitsmaß $P_\\Omega$,…"
+  },
+  {
+   "de": "7",
+   "kind": "directive",
+   "digest": "f1ae2a75ed1f9972",
+   "en": "7",
+   "preview": ":::"
+  },
+  {
+   "de": "8",
+   "kind": "prose",
+   "digest": "b27cc0debe54f7e4",
+   "en": "8",
+   "preview": "Zur Erinnerung: Wenn $\\Omega$ und $\\mathcal{X}$ endliche Mengen sind, da…"
+  },
+  {
+   "de": "9",
+   "kind": "heading",
+   "digest": "c1daa53eb3329678",
+   "en": "9",
+   "preview": "### Wo kommt der Zufall her?"
+  },
+  {
+   "de": "10",
+   "kind": "prose",
+   "digest": "9be1c53a34c90d9d",
+   "en": "10",
+   "preview": "Bevor wir weiterrechnen, eine Frage, die selten gestellt und noch selten…"
+  },
+  {
+   "de": "11",
+   "kind": "prose",
+   "digest": "81ed01eeba03f65e",
+   "en": "11",
+   "preview": "Eine Messung, die schon stattgefunden hat, ist nicht zufällig — der Würf…"
+  },
+  {
+   "de": "12",
+   "kind": "prose",
+   "digest": "7a50ca4bef2120a0",
+   "en": "12",
+   "preview": "An drei Stellen begegnet er uns trotzdem ganz konkret:"
+  },
+  {
+   "de": "13",
+   "kind": "prose",
+   "digest": "362ca92f3fba3f0a",
+   "en": "13",
+   "preview": "- **Bei der Auswahl.** Wenn wir aus vorhandenen Daten eine Teilmenge zie…"
+  },
+  {
+   "de": "14",
+   "kind": "prose",
+   "digest": "5b7ca9a60c695430",
+   "en": "14",
+   "preview": "Der Weg, den die Daten dabei nehmen, lässt sich in drei Bildern erzählen…"
+  },
+  {
+   "de": "15",
+   "kind": "directive",
+   "digest": "de15f7eceaea5f3d",
+   "en": "15",
+   "preview": "```{figure} images/dsprozess-simplified-1.png :width: 480px :align: cent…"
+  },
+  {
+   "de": "16",
+   "kind": "prose",
+   "digest": "c7331264d02109c0",
+   "en": "16",
+   "preview": "Dann die Modellierung. Aus den Daten wird ein Modell gebildet, und aus d…"
+  },
+  {
+   "de": "17",
+   "kind": "directive",
+   "digest": "856242205a1e35f4",
+   "en": "17",
+   "preview": "```{figure} images/dsprozess-simplified-2.png :width: 480px :align: cent…"
+  },
+  {
+   "de": "18",
+   "kind": "prose",
+   "digest": "6857a7b7c74f91cf",
+   "en": "18",
+   "preview": "Und schließlich der Weg zur Zielgröße, um die es eigentlich geht: Die Da…"
+  },
+  {
+   "de": "19",
+   "kind": "directive",
+   "digest": "6e1e85fdf1b3063d",
+   "en": "19",
+   "preview": "```{figure} images/dsprozess-simplified-3.png :width: 480px :align: cent…"
+  },
+  {
+   "de": "20",
+   "kind": "directive",
+   "digest": "0feec534fa43b536",
+   "en": "20",
+   "preview": ":::{admonition} Beispiel"
+  },
+  {
+   "de": "21",
+   "kind": "prose",
+   "digest": "0f484f6e45426da5",
+   "en": "21",
+   "preview": "**Ein Würfelwurf, ganz ausbuchstabiert.** Der *Weltausschnitt* ist ein W…"
+  },
+  {
+   "de": "22",
+   "kind": "prose",
+   "digest": "3e24361b79c51ab5",
+   "en": "22",
+   "preview": "Der ganze Weg von der Welt zur Zielgröße ist genau das, was wir eine Zuf…"
+  },
+  {
+   "de": "23",
+   "kind": "math",
+   "digest": "c4ac7f76062e0d4e",
+   "en": "23",
+   "preview": "$$ P(X = 6) := P_\\Omega\\left( \\{ \\omega \\in \\Omega : X(\\omega) = 6 \\} \\r…"
+  },
+  {
+   "de": "24",
+   "kind": "prose",
+   "digest": "256dc752853275fb",
+   "en": "24",
+   "preview": "Die Schreibweise $P(X = 6)$ ist also eine Abkürzung: Gemeint ist die Wah…"
+  },
+  {
+   "de": "25",
+   "kind": "directive",
+   "digest": "f1ae2a75ed1f9972",
+   "en": "25",
+   "preview": ":::"
+  },
+  {
+   "de": "26",
+   "kind": "heading",
+   "digest": "3ee310dad9dc4b29",
+   "en": "26",
+   "preview": "### Induziertes Wahrscheinlichkeitsmaß"
+  },
+  {
+   "de": "27",
+   "kind": "directive",
+   "digest": "053400a7b7d2fc03",
+   "en": "27",
+   "preview": ":::{admonition} Definition"
+  },
+  {
+   "de": "28",
+   "kind": "prose",
+   "digest": "5fca2fc90ff909d7",
+   "en": "28",
+   "preview": "Gegeben eine Zufallsvariable $X \\colon \\Omega \\to \\mathcal{X}$ heißt das…"
+  },
+  {
+   "de": "29",
+   "kind": "math",
+   "digest": "2592f348dde16dd2",
+   "en": "29",
+   "preview": "$$P_X \\colon A \\mapsto P_\\Omega\\left( X^{-1}(A) \\right)$$"
+  },
+  {
+   "de": "30",
+   "kind": "prose",
+   "digest": "e5118ca5440dba94",
+   "en": "30",
+   "preview": "gegeben ist, die **Verteilung von $X$**."
+  },
+  {
+   "de": "31",
+   "kind": "directive",
+   "digest": "f1ae2a75ed1f9972",
+   "en": "31",
+   "preview": ":::"
+  },
+  {
+   "de": "32",
+   "kind": "directive",
+   "digest": "d8a9d8fddee7e0b1",
+   "en": "32",
+   "preview": ":::{admonition} Proposition"
+  },
+  {
+   "de": "33",
+   "kind": "prose",
+   "digest": "089fcfe8d2800ff9",
+   "en": "33",
+   "preview": "Das ist tatsächlich immer ein Wahrscheinlichkeitsmaß."
+  },
+  {
+   "de": "34",
+   "kind": "directive",
+   "digest": "f1ae2a75ed1f9972",
+   "en": "34",
+   "preview": ":::"
+  },
+  {
+   "de": "35",
+   "kind": "directive",
+   "digest": "d3c74271f8c77915",
+   "en": "35",
+   "preview": ":::{admonition} Beweis"
+  },
+  {
+   "de": "36",
+   "kind": "prose",
+   "digest": "f08e64428d560b45",
+   "en": "36",
+   "preview": "Wir prüfen die Axiome: 1. Es ist $X^{-1}(\\mathcal{X}) = \\Omega$, daher i…"
+  },
+  {
+   "de": "37",
+   "kind": "math",
+   "digest": "6754e7814668c60a",
+   "en": "37",
+   "preview": "$$X^{-1}\\left(\\bigcup_{i \\geq 1} A_i\\right) = \\left\\{\\omega \\in \\Omega\\ …"
+  },
+  {
+   "de": "38",
+   "kind": "prose",
+   "digest": "867131e6ce67f0d5",
+   "en": "38",
+   "preview": "und damit"
+  },
+  {
+   "de": "39",
+   "kind": "math",
+   "digest": "9ad7a6c067add465",
+   "en": "39",
+   "preview": "$$P_X\\left(\\bigcup_{i\\geq 1} A_i\\right) = P_\\Omega\\left( X^{-1} \\left(\\b…"
+  },
+  {
+   "de": "40",
+   "kind": "math",
+   "digest": "8562dc5d2ea913e7",
+   "en": "40",
+   "preview": "$$ = \\sum_{i \\geq 1} P_\\Omega \\left( X^{-1} A_i \\right) = \\sum_{i \\geq 1…"
+  },
+  {
+   "de": "41",
+   "kind": "directive",
+   "digest": "f1ae2a75ed1f9972",
+   "en": "41",
+   "preview": ":::"
+  },
+  {
+   "de": "42",
+   "kind": "directive",
+   "digest": "0feec534fa43b536",
+   "en": "42",
+   "preview": ":::{admonition} Beispiel"
+  },
+  {
+   "de": "43",
+   "kind": "prose",
+   "digest": "53f11633986c479c",
+   "en": "43",
+   "preview": "In einem Raum spielen $30$ Kinder. Davon haben $10$ einen blauen Pulli a…"
+  },
+  {
+   "de": "44",
+   "kind": "math",
+   "digest": "a669ff8aaa6f5c99",
+   "en": "44",
+   "preview": "$$P_X\\left(\\{b,r\\}\\right) = P_\\Omega\\left(X^{-1} \\left(\\{b,r\\}\\right) \\r…"
+  },
+  {
+   "de": "45",
+   "kind": "prose",
+   "digest": "d5f1b2d5037cfb2b",
+   "en": "45",
+   "preview": "wobei wir implizit angenommen haben, dass wir die Kinder alle gleich beh…"
+  },
+  {
+   "de": "46",
+   "kind": "directive",
+   "digest": "f1ae2a75ed1f9972",
+   "en": "46",
+   "preview": ":::"
+  },
+  {
+   "de": "47",
+   "kind": "directive",
+   "digest": "0feec534fa43b536",
+   "en": "47",
+   "preview": ":::{admonition} Beispiel"
+  },
+  {
+   "de": "48",
+   "kind": "prose",
+   "digest": "455ad65a66a511cb",
+   "en": "48",
+   "preview": "**Verketten liefert neue Zufallsvariablen.** Sei $X$ der Wurf eines fair…"
+  },
+  {
+   "de": "49",
+   "kind": "prose",
+   "digest": "d2898185a4fa3fed",
+   "en": "49",
+   "preview": "*(a)* Sei $g \\colon \\{1,\\dots,6\\} \\to \\{\\text{gerade}, \\text{ungerade}\\}…"
+  },
+  {
+   "de": "50",
+   "kind": "math",
+   "digest": "c8bbf889f4544e8f",
+   "en": "50",
+   "preview": "$$ P_g(\\{\\text{gerade}\\}) = P_\\Omega\\left( g^{-1}(\\{\\text{gerade}\\}) \\ri…"
+  },
+  {
+   "de": "51",
+   "kind": "prose",
+   "digest": "35fe19e8eca959e4",
+   "en": "51",
+   "preview": "Dabei ist $g \\circ X$ selbst wieder eine Zufallsvariable — die Verkettun…"
+  },
+  {
+   "de": "52",
+   "kind": "prose",
+   "digest": "5b7682e7b7051b02",
+   "en": "52",
+   "preview": "*(b)* Sei $f$ die Abbildung, die angibt, ob die Augenzahl mindestens $5$…"
+  },
+  {
+   "de": "53",
+   "kind": "math",
+   "digest": "b40be74f120807d0",
+   "en": "53",
+   "preview": "$$ P_f(\\{\\text{nein}\\}) = P_\\Omega\\left( \\{1,2,3,4\\} \\right) = \\sum_{i=1…"
+  },
+  {
+   "de": "54",
+   "kind": "prose",
+   "digest": "80a2284d7e489ae9",
+   "en": "54",
+   "preview": "Das ist der Normalfall beim Rechnen mit induzierten Maßen: Man sucht das…"
+  },
+  {
+   "de": "55",
+   "kind": "prose",
+   "digest": "711eb62bf2d61a0c",
+   "en": "55",
+   "preview": "*(c)* Verkettet man mit $x \\mapsto 2x$, so erhält man die Zufallsvariabl…"
+  },
+  {
+   "de": "56",
+   "kind": "directive",
+   "digest": "f1ae2a75ed1f9972",
+   "en": "56",
+   "preview": ":::"
+  },
+  {
+   "de": "57",
+   "kind": "prose",
+   "digest": "3aa805c718383b97",
+   "en": "57",
+   "preview": "Wenn uns nur die Verteilung $P_X$ interessiert, können wir $\\Omega$ igno…"
+  },
+  {
+   "de": "58",
+   "kind": "heading",
+   "digest": "568a4049e5ad915f",
+   "en": "58",
+   "preview": "## Wahrscheinlichkeitsmassefunktion"
+  },
+  {
+   "de": "59",
+   "kind": "prose",
+   "digest": "1f6597e3d4c1a2a5",
+   "en": "59",
+   "preview": "Im Alltag rechnet man mit Wahrscheinlichkeiten meist nicht über das Maß …"
+  },
+  {
+   "de": "60",
+   "kind": "directive",
+   "digest": "053400a7b7d2fc03",
+   "en": "60",
+   "preview": ":::{admonition} Definition"
+  },
+  {
+   "de": "61",
+   "kind": "prose",
+   "digest": "c8a9ded916a883dd",
+   "en": "61",
+   "preview": "Eine Funktion $p \\colon \\Omega \\to [0,1]$ heißt *Wahrscheinlichkeitsmass…"
+  },
+  {
+   "de": "62",
+   "kind": "directive",
+   "digest": "f1ae2a75ed1f9972",
+   "en": "62",
+   "preview": ":::"
+  },
+  {
+   "de": "63",
+   "kind": "directive",
+   "digest": "0feec534fa43b536",
+   "en": "63",
+   "preview": ":::{admonition} Beispiel"
+  },
+  {
+   "de": "64",
+   "kind": "prose",
+   "digest": "b3b0ca3e566b4872",
+   "en": "64",
+   "preview": "Im vorigen Beispiel haben wir $P_X(\\{r\\}) = \\frac{10}{30}$, $P_X(\\{g\\}) …"
+  },
+  {
+   "de": "65",
+   "kind": "math",
+   "digest": "9fd8f551b8034d6b",
+   "en": "65",
+   "preview": "$$p(r):=\\frac{10}{30},\\ p(g):=\\frac{5}{30},\\ p(b):=\\frac{10}{30},\\ p(s):…"
+  },
+  {
+   "de": "66",
+   "kind": "prose",
+   "digest": "ba93f8f804b0cfd0",
+   "en": "66",
+   "preview": "die Definition einer pmf für $P_X$. Man sagt auch, $p$ ist die pmf von $…"
+  },
+  {
+   "de": "67",
+   "kind": "prose",
+   "digest": "c08ce37342b0f79a",
+   "en": "67",
+   "preview": "Die pmf der Gleichverteilung auf $\\Omega$ ist $p(\\omega) = \\frac{1}{|\\Om…"
+  },
+  {
+   "de": "68",
+   "kind": "prose",
+   "digest": "bf41d0af88344cbc",
+   "en": "68",
+   "preview": "Die pmf der Dirac-Verteilung mit Masse an einem festen $\\xi \\in \\Omega$ …"
+  },
+  {
+   "de": "69",
+   "kind": "math",
+   "digest": "335c9b9d517268f4",
+   "en": "69",
+   "preview": "$$ p(\\omega) = \\begin{cases} 1 & \\omega = \\xi,\\\\ 0 & \\text{sonst.} \\end{…"
+  },
+  {
+   "de": "70",
+   "kind": "prose",
+   "digest": "58ae8cbe5f204191",
+   "en": "70",
+   "preview": "Beides setzt voraus, dass $\\Omega$ höchstens abzählbar ist — für überabz…"
+  },
+  {
+   "de": "71",
+   "kind": "directive",
+   "digest": "f1ae2a75ed1f9972",
+   "en": "71",
+   "preview": ":::"
+  },
+  {
+   "de": "72",
+   "kind": "directive",
+   "digest": "0feec534fa43b536",
+   "en": "72",
+   "preview": ":::{admonition} Beispiel"
+  },
+  {
+   "de": "73",
+   "kind": "prose",
+   "digest": "6a92a46553dbce62",
+   "en": "73",
+   "preview": "Wir erwarten eine eingehende Nachricht der Länge $3$ Zeichen. Diese drei…"
+  },
+  {
+   "de": "74",
+   "kind": "prose",
+   "digest": "bad68e7aa86ab52f",
+   "en": "74",
+   "preview": "Wir können auch die ganze Nachricht als eine einzige Zufallsvariable auf…"
+  },
+  {
+   "de": "75",
+   "kind": "math",
+   "digest": "963e127cd5798b9a",
+   "en": "75",
+   "preview": "$$p(x,y,z) \\neq p(x)p(y)p(z)$$"
+  },
+  {
+   "de": "76",
+   "kind": "prose",
+   "digest": "d9bacfbfccc5351f",
+   "en": "76",
+   "preview": "und wir sagen dazu auch: die Zufallsvariablen bzw. ihre Verteilungen sin…"
+  },
+  {
+   "de": "77",
+   "kind": "directive",
+   "digest": "f1ae2a75ed1f9972",
+   "en": "77",
+   "preview": ":::"
+  },
+  {
+   "de": "78",
+   "kind": "heading",
+   "digest": "21fa113b8b442d41",
+   "en": "78",
+   "preview": "### Induzierte pmf"
+  },
+  {
+   "de": "79",
+   "kind": "directive",
+   "digest": "d8a9d8fddee7e0b1",
+   "en": "79",
+   "preview": ":::{admonition} Proposition"
+  },
+  {
+   "de": "80",
+   "kind": "prose",
+   "digest": "2f217a2a276c5049",
+   "en": "80",
+   "preview": "Wenn $X \\colon \\Omega \\to \\mathcal{X}$ eine Zufallsvariable ist und $P_\\…"
+  },
+  {
+   "de": "81",
+   "kind": "directive",
+   "digest": "f1ae2a75ed1f9972",
+   "en": "81",
+   "preview": ":::"
+  },
+  {
+   "de": "82",
+   "kind": "heading",
+   "digest": "e7d2a64ac2e1641a",
+   "en": "82",
+   "preview": "## Wahrscheinlichkeitsvektor"
+  },
+  {
+   "de": "83",
+   "kind": "directive",
+   "digest": "0feec534fa43b536",
+   "en": "83",
+   "preview": ":::{admonition} Beispiel"
+  },
+  {
+   "de": "84",
+   "kind": "prose",
+   "digest": "403876196e6391bb",
+   "en": "84",
+   "preview": "Wenn wir die Kinderpullifarben in eine Reihenfolge bringen, also z.B. $r…"
+  },
+  {
+   "de": "85",
+   "kind": "directive",
+   "digest": "f1ae2a75ed1f9972",
+   "en": "85",
+   "preview": ":::"
+  },
+  {
+   "de": "86",
+   "kind": "directive",
+   "digest": "d8a9d8fddee7e0b1",
+   "en": "86",
+   "preview": ":::{admonition} Proposition"
+  },
+  {
+   "de": "87",
+   "kind": "prose",
+   "digest": "613babe6048d17c2",
+   "en": "87",
+   "preview": "Auf einer angeordneten endlichen Menge $\\Omega = \\{\\omega_1, \\dots, \\ome…"
+  },
+  {
+   "de": "88",
+   "kind": "directive",
+   "digest": "f1ae2a75ed1f9972",
+   "en": "88",
+   "preview": ":::"
+  },
+  {
+   "de": "89",
+   "kind": "directive",
+   "digest": "d8a9d8fddee7e0b1",
+   "en": "89",
+   "preview": ":::{admonition} Proposition"
+  },
+  {
+   "de": "90",
+   "kind": "prose",
+   "digest": "a194b878b312a5d0",
+   "en": "90",
+   "preview": "Sei $\\Delta_n := \\left\\{p \\in \\mathbb{R}^n \\ \\mid\\ 0 \\leq p_i \\leq 1 \\te…"
+  },
+  {
+   "de": "91",
+   "kind": "directive",
+   "digest": "f1ae2a75ed1f9972",
+   "en": "91",
+   "preview": ":::"
+  },
+  {
+   "de": "92",
+   "kind": "directive",
+   "digest": "0feec534fa43b536",
+   "en": "92",
+   "preview": ":::{admonition} Beispiel"
+  },
+  {
+   "de": "93",
+   "kind": "prose",
+   "digest": "906673dfbf07437a",
+   "en": "93",
+   "preview": "Die Gleichverteilung entspricht $p \\in \\Delta_n$ mit $p_i = \\frac{1}{n}$…"
+  },
+  {
+   "de": "94",
+   "kind": "prose",
+   "digest": "d437c12ef649e7e7",
+   "en": "94",
+   "preview": "Die Dirac-Verteilung mit Masse an $\\xi \\in \\Omega$ entspricht $p \\in \\De…"
+  },
+  {
+   "de": "95",
+   "kind": "directive",
+   "digest": "f1ae2a75ed1f9972",
+   "en": "95",
+   "preview": ":::"
+  },
+  {
+   "de": "96",
+   "kind": "prose",
+   "digest": "d09841a5cc9cd337",
+   "en": "96",
+   "preview": "Eine so durch $p \\in \\Delta_n$ gegebene Verteilung heißt auch *kategoria…"
+  },
+  {
+   "de": "97",
+   "kind": "directive",
+   "digest": "053400a7b7d2fc03",
+   "en": "97",
+   "preview": ":::{admonition} Definition"
+  },
+  {
+   "de": "98",
+   "kind": "prose",
+   "digest": "0a5f487cafba5ee7",
+   "en": "98",
+   "preview": "Der Fall $n = 2$ hat einen eigenen Namen. Auf $\\Omega = \\{0,1\\}$ ist ein…"
+  },
+  {
+   "de": "99",
+   "kind": "directive",
+   "digest": "f1ae2a75ed1f9972",
+   "en": "99",
+   "preview": ":::"
+  },
+  {
+   "de": "100",
+   "kind": "directive",
+   "digest": "0feec534fa43b536",
+   "en": "100",
+   "preview": ":::{admonition} Beispiel"
+  },
+  {
+   "de": "101",
+   "kind": "prose",
+   "digest": "2b4f51f3334cbe4e",
+   "en": "101",
+   "preview": "Ein Münzwurf ist $\\operatorname{Ber}(\\pi)$ mit $\\pi$ der Wahrscheinlichk…"
+  },
+  {
+   "de": "102",
+   "kind": "directive",
+   "digest": "f1ae2a75ed1f9972",
+   "en": "102",
+   "preview": ":::"
+  },
+  {
+   "de": "103",
+   "kind": "prose",
+   "digest": "e4891211e99914c3",
+   "en": "103",
+   "preview": "Geometrisch ist $\\Delta_2$ eine Strecke: die Verbindung der beiden Eckpu…"
+  },
+  {
+   "de": "104",
+   "kind": "prose",
+   "digest": "ab21a18442388a14",
+   "en": "104",
+   "preview": "Es ist also $\\Delta_n$ der Raum aller möglichen Wahrscheinlichkeitsverte…"
+  },
+  {
+   "de": "105",
+   "kind": "directive",
+   "digest": "566676a32baee8ac",
+   "en": "105",
+   "preview": ":::{admonition} Bemerkung"
+  },
+  {
+   "de": "106",
+   "kind": "prose",
+   "digest": "d8b2d0b7ef3cd680",
+   "en": "106",
+   "preview": "Genau dieser Simplex $\\Delta_n$ ist der Bildbereich der *Softmax*-Funkti…"
+  },
+  {
+   "de": "107",
+   "kind": "directive",
+   "digest": "f1ae2a75ed1f9972",
+   "en": "107",
+   "preview": ":::"
+  },
+  {
+   "de": "108",
+   "kind": "directive",
+   "digest": "0feec534fa43b536",
+   "en": "108",
+   "preview": ":::{admonition} Beispiel"
+  },
+  {
+   "de": "109",
+   "kind": "prose",
+   "digest": "90e318de42af63d4",
+   "en": "109",
+   "preview": "Wenn wir auf einer endlichen Menge $\\Omega$ durch den Vektor $p \\in \\Del…"
+  },
+  {
+   "de": "110",
+   "kind": "math",
+   "digest": "21690b6221d5645a",
+   "en": "110",
+   "preview": "$$P(A) = \\sum_{i=1, \\omega_i \\in A}^n p(\\omega_i) = \\sum_{i=1}^n p(\\omeg…"
+  },
+  {
+   "de": "111",
+   "kind": "directive",
+   "digest": "f1ae2a75ed1f9972",
+   "en": "111",
+   "preview": ":::"
+  },
+  {
+   "de": "112",
+   "kind": "heading",
+   "digest": "977d60d2b9faeed3",
+   "en": "112",
+   "preview": "## Von Daten zu Modellen"
+  },
+  {
+   "de": "113",
+   "kind": "prose",
+   "digest": "46bbfb49f9d9183c",
+   "en": "113",
+   "preview": "Die einfachste Form, in der uns Daten vorliegen können, ist eine einzeln…"
+  },
+  {
+   "de": "114",
+   "kind": "prose",
+   "digest": "1e53dbac761dc752",
+   "en": "114",
+   "preview": "Schon eine einzelne solche Spalte trägt eine Wahrscheinlichkeitsverteilu…"
+  },
+  {
+   "de": "115",
+   "kind": "directive",
+   "digest": "053400a7b7d2fc03",
+   "en": "115",
+   "preview": ":::{admonition} Definition"
+  },
+  {
+   "de": "116",
+   "kind": "prose",
+   "digest": "6abcbca14a2699df",
+   "en": "116",
+   "preview": "Sei $D = (x_1,\\dots,x_N)$ ein Datensatz mit Werten in einer endlichen Me…"
+  },
+  {
+   "de": "117",
+   "kind": "math",
+   "digest": "dfff0f863c2c4f93",
+   "en": "117",
+   "preview": "$$ P(\\{x\\}) := \\dfrac{\\left| \\{ i : x_i = x \\} \\right|}{N}, $$"
+  },
+  {
+   "de": "118",
+   "kind": "prose",
+   "digest": "171cc133446ff1dc",
+   "en": "118",
+   "preview": "also durch die relative Häufigkeit des Wertes $x$ in $D$, ein Wahrschein…"
+  },
+  {
+   "de": "119",
+   "kind": "directive",
+   "digest": "f1ae2a75ed1f9972",
+   "en": "119",
+   "preview": ":::"
+  },
+  {
+   "de": "120",
+   "kind": "prose",
+   "digest": "60b2935cb660d2bd",
+   "en": "120",
+   "preview": "Dass das wirklich ein Wahrscheinlichkeitsmaß ist, ist genau die Aussage,…"
+  },
+  {
+   "de": "121",
+   "kind": "directive",
+   "digest": "0feec534fa43b536",
+   "en": "121",
+   "preview": ":::{admonition} Beispiel"
+  },
+  {
+   "de": "122",
+   "kind": "prose",
+   "digest": "98be44f6b91bfcfc",
+   "en": "122",
+   "preview": "Ein Datensatz mit einer einzigen Spalte $x$, die eine Farbe enthält:"
+  },
+  {
+   "de": "123",
+   "kind": "table",
+   "digest": "7ee3c9f80e636eda",
+   "en": "123",
+   "preview": "| $i$ | 1 | 2 | 3 | 4 | |---|---|---|---|---| | $x_i$ | blue | red | blu…"
+  },
+  {
+   "de": "124",
+   "kind": "prose",
+   "digest": "11f50fee7271efbc",
+   "en": "124",
+   "preview": "Hier ist $\\Omega = \\{\\text{blue}, \\text{red}, \\text{green}\\}$ und $N = 4…"
+  },
+  {
+   "de": "125",
+   "kind": "directive",
+   "digest": "f1ae2a75ed1f9972",
+   "en": "125",
+   "preview": ":::"
+  },
+  {
+   "de": "126",
+   "kind": "prose",
+   "digest": "106ab64f1e005826",
+   "en": "126",
+   "preview": "Wenn die Werte als Zahlen $0, 1, 2, \\dots$ codiert sind, bekommt man die…"
+  },
+  {
+   "de": "127",
+   "kind": "prose",
+   "digest": "abdd2bc06c738b8f",
+   "en": "127",
+   "preview": "Das folgende Beispiel ist der Spezialfall $\\Omega = \\{0,1\\}$, in dem ein…"
+  },
+  {
+   "de": "128",
+   "kind": "directive",
+   "digest": "0feec534fa43b536",
+   "en": "128",
+   "preview": ":::{admonition} Beispiel"
+  },
+  {
+   "de": "129",
+   "kind": "prose",
+   "digest": "9c3b39d3d513014a",
+   "en": "129",
+   "preview": "Gegeben eine Stichprobe von $N$ Münzwürfen $(x_1,\\dots,x_N) \\in \\{0,1\\}^…"
+  },
+  {
+   "de": "130",
+   "kind": "prose",
+   "digest": "556eff2a0fc3f55c",
+   "en": "130",
+   "preview": "Eine mögliche Schätzung wäre $\\frac{1}{2}$, ohne die Daten zu betrachten…"
+  },
+  {
+   "de": "131",
+   "kind": "prose",
+   "digest": "3f5fa70c59ded118",
+   "en": "131",
+   "preview": "Wenn wir die Stichprobe betrachten, können wir $e := \\sum_{i=1}^N x_i$, …"
+  },
+  {
+   "de": "132",
+   "kind": "prose",
+   "digest": "a65abc0fed6c44f7",
+   "en": "132",
+   "preview": "In der Sprache von oben: Jeder einzelne Wurf ist $\\operatorname{Ber}(\\pi…"
+  },
+  {
+   "de": "133",
+   "kind": "directive",
+   "digest": "f1ae2a75ed1f9972",
+   "en": "133",
+   "preview": ":::"
+  },
+  {
+   "de": "134",
+   "kind": "prose",
+   "digest": "13b095316c46dc00",
+   "en": "134",
+   "preview": "Damit haben wir schon alle Rollen der Statistik besetzt, auch wenn wir d…"
+  },
+  {
+   "de": "135",
+   "kind": "prose",
+   "digest": "255e8bfde94e0894",
+   "en": "135",
+   "preview": "Die Verteilung der Daten ist noch kein Modell — sie ist nur eine andere …"
+  },
+  {
+   "de": "136",
+   "kind": "table",
+   "digest": "8edd3eedf1b7f9f3",
+   "en": "136",
+   "preview": "| $i$ | 1 | 2 | 3 | 4 | 5 | |---|---|---|---|---|---| | $x_i$ | blue | r…"
+  },
+  {
+   "de": "137",
+   "kind": "prose",
+   "digest": "3b45b42ea0e478dc",
+   "en": "137",
+   "preview": "Die Verteilung der Daten ist jetzt $\\left(\\frac{3}{5},\\frac{1}{5},\\frac{…"
+  },
+  {
+   "de": "138",
+   "kind": "prose",
+   "digest": "92cdf149868f71d0",
+   "en": "138",
+   "preview": "Ein Modell lässt sich in beide Richtungen benutzen. Aus Daten eine Model…"
+  },
+  {
+   "de": "139",
+   "kind": "directive",
+   "digest": "d2da72a89f0f1e62",
+   "en": "139",
+   "preview": ":::{admonition} Übung"
+  },
+  {
+   "de": "140",
+   "kind": "prose",
+   "digest": "feb2ea8187ca067c",
+   "en": "140",
+   "preview": "Ziehen Sie $1000$ synthetische Farbwerte zur Modellverteilung $p = \\left…"
+  },
+  {
+   "de": "141",
+   "kind": "directive",
+   "digest": "f1ae2a75ed1f9972",
+   "en": "141",
+   "preview": ":::"
+  },
+  {
+   "de": "142",
+   "kind": "prose",
+   "digest": "33c90c910f3e5872",
+   "en": "142",
+   "preview": "Damit liegen zwei Verteilungen auf demselben $\\Omega$ vor: die der Daten…"
+  },
+  {
+   "de": "143",
+   "kind": "prose",
+   "digest": "13d5deca833ecb0d",
+   "en": "143",
+   "preview": "Damit ist der Weg abgesteckt, den der Rest des Kurses geht, und der sich…"
+  }
+ ]
+}

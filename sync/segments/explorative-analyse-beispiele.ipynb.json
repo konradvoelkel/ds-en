@@ -1,0 +1,728 @@
+{
+ "source": "explorative-analyse-beispiele.ipynb",
+ "target": "eda-examples.ipynb",
+ "upstream": "c7247a99ef28b04050ef09ba376ac6e32025456a",
+ "blocks": [
+  {
+   "de": "c0.0",
+   "kind": "heading",
+   "digest": "a72bd238c6c9cd9e",
+   "en": "c0.0",
+   "preview": "# Explorative Analyse: Beispiele"
+  },
+  {
+   "de": "c0.1",
+   "kind": "prose",
+   "digest": "a7c8dd099ae59b89",
+   "en": "c0.1",
+   "preview": "[Vorlesungsaufzeichnung Beispiele für EDA](https://media.hhu.de/channel/…"
+  },
+  {
+   "de": "c0.2",
+   "kind": "prose",
+   "digest": "ba426acd0022889b",
+   "en": "c0.2",
+   "preview": "Wir gehen jetzt die ersten Schritte der explorativen Datenanalyse, sowei…"
+  },
+  {
+   "de": "c1",
+   "kind": "code",
+   "digest": "9b2776382fcc7ede",
+   "en": "c1",
+   "preview": "import numpy as np from scipy import stats as st import matplotlib.pyplo…"
+  },
+  {
+   "de": "c2.0",
+   "kind": "heading",
+   "digest": "ed0a18404c9ec81b",
+   "en": "c2.0",
+   "preview": "## Wein"
+  },
+  {
+   "de": "c2.1",
+   "kind": "prose",
+   "digest": "8fff9ce8b9d7e9ae",
+   "en": "c2.1",
+   "preview": "Den Anfang macht ein alter Datensatz, den man z.B. beim [UC Irvine Machi…"
+  },
+  {
+   "de": "c2.2",
+   "kind": "prose",
+   "digest": "e0a444507cec2aef",
+   "en": "c2.2",
+   "preview": "[Wine. (1991). UCI Machine Learning Repository.](https://archive.ics.uci…"
+  },
+  {
+   "de": "c3",
+   "kind": "code",
+   "digest": "6107d7e2e0c4c74b",
+   "en": "c3",
+   "preview": "url = \"https://archive.ics.uci.edu/ml/machine-learning-databases/wine/wi…"
+  },
+  {
+   "de": "c4.0",
+   "kind": "prose",
+   "digest": "b4cdb539fb2126bb",
+   "en": "c4.0",
+   "preview": "Der Datensatz hat, laut Dokumentation, 178 Zeilen (die hier und sonst au…"
+  },
+  {
+   "de": "c4.1",
+   "kind": "prose",
+   "digest": "03e86bf179db9dd1",
+   "en": "c4.1",
+   "preview": "Der Datensatz besteht aus 2 Dateien: * `wine.data` * `wine.names`"
+  },
+  {
+   "de": "c4.2",
+   "kind": "prose",
+   "digest": "8c5a7cf6d9809c20",
+   "en": "c4.2",
+   "preview": "Dabei ist `wine.data` der eigentliche Datensatz, ohne Metadaten, und `wi…"
+  },
+  {
+   "de": "c4.3",
+   "kind": "prose",
+   "digest": "b4df5c59cb86e4d2",
+   "en": "c4.3",
+   "preview": "Aus `wine.names` ziehen wir insbesondere diese Informationen: > These da…"
+  },
+  {
+   "de": "c4.4",
+   "kind": "prose",
+   "digest": "fc4a1db6e0c075ec",
+   "en": "c4.4",
+   "preview": "Nachdem wir also erfolgreich die Daten heruntergeladen haben und die Met…"
+  },
+  {
+   "de": "c4.5",
+   "kind": "prose",
+   "digest": "0a4d4dd9253714aa",
+   "en": "c4.5",
+   "preview": "Eine offensichtliche Aufgabe ist, herauszufinden, ob sich die drei Klass…"
+  },
+  {
+   "de": "c4.6",
+   "kind": "prose",
+   "digest": "44da66e56e6bdb5e",
+   "en": "c4.6",
+   "preview": "Wir können das als ein Spiel formulieren: wenn wir die erste Variable, d…"
+  },
+  {
+   "de": "c4.7",
+   "kind": "prose",
+   "digest": "4aaf1064b08dcb5f",
+   "en": "c4.7",
+   "preview": "In der fortgeschrittenen Variante teilen wir die Daten in Trainings- und…"
+  },
+  {
+   "de": "c4.8",
+   "kind": "prose",
+   "digest": "ca3ca3a3393e278d",
+   "en": "c4.8",
+   "preview": "Ganz unabhängig von den Klassen ist erstmal interessant: wie sind die Da…"
+  },
+  {
+   "de": "c5",
+   "kind": "code",
+   "digest": "e4687ac1baf21bfe",
+   "en": "c5",
+   "preview": "# Numpys genfromtxt geht von whitespace-separierten Daten aus, # daher g…"
+  },
+  {
+   "de": "c6",
+   "kind": "code",
+   "digest": "c78029f86dc623db",
+   "en": "c6",
+   "preview": "klasse = data[:,0].astype(\"i8\") # Wenn klasse eine Python list wäre: #kl…"
+  },
+  {
+   "de": "c7",
+   "kind": "code",
+   "digest": "a425c2a343ca0b92",
+   "en": "c7",
+   "preview": "alcohol = data[:,1] print(\"min\", np.min(alcohol), \"max\", np.max(alcohol)…"
+  },
+  {
+   "de": "c8",
+   "kind": "code",
+   "digest": "89b3634fb41d9323",
+   "en": "c8",
+   "preview": "# Sieht annähernd normalverteilt aus, also: mu, sigma = st.norm.fit(alco…"
+  },
+  {
+   "de": "c9.0",
+   "kind": "prose",
+   "digest": "f467f9cea1c99150",
+   "en": "c9.0",
+   "preview": "Wir müssen feststellen, dass diese Verteilung nicht besonders normal aus…"
+  },
+  {
+   "de": "c9.1",
+   "kind": "prose",
+   "digest": "b7c55190cad77ca6",
+   "en": "c9.1",
+   "preview": "In unserem Beispiel können wir die Klasse als Hilfsvariable verwenden:"
+  },
+  {
+   "de": "c10",
+   "kind": "code",
+   "digest": "6483b531806fc186",
+   "en": "c10",
+   "preview": "alcohol_by_class = [alcohol[data[:,0] == c] for c in (1,2,3)] # Das ist …"
+  },
+  {
+   "de": "c11.0",
+   "kind": "prose",
+   "digest": "bde69e8bba6728f4",
+   "en": "c11.0",
+   "preview": "Tatsächlich sind hier sofort klare Unterschiede zu erkennen. Der 'blaue'…"
+  },
+  {
+   "de": "c12",
+   "kind": "code",
+   "digest": "4eb060378bc800bc",
+   "en": "c12",
+   "preview": "for alcohol_class in alcohol_by_class: plt.hist(alcohol_class, density=T…"
+  },
+  {
+   "de": "c13.0",
+   "kind": "prose",
+   "digest": "8fe16e9e4825ab87",
+   "en": "c13.0",
+   "preview": "Wir sehen leider auch deutlich, dass die Überschneidungen so groß sind, …"
+  },
+  {
+   "de": "c13.1",
+   "kind": "prose",
+   "digest": "3e622697928e51a0",
+   "en": "c13.1",
+   "preview": "Der Vollständigkeit halber modellieren wir noch die gemischte Verteilung…"
+  },
+  {
+   "de": "c14",
+   "kind": "code",
+   "digest": "e774a41fabbced37",
+   "en": "c14",
+   "preview": "class_frequencies = counts / len(alcohol) # (59/178, 71/178, 48/178) par…"
+  },
+  {
+   "de": "c15.0",
+   "kind": "prose",
+   "digest": "deaae92b684ca68d",
+   "en": "c15.0",
+   "preview": "Nachdem wir nun beim ersten Attribut, dem Alkoholgehalt, sehen konnten, …"
+  },
+  {
+   "de": "c16",
+   "kind": "code",
+   "digest": "974dd4494562897c",
+   "en": "c16",
+   "preview": "attributes_by_class = [[data[:,i][data[:,0] == c] for c in (1,2,3)] for …"
+  },
+  {
+   "de": "c17.0",
+   "kind": "prose",
+   "digest": "a2f9b5fd2a0e7e7a",
+   "en": "c17.0",
+   "preview": "An den Bildern sehen wir, dass neben Attribut 1 (Alkohol) auch Attribut …"
+  },
+  {
+   "de": "c18",
+   "kind": "code",
+   "digest": "1885ba867116339c",
+   "en": "c18",
+   "preview": "# benutze attributes_by_class def plot_attribute_by_class(i, title=\"\"): …"
+  },
+  {
+   "de": "c19.0",
+   "kind": "prose",
+   "digest": "027c411f7e35dab9",
+   "en": "c19.0",
+   "preview": "Wir sehen daran: Während Äpfelsäure sich als eher schlechter Indikator f…"
+  },
+  {
+   "de": "c19.1",
+   "kind": "prose",
+   "digest": "6b94dec5f3b01879",
+   "en": "c19.1",
+   "preview": "Zuletzt schauen wir uns noch den Zusammenhang zwischen einzelnen Attribu…"
+  },
+  {
+   "de": "c20",
+   "kind": "code",
+   "digest": "72989f6f3abd453a",
+   "en": "c20",
+   "preview": "plt.title(\"Alkoholgehalt vs. Äpfelsäure\") plt.scatter(data[:,1], data[:,…"
+  },
+  {
+   "de": "c21.0",
+   "kind": "prose",
+   "digest": "c6f6db5482f08309",
+   "en": "c21.0",
+   "preview": "Während Alkoholgehalt und Äpfelsäure keinen direkt erkennbaren Zusammenh…"
+  },
+  {
+   "de": "c21.1",
+   "kind": "prose",
+   "digest": "dbab006394fe4062",
+   "en": "c21.1",
+   "preview": "Um zu sehen, ob dieser Zusammenhang nur scheinbar da ist, und evtl. eige…"
+  },
+  {
+   "de": "c22",
+   "kind": "code",
+   "digest": "c1d97b2c98e2b3fd",
+   "en": "c22",
+   "preview": "plt.title(\"Protein vs. Prolin\") plt.scatter(data[:,12], data[:,13], c=da…"
+  },
+  {
+   "de": "c23.0",
+   "kind": "prose",
+   "digest": "28d828b3cfbd7944",
+   "en": "c23.0",
+   "preview": "Und tatsächlich ist ganz deutlich zu sehen, wie auch in den Histogrammen…"
+  },
+  {
+   "de": "c23.1",
+   "kind": "prose",
+   "digest": "bf11f43041741e4d",
+   "en": "c23.1",
+   "preview": "Wünschenswert wäre natürlich ein Koordinaten-unabhängiges Verfahren, die…"
+  },
+  {
+   "de": "c24.0",
+   "kind": "heading",
+   "digest": "01d71599eda94b61",
+   "en": "c24.0",
+   "preview": "## Starkregenereignisse (CatRaRE)"
+  },
+  {
+   "de": "c24.1",
+   "kind": "prose",
+   "digest": "0517c3cda94227a9",
+   "en": "c24.1",
+   "preview": "Der deutsche Wetterdienst (DWD) stellt Daten über Starkregenereignisse z…"
+  },
+  {
+   "de": "c24.2",
+   "kind": "prose",
+   "digest": "0e2dfae586fa56c7",
+   "en": "c24.2",
+   "preview": "* [Die Beschreibung der Datensätze findet sich beim DWD](https://www.dwd…"
+  },
+  {
+   "de": "c25",
+   "kind": "code",
+   "digest": "91a3dee06b198d36",
+   "en": "c25",
+   "preview": "url = \"https://opendata.dwd.de/climate_environment/CDC/event_catalogues/…"
+  },
+  {
+   "de": "c26",
+   "kind": "code",
+   "digest": "9ca2b1d14dc9e911",
+   "en": "c26",
+   "preview": "print(np.max(data[\"RRmax\"]), np.min(data[\"RRmean\"])) print(np.mean(data[…"
+  },
+  {
+   "de": "c27.0",
+   "kind": "prose",
+   "digest": "282b508e2855f30f",
+   "en": "c27.0",
+   "preview": "Nun müssen wir uns eine Forschungsfrage stellen. Offensichtlich ist imme…"
+  },
+  {
+   "de": "c27.1",
+   "kind": "prose",
+   "digest": "4434da13c6db013b",
+   "en": "c27.1",
+   "preview": "Momentan ist der Anfangszeitpunkt eines Starkregenereignisses als `int` …"
+  },
+  {
+   "de": "c28",
+   "kind": "code",
+   "digest": "09474f752947b7ec",
+   "en": "c28",
+   "preview": "def getmonthfromintdate(intdate): return int(str(intdate)[4:6]) assert g…"
+  },
+  {
+   "de": "c29.0",
+   "kind": "prose",
+   "digest": "b9142c05f643e29d",
+   "en": "c29.0",
+   "preview": "Wir sehen also deutlich den erwarteten Zusammenhang: im Juli und Juni si…"
+  },
+  {
+   "de": "c29.1",
+   "kind": "prose",
+   "digest": "5f8aa88522463c02",
+   "en": "c29.1",
+   "preview": "Als nächstes können wir uns den Ort anschauen, also z.B. die Variable `G…"
+  },
+  {
+   "de": "c30",
+   "kind": "code",
+   "digest": "2bc65ac887589775",
+   "en": "c30",
+   "preview": "# Funktioniert nicht: duessel = data[data[\"GMD_RRmax\"] == \"Düsseldorf\"] …"
+  },
+  {
+   "de": "c31",
+   "kind": "code",
+   "digest": "ff450afc908af910",
+   "en": "c31",
+   "preview": "# Stattdessen: for entry in data[\"GMD_RRmax\"]: if(\"sseldorf\" in str(entr…"
+  },
+  {
+   "de": "c32",
+   "kind": "code",
+   "digest": "206d246cb8dd7daa",
+   "en": "c32",
+   "preview": "# Also (b'...' ist ein Byte-String: genfromtxt liest Textspalten als Byt…"
+  },
+  {
+   "de": "c33.0",
+   "kind": "prose",
+   "digest": "f49edf32c5dd9d25",
+   "en": "c33.0",
+   "preview": "Wir sehen: in Düsseldorf sind Juni und Juli bisher die einzigen Monate m…"
+  },
+  {
+   "de": "c33.1",
+   "kind": "prose",
+   "digest": "41959ead02f1cc91",
+   "en": "c33.1",
+   "preview": "Um weitere Korrelationen zu betrachten, sind diese 7 Ereignisse zu wenig…"
+  },
+  {
+   "de": "c33.2",
+   "kind": "prose",
+   "digest": "e01f51cac3c1bd04",
+   "en": "c33.2",
+   "preview": "Um einen Eindruck von der räumlichen Verteilung zu bekommen, betrachten …"
+  },
+  {
+   "de": "c34",
+   "kind": "code",
+   "digest": "497da896613d0df9",
+   "en": "c34",
+   "preview": "plt.scatter(data[\"x_RRmax\"], data[\"y_RRmax\"]) plt.show()"
+  },
+  {
+   "de": "c35.0",
+   "kind": "prose",
+   "digest": "b8a873e122e5b25f",
+   "en": "c35.0",
+   "preview": "Man kann fast Deutschland erkennen, vor allem aber, dass die y-Achse ska…"
+  },
+  {
+   "de": "c36",
+   "kind": "code",
+   "digest": "05dcedfe93b24471",
+   "en": "c36",
+   "preview": "plt.rcParams[\"figure.figsize\"] = (10,10) plt.scatter(data[\"x_RRmax\"], da…"
+  },
+  {
+   "de": "c37.0",
+   "kind": "prose",
+   "digest": "dc796f7de014af80",
+   "en": "c37.0",
+   "preview": "Daran sehen wir, dass Starkregenereignisse im Süden häufiger vorkommen a…"
+  },
+  {
+   "de": "c38",
+   "kind": "code",
+   "digest": "b8143a524bbc3817",
+   "en": "c38",
+   "preview": "plt.scatter(data[\"Duration\"], data[\"y_RRmax\"], alpha=0.01) plt.show()"
+  },
+  {
+   "de": "c39.0",
+   "kind": "prose",
+   "digest": "ef1a5565d6757489",
+   "en": "c39.0",
+   "preview": "Anstelle des vermuteten Zusammenhangs sehen wir etwas ganz anderes: dass…"
+  },
+  {
+   "de": "c40",
+   "kind": "code",
+   "digest": "682a6bd375713af0",
+   "en": "c40",
+   "preview": "plt.scatter(data[\"x_RRmax\"], data[\"y_RRmax\"], alpha=0.9, c=data[\"Duratio…"
+  },
+  {
+   "de": "c41.0",
+   "kind": "prose",
+   "digest": "c7a4ca78c651d4a2",
+   "en": "c41.0",
+   "preview": "Da man hier nicht viel sehen kann (außer der Seltenheit längerer Ereigni…"
+  },
+  {
+   "de": "c42",
+   "kind": "code",
+   "digest": "10783498399806d0",
+   "en": "c42",
+   "preview": "plt.scatter(data[\"x_RRmax\"], data[\"y_RRmax\"], alpha=0.9, c=data[\"RRmean\"…"
+  },
+  {
+   "de": "c43.0",
+   "kind": "prose",
+   "digest": "85f985dc6bbeb348",
+   "en": "c43.0",
+   "preview": "Hier kommt der Verdacht auf, dass die Skala schwer zu lesen ist, weil di…"
+  },
+  {
+   "de": "c44",
+   "kind": "code",
+   "digest": "fdd821c0cc37b176",
+   "en": "c44",
+   "preview": "calm_data = data[data[\"RRmean\"] < 60] plt.scatter(calm_data[\"x_RRmax\"], …"
+  },
+  {
+   "de": "c45.0",
+   "kind": "prose",
+   "digest": "b87abb63031d3a63",
+   "en": "c45.0",
+   "preview": "Den gleichen Effekt erzielen wir aber auch, wenn wir die Colormap anpass…"
+  },
+  {
+   "de": "c46",
+   "kind": "code",
+   "digest": "ead99c7cd44836f2",
+   "en": "c46",
+   "preview": "from matplotlib import colormaps from matplotlib.colors import ListedCol…"
+  },
+  {
+   "de": "c47.0",
+   "kind": "prose",
+   "digest": "04344f135ad4a2ad",
+   "en": "c47.0",
+   "preview": "Das soll uns für's erste an Starkregenereignissen genügen."
+  },
+  {
+   "de": "c48.0",
+   "kind": "heading",
+   "digest": "f0df840f1540a4c1",
+   "en": "c48.0",
+   "preview": "## Titanic"
+  },
+  {
+   "de": "c48.1",
+   "kind": "prose",
+   "digest": "22ad03236a6efd8a",
+   "en": "c48.1",
+   "preview": "Jetzt wollen wir das Objekt-orientierte Interface von matplotlib kennen …"
+  },
+  {
+   "de": "c48.2",
+   "kind": "prose",
+   "digest": "ff3ba4e7cf0da969",
+   "en": "c48.2",
+   "preview": "Wir laden uns den Trainings-Datensatz herunter als `titanic.csv`."
+  },
+  {
+   "de": "c49",
+   "kind": "code",
+   "digest": "c57d9652a1d3aa99",
+   "en": "c49",
+   "preview": "# Das klappt so nicht (pandas.read_csv versteht Anführungszeichen und # …"
+  },
+  {
+   "de": "c50",
+   "kind": "code",
+   "digest": "9fa902ab5099d691",
+   "en": "c50",
+   "preview": "# Wir überspringen die erste Zeile und tun so, # als würde der Name aus …"
+  },
+  {
+   "de": "c51",
+   "kind": "code",
+   "digest": "103cdf945afd5cab",
+   "en": "c51",
+   "preview": "print(\"Gesamt Überlebende:\", np.sum(data[\"Survived\"])) print(\"Gesamt Pas…"
+  },
+  {
+   "de": "c52",
+   "kind": "code",
+   "digest": "12a0b32774cb20d1",
+   "en": "c52",
+   "preview": "# Fehlende Daten: data[\"Age\"][:10]"
+  },
+  {
+   "de": "c53",
+   "kind": "code",
+   "digest": "46b460c205f16ea7",
+   "en": "c53",
+   "preview": "aged_data = data[data[\"Age\"] != -1] print(\"Wrong mean:\", np.mean(data[\"A…"
+  },
+  {
+   "de": "c54",
+   "kind": "code",
+   "digest": "4fa5fd529979593f",
+   "en": "c54",
+   "preview": "# Age correlated with survival? nonsurvivors, survivors = tuple(aged_dat…"
+  },
+  {
+   "de": "c55",
+   "kind": "code",
+   "digest": "6cc8eb867654b7d0",
+   "en": "c55",
+   "preview": "fig, ax = plt.subplots() def ageplot(data, ax): ax.set_xlabel(\"Alter [Ja…"
+  },
+  {
+   "de": "c56",
+   "kind": "code",
+   "digest": "dff45cff5af7e723",
+   "en": "c56",
+   "preview": "fig, ax = plt.subplots() pclasses = (aged_data[aged_data[\"Pclass\"] == i]…"
+  },
+  {
+   "de": "c57.0",
+   "kind": "prose",
+   "digest": "d7c5f2c69a1d934b",
+   "en": "c57.0",
+   "preview": "Es ist wohl wenig verwunderlich, dass in Klasse 3 (der billigsten, der g…"
+  },
+  {
+   "de": "c57.1",
+   "kind": "prose",
+   "digest": "2bdb19cb80fb701a",
+   "en": "c57.1",
+   "preview": "Wenn wir sehen wollen, ob Passagierklasse und Überleben zusammenhängen, …"
+  },
+  {
+   "de": "c58",
+   "kind": "code",
+   "digest": "2988b7164ff4f8a7",
+   "en": "c58",
+   "preview": "fig, ax = plt.subplots(figsize=(3,3)) ax.scatter(data[\"Pclass\"], data[\"S…"
+  },
+  {
+   "de": "c59.0",
+   "kind": "prose",
+   "digest": "e1d9d6c898aa3d46",
+   "en": "c59.0",
+   "preview": "An diesem Scatterplot kann man sehen, dass es eine Korrelation gibt: Pas…"
+  },
+  {
+   "de": "c59.1",
+   "kind": "prose",
+   "digest": "fa0872dd7ab97e6c",
+   "en": "c59.1",
+   "preview": "Korrekt wäre hier, die Wahrscheinlichkeit für einen Passagier in Klasse …"
+  },
+  {
+   "de": "c59.2",
+   "kind": "math",
+   "digest": "5b5764f42b27272d",
+   "en": "c59.2",
+   "preview": "$$ P(Survived = 1 | Pclass = 3) = \\dfrac{P(Survived = 1, Pclass = 3)}{P(…"
+  },
+  {
+   "de": "c60",
+   "kind": "code",
+   "digest": "5db8ae45847830c5",
+   "en": "c60",
+   "preview": "psp_mask = [(data[\"Survived\"] == 1) & (data[\"Pclass\"] == c) for c in np.…"
+  },
+  {
+   "de": "c61.0",
+   "kind": "prose",
+   "digest": "19cd900e360ee92c",
+   "en": "c61.0",
+   "preview": "Wir sehen, dass es für Passagiere der ersten Klasse wesentlich wahrschei…"
+  },
+  {
+   "de": "c61.1",
+   "kind": "prose",
+   "digest": "78f2e0cf45fe6e91",
+   "en": "c61.1",
+   "preview": "Es sollte uns nicht wundern, dass die Wahrscheinlichkeiten sich nicht zu…"
+  },
+  {
+   "de": "c61.2",
+   "kind": "math",
+   "digest": "2e792bcc21b4c02a",
+   "en": "c61.2",
+   "preview": "$$ P(Pclass = 3 | Survived = 1) = \\dfrac{P(Survived = 1, Pclass = 3)}{P(…"
+  },
+  {
+   "de": "c62",
+   "kind": "code",
+   "digest": "16305ee3bd7d620c",
+   "en": "c62",
+   "preview": "total_survivor_count = len(data[data[\"Survived\"] == 1]) pps = [len(data[…"
+  },
+  {
+   "de": "c63.0",
+   "kind": "prose",
+   "digest": "54d2c360547b1a09",
+   "en": "c63.0",
+   "preview": "Daran sehen wir, dass man am Überlebensstatus keineswegs ablesen kann, i…"
+  },
+  {
+   "de": "c63.1",
+   "kind": "prose",
+   "digest": "1023f40b3d1c4e35",
+   "en": "c63.1",
+   "preview": "Es ist immer interessant, wie repräsentativ eine Stichprobe ist, um eins…"
+  },
+  {
+   "de": "c64",
+   "kind": "code",
+   "digest": "9f85e51d66dbec49",
+   "en": "c64",
+   "preview": "try: st.pearsonr(data[\"Sex\"], data[\"Age\"]) except ValueError as e: print…"
+  },
+  {
+   "de": "c65",
+   "kind": "code",
+   "digest": "9a85fffaf48b38b0",
+   "en": "c65",
+   "preview": "sexbool = (data[\"Sex\"] == b\"female\") r, pvalue = st.pearsonr(sexbool, da…"
+  },
+  {
+   "de": "c66.0",
+   "kind": "prose",
+   "digest": "c5a5282b7e6b608b",
+   "en": "c66.0",
+   "preview": "Der zweite Rückgabewert `pvalue` ist ein *p-Wert*: die Wahrscheinlichkei…"
+  },
+  {
+   "de": "c67",
+   "kind": "code",
+   "digest": "891107524becd7e4",
+   "en": "c67",
+   "preview": "print(st.pearsonr(sexbool, data[\"Survived\"]))"
+  },
+  {
+   "de": "c68.0",
+   "kind": "prose",
+   "digest": "d55ed72e9058fc83",
+   "en": "c68.0",
+   "preview": "Hier sehen wir deutlich $r > 0.5$ und eine verschwindend kleine Wahrsche…"
+  },
+  {
+   "de": "c69",
+   "kind": "code",
+   "digest": "e92bd3dd67085853",
+   "en": "c69",
+   "preview": "print(st.pearsonr(sexbool, data[\"Pclass\"])) print(st.pearsonr(sexbool, d…"
+  },
+  {
+   "de": "c70.0",
+   "kind": "prose",
+   "digest": "cf2a1646a5f73fd5",
+   "en": "c70.0",
+   "preview": "Wir erwarten also naiv (der Dokumentation von Scipy Stats folgend), dass…"
+  },
+  {
+   "de": "c71",
+   "kind": "code",
+   "digest": "7fc7ebbfa767757d",
+   "en": "c71",
+   "preview": "print(st.pearsonr(data[\"Age\"], data[\"SibSp\"])) fig, ax = plt.subplots(fi…"
+  }
+ ]
+}

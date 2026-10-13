@@ -1,49 +1,47 @@
-# Was ist Data Science?
+# What is Data Science?
 
-[Vorlesungsaufzeichnung Überblick (VL 0)](https://media.hhu.de/channel/video/data-science-vl-0-ueberblick-2025/95a1f14466cb299f6063e931d38e733a/167)
+## First off: a spreadsheet that sent Europe into austerity
 
-## Vorab: ein Tabellenblatt, das Europa sparen ließ
+In 2010 the Harvard economists Carmen Reinhart and Kenneth Rogoff published an analysis of two centuries of public debt and economic growth {cite}`reinhart2010`. Their finding: as soon as a country's debt exceeds 90% of its economic output, the economy shrinks by an average of 0.1% per year. The number went places. It appeared in the US Congress budget proposal, the EU monetary affairs commissioner quoted it, and it was an argument for austerity policy in Europe after the financial crisis.
 
-Im Jahr 2010 veröffentlichten die Harvard-Ökonomen Carmen Reinhart und Kenneth Rogoff eine Auswertung von zwei Jahrhunderten Staatsschulden und Wirtschaftswachstum {cite}`reinhart2010`. Ihr Befund: Sobald die Schulden eines Landes 90 % seiner Wirtschaftsleistung übersteigen, schrumpft die Wirtschaft im Mittel um 0,1 % pro Jahr. Die Zahl machte Karriere. Sie stand im Haushaltsentwurf des US-Kongresses, der EU-Währungskommissar zitierte sie, und sie war ein Argument für die Sparpolitik in Europa nach der Finanzkrise.
+Three years later Thomas Herndon, a doctoral student at Amherst, was given a seminar assignment: redo the numbers of a well-known study. He asked for the spreadsheet and found in it a selected range of cells that was five rows too short. Australia, Austria, Belgium, Canada and Denmark were missing from the average – all countries with high debt and respectable growth. On top of that came omitted years and an unusual weighting. With all three corrections, $-0.1\,\%$ growth turned into $+2.2\,\%$ {cite}`herndon2014`. The cliff at 90% did not exist.
 
-Drei Jahre später bekam Thomas Herndon, Doktorand in Amherst, in einem Seminar die Aufgabe, eine bekannte Studie nachzurechnen. Er bat um das Tabellenblatt und fand darin einen markierten Zellbereich, der fünf Zeilen zu kurz war: Australien, Österreich, Belgien, Kanada und Dänemark fehlten im Mittelwert, alles Länder mit hohen Schulden und ordentlichem Wachstum. Dazu kamen ausgelassene Jahre und eine ungewöhnliche Gewichtung. Mit allen drei Korrekturen wurden aus $-0{,}1\,\%$ Wachstum $+2{,}2\,\%$ {cite}`herndon2014`. Die Klippe bei 90 % gab es nicht.
+Everything this course is about is in that story. The raw numbers were real and public; the analysis was a handful of averages; and the result was still wrong, because nobody had checked which rows actually went into the calculation, and because a spreadsheet does not show you that. Finding the error took no better mathematics, just somebody willing to pick the data up again from the start. That is exactly what we practise: loading data instead of clicking on it; checking every summary figure against the rows it is made of; and writing calculations down so that others can repeat them. It is why we work with Python and not with Excel in this course, and why the chapter [Data cleaning](data-cleaning.ipynb) insists on logging every change made to the data.
 
-Daran ist alles drin, worum es in diesem Kurs geht. Die Rohzahlen waren echt und öffentlich; die Auswertung war eine Handvoll Mittelwerte; und trotzdem lag das Ergebnis daneben, weil niemand nachgesehen hatte, welche Zeilen eigentlich in der Rechnung stecken, und weil eine Tabellenkalkulation so etwas nicht zeigt. Es brauchte keine bessere Mathematik, um den Fehler zu finden, sondern jemanden, der die Daten noch einmal von vorn anfasst. Genau das üben wir: Daten laden, statt sie anzuklicken; jede Kennzahl mit dem Blick auf die Zeilen prüfen, aus denen sie entsteht; und Rechnungen so aufschreiben, dass andere sie wiederholen können. Deshalb arbeiten wir in diesem Kurs mit Python und nicht mit Excel, und deshalb hat das Kapitel [Daten putzen](data-cleaning.ipynb) den Grundsatz, jede Änderung an den Daten zu protokollieren.
+## What is "data"?
 
-## Was ist "Data"?
+Gerhard Goos, *Vorlesungen über Informatik*, volume 1:
 
-Gerhard Goos, Vorlesungen über Informatik Band 1:
+> The representation of a communication by the variation of a physical quantity over time is called a *signal*.
+If, in representing and passing on a communication, we abstract away from the medium used and from the details of the signals and their parameters, the communication is called a *message*.
 
-> Die Darstellung einer Mitteilung durch die zeitliche Veränderung einer physikalischen Größe heißt ein *Signal*.
-Wenn wir bei der Darstellung und Weitergabe einer Mitteilung vom verwandten Medium und den Einzelheiten der Signale und Signalparameter abstrahieren, heißt die Mitteilung eine *Nachricht*.
+> The knowledge needed to assign meaning to a message we call a *context*, or a frame of reference.
+The meaning assigned is called *information*.
+The pair \<message, assigned information\> is called a *datum*. The plural is data.
 
-> Die Kenntnisse, die man benötigt, um einer Nachricht Bedeutung zuzuordnen, nennen wir einen *Kontext* oder ein Bezugssystem.
-Die zugeordnete Bedeutung heißt eine *Information*.
-Man nennt das Paar <Nachricht, zugeordnete Information> ein *Datum*. Der Plural ist Daten (englisch data).
+So we may call a CSV file "data" exactly when we have a context for assigning meaning to the bit strings it contains. Most of that context we never consciously notice – we assume, for instance, that a CSV file can be opened in a text editor and that its contents are encoded as strings in such a way that we could guess the data types just by looking. Which fields of a table are encoded how, though, is often not something the table itself tells you; for that you need metadata.
 
-Eine CSV-Datei können wir also genau dann "Daten" nennen, wenn wir einen Kontext haben, um den darin enthaltenen Bitstrings Bedeutung zuzuordnen. Viel von diesem Kontext nehmen wir meist gar nicht wahr - wir gehen z.B. davon aus, dass sich eine CSV-Datei mit einem Texteditor öffnen lässt und die Inhalte so als Strings kodiert sind, dass wir durch bloßes Betrachten die Datentypen erraten könnten. Welche Felder einer Tabelle aber genau wie kodiert sind, ist oft nicht der Tabelle selbst zu entnehmen, dafür braucht man Metadaten.
-
-Wenn wir etwa die Antworten zu einer Single-Choice-Frage betrachten, so ist meist in der Nachricht erfasst, welche Nr. die gewählte Antwort hat, nicht aber der String der tatsächlichen Antwort. Diesen notiert man in einem *Code Book*, einer Kodierungstabelle. Um also die Antworten als Daten begreifen zu können, müssen wir auf die Kodierungstabelle zurückgreifen.
+If we look at the answers to a single-choice question, for example, what is usually recorded in the message is the number of the chosen answer, not the string of the actual answer. That string is written down in a *code book*, a coding table. To make sense of the answers as data, we therefore have to fall back on the coding table.
 
 (ein-bunter-mix)=
-## Ein bunter Mix
+## A colourful mix
 
 ```{figure} images/conway_data_science_venn_diagram.png
 :width: 400px
 :align: center
 :name: conway-venn
 
-Das „Data Science Venn Diagram“ von Drew Conway (2013), CC BY-NC 3.0, Quelle: drewconway.com/zia/2013/3/26/the-data-science-venn-diagram
+The "Data Science Venn Diagram" by Drew Conway (2013), CC BY-NC 3.0, source: drewconway.com/zia/2013/3/26/the-data-science-venn-diagram
 ```
 
-Drew Conway hat 2013 die bis heute meistzitierte Antwort auf die Frage gegeben, was Data Science ausmacht: die Schnittmenge von drei Kreisen. *Hacking Skills* heißt, mit Daten in beliebigen Formaten programmierend umgehen zu können, *Math & Statistics Knowledge* heißt, zu wissen, was eine Rechnung auf diesen Daten überhaupt aussagt, und *Substantive Expertise* ist die Fachkenntnis über den Bereich, aus dem die Daten stammen. Je zwei der Kreise ergeben etwas Bekanntes: Hacking und Statistik zusammen sind *Machine Learning*, Statistik und Fachkenntnis sind *Traditional Research*, so wie sie in den empirischen Wissenschaften seit langem betrieben wird. Hacking und Fachkenntnis ohne Statistik nennt Conway die *Danger Zone*: Wer Daten einlesen und ein Verfahren darauf loslassen kann und die Ergebnisse fachlich plausibel findet, wird sie auch glauben, ohne beurteilen zu können, ob sie mehr als Zufall sind. Das Tabellenblatt vom Anfang dieses Kapitels ist ein Beispiel dafür, dass diese Zone auch für Expert\*innen gefährlich ist. Diese Vorlesung liefert den Statistik-Kreis und übt den Hacking-Kreis an kleinen Datensätzen; die Fachkenntnis bringen Sie später aus dem Bereich mit, in dem Sie arbeiten.
+In 2013 Drew Conway gave what is still the most-quoted answer to the question of what makes data science: the intersection of three circles. *Hacking skills* means being able to handle data in arbitrary formats by programming, *math & statistics knowledge* means knowing what a calculation on that data actually says, and *substantive expertise* is domain knowledge about the field the data comes from. Any two of the circles give you something familiar: hacking and statistics together are *machine learning*, statistics and domain knowledge are *traditional research* as the empirical sciences have long practised it. Hacking and domain knowledge without statistics is what Conway calls the *danger zone*: someone who can read in data, turn a method loose on it and finds the results plausible for their field will believe those results, without being able to judge whether they are more than chance. The spreadsheet at the start of this chapter shows that this zone is dangerous for experts too. This course supplies the statistics circle and practises the hacking circle on small datasets; the domain knowledge you will bring later, from the field you end up working in.
 
-## Was ist ein Data Scientist?
+## What is a data scientist?
 
 > Nearly all \[...\] working data scientists make their daily bread and butter through data collection and data cleaning; building dashboards and reports; data visualization; statistical inference; communicating results to key stakeholders; and convincing decision makers of their results.
 [Hugo Bowne-Anderson, Harvard Business Review, 2018](http://hbr.org/2018/08/what-data-scientists-really-do-according-to-35-data-scientists)
 
-Kurz gesagt: Der größte Teil der täglichen Arbeit ist Datenbeschaffung, Datenbereinigung und Kommunikation der Ergebnisse, nicht die Modellierung, die in Kursen wie diesem den meisten Platz einnimmt.
+In short: most of the daily work is getting hold of data, cleaning it and communicating the results – not the modelling that takes up most of the room in courses like this one.
 
 > But how do you find data scientists? Whenever someone asks that question, I
 refer them back to a more fundamental question: what makes a good data
@@ -69,36 +67,36 @@ thread is that all have had to work with a tremendous amount of data before
 starting to work on the “real” problem
 [DJ Patil: Building Data Science Teams (2011), What Makes a Data Scientist? (p.11ff)](https://www.datascienceassn.org/sites/default/files/Building%20Data%20Science%20Teams.pdf)
 
-Patil beschreibt also, woran man gute Data Scientists erkennt: an fachlicher Tiefe in irgendeiner Disziplin und vor allem an der Neugier, ein Problem so lange zu zerlegen, bis daraus überprüfbare Hypothesen werden.
+So what Patil describes is how to recognise good data scientists: by depth in some discipline, and above all by the curiosity to keep taking a problem apart until testable hypotheses come out of it.
 
-Ein signifikanter Teil der Arbeit eines Data Scientist besteht in der Aufbereitung von Daten, dem sogenannten "Daten schrubben". Dabei kommen viele klassische Programmiertechniken zum Einsatz, etwa reguläre Ausdrücke und Kenntnis über Industriestandards bei Datentypen und die Abweichungen von Standards, die in der Praxis auftauchen. Die Liste ist erstaunlich konkret: Zeit- und Datumsformate samt Zeitzonen und Sommerzeitumstellung, GIS-Datenformate für alles Räumliche, Ländercodes (von denen es mehrere konkurrierende Systeme gibt), Unicode und die Encodings, die es ersetzen sollte, und die gängigen Abweichungen vom CSV-Standard — Trennzeichen, Anführungszeichen, Zeilenumbrüche mitten im Feld. Das Handwerk dazu hat in diesem Buch ein eigenes Kapitel, [Daten putzen](data-cleaning.ipynb).
+A significant part of a data scientist's work is preparing data, the so-called "data scrubbing". A lot of classical programming technique goes into it: regular expressions, say, and knowledge of industry standards for data types together with the deviations from those standards that turn up in practice. The list is surprisingly concrete: time and date formats including time zones and daylight saving changes, GIS formats for anything spatial, country codes (of which there are several competing systems), Unicode and the encodings it was meant to replace, and the usual departures from the CSV standard – separators, quotation marks, line breaks in the middle of a field. The craft of it has a chapter of its own in this book, [Data cleaning](data-cleaning.ipynb).
 
-Drei Dinge, die man dafür außerdem braucht, lernt man in keiner Vorlesung: Geduld, Übung und Fachkenntnisse über das Anwendungsgebiet. Ob ein Blutdruckwert von $400$ ein Messfehler ist oder ein Alter von $0$ ein fehlender Wert, steht in keinem Datenformat — das weiß nur, wer das Gebiet kennt oder jemanden fragt, der es kennt.
-Auch im maschinellen Lernen, etwa beim Deep Learning, kann man durch Pflegen der Trainingsdaten erheblich bessere Ergebnisse erzielen.
-
-
-
-## Weiterführendes
+Three further things you need for it are taught in no lecture: patience, practice, and domain knowledge about the field of application. Whether a blood pressure reading of $400$ is a measurement error, or an age of $0$ a missing value, is written in no data format – only someone who knows the field, or who asks someone who does, can tell.
+In machine learning too, in deep learning for instance, considerably better results can be had by taking care of the training data.
 
 
 
-**Karriere in Data Science**
+## Further reading
 
-[Robinson und Nolis: Build a Career in Data Science](https://www.manning.com/books/build-a-career-in-data-science)
 
-Dazu gibt es auch einen [einstündigen Podcast mit den Autorinnen](https://talkpython.fm/episodes/show/262/build-a-career-in-data-science).
+
+**A career in data science**
+
+[Robinson and Nolis: Build a Career in Data Science](https://www.manning.com/books/build-a-career-in-data-science)
+
+There is also an [hour-long podcast with the authors](https://talkpython.fm/episodes/show/262/build-a-career-in-data-science).
 
 
 **State of Data Science 2021**
 
-Eine Stunde Podcast [State of Data Science in 2021 with Stan Seibert](https://talkpython.fm/episodes/show/333/state-of-data-science-in-2021)
+An hour of podcast: [State of Data Science in 2021 with Stan Seibert](https://talkpython.fm/episodes/show/333/state-of-data-science-in-2021)
 
 **State of Data Science 2024**
 
-Ein Blogpost vom IDE-Entwickler JetBrains [State of Data Science in 2024: 6 Key Data Science Trends](https://blog.jetbrains.com/pycharm/2024/12/the-state-of-data-science/)
+A blog post from the IDE maker JetBrains: [State of Data Science in 2024: 6 Key Data Science Trends](https://blog.jetbrains.com/pycharm/2024/12/the-state-of-data-science/)
 
-Ein interessanter Kontrast ist dieser Artikel von Mike Loukides von O'Reilly: [What is data science?](http://radar.oreilly.com/2010/06/what-is-data-science.html) aus dem Jahr 2010. Man sieht schnell: die Werkzeuge und Softwarepakete sind im Wandel, und manches, was 2010 noch besonders spannend schien, ist heute schon vergessen. Man sieht aber auch: Data Science ist kein einfacher Hype, der bald vorüber zieht, sondern ein globaler Trend, der seit über 10 Jahren in der Entwicklung ist, und Conways drei Kreise aus dem Abschnitt [Ein bunter Mix](#ein-bunter-mix) beschreiben ihn noch immer treffend. Wenn Etiketten wie "Data Mining", "Big Data" und vielleicht auch "Data Science" im Laufe der Zeit an Bedeutung verlieren, so besteht doch kein Zweifel, dass statistische Methoden und maschinelles Lernen für lange Zeit eine wachsende Bedeutung in Informatik und Gesellschaft spielen werden.
+An interesting contrast is this article by Mike Loukides of O'Reilly: [What is data science?](http://radar.oreilly.com/2010/06/what-is-data-science.html) from 2010. You can see at once that the tools and software packages are in flux, and that some of what looked particularly exciting in 2010 has already been forgotten. But you can also see that data science is not a simple hype that will soon blow over, but a global trend that has been developing for more than ten years, and that Conway's three circles from the section [A colourful mix](#ein-bunter-mix) still describe it well. Labels like "data mining", "big data" and perhaps "data science" too may lose their meaning over time, yet there is no doubt that statistical methods and machine learning will play a growing role in computer science and in society for a long while yet.
 
-## Wie es weitergeht
+## What comes next
 
-Bevor wir mit Daten arbeiten, brauchen wir eine präzise Sprache für Zufall und Unsicherheit. Das nächste Kapitel liefert sie: Wahrscheinlichkeitsräume, Ereignisse, Zufallsvariablen. Es enthält zwei Exkurse zum Maßproblem, die als Hintergrund gedacht sind und beim ersten Lesen übersprungen werden können; der eigentliche Formalismus, den wir im ganzen Kurs verwenden, beginnt beim Abschnitt *Formalismus*.
+Before we work with data, we need a precise language for chance and uncertainty. The next chapter supplies it: probability spaces, events, random variables. It contains two digressions on the measure problem, meant as background and safely skipped on a first reading; the formalism we actually use throughout the course starts at the section *Formalism*.

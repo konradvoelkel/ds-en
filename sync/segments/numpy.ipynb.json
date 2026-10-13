@@ -1,0 +1,413 @@
+{
+ "source": "numpy.ipynb",
+ "target": "numpy.ipynb",
+ "upstream": "c7247a99ef28b04050ef09ba376ac6e32025456a",
+ "blocks": [
+  {
+   "de": "c0.0",
+   "kind": "heading",
+   "digest": "584028f0a9c8e478",
+   "en": "c0.0",
+   "preview": "# Numpy"
+  },
+  {
+   "de": "c1.0",
+   "kind": "prose",
+   "digest": "83654d2e2325d4fc",
+   "en": "c1.0",
+   "preview": "In diesem kurzen Abschnitt lernen wir die wesentlichen Ideen bei Numpy k…"
+  },
+  {
+   "de": "c1.1",
+   "kind": "prose",
+   "digest": "f852f41eaa26bebd",
+   "en": "c1.1",
+   "preview": "Kurz lässt sich sagen, dass mit Numpy [Array-orientierte Programmierung]…"
+  },
+  {
+   "de": "c1.2",
+   "kind": "prose",
+   "digest": "4543772bb7e303d2",
+   "en": "c1.2",
+   "preview": "Warum lohnt sich das? Drei Gründe, die zusammenhängen."
+  },
+  {
+   "de": "c1.3",
+   "kind": "prose",
+   "digest": "c92de2e835d5b4cb",
+   "en": "c1.3",
+   "preview": "Erstens ist Numpy vor allem eine **Schnittstelle zu sehr schnellen Bibli…"
+  },
+  {
+   "de": "c1.4",
+   "kind": "prose",
+   "digest": "fec0594f7e96383b",
+   "en": "c1.4",
+   "preview": "Zweitens erlaubt diese Arbeitsweise **SIMD** (*single instruction, multi…"
+  },
+  {
+   "de": "c1.5",
+   "kind": "prose",
+   "digest": "c045a00b8e04531a",
+   "en": "c1.5",
+   "preview": "Drittens ist diese Denkweise übertragbar. PyTorch, die Standardbibliothe…"
+  },
+  {
+   "de": "c1.6",
+   "kind": "prose",
+   "digest": "ece5d5437c45ee6e",
+   "en": "c1.6",
+   "preview": "Wir verwenden Numpy in einer Version größergleich 2, wozu wenigstens Pyt…"
+  },
+  {
+   "de": "c2.0",
+   "kind": "heading",
+   "digest": "204eb05167b06193",
+   "en": "c2.0",
+   "preview": "## Arrays <!-- Zur Probability mit Numpy ist das hier (auf deutsch) gut …"
+  },
+  {
+   "de": "c3",
+   "kind": "code",
+   "digest": "6829b37957e463c3",
+   "en": "c3",
+   "preview": "import numpy as np np.__version__"
+  },
+  {
+   "de": "c4",
+   "kind": "code",
+   "digest": "c09af10d4b084be0",
+   "en": "c4",
+   "preview": "sample = np.random.random(10) print(sample) print(type(sample)) sample"
+  },
+  {
+   "de": "c5.0",
+   "kind": "prose",
+   "digest": "7de628141e7aef10",
+   "en": "c5.0",
+   "preview": "Viele nützliche Hilfsfunktionen sind in Numpy enthalten, die wiederum Nu…"
+  },
+  {
+   "de": "c6",
+   "kind": "code",
+   "digest": "4992a624e31f74c0",
+   "en": "c6",
+   "preview": "sample = np.random.randint(low=0, high=10, size=5000) print(\"mean =\", np…"
+  },
+  {
+   "de": "c7.0",
+   "kind": "prose",
+   "digest": "84a21af6b9c100eb",
+   "en": "c7.0",
+   "preview": "Es gibt auch eine `arange`-Methode, sie erzeugt aber keine Range-Objekte…"
+  },
+  {
+   "de": "c8",
+   "kind": "code",
+   "digest": "db92c39d34efad8a",
+   "en": "c8",
+   "preview": "myRange = np.arange(1, 7) print(myRange, type(myRange), myRange.dtype) m…"
+  },
+  {
+   "de": "c9.0",
+   "kind": "prose",
+   "digest": "0204ef57563fd19e",
+   "en": "c9.0",
+   "preview": "Der Numpy-Array `ndarray` trägt im Gegensatz zur Python-Liste einen fest…"
+  },
+  {
+   "de": "c10",
+   "kind": "code",
+   "digest": "c0059493062eb84d",
+   "en": "c10",
+   "preview": "import timeit ordinary_list = [1,2,3,4,5,6,5,4,3,2,1]*10 def sort_array(…"
+  },
+  {
+   "de": "c11.0",
+   "kind": "prose",
+   "digest": "c11ab083c38bd63b",
+   "en": "c11.0",
+   "preview": "Dadurch, dass der Datentyp präzise bekannt ist, kann Numpy darauf optimi…"
+  },
+  {
+   "de": "c11.1",
+   "kind": "prose",
+   "digest": "618f3c5bc77acc74",
+   "en": "c11.1",
+   "preview": "Was es noch für `dtype`s gibt und wie sie eingesetzt werden, können wir …"
+  },
+  {
+   "de": "c11.2",
+   "kind": "prose",
+   "digest": "9e9db45d4061553c",
+   "en": "c11.2",
+   "preview": "Es gibt noch mehr Wege, Arrays zu erzeugen, außer mit `arange` oder durc…"
+  },
+  {
+   "de": "c12.0",
+   "kind": "prose",
+   "digest": "6c65d9aa07310d1a",
+   "en": "c12.0",
+   "preview": "Der Grund dafür, dass das Array den Namen `ndarray` trägt, ist, dass es …"
+  },
+  {
+   "de": "c13",
+   "kind": "code",
+   "digest": "e717957c5b620085",
+   "en": "c13",
+   "preview": "matrix = [[1,0,0], [0,1,0], [0,0,1]] # Einheitsmatrix print(matrix, type…"
+  },
+  {
+   "de": "c14.0",
+   "kind": "prose",
+   "digest": "5390883e0fcbba1a",
+   "en": "c14.0",
+   "preview": "Daran sehen wir ein Problem: Python behandelt unsere Matrix wie eine Lis…"
+  },
+  {
+   "de": "c15",
+   "kind": "code",
+   "digest": "99c1d8988a5a5301",
+   "en": "c15",
+   "preview": "npmatrix = np.identity(3, int) # Einheitsmatrix print(npmatrix, type(npm…"
+  },
+  {
+   "de": "c16.0",
+   "kind": "prose",
+   "digest": "513370ec8ebc0515",
+   "en": "c16.0",
+   "preview": "Es ist wichtig, festzustellen, dass der Numpy-Array das gleiche Verhalte…"
+  },
+  {
+   "de": "c16.1",
+   "kind": "prose",
+   "digest": "32e6ffb8fe975e5d",
+   "en": "c16.1",
+   "preview": "Der `shape`-Parameter sagt uns, welche Form unser Numpy-Array hat. Dabei…"
+  },
+  {
+   "de": "c17",
+   "kind": "code",
+   "digest": "f4018f98dee2cf86",
+   "en": "c17",
+   "preview": "print(npmatrix.shape) print(npmatrix[0], npmatrix[0].shape) print(npmatr…"
+  },
+  {
+   "de": "c18.0",
+   "kind": "prose",
+   "digest": "6a502741b3889873",
+   "en": "c18.0",
+   "preview": "In Numpy kann man noch etwas feiner slicen. Die Allgemeine Syntax ist `[…"
+  },
+  {
+   "de": "c19",
+   "kind": "code",
+   "digest": "067ea711ac19de30",
+   "en": "c19",
+   "preview": "zahlen = list(range(1,10)) npmatrix = np.array(zahlen) print(\"not in sha…"
+  },
+  {
+   "de": "c20.0",
+   "kind": "prose",
+   "digest": "37f39e38c8d9618c",
+   "en": "c20.0",
+   "preview": "In klassischem Python-Code würden wir auf einen Eintrag einer Matrix zug…"
+  },
+  {
+   "de": "c20.1",
+   "kind": "prose",
+   "digest": "5e69dd4d7034cd76",
+   "en": "c20.1",
+   "preview": "Numpy erzeugt bewusst keine Kopien beim Slicing, sondern nur eine andere…"
+  },
+  {
+   "de": "c21",
+   "kind": "code",
+   "digest": "1d41e508f1fb36c3",
+   "en": "c21",
+   "preview": "npmatrix = np.array(list(range(1,10))).reshape(3,3) candidates = (npmatr…"
+  },
+  {
+   "de": "c22.0",
+   "kind": "prose",
+   "digest": "1a6ebe93a5e1068a",
+   "en": "c22.0",
+   "preview": "Ausführliche Informationen zum Slicing und Indizieren liefert [die Dokum…"
+  },
+  {
+   "de": "c23.0",
+   "kind": "heading",
+   "digest": "922992a95412e918",
+   "en": "c23.0",
+   "preview": "## Broadcasting"
+  },
+  {
+   "de": "c23.1",
+   "kind": "prose",
+   "digest": "0ae2fcb015e61828",
+   "en": "c23.1",
+   "preview": "Während für Python-Listen der Additionsoperator die Listenkonkatenation …"
+  },
+  {
+   "de": "c24",
+   "kind": "code",
+   "digest": "b8ff7cc2220a9673",
+   "en": "c24",
+   "preview": "E = np.identity(3, int) print(E, \"= E\") A = np.ones((3,3), int) A[0] = […"
+  },
+  {
+   "de": "c25.0",
+   "kind": "prose",
+   "digest": "283a3247d626f98b",
+   "en": "c25.0",
+   "preview": "Wenn man das aufmerksam nachverfolgt, stellt man fest, dass diese Rechnu…"
+  },
+  {
+   "de": "c26",
+   "kind": "code",
+   "digest": "f05e903182ed3dac",
+   "en": "c26",
+   "preview": "v = np.ones(3, int) print(v, \"= v\") print(A*v, \"= A*v (aber nicht die Ma…"
+  },
+  {
+   "de": "c27.0",
+   "kind": "prose",
+   "digest": "d57cfe79c3b0ed6e",
+   "en": "c27.0",
+   "preview": "Um explizit mit Matrizenkalkül zu rechnen, hat man früher den Numpy-Date…"
+  },
+  {
+   "de": "c28",
+   "kind": "code",
+   "digest": "2351e8d08da72f3b",
+   "en": "c28",
+   "preview": "print(np.matmul(A,v)) print(A@v)"
+  },
+  {
+   "de": "c29.0",
+   "kind": "prose",
+   "digest": "39412a82e13bc8e3",
+   "en": "c29.0",
+   "preview": "Für viele Probleme ist es sehr hilfreich, nicht den Matrizenkalkül zu ve…"
+  },
+  {
+   "de": "c29.1",
+   "kind": "prose",
+   "digest": "2791dd1b566f8e64",
+   "en": "c29.1",
+   "preview": "Dazu ist es wirklich hilfreich, einmal [die Dokumentation](https://numpy…"
+  },
+  {
+   "de": "c29.2",
+   "kind": "prose",
+   "digest": "e835c8e15b264ea0",
+   "en": "c29.2",
+   "preview": "Ein *Tensor* in PyTorch, der Bibliothek der Vorlesung *Einführung in Dee…"
+  },
+  {
+   "de": "c30.0",
+   "kind": "heading",
+   "digest": "e937c88c0b1eab45",
+   "en": "c30.0",
+   "preview": "## Masken und Fancy Indexing"
+  },
+  {
+   "de": "c30.1",
+   "kind": "prose",
+   "digest": "82e04b5414c5769d",
+   "en": "c30.1",
+   "preview": "Ein Vergleich wie `a > 2` wird elementweise ausgewertet und liefert ein …"
+  },
+  {
+   "de": "c31",
+   "kind": "code",
+   "digest": "a6e5e354f54a90d5",
+   "en": "c31",
+   "preview": "a = np.array([3, 1, 4, 1, 5, 9]) maske = a > 2 print(maske) # Maske: Arr…"
+  },
+  {
+   "de": "c32.0",
+   "kind": "heading",
+   "digest": "3082f88011585698",
+   "en": "c32.0",
+   "preview": "## Wahrscheinlichkeitsvektoren"
+  },
+  {
+   "de": "c32.1",
+   "kind": "prose",
+   "digest": "0a6b12d5b702c123",
+   "en": "c32.1",
+   "preview": "Im Kapitel über Zufallsvariablen war eine Verteilung auf $n$ Werten ein …"
+  },
+  {
+   "de": "c33",
+   "kind": "code",
+   "digest": "44c33d1fb53b555e",
+   "en": "c33",
+   "preview": "p = np.array([1, 1, 1, 1, 1, 3], dtype=float) # gezinkter Würfel: die 6 …"
+  },
+  {
+   "de": "c34.0",
+   "kind": "heading",
+   "digest": "6c9b7212af1793d5",
+   "en": "c34.0",
+   "preview": "## ufuncs"
+  },
+  {
+   "de": "c34.1",
+   "kind": "prose",
+   "digest": "348f8d50b50ad2e4",
+   "en": "c34.1",
+   "preview": "`ufunc` steht für \"universal function\" und bezeichnet eine Methode, die …"
+  },
+  {
+   "de": "c34.2",
+   "kind": "prose",
+   "digest": "da750ea7bae48475",
+   "en": "c34.2",
+   "preview": "Mit jeder `ufunc` lässt sich z.B. `reduce` durchführen, wo entlang einer…"
+  },
+  {
+   "de": "c34.3",
+   "kind": "prose",
+   "digest": "d2ed226538683865",
+   "en": "c34.3",
+   "preview": "Um selbst eine `ufunc` zu schreiben, muss man [C-Code programmieren](htt…"
+  },
+  {
+   "de": "c34.4",
+   "kind": "prose",
+   "digest": "43c9fbbc79780b2b",
+   "en": "c34.4",
+   "preview": "Es lohnt sich, einen kurzen Blick auf alle bereits definierten `ufunc`s …"
+  },
+  {
+   "de": "c35.0",
+   "kind": "heading",
+   "digest": "8efe9926cb7ab2d4",
+   "en": "c35.0",
+   "preview": "## Was muss man kennen?"
+  },
+  {
+   "de": "c35.1",
+   "kind": "prose",
+   "digest": "4f17b9e251930e62",
+   "en": "c35.1",
+   "preview": "Numpy und andere Bibliotheken des Scientific Computing in Python sind gr…"
+  },
+  {
+   "de": "c35.2",
+   "kind": "prose",
+   "digest": "7dd67c37cfe6d518",
+   "en": "c35.2",
+   "preview": "Für die tägliche Arbeit hilft ein Spickzettel mehr als eine Liste: Die […"
+  },
+  {
+   "de": "c36.0",
+   "kind": "prose",
+   "digest": "984b9d4fb8e2756f",
+   "en": "c36.0",
+   "preview": "* **abs** * **all** * **allclose** * append * **arange** * **argmin** * …"
+  }
+ ]
+}

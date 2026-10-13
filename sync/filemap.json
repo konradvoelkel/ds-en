@@ -1,5 +1,5 @@
 {
-  "_comment": "German upstream file (ds-skript) -> English file in this repo. The tracker resolves upstream paths through this map. Files whose name is already English or language-neutral map to themselves.",
+  "_comment": "German upstream file (ds-skript) -> English file in this repo. The tracker resolves upstream paths through this map. Files whose name is already English or language-neutral map to themselves; null means the page is deliberately not mirrored (see TRANSLATION.md section 2).",
   "map": {
     "landing-page.md": "landing-page.md",
     "was-ist-data-science.md": "what-is-data-science.md",
@@ -31,6 +31,6 @@
     "statistische-tests.md": "statistical-tests.md",
     "model-selection.ipynb": "model-selection.ipynb",
     "expectation-maximization.ipynb": "expectation-maximization.ipynb",
-    "folien.md": "slides.md"
+    "folien.md": null
   }
 }

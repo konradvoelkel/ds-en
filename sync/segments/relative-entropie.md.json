@@ -1,0 +1,1218 @@
+{
+ "source": "relative-entropie.md",
+ "target": "relative-entropy.md",
+ "upstream": "c7247a99ef28b04050ef09ba376ac6e32025456a",
+ "blocks": [
+  {
+   "de": "0",
+   "kind": "heading",
+   "digest": "aea75bb8ba697e54",
+   "en": "0",
+   "preview": "# Relative Entropie"
+  },
+  {
+   "de": "1",
+   "kind": "prose",
+   "digest": "c4064b4c2a86c8dd",
+   "en": "1",
+   "preview": "[Vorlesungsaufzeichnung Relative und stetige Entropie](https://media.hhu…"
+  },
+  {
+   "de": "2",
+   "kind": "heading",
+   "digest": "03d531d7f6d974ed",
+   "en": "2",
+   "preview": "## Logarithmen"
+  },
+  {
+   "de": "3",
+   "kind": "prose",
+   "digest": "2379a88130d10d2a",
+   "en": "3",
+   "preview": "Die elementaren Eigenschaften des Logarithmus — Definition, Basiswechsel…"
+  },
+  {
+   "de": "4",
+   "kind": "directive",
+   "digest": "8f4e565549eb919e",
+   "en": "4",
+   "preview": ":::{admonition} Lemma"
+  },
+  {
+   "de": "5",
+   "kind": "prose",
+   "digest": "b90e09b5923811f3",
+   "en": "5",
+   "preview": "Sei $l \\colon \\{1,\\dots\\} = \\mathbb{N}_{>0} \\to \\mathbb{R}$ eine Funktio…"
+  },
+  {
+   "de": "6",
+   "kind": "directive",
+   "digest": "f1ae2a75ed1f9972",
+   "en": "6",
+   "preview": ":::"
+  },
+  {
+   "de": "7",
+   "kind": "directive",
+   "digest": "566676a32baee8ac",
+   "en": "7",
+   "preview": ":::{admonition} Bemerkung"
+  },
+  {
+   "de": "8",
+   "kind": "prose",
+   "digest": "4391cb1c16e2dc2a",
+   "en": "8",
+   "preview": "Aufgrund der Formel"
+  },
+  {
+   "de": "9",
+   "kind": "math",
+   "digest": "1ce91dec25ba6b2e",
+   "en": "9",
+   "preview": "$$ \\ln(x) = \\dfrac{\\log_a(x)}{\\log_a(e)} $$"
+  },
+  {
+   "de": "10",
+   "kind": "prose",
+   "digest": "14758806a5608b8f",
+   "en": "10",
+   "preview": "können wir die Konstante $c$ interpretieren als $c = \\log_a(e)$, d.h. di…"
+  },
+  {
+   "de": "11",
+   "kind": "directive",
+   "digest": "f1ae2a75ed1f9972",
+   "en": "11",
+   "preview": ":::"
+  },
+  {
+   "de": "12",
+   "kind": "prose",
+   "digest": "d4aead41452ab7d3",
+   "en": "12",
+   "preview": "Es ist auch gleich klar, dass das gleiche Lemma für $\\log_2$ anstelle vo…"
+  },
+  {
+   "de": "13",
+   "kind": "prose",
+   "digest": "cfbb93c37b9cfed8",
+   "en": "13",
+   "preview": "Wenn wir also etwas abzählen wollen, sodass der Zählwert eines Produkts …"
+  },
+  {
+   "de": "14",
+   "kind": "directive",
+   "digest": "d3c74271f8c77915",
+   "en": "14",
+   "preview": ":::{admonition} Beweis"
+  },
+  {
+   "de": "15",
+   "kind": "prose",
+   "digest": "20a74c6743b4aa1b",
+   "en": "15",
+   "preview": "Wir wollen zeigen, dass für Funktionen $f,g \\colon \\mathbb{N}_{>0} \\to \\…"
+  },
+  {
+   "de": "16",
+   "kind": "math",
+   "digest": "a1214512c58509b2",
+   "en": "16",
+   "preview": "$$ f(n) g(2) = f(2) g(n) $$"
+  },
+  {
+   "de": "17",
+   "kind": "prose",
+   "digest": "c02418bd8e5fefd0",
+   "en": "17",
+   "preview": "gilt, denn mit $g = \\ln$ ist dann das Lemma bewiesen ($c=f(2)$)."
+  },
+  {
+   "de": "18",
+   "kind": "prose",
+   "digest": "3ee847ec20f59759",
+   "en": "18",
+   "preview": "Seien $n,k,m \\in \\mathbb{N}$ sodass $2^{m-1} \\leq n^k \\leq 2^m$. Aus der…"
+  },
+  {
+   "de": "19",
+   "kind": "math",
+   "digest": "0ea49f3858d7106d",
+   "en": "19",
+   "preview": "$$ f(2^{m-1}) \\leq f(n^k) \\leq f(2^m) $$"
+  },
+  {
+   "de": "20",
+   "kind": "prose",
+   "digest": "71921096d57769f3",
+   "en": "20",
+   "preview": "und aus der Additivität"
+  },
+  {
+   "de": "21",
+   "kind": "math",
+   "digest": "3cf90b14c11259ba",
+   "en": "21",
+   "preview": "$$ (m-1)f(2) \\leq kf(n) \\leq mf(2) $$"
+  },
+  {
+   "de": "22",
+   "kind": "prose",
+   "digest": "6d8711b9f1149e0f",
+   "en": "22",
+   "preview": "ebenso die gleiche Ungleichungskette für $g$ anstelle $f$, aber das mult…"
+  },
+  {
+   "de": "23",
+   "kind": "math",
+   "digest": "1e5a7b9f311a0dde",
+   "en": "23",
+   "preview": "$$ -mg(2) \\leq -kg(n) \\leq -(m-1)g(2). $$"
+  },
+  {
+   "de": "24",
+   "kind": "prose",
+   "digest": "54f70aefcacf4870",
+   "en": "24",
+   "preview": "Die Summe dieser beiden Ungleichungsketten können wir nun vereinfachen z…"
+  },
+  {
+   "de": "25",
+   "kind": "math",
+   "digest": "231572c74c7a2eb8",
+   "en": "25",
+   "preview": "$$ -f(2)g(2) \\leq k\\left(f(n)g(2) - f(2)g(n)\\right) \\leq f(2)g(2) $$"
+  },
+  {
+   "de": "26",
+   "kind": "prose",
+   "digest": "88d0ff305ff6e2a5",
+   "en": "26",
+   "preview": "teilen wir durch $k$, und lassen dann $k \\to \\infty$ gehen, so sehen wir…"
+  },
+  {
+   "de": "27",
+   "kind": "directive",
+   "digest": "f1ae2a75ed1f9972",
+   "en": "27",
+   "preview": ":::"
+  },
+  {
+   "de": "28",
+   "kind": "directive",
+   "digest": "8f4e565549eb919e",
+   "en": "28",
+   "preview": ":::{admonition} Lemma"
+  },
+  {
+   "de": "29",
+   "kind": "prose",
+   "digest": "cb7a2440cafd462c",
+   "en": "29",
+   "preview": "Wenn eine stetige Funktion $F \\colon \\mathbb{R} \\to \\mathbb{R}$ die Funk…"
+  },
+  {
+   "de": "30",
+   "kind": "directive",
+   "digest": "f1ae2a75ed1f9972",
+   "en": "30",
+   "preview": ":::"
+  },
+  {
+   "de": "31",
+   "kind": "directive",
+   "digest": "d3c74271f8c77915",
+   "en": "31",
+   "preview": ":::{admonition} Beweis"
+  },
+  {
+   "de": "32",
+   "kind": "prose",
+   "digest": "d11fb89f7a6016a4",
+   "en": "32",
+   "preview": "Die Funktion $g(x) := F(x)/x$ erfüllt $g(xy) = g(x) + g(y)$ und ist nach…"
+  },
+  {
+   "de": "33",
+   "kind": "directive",
+   "digest": "f1ae2a75ed1f9972",
+   "en": "33",
+   "preview": ":::"
+  },
+  {
+   "de": "34",
+   "kind": "directive",
+   "digest": "566676a32baee8ac",
+   "en": "34",
+   "preview": ":::{admonition} Bemerkung"
+  },
+  {
+   "de": "35",
+   "kind": "prose",
+   "digest": "da9e3297a017e8f9",
+   "en": "35",
+   "preview": "Wir sehen also, dass der Entropie-Beitrag $-p\\log(p)$ eines Ergebnisses …"
+  },
+  {
+   "de": "36",
+   "kind": "directive",
+   "digest": "f1ae2a75ed1f9972",
+   "en": "36",
+   "preview": ":::"
+  },
+  {
+   "de": "37",
+   "kind": "directive",
+   "digest": "8f4e565549eb919e",
+   "en": "37",
+   "preview": ":::{admonition} Lemma"
+  },
+  {
+   "de": "38",
+   "kind": "prose",
+   "digest": "1d95bd4778c5b59c",
+   "en": "38",
+   "preview": "Der Logarithmus ist eine *konkave* Funktion, d.h. für eine Konvexkombina…"
+  },
+  {
+   "de": "39",
+   "kind": "math",
+   "digest": "3600e689b0e212e2",
+   "en": "39",
+   "preview": "$$ \\lambda \\log(x) + \\mu \\log(y) \\leq \\log(\\lambda x + \\mu y) $$"
+  },
+  {
+   "de": "40",
+   "kind": "directive",
+   "digest": "f1ae2a75ed1f9972",
+   "en": "40",
+   "preview": ":::"
+  },
+  {
+   "de": "41",
+   "kind": "directive",
+   "digest": "d3c74271f8c77915",
+   "en": "41",
+   "preview": ":::{admonition} Beweis"
+  },
+  {
+   "de": "42",
+   "kind": "prose",
+   "digest": "d92be1bd597f6dde",
+   "en": "42",
+   "preview": "**Idee:** Die Ableitung von $\\log(x)$ ist $\\frac{1}{x}$ und das ist auf …"
+  },
+  {
+   "de": "43",
+   "kind": "directive",
+   "digest": "f1ae2a75ed1f9972",
+   "en": "43",
+   "preview": ":::"
+  },
+  {
+   "de": "44",
+   "kind": "prose",
+   "digest": "cf37b3be3e57b15a",
+   "en": "44",
+   "preview": "Wir haben vorher schon ein heuristisches Argument verwendet, aber nun kö…"
+  },
+  {
+   "de": "45",
+   "kind": "directive",
+   "digest": "d8a9d8fddee7e0b1",
+   "en": "45",
+   "preview": ":::{admonition} Proposition"
+  },
+  {
+   "de": "46",
+   "kind": "prose",
+   "digest": "5235448789fe2081",
+   "en": "46",
+   "preview": "Wenn $p = (p_1,\\dots,p_n)$ eine diskrete Verteilung auf $\\Omega = \\{1,\\d…"
+  },
+  {
+   "de": "47",
+   "kind": "directive",
+   "digest": "f1ae2a75ed1f9972",
+   "en": "47",
+   "preview": ":::"
+  },
+  {
+   "de": "48",
+   "kind": "directive",
+   "digest": "d3c74271f8c77915",
+   "en": "48",
+   "preview": ":::{admonition} Beweis"
+  },
+  {
+   "de": "49",
+   "kind": "prose",
+   "digest": "9c434b6c9f97da6b",
+   "en": "49",
+   "preview": "Wir nutzen aus, dass die Summe in der Definition der Entropie eine Konve…"
+  },
+  {
+   "de": "50",
+   "kind": "prose",
+   "digest": "9d3cf5e93a0bf437",
+   "en": "50",
+   "preview": "$H(p) = \\sum_{i=1, p_i\\neq 0}^n p_i \\log \\frac{1}{p_i} $"
+  },
+  {
+   "de": "51",
+   "kind": "prose",
+   "digest": "1f25ae10dd339710",
+   "en": "51",
+   "preview": "$\\leq \\log \\left( \\sum_{i=1, p_i\\neq 0}^n p_i \\frac{1}{p_i} \\right)$"
+  },
+  {
+   "de": "52",
+   "kind": "prose",
+   "digest": "c4a915d011d03999",
+   "en": "52",
+   "preview": "$\\leq \\log\\left( \\sum_{i=1}^n 1 \\right) = \\log(n)$"
+  },
+  {
+   "de": "53",
+   "kind": "directive",
+   "digest": "f1ae2a75ed1f9972",
+   "en": "53",
+   "preview": ":::"
+  },
+  {
+   "de": "54",
+   "kind": "heading",
+   "digest": "114102d31544fba6",
+   "en": "54",
+   "preview": "## Definition und Eigenschaften"
+  },
+  {
+   "de": "55",
+   "kind": "directive",
+   "digest": "053400a7b7d2fc03",
+   "en": "55",
+   "preview": ":::{admonition} Definition"
+  },
+  {
+   "de": "56",
+   "kind": "prose",
+   "digest": "3d618c85f518de62",
+   "en": "56",
+   "preview": "Seien $p,r \\in \\Delta_n$ (der Menge der Wahrscheinlichkeitsvektoren in $…"
+  },
+  {
+   "de": "57",
+   "kind": "prose",
+   "digest": "09e6baca827944f6",
+   "en": "57",
+   "preview": "$H(p \\Vert r) := \\sum_{i,\\ p_i > 0}^n p_i \\log \\left( \\frac{p_i}{r_i} \\r…"
+  },
+  {
+   "de": "58",
+   "kind": "directive",
+   "digest": "f1ae2a75ed1f9972",
+   "en": "58",
+   "preview": ":::"
+  },
+  {
+   "de": "59",
+   "kind": "directive",
+   "digest": "d8a9d8fddee7e0b1",
+   "en": "59",
+   "preview": ":::{admonition} Proposition"
+  },
+  {
+   "de": "60",
+   "kind": "prose",
+   "digest": "3d81374d98daa66d",
+   "en": "60",
+   "preview": "Schreibe $u_n = (\\frac{1}{n}, \\dots, \\frac{1}{n}) \\in \\Delta_n$ für die …"
+  },
+  {
+   "de": "61",
+   "kind": "math",
+   "digest": "e8b13c752c16c272",
+   "en": "61",
+   "preview": "$$ H(p \\Vert u_n) = H(u_n) - H(p) = \\log(n) - H(p) $$"
+  },
+  {
+   "de": "62",
+   "kind": "directive",
+   "digest": "f1ae2a75ed1f9972",
+   "en": "62",
+   "preview": ":::"
+  },
+  {
+   "de": "63",
+   "kind": "directive",
+   "digest": "d8a9d8fddee7e0b1",
+   "en": "63",
+   "preview": ":::{admonition} Proposition"
+  },
+  {
+   "de": "64",
+   "kind": "math",
+   "digest": "8cb5a798d61c9005",
+   "en": "64",
+   "preview": "$$ H(p \\Vert r) = 0 \\text{ genau dann wenn } p=r $$"
+  },
+  {
+   "de": "65",
+   "kind": "prose",
+   "digest": "a6f9c697e9118875",
+   "en": "65",
+   "preview": "(ohne Beweis)"
+  },
+  {
+   "de": "66",
+   "kind": "directive",
+   "digest": "f1ae2a75ed1f9972",
+   "en": "66",
+   "preview": ":::"
+  },
+  {
+   "de": "67",
+   "kind": "directive",
+   "digest": "d8a9d8fddee7e0b1",
+   "en": "67",
+   "preview": ":::{admonition} Proposition"
+  },
+  {
+   "de": "68",
+   "kind": "math",
+   "digest": "97a15668db4c605f",
+   "en": "68",
+   "preview": "$$ H(p \\Vert r) \\geq 0 $$"
+  },
+  {
+   "de": "69",
+   "kind": "directive",
+   "digest": "f1ae2a75ed1f9972",
+   "en": "69",
+   "preview": ":::"
+  },
+  {
+   "de": "70",
+   "kind": "directive",
+   "digest": "d3c74271f8c77915",
+   "en": "70",
+   "preview": ":::{admonition} Beweis"
+  },
+  {
+   "de": "71",
+   "kind": "prose",
+   "digest": "2fbb0db7d500f3ed",
+   "en": "71",
+   "preview": "$H(p \\Vert r) = \\sum p_i \\log \\left( \\dfrac{p_i}{r_i} \\right) = -\\sum p_…"
+  },
+  {
+   "de": "72",
+   "kind": "prose",
+   "digest": "89cd29f54e203570",
+   "en": "72",
+   "preview": "dabei haben wir wieder die Konkavität des Logarithmus ausgenutzt."
+  },
+  {
+   "de": "73",
+   "kind": "directive",
+   "digest": "f1ae2a75ed1f9972",
+   "en": "73",
+   "preview": ":::"
+  },
+  {
+   "de": "74",
+   "kind": "directive",
+   "digest": "0feec534fa43b536",
+   "en": "74",
+   "preview": ":::{admonition} Beispiel"
+  },
+  {
+   "de": "75",
+   "kind": "prose",
+   "digest": "dad866ef14c8d38c",
+   "en": "75",
+   "preview": "Die relative Entropie ist nicht symmetrisch und kann unendlich groß werd…"
+  },
+  {
+   "de": "76",
+   "kind": "math",
+   "digest": "457df9f6877b99c2",
+   "en": "76",
+   "preview": "$$ H\\left(u_2 \\,\\Vert\\, p_t\\right) = \\frac{1}{2} \\log \\frac{1}{2t} + \\fr…"
+  },
+  {
+   "de": "77",
+   "kind": "prose",
+   "digest": "f5547cb5765467f5",
+   "en": "77",
+   "preview": "denn der erste Summand wächst wie $-\\frac12\\log t$ über alle Grenzen. In…"
+  },
+  {
+   "de": "78",
+   "kind": "math",
+   "digest": "91f755443bfb829d",
+   "en": "78",
+   "preview": "$$ H\\left(p_t \\,\\Vert\\, u_2\\right) = \\log(2) - H(p_t), \\qquad H(p_t) = -…"
+  },
+  {
+   "de": "79",
+   "kind": "prose",
+   "digest": "8dcd500680aab622",
+   "en": "79",
+   "preview": "also $H(p_t \\Vert u_2) \\to \\log 2$: endlich, zur Basis $2$ genau ein Bit…"
+  },
+  {
+   "de": "80",
+   "kind": "directive",
+   "digest": "f1ae2a75ed1f9972",
+   "en": "80",
+   "preview": ":::"
+  },
+  {
+   "de": "81",
+   "kind": "heading",
+   "digest": "12257f45b18928bc",
+   "en": "81",
+   "preview": "## Verbundentropie"
+  },
+  {
+   "de": "82",
+   "kind": "directive",
+   "digest": "053400a7b7d2fc03",
+   "en": "82",
+   "preview": ":::{admonition} Definition"
+  },
+  {
+   "de": "83",
+   "kind": "prose",
+   "digest": "d0f9eafe1e9e8885",
+   "en": "83",
+   "preview": "Die *Verbundentropie* von zwei diskreten Zufallsvariablen $X,Y$ ist"
+  },
+  {
+   "de": "84",
+   "kind": "math",
+   "digest": "9b2100e70325696f",
+   "en": "84",
+   "preview": "$$ H(X,Y) := \\mathbb{E} I_{X,Y} = -\\sum_{i=1}^n \\sum_{j=1}^n P(X = z_i, …"
+  },
+  {
+   "de": "85",
+   "kind": "directive",
+   "digest": "f1ae2a75ed1f9972",
+   "en": "85",
+   "preview": ":::"
+  },
+  {
+   "de": "86",
+   "kind": "directive",
+   "digest": "d8a9d8fddee7e0b1",
+   "en": "86",
+   "preview": ":::{admonition} Proposition"
+  },
+  {
+   "de": "87",
+   "kind": "math",
+   "digest": "bf6dce30879853a5",
+   "en": "87",
+   "preview": "$$ H(X) + H(Y) \\geq H(X,Y) \\geq \\max\\left( H(X), H(Y) \\right) $$"
+  },
+  {
+   "de": "88",
+   "kind": "directive",
+   "digest": "f1ae2a75ed1f9972",
+   "en": "88",
+   "preview": ":::"
+  },
+  {
+   "de": "89",
+   "kind": "directive",
+   "digest": "0feec534fa43b536",
+   "en": "89",
+   "preview": ":::{admonition} Beispiel"
+  },
+  {
+   "de": "90",
+   "kind": "math",
+   "digest": "0fdb4f4d972bbbe6",
+   "en": "90",
+   "preview": "$$ H(X,X) = H(X) $$"
+  },
+  {
+   "de": "91",
+   "kind": "prose",
+   "digest": "22cb110cf848cab1",
+   "en": "91",
+   "preview": "denn in der Summe für den linken Ausdruck sind alle Summanden außerhalb …"
+  },
+  {
+   "de": "92",
+   "kind": "directive",
+   "digest": "f1ae2a75ed1f9972",
+   "en": "92",
+   "preview": ":::"
+  },
+  {
+   "de": "93",
+   "kind": "directive",
+   "digest": "d8a9d8fddee7e0b1",
+   "en": "93",
+   "preview": ":::{admonition} Proposition"
+  },
+  {
+   "de": "94",
+   "kind": "prose",
+   "digest": "ea6f7a35fb231e79",
+   "en": "94",
+   "preview": "Wenn $X, Y$ unabhängige Zufallsvariablen sind, dann ist $H(X, Y) = H(X) …"
+  },
+  {
+   "de": "95",
+   "kind": "directive",
+   "digest": "f1ae2a75ed1f9972",
+   "en": "95",
+   "preview": ":::"
+  },
+  {
+   "de": "96",
+   "kind": "directive",
+   "digest": "d3c74271f8c77915",
+   "en": "96",
+   "preview": ":::{admonition} Beweis"
+  },
+  {
+   "de": "97",
+   "kind": "prose",
+   "digest": "1259777c9d6cc3d9",
+   "en": "97",
+   "preview": "Die Unabhängigkeit bedeutet für alle $i,j$:"
+  },
+  {
+   "de": "98",
+   "kind": "math",
+   "digest": "0cf6e14e2a005051",
+   "en": "98",
+   "preview": "$$ P(X = z_i, Y = z_j) = P(X = z_i)\\cdot P(Y = z_j) $$"
+  },
+  {
+   "de": "99",
+   "kind": "prose",
+   "digest": "c2b6c64f626b47e4",
+   "en": "99",
+   "preview": "das Logarithmieren wir:"
+  },
+  {
+   "de": "100",
+   "kind": "math",
+   "digest": "d0e683273790b993",
+   "en": "100",
+   "preview": "$$ \\log P(X = z_i, Y = z_j) = \\log P(X = z_i) + \\log P(Y = z_j) $$"
+  },
+  {
+   "de": "101",
+   "kind": "prose",
+   "digest": "9ad01c0a47ece05b",
+   "en": "101",
+   "preview": "also haben wir insgesamt"
+  },
+  {
+   "de": "102",
+   "kind": "prose",
+   "digest": "37dd7536df532243",
+   "en": "102",
+   "preview": "\\begin{align} H(X,Y) &:= -\\sum_{i=1}^n \\sum_{j=1}^n P(X = z_i, Y = z_j) …"
+  },
+  {
+   "de": "103",
+   "kind": "directive",
+   "digest": "f1ae2a75ed1f9972",
+   "en": "103",
+   "preview": ":::"
+  },
+  {
+   "de": "104",
+   "kind": "directive",
+   "digest": "053400a7b7d2fc03",
+   "en": "104",
+   "preview": ":::{admonition} Definition"
+  },
+  {
+   "de": "105",
+   "kind": "prose",
+   "digest": "ab5b06584e86d4f8",
+   "en": "105",
+   "preview": "Die *gemeinsame Information* (auch *Transinformation*, englisch *mutual …"
+  },
+  {
+   "de": "106",
+   "kind": "math",
+   "digest": "b55130dc24a2eee0",
+   "en": "106",
+   "preview": "$$ I(X;Y) := H(X)+H(Y)-H(X,Y)= H(X,Y \\Vert X\\times Y) $$"
+  },
+  {
+   "de": "107",
+   "kind": "prose",
+   "digest": "3098fbf9dcf96df1",
+   "en": "107",
+   "preview": "Hier steht $H(\\cdot \\Vert \\cdot)$ für die relative Entropie der *Verteil…"
+  },
+  {
+   "de": "108",
+   "kind": "prose",
+   "digest": "76378d0fcfd5be47",
+   "en": "108",
+   "preview": "Ein sehr häufiger Anwendungsfall der gemeinsamen Information liegt im Cl…"
+  },
+  {
+   "de": "109",
+   "kind": "prose",
+   "digest": "ee59cb36f009374a",
+   "en": "109",
+   "preview": "Die *bedingte Entropie* von $X$ bedingt auf $Y$ ist definiert als"
+  },
+  {
+   "de": "110",
+   "kind": "math",
+   "digest": "e86aa678053d28b9",
+   "en": "110",
+   "preview": "$$ H(X|Y) := H(X) - I(X;Y) $$"
+  },
+  {
+   "de": "111",
+   "kind": "directive",
+   "digest": "f1ae2a75ed1f9972",
+   "en": "111",
+   "preview": ":::"
+  },
+  {
+   "de": "112",
+   "kind": "directive",
+   "digest": "0feec534fa43b536",
+   "en": "112",
+   "preview": ":::{admonition} Beispiel"
+  },
+  {
+   "de": "113",
+   "kind": "prose",
+   "digest": "c558f6d1755126eb",
+   "en": "113",
+   "preview": "Die gemeinsame Information von $X$ mit sich selbst ist genau die Entropi…"
+  },
+  {
+   "de": "114",
+   "kind": "prose",
+   "digest": "36faf6bf6e40cd8b",
+   "en": "114",
+   "preview": "Wenn $X,Y$ unabhängig sind, ist $I(X;Y) = H(X) + H(Y) - (H(X) + H(Y)) = …"
+  },
+  {
+   "de": "115",
+   "kind": "directive",
+   "digest": "f1ae2a75ed1f9972",
+   "en": "115",
+   "preview": ":::"
+  },
+  {
+   "de": "116",
+   "kind": "directive",
+   "digest": "d8a9d8fddee7e0b1",
+   "en": "116",
+   "preview": ":::{admonition} Proposition"
+  },
+  {
+   "de": "117",
+   "kind": "math",
+   "digest": "de39bc139abf6916",
+   "en": "117",
+   "preview": "$$ H(X|Y) = H(X,Y) - H(Y) $$"
+  },
+  {
+   "de": "118",
+   "kind": "prose",
+   "digest": "a4c9d556856a600c",
+   "en": "118",
+   "preview": "und wenn $X,Y$ unabhängig sind, ist $H(X|Y) = H(X)$."
+  },
+  {
+   "de": "119",
+   "kind": "directive",
+   "digest": "f1ae2a75ed1f9972",
+   "en": "119",
+   "preview": ":::"
+  },
+  {
+   "de": "120",
+   "kind": "directive",
+   "digest": "f964f8dc481b2d41",
+   "en": "120",
+   "preview": ":::{admonition} Satz"
+  },
+  {
+   "de": "121",
+   "kind": "prose",
+   "digest": "a1634e31af26e845",
+   "en": "121",
+   "preview": "**Entropischer Satz von Bayes**"
+  },
+  {
+   "de": "122",
+   "kind": "math",
+   "digest": "022e649ae21fd28e",
+   "en": "122",
+   "preview": "$$ H(X|Y) = H(Y|X) + H(X) - H(Y) $$"
+  },
+  {
+   "de": "123",
+   "kind": "directive",
+   "digest": "f1ae2a75ed1f9972",
+   "en": "123",
+   "preview": ":::"
+  },
+  {
+   "de": "124",
+   "kind": "directive",
+   "digest": "0feec534fa43b536",
+   "en": "124",
+   "preview": ":::{admonition} Beispiel"
+  },
+  {
+   "de": "125",
+   "kind": "prose",
+   "digest": "6c65fa4e49a134c9",
+   "en": "125",
+   "preview": "Wenn $X$ vollständig von $Y$ abhängt (z.B. $Y$ ein Würfelwurf und $X = f…"
+  },
+  {
+   "de": "126",
+   "kind": "directive",
+   "digest": "f1ae2a75ed1f9972",
+   "en": "126",
+   "preview": ":::"
+  },
+  {
+   "de": "127",
+   "kind": "directive",
+   "digest": "36495510a200ec6c",
+   "en": "127",
+   "preview": "```{figure} images/1920px-Entropy-mutual-information-relative-entropy-re…"
+  },
+  {
+   "de": "128",
+   "kind": "directive",
+   "digest": "053400a7b7d2fc03",
+   "en": "128",
+   "preview": ":::{admonition} Definition"
+  },
+  {
+   "de": "129",
+   "kind": "prose",
+   "digest": "1622b8a62e500af4",
+   "en": "129",
+   "preview": "Die *Kreuzentropie* von $X$ (verteilt nach $p \\in \\Delta_n$) und $Y$ (ve…"
+  },
+  {
+   "de": "130",
+   "kind": "math",
+   "digest": "195754cea370ae63",
+   "en": "130",
+   "preview": "$$ H(X; Y) = \\mathbb{E}_X I(Y) = -\\sum_{i,\\ p_i > 0}^n p_i \\log r_i \\in …"
+  },
+  {
+   "de": "131",
+   "kind": "directive",
+   "digest": "f1ae2a75ed1f9972",
+   "en": "131",
+   "preview": ":::"
+  },
+  {
+   "de": "132",
+   "kind": "prose",
+   "digest": "3488cb03c59d5421",
+   "en": "132",
+   "preview": "Ein Summand mit $p_i > 0$ und $r_i = 0$ hat dabei den Wert $\\infty$ (mit…"
+  },
+  {
+   "de": "133",
+   "kind": "prose",
+   "digest": "6144778af1fddeb6",
+   "en": "133",
+   "preview": "*Achtung*: Leider wird die Kreuzentropie von manchen Autoren auch mit $H…"
+  },
+  {
+   "de": "134",
+   "kind": "directive",
+   "digest": "d8a9d8fddee7e0b1",
+   "en": "134",
+   "preview": ":::{admonition} Proposition"
+  },
+  {
+   "de": "135",
+   "kind": "math",
+   "digest": "a6cf1feac8d7934f",
+   "en": "135",
+   "preview": "$$ H(X; Y) = H(X) + H(X \\Vert Y) $$"
+  },
+  {
+   "de": "136",
+   "kind": "directive",
+   "digest": "f1ae2a75ed1f9972",
+   "en": "136",
+   "preview": ":::"
+  },
+  {
+   "de": "137",
+   "kind": "prose",
+   "digest": "0fb4bca3333d6cb1",
+   "en": "137",
+   "preview": "Wenn man $X$ festhält und $Y$ variiert, ist es das gleiche, ob man $H(X;…"
+  },
+  {
+   "de": "138",
+   "kind": "directive",
+   "digest": "566676a32baee8ac",
+   "en": "138",
+   "preview": ":::{admonition} Bemerkung"
+  },
+  {
+   "de": "139",
+   "kind": "prose",
+   "digest": "d884e064e592db56",
+   "en": "139",
+   "preview": "Im Deep Learning begegnet man dieser Beobachtung unter drei Namen: *nega…"
+  },
+  {
+   "de": "140",
+   "kind": "directive",
+   "digest": "f1ae2a75ed1f9972",
+   "en": "140",
+   "preview": ":::"
+  },
+  {
+   "de": "141",
+   "kind": "prose",
+   "digest": "ce45396a7dc722d1",
+   "en": "141",
+   "preview": "Ansonsten ist die Kreuzentropie eine in der Theorie deutlich seltener ve…"
+  },
+  {
+   "de": "142",
+   "kind": "heading",
+   "digest": "9e2e7fc956ed21a4",
+   "en": "142",
+   "preview": "## Stetige Entropie"
+  },
+  {
+   "de": "143",
+   "kind": "directive",
+   "digest": "06a8d19c25859d91",
+   "en": "143",
+   "preview": ":::{note}"
+  },
+  {
+   "de": "144",
+   "kind": "prose",
+   "digest": "43716bc394a5494a",
+   "en": "144",
+   "preview": "Dieses Unterkapitel ist nicht klausurrelevant und greift auf Maßtheorie …"
+  },
+  {
+   "de": "145",
+   "kind": "directive",
+   "digest": "f1ae2a75ed1f9972",
+   "en": "145",
+   "preview": ":::"
+  },
+  {
+   "de": "146",
+   "kind": "prose",
+   "digest": "e63684caaea3b510",
+   "en": "146",
+   "preview": "Man könnte meinen, dass sich die Formel $H(p) = -\\sum p_i \\log p_i$ vera…"
+  },
+  {
+   "de": "147",
+   "kind": "directive",
+   "digest": "053400a7b7d2fc03",
+   "en": "147",
+   "preview": ":::{admonition} Definition"
+  },
+  {
+   "de": "148",
+   "kind": "prose",
+   "digest": "3c7bf24441e23fe6",
+   "en": "148",
+   "preview": "Sei $P$ eine stetige Verteilung mit Dichtefunktion $f$, die auf einer Me…"
+  },
+  {
+   "de": "149",
+   "kind": "math",
+   "digest": "34d5151556956753",
+   "en": "149",
+   "preview": "$$ h(X) := \\mathbb{E}\\left( -\\log(f(X)) \\right) = - \\int_\\Omega f(x) \\lo…"
+  },
+  {
+   "de": "150",
+   "kind": "prose",
+   "digest": "d7420e03a34811cf",
+   "en": "150",
+   "preview": "die *differentielle Entropie* von $X$ (definiert ebenfalls von Claude Sh…"
+  },
+  {
+   "de": "151",
+   "kind": "directive",
+   "digest": "f1ae2a75ed1f9972",
+   "en": "151",
+   "preview": ":::"
+  },
+  {
+   "de": "152",
+   "kind": "prose",
+   "digest": "32be77db55640a9d",
+   "en": "152",
+   "preview": "Sie erfüllt bereits einige schöne Eigenschaften, die wir uns von einer s…"
+  },
+  {
+   "de": "153",
+   "kind": "prose",
+   "digest": "31a653f658b57a82",
+   "en": "153",
+   "preview": "Leider ist die differentielle Entropie nicht invariant unter beliebigen …"
+  },
+  {
+   "de": "154",
+   "kind": "prose",
+   "digest": "cda7b3db91305998",
+   "en": "154",
+   "preview": "Jaynes hat vorgeschlagen, sich immer feiner werdende Histogramme vorzust…"
+  },
+  {
+   "de": "155",
+   "kind": "math",
+   "digest": "7a2d8206b3ae9b54",
+   "en": "155",
+   "preview": "$$ \\lim_{N \\to \\infty} \\log(N) - \\int p(x) \\log \\dfrac{p(x)}{m(x)} dx $$"
+  },
+  {
+   "de": "156",
+   "kind": "prose",
+   "digest": "c57378c29b9aa005",
+   "en": "156",
+   "preview": "aber weil $\\lim_{N \\to \\infty} \\log(N) = \\infty$ ist, lassen wir den Tei…"
+  },
+  {
+   "de": "157",
+   "kind": "math",
+   "digest": "5a727002aeb6fa17",
+   "en": "157",
+   "preview": "$$ H(X) := - \\int p(x) \\log \\dfrac{p(x)}{m(x)} dx $$"
+  },
+  {
+   "de": "158",
+   "kind": "prose",
+   "digest": "b06c60e8639aa297",
+   "en": "158",
+   "preview": "Zum Einen wollen wir festhalten, dass die \"diskrete Entropie\" einer stet…"
+  },
+  {
+   "de": "159",
+   "kind": "prose",
+   "digest": "58c48f3b9dee7e34",
+   "en": "159",
+   "preview": "Wenn man vom theoretischen Standpunkt analysiert, was $h(X)$ und $H(X)$ …"
+  },
+  {
+   "de": "160",
+   "kind": "directive",
+   "digest": "053400a7b7d2fc03",
+   "en": "160",
+   "preview": ":::{admonition} Definition"
+  },
+  {
+   "de": "161",
+   "kind": "prose",
+   "digest": "0f6d0e16d067cf13",
+   "en": "161",
+   "preview": "Seien $P,R$ stetige Verteilungen. Die *relative Entropie* $H(P \\Vert R)$…"
+  },
+  {
+   "de": "162",
+   "kind": "math",
+   "digest": "cdd8630c13672b91",
+   "en": "162",
+   "preview": "$$ H(P \\Vert R) := - \\int_\\Omega \\log \\left( \\dfrac{dR}{dP} \\right) dP $…"
+  },
+  {
+   "de": "163",
+   "kind": "prose",
+   "digest": "3aa63392dd595263",
+   "en": "163",
+   "preview": "dabei ist $\\dfrac{dR}{dP}$ die Radon-Nikodym-Ableitung eines Maßes bezüg…"
+  },
+  {
+   "de": "164",
+   "kind": "directive",
+   "digest": "f1ae2a75ed1f9972",
+   "en": "164",
+   "preview": ":::"
+  },
+  {
+   "de": "165",
+   "kind": "prose",
+   "digest": "29d02d974e6bdb7e",
+   "en": "165",
+   "preview": "Das wollen wir jetzt auch nicht weiter diskutieren, sondern lieber festh…"
+  },
+  {
+   "de": "166",
+   "kind": "math",
+   "digest": "243e2b3264cdc6bf",
+   "en": "166",
+   "preview": "$$ H(P \\Vert R) = \\int_\\Omega p(x) \\log \\frac{p(x)}{r(x)} dx $$"
+  },
+  {
+   "de": "167",
+   "kind": "prose",
+   "digest": "313aca25ec45d80d",
+   "en": "167",
+   "preview": "Diesen Ausdruck wiederum dürfen wir (wenn die Dichtefunktionen hinreiche…"
+  },
+  {
+   "de": "168",
+   "kind": "prose",
+   "digest": "560f82f26f315776",
+   "en": "168",
+   "preview": "$H(P \\Vert R) = \\int_{\\mathbb{R}} p(x) \\log \\dfrac{p(x)}{r(x)} dx$ $= \\s…"
+  },
+  {
+   "de": "169",
+   "kind": "prose",
+   "digest": "9385579705b59fc3",
+   "en": "169",
+   "preview": "betrachten und die Integralterme rechts durch Werte abschätzen, um so $H…"
+  },
+  {
+   "de": "170",
+   "kind": "math",
+   "digest": "07dbc58e17f7c536",
+   "en": "170",
+   "preview": "$$ H(P \\Vert R) \\approx \\sum_{k = -\\infty}^{\\infty} p(k) \\log \\dfrac{p(k…"
+  },
+  {
+   "de": "171",
+   "kind": "prose",
+   "digest": "ea82ead9abdfe746",
+   "en": "171",
+   "preview": "Die Unterteilung in Intervalle der Länge $1$ können wir natürlich belieb…"
+  },
+  {
+   "de": "172",
+   "kind": "prose",
+   "digest": "484490a1eaf37c6f",
+   "en": "172",
+   "preview": "Wenn Sie noch Zweifel daran haben, welche Relevanz die abstrakte Informa…"
+  }
+ ]
+}

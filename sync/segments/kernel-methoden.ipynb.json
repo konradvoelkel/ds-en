@@ -1,0 +1,385 @@
+{
+ "source": "kernel-methoden.ipynb",
+ "target": "kernel-methods.ipynb",
+ "upstream": "c7247a99ef28b04050ef09ba376ac6e32025456a",
+ "blocks": [
+  {
+   "de": "c0.0",
+   "kind": "heading",
+   "digest": "5eabe3ec3189db16",
+   "en": "c0.0",
+   "preview": "# Kernel-Methoden"
+  },
+  {
+   "de": "c0.1",
+   "kind": "prose",
+   "digest": "3fe0e3280e491c6d",
+   "en": "c0.1",
+   "preview": "[Vorlesungsaufzeichnung Kernel-Trick (VL 21, erste 32 Minuten)](https://…"
+  },
+  {
+   "de": "c0.2",
+   "kind": "heading",
+   "digest": "3771030bc48493b0",
+   "en": "c0.2",
+   "preview": "## Motivation: radiale Basisfunktion"
+  },
+  {
+   "de": "c0.3",
+   "kind": "directive",
+   "digest": "943f1e56a96c624c",
+   "en": "c0.3",
+   "preview": "```{admonition} Beispiel Wir betrachten einen synthetischen Datensatz, d…"
+  },
+  {
+   "de": "c1",
+   "kind": "code",
+   "digest": "13115b0ff97e2dff",
+   "en": "c1",
+   "preview": "import numpy as np import scipy.stats as st # craft synthetic data: def …"
+  },
+  {
+   "de": "c2",
+   "kind": "code",
+   "digest": "535ceb4ad8e961be",
+   "en": "c2",
+   "preview": "import matplotlib.pyplot as plt fig, ax = plt.subplots(figsize=(7,7)) ax…"
+  },
+  {
+   "de": "c3.0",
+   "kind": "heading",
+   "digest": "569847c846ce96e1",
+   "en": "c3.0",
+   "preview": "### Eine geometrische Transformation"
+  },
+  {
+   "de": "c4",
+   "kind": "code",
+   "digest": "7e8451ed5f70dc34",
+   "en": "c4",
+   "preview": "# this produces the same as meshgrid, but is more explicit: ticks = 20 f…"
+  },
+  {
+   "de": "c5",
+   "kind": "code",
+   "digest": "917a69806e238d85",
+   "en": "c5",
+   "preview": "import matplotlib.animation as animation from IPython import display as …"
+  },
+  {
+   "de": "c6",
+   "kind": "code",
+   "digest": "4231ba418ddfcafc",
+   "en": "c6",
+   "preview": "plot_ani(update_surface)"
+  },
+  {
+   "de": "c7",
+   "kind": "code",
+   "digest": "ff4151308801be19",
+   "en": "c7",
+   "preview": "plot_ani(update_data)"
+  },
+  {
+   "de": "c8.0",
+   "kind": "prose",
+   "digest": "40e32feebb5af88b",
+   "en": "c8.0",
+   "preview": "Diese so transformierten Daten lassen sich nun mit 2-Means clustern!"
+  },
+  {
+   "de": "c8.1",
+   "kind": "heading",
+   "digest": "17ad6c1e140bd859",
+   "en": "c8.1",
+   "preview": "### k-Means im transformierten Raum"
+  },
+  {
+   "de": "c9",
+   "kind": "code",
+   "digest": "d3ed05a70fb0c1c8",
+   "en": "c9",
+   "preview": "def radial(x, y): \"\"\"Quadrierter Abstand von (x,y) zum Ursprung: eine ei…"
+  },
+  {
+   "de": "c10",
+   "kind": "code",
+   "digest": "f576f1672c2044b8",
+   "en": "c10",
+   "preview": "from mpl_toolkits.mplot3d import Axes3D fig = plt.figure(figsize=(10,10)…"
+  },
+  {
+   "de": "c11.0",
+   "kind": "prose",
+   "digest": "32e72a728683d7f3",
+   "en": "c11.0",
+   "preview": "Wir können auch nur die k-Means-Berechnung in diesem größeren Raum (mit …"
+  },
+  {
+   "de": "c12",
+   "kind": "code",
+   "digest": "3dde65497a568899",
+   "en": "c12",
+   "preview": "fig, ax = plt.subplots(figsize=(7,7)) ax.scatter(sample[:,0], sample[:,1…"
+  },
+  {
+   "de": "c13.0",
+   "kind": "heading",
+   "digest": "cedd7b9e6b4c807e",
+   "en": "c13.0",
+   "preview": "### Was wir wirklich brauchten"
+  },
+  {
+   "de": "c13.1",
+   "kind": "prose",
+   "digest": "bb5ea87c90b0c948",
+   "en": "c13.1",
+   "preview": "Im k-Means-Verfahren werden die ganze Zeit *Abstände* gemessen. Es ist d…"
+  },
+  {
+   "de": "c13.2",
+   "kind": "prose",
+   "digest": "c8581ef713196565",
+   "en": "c13.2",
+   "preview": "Auch andere Verfahren, wie z.B. k-Nearest Neighbours und Support Vector …"
+  },
+  {
+   "de": "c14.0",
+   "kind": "heading",
+   "digest": "6808276bef888a47",
+   "en": "c14.0",
+   "preview": "## Daten durch Abstände beschreiben"
+  },
+  {
+   "de": "c14.1",
+   "kind": "directive",
+   "digest": "820386077ad7ce37",
+   "en": "c14.1",
+   "preview": "```{admonition} Beispiel Gegeben zwei Punkte $A, B$ in der Ebene, lassen…"
+  },
+  {
+   "de": "c14.2",
+   "kind": "directive",
+   "digest": "b64a0231d53a2bf3",
+   "en": "c14.2",
+   "preview": "```{admonition} Beispiel Gegeben drei Punkte $A, B, C$ im dreidimensiona…"
+  },
+  {
+   "de": "c14.3",
+   "kind": "prose",
+   "digest": "12297fa14376fb60",
+   "en": "c14.3",
+   "preview": "Der Kernel-Trick besteht nun darin, die Daten $x_i$ nicht durch die symm…"
+  },
+  {
+   "de": "c14.4",
+   "kind": "prose",
+   "digest": "0cb2db73a6427576",
+   "en": "c14.4",
+   "preview": "Der euklidische Abstand ist"
+  },
+  {
+   "de": "c14.5",
+   "kind": "math",
+   "digest": "c174c533a96b81ad",
+   "en": "c14.5",
+   "preview": "$$ d(a,b) = \\lVert b - a \\rVert = \\sqrt{\\langle b-a , b-a \\rangle} = \\sq…"
+  },
+  {
+   "de": "c14.6",
+   "kind": "prose",
+   "digest": "76ec89ec7d516c44",
+   "en": "c14.6",
+   "preview": "Wenn man eine lineare Transformation $M$ anwendet auf die Daten, so bere…"
+  },
+  {
+   "de": "c14.7",
+   "kind": "math",
+   "digest": "08647d34cb1800de",
+   "en": "c14.7",
+   "preview": "$$ d(Ma, Mb)^2 = \\lVert Mb - Ma \\rVert^2 = \\lVert M(b - a) \\rVert^2 = \\l…"
+  },
+  {
+   "de": "c14.8",
+   "kind": "prose",
+   "digest": "8c8ccaec63d3fb0d",
+   "en": "c14.8",
+   "preview": "sodass wir für eine Abstandsmessung im transformierten Raum eigentlich g…"
+  },
+  {
+   "de": "c14.9",
+   "kind": "prose",
+   "digest": "ce173138671794c1",
+   "en": "c14.9",
+   "preview": "Oftmals ist ein guter Abstandsbegriff auch das Skalarprodukt $\\langle a,…"
+  },
+  {
+   "de": "c14.10",
+   "kind": "prose",
+   "digest": "4dfe205e99f7b822",
+   "en": "c14.10",
+   "preview": "Nebenbemerkung, um das zu erläutern: Wir können auch ausrechnen, dass"
+  },
+  {
+   "de": "c14.11",
+   "kind": "math",
+   "digest": "aa5c4b3a0300a59a",
+   "en": "c14.11",
+   "preview": "$$ {\\lVert b-a \\rVert}^2 = \\langle b-a, b-a\\rangle = \\langle b,b\\rangle …"
+  },
+  {
+   "de": "c14.12",
+   "kind": "prose",
+   "digest": "dc0d2a5a77a97c75",
+   "en": "c14.12",
+   "preview": "was für normierte Vektoren $a,b$ (also ${\\lVert a \\rVert} = 1$ und${\\lVe…"
+  },
+  {
+   "de": "c14.13",
+   "kind": "prose",
+   "digest": "40acfbd3c016e968",
+   "en": "c14.13",
+   "preview": "Von der linearen Situation abstrahiert man nun, und lässt eine beliebige…"
+  },
+  {
+   "de": "c14.14",
+   "kind": "heading",
+   "digest": "709f6f34cf26b734",
+   "en": "c14.14",
+   "preview": "## Kernel"
+  },
+  {
+   "de": "c14.15",
+   "kind": "directive",
+   "digest": "60010c473ca85bb3",
+   "en": "c14.15",
+   "preview": "```{admonition} Definition Eine Abbildung $\\kappa \\colon \\mathcal{X} \\ti…"
+  },
+  {
+   "de": "c14.16",
+   "kind": "prose",
+   "digest": "4cacdee69f7b12cd",
+   "en": "c14.16",
+   "preview": "Man muss bei einem Kernel den Raum $F$ und die Abbildung $\\phi$ gar nich…"
+  },
+  {
+   "de": "c14.17",
+   "kind": "prose",
+   "digest": "5f71ecf4e53f3596",
+   "en": "c14.17",
+   "preview": "Man spricht auch von einem **Mercer**-Kernel und nennt allgemeiner Funkt…"
+  },
+  {
+   "de": "c14.18",
+   "kind": "prose",
+   "digest": "f550dbff80ed072f",
+   "en": "c14.18",
+   "preview": "Man spricht allgemein von der **Kernel-Methode**, wenn man einen Algorit…"
+  },
+  {
+   "de": "c14.19",
+   "kind": "heading",
+   "digest": "43b85e159b85e94f",
+   "en": "c14.19",
+   "preview": "### Gausssche Kernel"
+  },
+  {
+   "de": "c14.20",
+   "kind": "directive",
+   "digest": "3ac5c72e0d7f582e",
+   "en": "c14.20",
+   "preview": "```{admonition} Definition Kernel der Form $$ \\kappa(x,y) = e^{\\left(-\\d…"
+  },
+  {
+   "de": "c14.21",
+   "kind": "prose",
+   "digest": "0fbdc4dc2b5f5862",
+   "en": "c14.21",
+   "preview": "Man beachte, dass wir hier nicht $(x-\\mu)$ mit $(y-\\mu)$ vergleichen müs…"
+  },
+  {
+   "de": "c15",
+   "kind": "code",
+   "digest": "a234fe34e6146585",
+   "en": "c15",
+   "preview": "from sklearn.metrics.pairwise import rbf_kernel k = rbf_kernel(sample, g…"
+  },
+  {
+   "de": "c16.0",
+   "kind": "prose",
+   "digest": "27c2fcba4b71e820",
+   "en": "c16.0",
+   "preview": "Nur, was fängt man jetzt mit dem Kernel an?"
+  },
+  {
+   "de": "c16.1",
+   "kind": "prose",
+   "digest": "f004ef9992de89d3",
+   "en": "c16.1",
+   "preview": "Zum Beispiel lineare Regression mit Ridge Regularisierung:"
+  },
+  {
+   "de": "c17",
+   "kind": "code",
+   "digest": "f35f0ab2558caa99",
+   "en": "c17",
+   "preview": "from sklearn.kernel_ridge import KernelRidge # target variable is #clust…"
+  },
+  {
+   "de": "c18",
+   "kind": "code",
+   "digest": "ee876bdb51943c61",
+   "en": "c18",
+   "preview": "clf = KernelRidge(kernel=\"precomputed\") clf.fit(k, y) y_pred = clf.predi…"
+  },
+  {
+   "de": "c19.0",
+   "kind": "heading",
+   "digest": "dd957fe643654b58",
+   "en": "c19.0",
+   "preview": "## Kernel PCA"
+  },
+  {
+   "de": "c19.1",
+   "kind": "prose",
+   "digest": "9a014ae753f0c0e1",
+   "en": "c19.1",
+   "preview": "Bei der Hauptachsentransformation werden die Eigenvektoren der Kovarianz…"
+  },
+  {
+   "de": "c20",
+   "kind": "code",
+   "digest": "e97f667ed6a1819b",
+   "en": "c20",
+   "preview": "from sklearn.decomposition import PCA, KernelPCA pca = PCA(n_components=…"
+  },
+  {
+   "de": "c21",
+   "kind": "code",
+   "digest": "65bc49830992e439",
+   "en": "c21",
+   "preview": "sample_pca = pca.fit_transform(sample)"
+  },
+  {
+   "de": "c22",
+   "kind": "code",
+   "digest": "b2ee8ef4b413ef4b",
+   "en": "c22",
+   "preview": "# The following may need more than 16 GB of RAM, # if the sample is larg…"
+  },
+  {
+   "de": "c23",
+   "kind": "code",
+   "digest": "3d93855d44427d5c",
+   "en": "c23",
+   "preview": "fig, axs = plt.subplots(ncols = 2, figsize=(8,4)) axs[0].scatter(sample_…"
+  },
+  {
+   "de": "c24.0",
+   "kind": "prose",
+   "digest": "8e05f6399e8e088a",
+   "en": "c24.0",
+   "preview": "Genau genommen vergrößert Kernel-PCA zunächst die Anzahl an Dimensionen …"
+  }
+ ]
+}

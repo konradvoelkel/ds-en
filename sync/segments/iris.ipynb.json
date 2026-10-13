@@ -1,0 +1,35 @@
+{
+ "source": "iris.ipynb",
+ "target": "iris.ipynb",
+ "upstream": "c7247a99ef28b04050ef09ba376ac6e32025456a",
+ "blocks": [
+  {
+   "de": "c0.0",
+   "kind": "heading",
+   "digest": "7f580a0be3abafda",
+   "en": "c0.0",
+   "preview": "# Iris"
+  },
+  {
+   "de": "c0.1",
+   "kind": "prose",
+   "digest": "93df0a503a5ade96",
+   "en": "c0.1",
+   "preview": "Mit dem Iris-Datensatz werden wir uns noch häufiger beschäftigen, auch i…"
+  },
+  {
+   "de": "c1",
+   "kind": "code",
+   "digest": "195fac57a1d5a463",
+   "en": "c1",
+   "preview": "import numpy as np import matplotlib.pyplot as plt from sklearn import d…"
+  },
+  {
+   "de": "c2",
+   "kind": "code",
+   "digest": "58661fd85df7620f",
+   "en": "c2",
+   "preview": "def jitter(xs): \"\"\"Werte leicht verrauschen, damit sich gleiche Werte im…"
+  }
+ ]
+}

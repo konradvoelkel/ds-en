@@ -1,0 +1,749 @@
+{
+ "source": "intro-python.ipynb",
+ "target": "intro-python.ipynb",
+ "upstream": "c7247a99ef28b04050ef09ba376ac6e32025456a",
+ "blocks": [
+  {
+   "de": "c0.0",
+   "kind": "heading",
+   "digest": "80be48bc0085b350",
+   "en": "c0.0",
+   "preview": "# Einführung in Python"
+  },
+  {
+   "de": "c0.1",
+   "kind": "prose",
+   "digest": "f3fa25a509ee91c2",
+   "en": "c0.1",
+   "preview": "[Vorlesungsaufzeichnung Python in der REPL](https://media.hhu.de/channel…"
+  },
+  {
+   "de": "c0.2",
+   "kind": "heading",
+   "digest": "6bcaaea1cf1da8b1",
+   "en": "c0.2",
+   "preview": "## Einordnung"
+  },
+  {
+   "de": "c0.3",
+   "kind": "prose",
+   "digest": "2258707040d8af0c",
+   "en": "c0.3",
+   "preview": "Python hat eine andere Designphilosophie als C, C++, Perl, Lisp, Pascal,…"
+  },
+  {
+   "de": "c0.4",
+   "kind": "prose",
+   "digest": "270b47af7b10c7e1",
+   "en": "c0.4",
+   "preview": "Python ist konzipiert als Sprache, die besonders gut lesbar ist, und der…"
+  },
+  {
+   "de": "c0.5",
+   "kind": "prose",
+   "digest": "534f37e7087c636f",
+   "en": "c0.5",
+   "preview": "Mit Python lassen sich funktionale Programmierparadigmen verwenden wie i…"
+  },
+  {
+   "de": "c0.6",
+   "kind": "prose",
+   "digest": "4f9635a1bf46f85d",
+   "en": "c0.6",
+   "preview": "Es gibt zwei klassische Arten, Python zu verwenden. Mit einer REPL (read…"
+  },
+  {
+   "de": "c0.7",
+   "kind": "prose",
+   "digest": "f707f6fa54c09159",
+   "en": "c0.7",
+   "preview": "Durch kompilieren eines Programms (.py) zu Python Bytecode (.pyc) und au…"
+  },
+  {
+   "de": "c0.8",
+   "kind": "prose",
+   "digest": "efface3036ed5cfb",
+   "en": "c0.8",
+   "preview": "Ursprünglich nutzte man zum Hinzufügen von Paketen (so heißen libraries …"
+  },
+  {
+   "de": "c0.9",
+   "kind": "prose",
+   "digest": "d8f4693de7dc5dae",
+   "en": "c0.9",
+   "preview": "Damit sich die Pakete verschiedener Projekte nicht in die Quere kommen, …"
+  },
+  {
+   "de": "c0.10",
+   "kind": "prose",
+   "digest": "ceaafd5b4db11cd9",
+   "en": "c0.10",
+   "preview": "Ein (Jupyter/IPython) Notebook ist ein Dokument, welches aus mehreren Ze…"
+  },
+  {
+   "de": "c0.11",
+   "kind": "prose",
+   "digest": "66eb029ea8ecf285",
+   "en": "c0.11",
+   "preview": "Dieses Buch ist auch eine Sammlung von Notebooks, die von Jupyter-Books …"
+  },
+  {
+   "de": "c1.0",
+   "kind": "heading",
+   "digest": "d112abe5414ec6c1",
+   "en": "c1.0",
+   "preview": "### Warum Python?"
+  },
+  {
+   "de": "c1.1",
+   "kind": "prose",
+   "digest": "8a86cebbae6de97f",
+   "en": "c1.1",
+   "preview": "Die Wahl ist weder zufällig noch Geschmackssache. Python ist seit Jahren…"
+  },
+  {
+   "de": "c1.2",
+   "kind": "prose",
+   "digest": "bfc5de295fc1290a",
+   "en": "c1.2",
+   "preview": "Um Python herum hat sich ein Ökosystem gebildet, das unter dem Namen *Sc…"
+  },
+  {
+   "de": "c1.3",
+   "kind": "prose",
+   "digest": "355611c88fbb3b78",
+   "en": "c1.3",
+   "preview": "* **Numpy** — Arrays und Vektorrechnung, die Grundlage für alles Weitere…"
+  },
+  {
+   "de": "c1.4",
+   "kind": "prose",
+   "digest": "6a7a0b1e3f257c2b",
+   "en": "c1.4",
+   "preview": "Dazu kommen Pakete, die wir nur erwähnen: *Seaborn* baut auf Matplotlib …"
+  },
+  {
+   "de": "c1.5",
+   "kind": "prose",
+   "digest": "e4f6c83fa8231970",
+   "en": "c1.5",
+   "preview": "Diese Pakete stimmen ihre Versionen untereinander ab: Nach [NEP 29](http…"
+  },
+  {
+   "de": "c2.0",
+   "kind": "heading",
+   "digest": "fe258f1ddfb74642",
+   "en": "c2.0",
+   "preview": "### Vier Merksätze"
+  },
+  {
+   "de": "c2.1",
+   "kind": "prose",
+   "digest": "5a11dab4511ee2cb",
+   "en": "c2.1",
+   "preview": "**1. Die REPL ist unser Freund.** Python ist eine interpretierte Sprache…"
+  },
+  {
+   "de": "c2.2",
+   "kind": "prose",
+   "digest": "3bd8ea60eed9e650",
+   "en": "c2.2",
+   "preview": "**2. Einrückung statt Klammern.** Blöcke werden in Python nicht durch ge…"
+  },
+  {
+   "de": "c2.3",
+   "kind": "prose",
+   "digest": "f9ec4a271f6a40ce",
+   "en": "c2.3",
+   "preview": "**3. Alles ist ein Objekt.** Auch Zahlen, auch Funktionen, auch Module. …"
+  },
+  {
+   "de": "c2.4",
+   "kind": "prose",
+   "digest": "d064f7871bee2371",
+   "en": "c2.4",
+   "preview": "**4. Sprachmodelle können Python.** Von allen Programmiersprachen ist Py…"
+  },
+  {
+   "de": "c3",
+   "kind": "code",
+   "digest": "33352323134da119",
+   "en": "c3",
+   "preview": "print((3).bit_length()) # auch eine Zahl hat Methoden print(type(print))…"
+  },
+  {
+   "de": "c4.0",
+   "kind": "heading",
+   "digest": "55389b747f0d9a95",
+   "en": "c4.0",
+   "preview": "## Weiterführende Literatur"
+  },
+  {
+   "de": "c4.1",
+   "kind": "prose",
+   "digest": "80cf364ebb52c7e9",
+   "en": "c4.1",
+   "preview": "Natürlich gibt es zu Python mittlerweile viel Material. Da die Sprache s…"
+  },
+  {
+   "de": "c4.2",
+   "kind": "prose",
+   "digest": "b35396e267a6c28e",
+   "en": "c4.2",
+   "preview": "Wer nach diesem Kapitel tiefer in die Sprache selbst einsteigen möchte, …"
+  },
+  {
+   "de": "c4.3",
+   "kind": "prose",
+   "digest": "f26f24a3dde3a86f",
+   "en": "c4.3",
+   "preview": "Eine sehr nützliche Ressource ist [PEP 8, der Python Style Guide](http:/…"
+  },
+  {
+   "de": "c4.4",
+   "kind": "prose",
+   "digest": "27218b32a6ab614b",
+   "en": "c4.4",
+   "preview": "PEP steht für [Python Enhancement Proposal](https://www.python.org/dev/p…"
+  },
+  {
+   "de": "c4.5",
+   "kind": "prose",
+   "digest": "fe2232024ec34dc7",
+   "en": "c4.5",
+   "preview": "Die [offizielle Dokumentation der Sprache](https://docs.python.org/3/) i…"
+  },
+  {
+   "de": "c4.6",
+   "kind": "prose",
+   "digest": "314e55414925ccdc",
+   "en": "c4.6",
+   "preview": "Für erfahrene Programmierer\\*innen wurde das frei verfügbare [Dive Into …"
+  },
+  {
+   "de": "c4.7",
+   "kind": "prose",
+   "digest": "5fc83653b111a618",
+   "en": "c4.7",
+   "preview": "Auf Deutsch ist unter anderem der [Python-Kurs von Bernd Klein](https://…"
+  },
+  {
+   "de": "c4.8",
+   "kind": "prose",
+   "digest": "bc3fe0178a485c52",
+   "en": "c4.8",
+   "preview": "Wer gern etwas über die skurrileren Seiten (auch der Implementierung) le…"
+  },
+  {
+   "de": "c5.0",
+   "kind": "heading",
+   "digest": "8e269597510dd0e6",
+   "en": "c5.0",
+   "preview": "## Wichtigstes"
+  },
+  {
+   "de": "c5.1",
+   "kind": "prose",
+   "digest": "0724f67859435f94",
+   "en": "c5.1",
+   "preview": "Um die Dokumentation und den Code von Python-Modulen schnell zu verstehe…"
+  },
+  {
+   "de": "c5.2",
+   "kind": "heading",
+   "digest": "280221c9bf196232",
+   "en": "c5.2",
+   "preview": "### Datentypen"
+  },
+  {
+   "de": "c5.3",
+   "kind": "prose",
+   "digest": "2e5b8936870eeb99",
+   "en": "c5.3",
+   "preview": "**Zahlen** werden entweder als Integer (int) oder als Floating Point Num…"
+  },
+  {
+   "de": "c5.4",
+   "kind": "prose",
+   "digest": "a747fbca61073708",
+   "en": "c5.4",
+   "preview": "Drei Dinge sind dabei anders, als man es aus C oder Java kennt. Erstens …"
+  },
+  {
+   "de": "c6",
+   "kind": "code",
+   "digest": "be8a77dd95535fa8",
+   "en": "c6",
+   "preview": "print(\"23 ist\", type(23), \"und 23.0 ist\", type(23.0)) print(\"und 23+2j i…"
+  },
+  {
+   "de": "c7.0",
+   "kind": "prose",
+   "digest": "89bd4d8fcdf90d31",
+   "en": "c7.0",
+   "preview": "Die mittlere Zeile ist der Grund, warum man Gleitkommazahlen **nie auf G…"
+  },
+  {
+   "de": "c8.0",
+   "kind": "prose",
+   "digest": "e53d1c136dca671c",
+   "en": "c8.0",
+   "preview": "**Strings** (Zeichenketten) sind grundsätzlich Unicode, wobei auf UTF-8 …"
+  },
+  {
+   "de": "c8.1",
+   "kind": "prose",
+   "digest": "dc7a5cfb167ed915",
+   "en": "c8.1",
+   "preview": "Anführungszeichen dürfen einfach oder doppelt sein, `'Data'` und `\"Data\"…"
+  },
+  {
+   "de": "c9",
+   "kind": "code",
+   "digest": "196609d489b27849",
+   "en": "c9",
+   "preview": "s = \"Data Science\" print(s[0], \"|\", s[5:], \"|\", s[-7:]) # Slicing geht a…"
+  },
+  {
+   "de": "c10.0",
+   "kind": "prose",
+   "digest": "25724f17957cb1ec",
+   "en": "c10.0",
+   "preview": "**Wahrheitswerte und `None`.** Der Typ `bool` hat die beiden Werte `True…"
+  },
+  {
+   "de": "c10.1",
+   "kind": "prose",
+   "digest": "a5b18d100ca89b4e",
+   "en": "c10.1",
+   "preview": "`None` ist der einzige Wert vom Typ `NoneType` und spielt die Rolle, die…"
+  },
+  {
+   "de": "c11",
+   "kind": "code",
+   "digest": "16848f63e9630bab",
+   "en": "c11",
+   "preview": "print(bool(0), bool(\"\"), bool([]), bool([0]), bool(None)) # was gilt als…"
+  },
+  {
+   "de": "c12.0",
+   "kind": "prose",
+   "digest": "9fafcbdbeae854c7",
+   "en": "c12.0",
+   "preview": "**Dictionaries** sind Abbildungen mit endlichem Definitionsbereich, man …"
+  },
+  {
+   "de": "c13",
+   "kind": "code",
+   "digest": "e26a6f066d7891a8",
+   "en": "c13",
+   "preview": "f = {\"a\":1, \"b\":2} if f == dict(a=1, b=2): print(\"Syntaktischer Zucker e…"
+  },
+  {
+   "de": "c14.0",
+   "kind": "prose",
+   "digest": "9738b9f4982b7171",
+   "en": "c14.0",
+   "preview": "Unter der Haube ist ein Dictionary eine **Hash-Map**: Der Schlüssel wird…"
+  },
+  {
+   "de": "c15.0",
+   "kind": "prose",
+   "digest": "4bf8d7bdded062f9",
+   "en": "c15.0",
+   "preview": "**Tupel** sind längenfixierte unveränderliche Listen, also z.B. Paare od…"
+  },
+  {
+   "de": "c16",
+   "kind": "code",
+   "digest": "ac91b7846ba988de",
+   "en": "c16",
+   "preview": "paar = (2,3) print(paar, \"is a\", type(paar), \"of length\", len(paar)) tri…"
+  },
+  {
+   "de": "c17.0",
+   "kind": "prose",
+   "digest": "eac1d5f5e482ce80",
+   "en": "c17.0",
+   "preview": "**Mengen** sind ungeordnete Listen, auch die notiert man mit geschweifte…"
+  },
+  {
+   "de": "c18",
+   "kind": "code",
+   "digest": "bfa98f0e4abf8884",
+   "en": "c18",
+   "preview": "Menge = {3,2,1} print(Menge) Nochnemenge = set((2,3,1)) Menge == Nochnem…"
+  },
+  {
+   "de": "c19.0",
+   "kind": "prose",
+   "digest": "3f93251840039821",
+   "en": "c19.0",
+   "preview": "**Listen** sind geordnet und können verlängert werden. Unter der Haube i…"
+  },
+  {
+   "de": "c20",
+   "kind": "code",
+   "digest": "7aeeb344414d8ddb",
+   "en": "c20",
+   "preview": "liste = [3,1,4,1,5,9] if 5 in liste: print(liste, \"vom Typ\", type(liste)…"
+  },
+  {
+   "de": "c21.0",
+   "kind": "prose",
+   "digest": "260a947762f80df2",
+   "en": "c21.0",
+   "preview": "**Slicing** nennt man es, wenn man einen Teil einer Liste in Python ausw…"
+  },
+  {
+   "de": "c22",
+   "kind": "code",
+   "digest": "974f30e7d02a5a8b",
+   "en": "c22",
+   "preview": "zahlen = range(0,10) # Achtung, geht mit 0 los, 10 ist nicht dabei. prin…"
+  },
+  {
+   "de": "c23.0",
+   "kind": "prose",
+   "digest": "3a5747072c9757eb",
+   "en": "c23.0",
+   "preview": "**Generatoren** sind Objekte, die Listen in einer Hinsicht verallgemeine…"
+  },
+  {
+   "de": "c24",
+   "kind": "code",
+   "digest": "bd14bcc0575c5173",
+   "en": "c24",
+   "preview": "gen = (x + 2 for x in range(0,5)) print(gen, \"hat den Typ\", type(gen)) #…"
+  },
+  {
+   "de": "c25.0",
+   "kind": "heading",
+   "digest": "2ee9af874498e9eb",
+   "en": "c25.0",
+   "preview": "### Gleichheit und Identität"
+  },
+  {
+   "de": "c25.1",
+   "kind": "prose",
+   "digest": "8abdb49a690f3e4f",
+   "en": "c25.1",
+   "preview": "*Wertgleichheit* wird mit dem Operator `==` geprüft, *Referenzgleichheit…"
+  },
+  {
+   "de": "c26",
+   "kind": "code",
+   "digest": "b13dc253b81bab2b",
+   "en": "c26",
+   "preview": "print(123 == 121 + 2) a = [1,2,3] b = a[:] # Kopie print(id(a) == id(b))…"
+  },
+  {
+   "de": "c27.0",
+   "kind": "prose",
+   "digest": "246226447a9d19db",
+   "en": "c27.0",
+   "preview": "*Typenzugehörigkeit* prüfen wir mit der Methode `isinstance`."
+  },
+  {
+   "de": "c28",
+   "kind": "code",
+   "digest": "75b60d3663452016",
+   "en": "c28",
+   "preview": "print(isinstance(\"a\", str)) print(isinstance(123, bool)) print(type(123)…"
+  },
+  {
+   "de": "c29.0",
+   "kind": "prose",
+   "digest": "1d97f6dc7147e6b3",
+   "en": "c29.0",
+   "preview": "Noch schwächer als `==` ist ein Vergleich der darstellenden Strings (das…"
+  },
+  {
+   "de": "c30",
+   "kind": "code",
+   "digest": "87b91c6dbe63f331",
+   "en": "c30",
+   "preview": "a = dict(key1=1, key2=2) b = {\"key1\":'1', \"key2\":'2'} print(\"echt versch…"
+  },
+  {
+   "de": "c31.0",
+   "kind": "heading",
+   "digest": "5bd4f14a67f1d9df",
+   "en": "c31.0",
+   "preview": "### Kontrollfluss, f-Strings und Dateien"
+  },
+  {
+   "de": "c31.1",
+   "kind": "prose",
+   "digest": "8ff45b8033b573df",
+   "en": "c31.1",
+   "preview": "Schleifen und Verzweigungen sehen in Python so aus wie unten; eine Bedin…"
+  },
+  {
+   "de": "c31.2",
+   "kind": "prose",
+   "digest": "f1e464f15a426ef5",
+   "en": "c31.2",
+   "preview": "Eingerückt wird mit **vier Leerzeichen** — das ist keine Vorschrift des …"
+  },
+  {
+   "de": "c31.3",
+   "kind": "prose",
+   "digest": "f6cd6a7275e6a1d0",
+   "en": "c31.3",
+   "preview": "Die `for`-Schleife ist immer ein *for-each*: Sie läuft über die Elemente…"
+  },
+  {
+   "de": "c32",
+   "kind": "code",
+   "digest": "d9a65f69b28df976",
+   "en": "c32",
+   "preview": "for i in range(3): # for-Schleife über eine Sequenz if i == 0: print(i, …"
+  },
+  {
+   "de": "c33.0",
+   "kind": "prose",
+   "digest": "bef73a70aa675e91",
+   "en": "c33.0",
+   "preview": "**f-Strings** setzen Werte in einen String ein. Nach einem Doppelpunkt k…"
+  },
+  {
+   "de": "c34",
+   "kind": "code",
+   "digest": "ad9d209cd4a132c4",
+   "en": "c34",
+   "preview": "name, anteil = \"female\", 0.7420382 print(f\"Anteil {name}: {anteil}\") pri…"
+  },
+  {
+   "de": "c35.0",
+   "kind": "prose",
+   "digest": "2c13ece3ae4ff392",
+   "en": "c35.0",
+   "preview": "**Dateien** öffnet man mit `open`, am besten in einem `with`-Block: Der …"
+  },
+  {
+   "de": "c36",
+   "kind": "code",
+   "digest": "75a1bf0dfdba89f4",
+   "en": "c36",
+   "preview": "with open(\"beispiel.txt\", \"w\", encoding=\"utf-8\") as datei: # \"w\" = schre…"
+  },
+  {
+   "de": "c37.0",
+   "kind": "prose",
+   "digest": "63452264d5be51d2",
+   "en": "c37.0",
+   "preview": "<!-- ### Funktionale Programmierung"
+  },
+  {
+   "de": "c37.1",
+   "kind": "heading",
+   "digest": "b489fc86667cc5c6",
+   "en": "c37.1",
+   "preview": "### map, filter, reduce, zip"
+  },
+  {
+   "de": "c37.2",
+   "kind": "heading",
+   "digest": "013cf0646a91a616",
+   "en": "c37.2",
+   "preview": "### lambda"
+  },
+  {
+   "de": "c37.3",
+   "kind": "heading",
+   "digest": "cc494c2cc343846b",
+   "en": "c37.3",
+   "preview": "### -->"
+  },
+  {
+   "de": "c37.4",
+   "kind": "heading",
+   "digest": "0c56fdd97aac8fac",
+   "en": "c37.4",
+   "preview": "### Objektorientierte Programmierung"
+  },
+  {
+   "de": "c38",
+   "kind": "code",
+   "digest": "18f8ce6d633e99e5",
+   "en": "c38",
+   "preview": "class MeineKlasse: def meine_methode(self, methodisch): print(methodisch…"
+  },
+  {
+   "de": "c39.0",
+   "kind": "prose",
+   "digest": "f0c475ad3954b879",
+   "en": "c39.0",
+   "preview": "Der Polymorphismus geht so weit, dass man oft nicht wissen muss, ob eine…"
+  },
+  {
+   "de": "c39.1",
+   "kind": "heading",
+   "digest": "e2a16ba908b3946f",
+   "en": "c39.1",
+   "preview": "### Privat und Öffentlich"
+  },
+  {
+   "de": "c39.2",
+   "kind": "prose",
+   "digest": "5008f52a83c09911",
+   "en": "c39.2",
+   "preview": "Es gibt (im Gegensatz zu z.B. Java) in Python keine Möglichkeit, etwas z…"
+  },
+  {
+   "de": "c39.3",
+   "kind": "heading",
+   "digest": "4d05503d451a81cd",
+   "en": "c39.3",
+   "preview": "### Dictionaries und Tupel sind überall"
+  },
+  {
+   "de": "c39.4",
+   "kind": "prose",
+   "digest": "0b461c4b5b8028a6",
+   "en": "c39.4",
+   "preview": "Tupel lassen sich auspacken:"
+  },
+  {
+   "de": "c40",
+   "kind": "code",
+   "digest": "4a9d8d09d154c5a2",
+   "en": "c40",
+   "preview": "t = (1, 2, 3) a, b, c = t print(t, a, b, c)"
+  },
+  {
+   "de": "c41.0",
+   "kind": "heading",
+   "digest": "7a727682897934e5",
+   "en": "c41.0",
+   "preview": "### Funktionen"
+  },
+  {
+   "de": "c41.1",
+   "kind": "prose",
+   "digest": "b8d485ad18528881",
+   "en": "c41.1",
+   "preview": "Eine Funktion definiert man mit `def`, der Rückgabewert kommt von `retur…"
+  },
+  {
+   "de": "c42",
+   "kind": "code",
+   "digest": "5d9edf8fc1ff7ea4",
+   "en": "c42",
+   "preview": "def quadrat(x, plus=0): \"\"\"Quadriert x und addiert optional etwas dazu.\"…"
+  },
+  {
+   "de": "c43.0",
+   "kind": "prose",
+   "digest": "047903fde61c8c52",
+   "en": "c43.0",
+   "preview": "Ein Detail, das aus anderen Sprachen kommend überrascht: In Python bilde…"
+  },
+  {
+   "de": "c43.1",
+   "kind": "prose",
+   "digest": "38874d514e545353",
+   "en": "c43.1",
+   "preview": "Umgekehrt darf eine Funktion Namen von außen *lesen*, ohne sie zu überne…"
+  },
+  {
+   "de": "c44",
+   "kind": "code",
+   "digest": "a7613826e8cf25a2",
+   "en": "c44",
+   "preview": "if True: drinnen = 1 print(\"nach dem if-Block gibt es\", drinnen, \"- Bloe…"
+  },
+  {
+   "de": "c45.0",
+   "kind": "prose",
+   "digest": "e9cbb7f24e2f1293",
+   "en": "c45.0",
+   "preview": "In einer Methodendeklaration gibt es die Möglichkeit, beliebig viele Pos…"
+  },
+  {
+   "de": "c46",
+   "kind": "code",
+   "digest": "a5c83899bb939a4b",
+   "en": "c46",
+   "preview": "def methode(*args): return args methode() print(methode(1,2,3,\"vier\")) d…"
+  },
+  {
+   "de": "c47",
+   "kind": "code",
+   "digest": "17feb846806e7976",
+   "en": "c47",
+   "preview": "try: neuemethode() except TypeError as e: print(e)"
+  },
+  {
+   "de": "c48.0",
+   "kind": "prose",
+   "digest": "a0ca0ecc24810e0b",
+   "en": "c48.0",
+   "preview": "Ebenso kann man mit Schlüsselwortargumenten umgehen:"
+  },
+  {
+   "de": "c49",
+   "kind": "code",
+   "digest": "fd890eeb0498819f",
+   "en": "c49",
+   "preview": "def methode(**kwargs): return kwargs methode() print(methode(key=\"value\"…"
+  },
+  {
+   "de": "c50.0",
+   "kind": "prose",
+   "digest": "6d9e7132d43d05cb",
+   "en": "c50.0",
+   "preview": "Insgesamt kann man eine Folge von zwingenden Positionsargumenten, eine F…"
+  },
+  {
+   "de": "c51",
+   "kind": "code",
+   "digest": "925700b23cfea082",
+   "en": "c51",
+   "preview": "def methode(posarg, posarg2, *args, kwarg=None, kwarg2=True, **kwargs): …"
+  },
+  {
+   "de": "c52.0",
+   "kind": "prose",
+   "digest": "ca14ab81a84ec8ea",
+   "en": "c52.0",
+   "preview": "Um direkt ein ganzes `dict`-Objekt als Schlüsselwortargumente zu übergeb…"
+  },
+  {
+   "de": "c53",
+   "kind": "code",
+   "digest": "376defe9c66ac4f2",
+   "en": "c53",
+   "preview": "args = (1, 2, 3, 4, 5) kwargs = {\"kwarg2\": False, \"kwarg3\": \"test\"} prin…"
+  },
+  {
+   "de": "c54.0",
+   "kind": "prose",
+   "digest": "ff6cb373db4d7416",
+   "en": "c54.0",
+   "preview": "Auch Objektattribute werden in einem `dict` verwaltet:"
+  },
+  {
+   "de": "c55",
+   "kind": "code",
+   "digest": "9173b225307a5419",
+   "en": "c55",
+   "preview": "class NeueKlasse: def __init__(self): self.x = 1 self.y = 2 neues_objekt…"
+  },
+  {
+   "de": "c56.0",
+   "kind": "prose",
+   "digest": "4c15deb3485b7227",
+   "en": "c56.0",
+   "preview": "![XKCD 353: Python](images/python.png \"I wrote 20 short programs in Pyth…"
+  },
+  {
+   "de": "c56.1",
+   "kind": "prose",
+   "digest": "fe70bf07d4c4de0e",
+   "en": "c56.1",
+   "preview": "Randall Munroe, [xkcd 353 „Python“](https://xkcd.com/353/) (CC BY-NC 2.5…"
+  }
+ ]
+}

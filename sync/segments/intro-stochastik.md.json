@@ -1,0 +1,812 @@
+{
+ "source": "intro-stochastik.md",
+ "target": "intro-probability.md",
+ "upstream": "c7247a99ef28b04050ef09ba376ac6e32025456a",
+ "blocks": [
+  {
+   "de": "0",
+   "kind": "heading",
+   "digest": "df3ed4c3831fee31",
+   "en": "0",
+   "preview": "# Herleitung des mathematischen Formalismus der Stochastik"
+  },
+  {
+   "de": "1",
+   "kind": "prose",
+   "digest": "7f7ffaa13bf592c4",
+   "en": "1",
+   "preview": "[Vorlesungsaufzeichnung Wahrscheinlichkeitsmaß (VL 2, erster Teil)](http…"
+  },
+  {
+   "de": "2",
+   "kind": "prose",
+   "digest": "b3ad98e99ce7f639",
+   "en": "2",
+   "preview": "Sie haben bereits in Mathematik für Informatik 3 die Grundlagen der (dis…"
+  },
+  {
+   "de": "3",
+   "kind": "prose",
+   "digest": "10ec2af035486550",
+   "en": "3",
+   "preview": "Man kann Stochastik als Oberbegriff für Wahrscheinlichkeitstheorie und S…"
+  },
+  {
+   "de": "4",
+   "kind": "directive",
+   "digest": "909d702ce028035d",
+   "en": "4",
+   "preview": "```{figure} images/stochastik-statistik-wtheorie.png :width: 480px :alig…"
+  },
+  {
+   "de": "5",
+   "kind": "prose",
+   "digest": "521eb86f8bad008b",
+   "en": "5",
+   "preview": "Die beiden Pfeile in der Mitte sind die eigentliche Aussage des Bildes, …"
+  },
+  {
+   "de": "6",
+   "kind": "prose",
+   "digest": "739ecf86c9e76b2e",
+   "en": "6",
+   "preview": "Wie immer in der Informatik ist ein wesentliches Ziel, mit einem Modell …"
+  },
+  {
+   "de": "7",
+   "kind": "prose",
+   "digest": "dff2574ec3a84aad",
+   "en": "7",
+   "preview": "Wir kennen bereits logische Modelle der Realität: Wenn es regnet, wird d…"
+  },
+  {
+   "de": "8",
+   "kind": "prose",
+   "digest": "7c6e4fcb7cc93889",
+   "en": "8",
+   "preview": "In der Notation der Aussagenlogik schreibt sich das erste Modell als Imp…"
+  },
+  {
+   "de": "9",
+   "kind": "math",
+   "digest": "a4f54522e2110064",
+   "en": "9",
+   "preview": "$$ N \\Rightarrow R \\vee G, $$"
+  },
+  {
+   "de": "10",
+   "kind": "prose",
+   "digest": "7c21e0a3f00a88bf",
+   "en": "10",
+   "preview": "oder, wie man es in einer Programmiersprache hinschreiben würde, `(!N) |…"
+  },
+  {
+   "de": "11",
+   "kind": "prose",
+   "digest": "38763f56cbac2c00",
+   "en": "11",
+   "preview": "Statistische Modelle erweitern diese Alles-oder-nichts-Logik nun um vers…"
+  },
+  {
+   "de": "12",
+   "kind": "prose",
+   "digest": "0e28cb6b25e3965a",
+   "en": "12",
+   "preview": "Um mit Plausibilität genau so rechnen zu können wie mit Boolescher Logik…"
+  },
+  {
+   "de": "13",
+   "kind": "directive",
+   "digest": "0feec534fa43b536",
+   "en": "13",
+   "preview": ":::{admonition} Beispiel"
+  },
+  {
+   "de": "14",
+   "kind": "prose",
+   "digest": "9a244d5072f3da35",
+   "en": "14",
+   "preview": "Ein erster, naiver Anlauf: Wir zählen einfach mit. Im letzten Monat hat …"
+  },
+  {
+   "de": "15",
+   "kind": "prose",
+   "digest": "7a618e4c41c1e97d",
+   "en": "15",
+   "preview": "Wie plausibel ist dann „es hat geregnet oder jemand hat gegossen“? Die n…"
+  },
+  {
+   "de": "16",
+   "kind": "math",
+   "digest": "2bd0fda42b126c95",
+   "en": "16",
+   "preview": "$$ plausi(R \\vee G) = plausi(R) + plausi(G) - plausi(R \\wedge G), $$"
+  },
+  {
+   "de": "17",
+   "kind": "prose",
+   "digest": "628f6586de86d75a",
+   "en": "17",
+   "preview": "und um sie auszurechnen, müssen wir wissen, ob auch schon einmal in den …"
+  },
+  {
+   "de": "18",
+   "kind": "directive",
+   "digest": "f1ae2a75ed1f9972",
+   "en": "18",
+   "preview": ":::"
+  },
+  {
+   "de": "19",
+   "kind": "prose",
+   "digest": "304130c97ee182e2",
+   "en": "19",
+   "preview": "An diesem Beispiel sieht man zweierlei. Erstens rechnet man mit Plausibi…"
+  },
+  {
+   "de": "20",
+   "kind": "prose",
+   "digest": "d62ff384bc6c883a",
+   "en": "20",
+   "preview": "Wir wünschen uns außerdem, dass Plausibilitätslogik mit der klassischen …"
+  },
+  {
+   "de": "21",
+   "kind": "prose",
+   "digest": "9c9e2f3e102fc46b",
+   "en": "21",
+   "preview": "Zwei Regeln wollen wir auf jeden Fall haben. Die erste ist die Formel au…"
+  },
+  {
+   "de": "22",
+   "kind": "math",
+   "digest": "2f1c32d53aeadbc3",
+   "en": "22",
+   "preview": "$$ plausi(A \\vee B) = plausi(A) + plausi(B) - plausi(A \\wedge B). $$"
+  },
+  {
+   "de": "23",
+   "kind": "prose",
+   "digest": "e82c71d1ae9d8666",
+   "en": "23",
+   "preview": "Die zweite behebt das Problem mit dem Beobachtungszeitraum. Wir normiere…"
+  },
+  {
+   "de": "24",
+   "kind": "math",
+   "digest": "a3fab5cc47ce6109",
+   "en": "24",
+   "preview": "$$ plausi(A) + plausi(\\neg A) = 1, $$"
+  },
+  {
+   "de": "25",
+   "kind": "prose",
+   "digest": "11e4cb5d3f411104",
+   "en": "25",
+   "preview": "denn genau eines von beiden trifft zu. Damit liegt jede Plausibilität zw…"
+  },
+  {
+   "de": "26",
+   "kind": "prose",
+   "digest": "cbf2eb47552f9d42",
+   "en": "26",
+   "preview": "Reicht das schon, um zu diesen Zahlen „Wahrscheinlichkeit“ zu sagen? Nic…"
+  },
+  {
+   "de": "27",
+   "kind": "prose",
+   "digest": "b5f5a98d89a19fbe",
+   "en": "27",
+   "preview": "Wenn man diese Forderungen präzisiert, kann man das [Cox-Jaynes-Theorem]…"
+  },
+  {
+   "de": "28",
+   "kind": "prose",
+   "digest": "1152628c97ff371e",
+   "en": "28",
+   "preview": "Wir werden uns nun der modernen Fassung des Wahrscheinlichkeitsbegriffs …"
+  },
+  {
+   "de": "29",
+   "kind": "heading",
+   "digest": "3fd05299d58a83c0",
+   "en": "29",
+   "preview": "## Exkurs (optional): Das Maßproblem"
+  },
+  {
+   "de": "30",
+   "kind": "directive",
+   "digest": "06a8d19c25859d91",
+   "en": "30",
+   "preview": ":::{note}"
+  },
+  {
+   "de": "31",
+   "kind": "prose",
+   "digest": "227bd739152d8b9d",
+   "en": "31",
+   "preview": "Dieser und der folgende Exkurs sind reine Hintergrundlektüre und **nicht…"
+  },
+  {
+   "de": "32",
+   "kind": "directive",
+   "digest": "f1ae2a75ed1f9972",
+   "en": "32",
+   "preview": ":::"
+  },
+  {
+   "de": "33",
+   "kind": "prose",
+   "digest": "7dde1639fbdce620",
+   "en": "33",
+   "preview": "Bei einem Würfel oder einer Münze ist relativ klar, wie wir die Wahrsche…"
+  },
+  {
+   "de": "34",
+   "kind": "prose",
+   "digest": "c947692d58c3fd30",
+   "en": "34",
+   "preview": "Unendlich oft wiederholte Münzwürfe können wir wie eine unendliche Folge…"
+  },
+  {
+   "de": "35",
+   "kind": "prose",
+   "digest": "fed36e1380bb82fa",
+   "en": "35",
+   "preview": "Wir möchten nun gerne jedem Ergebnis (jedem Versuchsausgang beim unendli…"
+  },
+  {
+   "de": "36",
+   "kind": "prose",
+   "digest": "e86855b20d698472",
+   "en": "36",
+   "preview": "$P\\left( \\bigcup_{i=1}^n A_i \\right) = \\sum_{i=1}^n P(A_i)$"
+  },
+  {
+   "de": "37",
+   "kind": "prose",
+   "digest": "e6f92ef82fd89bd0",
+   "en": "37",
+   "preview": "Eine weitere natürliche Forderung ist die Flip-Invarianz, also dass es f…"
+  },
+  {
+   "de": "38",
+   "kind": "prose",
+   "digest": "cb5409e9ab2acd56",
+   "en": "38",
+   "preview": "$F_n(\\omega_1,\\dots,\\omega_{n-1},\\omega_n,\\omega_{n+1},\\dots) = (\\omega_…"
+  },
+  {
+   "de": "39",
+   "kind": "prose",
+   "digest": "d0b55eb44aa652f4",
+   "en": "39",
+   "preview": "Dann erwarten wir für jede Teilmenge $A \\subseteq \\Omega$ dass $P(F_n A)…"
+  },
+  {
+   "de": "40",
+   "kind": "prose",
+   "digest": "dd7fb67cfb7ee07e",
+   "en": "40",
+   "preview": "Im Jahr 1923 hat Banach mit Hilfe des Auswahlaxioms bewiesen, dass es zw…"
+  },
+  {
+   "de": "41",
+   "kind": "prose",
+   "digest": "9857021a0d23e4b6",
+   "en": "41",
+   "preview": "Wenn wir eine unserer Forderungen verschärfen, nämlich von der endlichen…"
+  },
+  {
+   "de": "42",
+   "kind": "heading",
+   "digest": "04f01335d9ab82bb",
+   "en": "42",
+   "preview": "## Exkurs (optional): Offene Mengen messen"
+  },
+  {
+   "de": "43",
+   "kind": "prose",
+   "digest": "e10f690a4ba189e3",
+   "en": "43",
+   "preview": "Eine sehr praktische Definition für jede Menge $M$ auf der es einen Abst…"
+  },
+  {
+   "de": "44",
+   "kind": "prose",
+   "digest": "736abb6b8b1ec2c2",
+   "en": "44",
+   "preview": "Man kann nun zeigen, dass die klassische $\\epsilon$-$\\delta$-Definition …"
+  },
+  {
+   "de": "45",
+   "kind": "prose",
+   "digest": "caa04eec5b30d99a",
+   "en": "45",
+   "preview": "Wenn wir auf den Zahlen im Intervall $[0,1]$ eine Gleichverteilung defin…"
+  },
+  {
+   "de": "46",
+   "kind": "prose",
+   "digest": "7dddb08d712cd839",
+   "en": "46",
+   "preview": "Da sich jede offene Menge in $\\mathbb{R}$ als abzählbare Vereinigung von…"
+  },
+  {
+   "de": "47",
+   "kind": "prose",
+   "digest": "0306f78177bc62a1",
+   "en": "47",
+   "preview": "Aus dieser Beobachtung leiten wir nun die Forderung ab, dass unsere Wahr…"
+  },
+  {
+   "de": "48",
+   "kind": "heading",
+   "digest": "dd87b8381661c123",
+   "en": "48",
+   "preview": "## Formalismus"
+  },
+  {
+   "de": "49",
+   "kind": "prose",
+   "digest": "caf0af3586a7b2ec",
+   "en": "49",
+   "preview": "Bisher haben wir Plausibilitäten an *Aussagen* geheftet: \"es regnete\", \"…"
+  },
+  {
+   "de": "50",
+   "kind": "prose",
+   "digest": "1a6c3a15aac1c03b",
+   "en": "50",
+   "preview": "Dazu denken wir uns eine Menge $\\Omega$ aller in Frage kommenden **Ergeb…"
+  },
+  {
+   "de": "51",
+   "kind": "prose",
+   "digest": "a6f6146fdf449126",
+   "en": "51",
+   "preview": "Der Gewinn: Die logischen Verknüpfungen werden zu Mengenoperationen, die…"
+  },
+  {
+   "de": "52",
+   "kind": "table",
+   "digest": "550668edf2277ba3",
+   "en": "52",
+   "preview": "| Aussagenlogik | Mengenlogik | |---|---| | $A$ oder $B$, $A \\vee B$ | $…"
+  },
+  {
+   "de": "53",
+   "kind": "prose",
+   "digest": "b328770cc2ea3b17",
+   "en": "53",
+   "preview": "Aus der Frage, wie plausibel \"es regnete oder jemand hat gegossen\" ist, …"
+  },
+  {
+   "de": "54",
+   "kind": "prose",
+   "digest": "84cdc67e8c72329e",
+   "en": "54",
+   "preview": "Eine Teilmenge von $\\Omega$, der wir eine Wahrscheinlichkeit zuordnen, n…"
+  },
+  {
+   "de": "55",
+   "kind": "prose",
+   "digest": "47913deaf133e726",
+   "en": "55",
+   "preview": "Auf mathematisch heißt so ein Mengensystem eine $\\sigma$-Algebra — das $…"
+  },
+  {
+   "de": "56",
+   "kind": "directive",
+   "digest": "053400a7b7d2fc03",
+   "en": "56",
+   "preview": ":::{admonition} Definition"
+  },
+  {
+   "de": "57",
+   "kind": "prose",
+   "digest": "d1ee32596c635b6a",
+   "en": "57",
+   "preview": "Sei $\\Omega$ eine Menge. Dann heißt ein Mengensystem $\\mathcal{F} \\subse…"
+  },
+  {
+   "de": "58",
+   "kind": "prose",
+   "digest": "ab8961025dcf49c4",
+   "en": "58",
+   "preview": "Terminologie: wir nennen die Elemente von $\\Omega$ die *Ergebnisse* und …"
+  },
+  {
+   "de": "59",
+   "kind": "directive",
+   "digest": "f1ae2a75ed1f9972",
+   "en": "59",
+   "preview": ":::"
+  },
+  {
+   "de": "60",
+   "kind": "directive",
+   "digest": "0feec534fa43b536",
+   "en": "60",
+   "preview": ":::{admonition} Beispiel"
+  },
+  {
+   "de": "61",
+   "kind": "prose",
+   "digest": "a244d528c52e04d8",
+   "en": "61",
+   "preview": "ein gewöhnlicher Würfel hat Zustandsraum $\\Omega = \\{1,2,3,4,5,6\\}$ und …"
+  },
+  {
+   "de": "62",
+   "kind": "directive",
+   "digest": "f1ae2a75ed1f9972",
+   "en": "62",
+   "preview": ":::"
+  },
+  {
+   "de": "63",
+   "kind": "prose",
+   "digest": "4205b2f8e61d5c4b",
+   "en": "63",
+   "preview": "Merkregel: wenn unklar ist, was die $\\sigma$-Algebra sein soll, ist es $…"
+  },
+  {
+   "de": "64",
+   "kind": "directive",
+   "digest": "053400a7b7d2fc03",
+   "en": "64",
+   "preview": ":::{admonition} Definition"
+  },
+  {
+   "de": "65",
+   "kind": "prose",
+   "digest": "bf5cb84a5b5bf305",
+   "en": "65",
+   "preview": "Eine Funktion $P \\colon \\mathcal{F} \\to [0,1]$ von einer $\\sigma$-Algebr…"
+  },
+  {
+   "de": "66",
+   "kind": "prose",
+   "digest": "0316a01b1829a354",
+   "en": "66",
+   "preview": "Das Tripel $(\\Omega, \\mathcal{F}, P)$ heißt *Wahrscheinlichkeitsraum*."
+  },
+  {
+   "de": "67",
+   "kind": "directive",
+   "digest": "f1ae2a75ed1f9972",
+   "en": "67",
+   "preview": ":::"
+  },
+  {
+   "de": "68",
+   "kind": "prose",
+   "digest": "b4d846cefcd5a2cb",
+   "en": "68",
+   "preview": "Vergleichen Sie dazu im Skript \"Mathematik für Informatik\" Definition 12…"
+  },
+  {
+   "de": "69",
+   "kind": "directive",
+   "digest": "0feec534fa43b536",
+   "en": "69",
+   "preview": ":::{admonition} Beispiel"
+  },
+  {
+   "de": "70",
+   "kind": "prose",
+   "digest": "ac8b49fdcd13486a",
+   "en": "70",
+   "preview": "Bleiben wir beim nassen Rasen. Wir setzen $\\Omega = \\{R, G, T\\}$ (die Bu…"
+  },
+  {
+   "de": "71",
+   "kind": "prose",
+   "digest": "f944b6299f808dc3",
+   "en": "71",
+   "preview": "Ein erster Versuch: $P(\\{R\\}) = \\frac23$, $P(\\{G\\}) = \\frac16$, $P(\\{T\\}…"
+  },
+  {
+   "de": "72",
+   "kind": "math",
+   "digest": "b4c259f0ea7067a6",
+   "en": "72",
+   "preview": "$$ P(\\Omega) = P(\\{R\\}) + P(\\{G\\}) + P(\\{T\\}) = \\dfrac{2}{3} + \\dfrac{1}…"
+  },
+  {
+   "de": "73",
+   "kind": "prose",
+   "digest": "f5378bb45a3ccf0d",
+   "en": "73",
+   "preview": "im Widerspruch zur Normierung $P(\\Omega) = 1$. Mit $P(\\{R\\}) = \\frac12$ …"
+  },
+  {
+   "de": "74",
+   "kind": "prose",
+   "digest": "5d39a040f237638e",
+   "en": "74",
+   "preview": "Ein zweiter Einwand wiegt schwerer und betrifft nicht die Zahlen, sonder…"
+  },
+  {
+   "de": "75",
+   "kind": "math",
+   "digest": "ac0c9f3257cf5613",
+   "en": "75",
+   "preview": "$$ \\Omega' = \\{ R\\,G,\\ R\\,\\overline{G},\\ \\overline{R}\\,G,\\ \\overline{R}\\…"
+  },
+  {
+   "de": "76",
+   "kind": "prose",
+   "digest": "b71308928e91b0c4",
+   "en": "76",
+   "preview": "also alle vier Kombinationen aus „geregnet ja/nein“ und „gegossen ja/nei…"
+  },
+  {
+   "de": "77",
+   "kind": "prose",
+   "digest": "b3d4f57fd6d805e0",
+   "en": "77",
+   "preview": "Daran sieht man, was bei der Modellierung die eigentliche Arbeit ist: ni…"
+  },
+  {
+   "de": "78",
+   "kind": "directive",
+   "digest": "f1ae2a75ed1f9972",
+   "en": "78",
+   "preview": ":::"
+  },
+  {
+   "de": "79",
+   "kind": "directive",
+   "digest": "0feec534fa43b536",
+   "en": "79",
+   "preview": ":::{admonition} Beispiel"
+  },
+  {
+   "de": "80",
+   "kind": "prose",
+   "digest": "67f520ee1e4270ce",
+   "en": "80",
+   "preview": "Auf einer endlichen Menge $\\Omega$ von Kardinalität $N := |\\Omega|$ (als…"
+  },
+  {
+   "de": "81",
+   "kind": "prose",
+   "digest": "8a9cb9d243af70a6",
+   "en": "81",
+   "preview": "Der faire Würfel ist der Fall $\\Omega = \\{1,\\dots,6\\}$: Das Ereignis „ge…"
+  },
+  {
+   "de": "82",
+   "kind": "directive",
+   "digest": "f1ae2a75ed1f9972",
+   "en": "82",
+   "preview": ":::"
+  },
+  {
+   "de": "83",
+   "kind": "directive",
+   "digest": "0feec534fa43b536",
+   "en": "83",
+   "preview": ":::{admonition} Beispiel"
+  },
+  {
+   "de": "84",
+   "kind": "prose",
+   "digest": "3cbd0cec1aee38fc",
+   "en": "84",
+   "preview": "Für einen beliebigen Ereignisraum $(\\Omega,\\mathcal{F})$ und ein festes …"
+  },
+  {
+   "de": "85",
+   "kind": "prose",
+   "digest": "defcc6f19f086300",
+   "en": "85",
+   "preview": "$\\delta_\\xi := A \\mapsto \\begin{cases} 1 & \\xi \\in A,\\\\ 0 & \\text{sonst}…"
+  },
+  {
+   "de": "86",
+   "kind": "prose",
+   "digest": "a6444f0a53306797",
+   "en": "86",
+   "preview": "ein Wahrscheinlichkeitsmaß definiert, das *Dirac-Maß* mit Einheitsmasse …"
+  },
+  {
+   "de": "87",
+   "kind": "prose",
+   "digest": "a20338d80957a10b",
+   "en": "87",
+   "preview": "Das ist der maximal unfaire Würfel: Ein Würfel, der immer eine Sechs zei…"
+  },
+  {
+   "de": "88",
+   "kind": "directive",
+   "digest": "f1ae2a75ed1f9972",
+   "en": "88",
+   "preview": ":::"
+  },
+  {
+   "de": "89",
+   "kind": "directive",
+   "digest": "d8a9d8fddee7e0b1",
+   "en": "89",
+   "preview": ":::{admonition} Proposition"
+  },
+  {
+   "de": "90",
+   "kind": "prose",
+   "digest": "0d1561ebc7c0c01d",
+   "en": "90",
+   "preview": "**Rechenregeln** für Wahrscheinlichkeitsmaße: Für jeden Wahrscheinlichke…"
+  },
+  {
+   "de": "91",
+   "kind": "directive",
+   "digest": "f1ae2a75ed1f9972",
+   "en": "91",
+   "preview": ":::"
+  },
+  {
+   "de": "92",
+   "kind": "directive",
+   "digest": "d3c74271f8c77915",
+   "en": "92",
+   "preview": ":::{admonition} Beweis"
+  },
+  {
+   "de": "93",
+   "kind": "prose",
+   "digest": "04df880ec1090cdc",
+   "en": "93",
+   "preview": "1. $1 = P(\\Omega) = P(\\emptyset \\cup \\Omega) = P(\\emptyset) + P(\\Omega) …"
+  },
+  {
+   "de": "94",
+   "kind": "directive",
+   "digest": "f1ae2a75ed1f9972",
+   "en": "94",
+   "preview": ":::"
+  },
+  {
+   "de": "95",
+   "kind": "directive",
+   "digest": "053400a7b7d2fc03",
+   "en": "95",
+   "preview": ":::{admonition} Definition"
+  },
+  {
+   "de": "96",
+   "kind": "prose",
+   "digest": "1b4cde9798b81692",
+   "en": "96",
+   "preview": "Eine Funktion $f \\colon \\Omega \\to \\Omega'$ zwischen Wahrscheinlichkeits…"
+  },
+  {
+   "de": "97",
+   "kind": "directive",
+   "digest": "f1ae2a75ed1f9972",
+   "en": "97",
+   "preview": ":::"
+  },
+  {
+   "de": "98",
+   "kind": "prose",
+   "digest": "30f3da931b1f60be",
+   "en": "98",
+   "preview": "Merkregel: wenn unklar ist, was die $\\sigma$-Algebren sein sollen, stell…"
+  },
+  {
+   "de": "99",
+   "kind": "directive",
+   "digest": "0feec534fa43b536",
+   "en": "99",
+   "preview": ":::{admonition} Beispiel"
+  },
+  {
+   "de": "100",
+   "kind": "prose",
+   "digest": "c69b263004fad6bf",
+   "en": "100",
+   "preview": "Wenn wir auf $[0,1]$ die Gleichverteilung definieren, indem wir auf offe…"
+  },
+  {
+   "de": "101",
+   "kind": "directive",
+   "digest": "f1ae2a75ed1f9972",
+   "en": "101",
+   "preview": ":::"
+  },
+  {
+   "de": "102",
+   "kind": "prose",
+   "digest": "e6e5a421304687a5",
+   "en": "102",
+   "preview": "Der Begriff Zufallsvariable ist sehr irreführend: es gibt hier keine Var…"
+  },
+  {
+   "de": "103",
+   "kind": "prose",
+   "digest": "45238f214b6e6b69",
+   "en": "103",
+   "preview": "Wir wollen uns im Folgenden nicht weiter mit der Maßtheorie beschäftigen…"
+  },
+  {
+   "de": "104",
+   "kind": "directive",
+   "digest": "053400a7b7d2fc03",
+   "en": "104",
+   "preview": ":::{admonition} Definition"
+  },
+  {
+   "de": "105",
+   "kind": "prose",
+   "digest": "c54225647c8327dd",
+   "en": "105",
+   "preview": "Eine Treppenfunktion ist eine messbare Funktion, die nur endlich viele v…"
+  },
+  {
+   "de": "106",
+   "kind": "directive",
+   "digest": "f1ae2a75ed1f9972",
+   "en": "106",
+   "preview": ":::"
+  },
+  {
+   "de": "107",
+   "kind": "directive",
+   "digest": "f964f8dc481b2d41",
+   "en": "107",
+   "preview": ":::{admonition} Satz"
+  },
+  {
+   "de": "108",
+   "kind": "prose",
+   "digest": "e4eb964e78279b59",
+   "en": "108",
+   "preview": "Zu jeder $\\sigma$-Algebra auf $\\Omega$ und jeder messbaren Funktion $f \\…"
+  },
+  {
+   "de": "109",
+   "kind": "directive",
+   "digest": "f1ae2a75ed1f9972",
+   "en": "109",
+   "preview": ":::"
+  },
+  {
+   "de": "110",
+   "kind": "prose",
+   "digest": "a7cb6d1c416c89ec",
+   "en": "110",
+   "preview": "Damit lassen sich sehr viele Aussagen beweisen, indem man sie für Treppe…"
+  },
+  {
+   "de": "111",
+   "kind": "prose",
+   "digest": "6a61d3cb3e0359d0",
+   "en": "111",
+   "preview": "Zuletzt soll nicht unerwähnt bleiben, dass es einen berechtigten Einwand…"
+  },
+  {
+   "de": "112",
+   "kind": "prose",
+   "digest": "a2a80a342a3b187b",
+   "en": "112",
+   "preview": "Sie können also nun ein Stochastik-Buch in die Hand nehmen, dort einen S…"
+  },
+  {
+   "de": "113",
+   "kind": "prose",
+   "digest": "5c5ef6a332932180",
+   "en": "113",
+   "preview": "Wenn Sie sich gern im weiteren Verlauf der Vorlesung mit interaktiven Sp…"
+  },
+  {
+   "de": "114",
+   "kind": "prose",
+   "digest": "ff9d1a7df8b2deb8",
+   "en": "114",
+   "preview": "[Wenn Sie in 6 Minuten den Würfelwurf (die Gleichverteilung, auch Laplac…"
+  }
+ ]
+}

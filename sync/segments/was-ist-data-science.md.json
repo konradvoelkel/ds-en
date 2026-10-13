@@ -1,0 +1,239 @@
+{
+ "source": "was-ist-data-science.md",
+ "target": "what-is-data-science.md",
+ "upstream": "c7247a99ef28b04050ef09ba376ac6e32025456a",
+ "blocks": [
+  {
+   "de": "0",
+   "kind": "heading",
+   "digest": "c4601633b33178ac",
+   "en": "0",
+   "preview": "# Was ist Data Science?"
+  },
+  {
+   "de": "1",
+   "kind": "prose",
+   "digest": "ce472e3ed81fca1e",
+   "en": null,
+   "dropped": "link to the German HHU lecture recording",
+   "preview": "[Vorlesungsaufzeichnung Überblick (VL 0)](https://media.hhu.de/channel/v…"
+  },
+  {
+   "de": "2",
+   "kind": "heading",
+   "digest": "85ffe28649fc3505",
+   "en": "1",
+   "preview": "## Vorab: ein Tabellenblatt, das Europa sparen ließ"
+  },
+  {
+   "de": "3",
+   "kind": "prose",
+   "digest": "09745c4a9f3c1d9d",
+   "en": "2",
+   "preview": "Im Jahr 2010 veröffentlichten die Harvard-Ökonomen Carmen Reinhart und K…"
+  },
+  {
+   "de": "4",
+   "kind": "prose",
+   "digest": "c7541a661792d3e3",
+   "en": "3",
+   "preview": "Drei Jahre später bekam Thomas Herndon, Doktorand in Amherst, in einem S…"
+  },
+  {
+   "de": "5",
+   "kind": "prose",
+   "digest": "636a4457dc918bf1",
+   "en": "4",
+   "preview": "Daran ist alles drin, worum es in diesem Kurs geht. Die Rohzahlen waren …"
+  },
+  {
+   "de": "6",
+   "kind": "heading",
+   "digest": "eab91febb108e766",
+   "en": "5",
+   "preview": "## Was ist \"Data\"?"
+  },
+  {
+   "de": "7",
+   "kind": "prose",
+   "digest": "a727af6e75ca07fa",
+   "en": "6",
+   "preview": "Gerhard Goos, Vorlesungen über Informatik Band 1:"
+  },
+  {
+   "de": "8",
+   "kind": "prose",
+   "digest": "1e1cc6822f88593b",
+   "en": "7",
+   "preview": "> Die Darstellung einer Mitteilung durch die zeitliche Veränderung einer…"
+  },
+  {
+   "de": "9",
+   "kind": "prose",
+   "digest": "7a298456524318e1",
+   "en": "8",
+   "preview": "> Die Kenntnisse, die man benötigt, um einer Nachricht Bedeutung zuzuord…"
+  },
+  {
+   "de": "10",
+   "kind": "prose",
+   "digest": "c866a1c7572c1c90",
+   "en": "9",
+   "preview": "Eine CSV-Datei können wir also genau dann \"Daten\" nennen, wenn wir einen…"
+  },
+  {
+   "de": "11",
+   "kind": "prose",
+   "digest": "7df263e15d208d84",
+   "en": "10",
+   "preview": "Wenn wir etwa die Antworten zu einer Single-Choice-Frage betrachten, so …"
+  },
+  {
+   "de": "12",
+   "kind": "prose",
+   "digest": "f8970e1ade1bb675",
+   "en": "11",
+   "preview": "(ein-bunter-mix)= ## Ein bunter Mix"
+  },
+  {
+   "de": "13",
+   "kind": "directive",
+   "digest": "2a3db062ed5cd3e7",
+   "en": "12",
+   "preview": "```{figure} images/conway_data_science_venn_diagram.png :width: 400px :a…"
+  },
+  {
+   "de": "14",
+   "kind": "prose",
+   "digest": "1fc8b106cdbe3e0a",
+   "en": "13",
+   "preview": "Drew Conway hat 2013 die bis heute meistzitierte Antwort auf die Frage g…"
+  },
+  {
+   "de": "15",
+   "kind": "heading",
+   "digest": "1eb0367b28ac43b1",
+   "en": "14",
+   "preview": "## Was ist ein Data Scientist?"
+  },
+  {
+   "de": "16",
+   "kind": "prose",
+   "digest": "28e07e3665733376",
+   "en": "15",
+   "preview": "> Nearly all \\[...\\] working data scientists make their daily bread and …"
+  },
+  {
+   "de": "17",
+   "kind": "prose",
+   "digest": "4f8863191e80b06b",
+   "en": "16",
+   "preview": "Kurz gesagt: Der größte Teil der täglichen Arbeit ist Datenbeschaffung, …"
+  },
+  {
+   "de": "18",
+   "kind": "prose",
+   "digest": "f7c74393121a6f51",
+   "en": "17",
+   "preview": "> But how do you find data scientists? Whenever someone asks that questi…"
+  },
+  {
+   "de": "19",
+   "kind": "prose",
+   "digest": "84715b4020ba5a84",
+   "en": "18",
+   "preview": "Patil beschreibt also, woran man gute Data Scientists erkennt: an fachli…"
+  },
+  {
+   "de": "20",
+   "kind": "prose",
+   "digest": "8010c2c78e90333f",
+   "en": "19",
+   "preview": "Ein signifikanter Teil der Arbeit eines Data Scientist besteht in der Au…"
+  },
+  {
+   "de": "21",
+   "kind": "prose",
+   "digest": "303549d677f12a63",
+   "en": "20",
+   "preview": "Drei Dinge, die man dafür außerdem braucht, lernt man in keiner Vorlesun…"
+  },
+  {
+   "de": "22",
+   "kind": "heading",
+   "digest": "e8e24cfaabddb39c",
+   "en": "21",
+   "preview": "## Weiterführendes"
+  },
+  {
+   "de": "23",
+   "kind": "prose",
+   "digest": "6177586c254abf82",
+   "en": "22",
+   "preview": "**Karriere in Data Science**"
+  },
+  {
+   "de": "24",
+   "kind": "prose",
+   "digest": "d011bfec784cf7e4",
+   "en": "23",
+   "preview": "[Robinson und Nolis: Build a Career in Data Science](https://www.manning…"
+  },
+  {
+   "de": "25",
+   "kind": "prose",
+   "digest": "4adf1c652ca6143a",
+   "en": "24",
+   "preview": "Dazu gibt es auch einen [einstündigen Podcast mit den Autorinnen](https:…"
+  },
+  {
+   "de": "26",
+   "kind": "prose",
+   "digest": "4ab886f6f44c260e",
+   "en": "25",
+   "preview": "**State of Data Science 2021**"
+  },
+  {
+   "de": "27",
+   "kind": "prose",
+   "digest": "5b658f3e16f2d461",
+   "en": "26",
+   "preview": "Eine Stunde Podcast [State of Data Science in 2021 with Stan Seibert](ht…"
+  },
+  {
+   "de": "28",
+   "kind": "prose",
+   "digest": "d0619443e94e5337",
+   "en": "27",
+   "preview": "**State of Data Science 2024**"
+  },
+  {
+   "de": "29",
+   "kind": "prose",
+   "digest": "8e4ba88d1971ea1f",
+   "en": "28",
+   "preview": "Ein Blogpost vom IDE-Entwickler JetBrains [State of Data Science in 2024…"
+  },
+  {
+   "de": "30",
+   "kind": "prose",
+   "digest": "423f64bd9c0a6fb2",
+   "en": "29",
+   "preview": "Ein interessanter Kontrast ist dieser Artikel von Mike Loukides von O'Re…"
+  },
+  {
+   "de": "31",
+   "kind": "heading",
+   "digest": "cffc056da5c369af",
+   "en": "30",
+   "preview": "## Wie es weitergeht"
+  },
+  {
+   "de": "32",
+   "kind": "prose",
+   "digest": "f4e042728c0239a9",
+   "en": "31",
+   "preview": "Bevor wir mit Daten arbeiten, brauchen wir eine präzise Sprache für Zufa…"
+  }
+ ]
+}
