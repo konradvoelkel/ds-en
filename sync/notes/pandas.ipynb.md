@@ -224,3 +224,76 @@ block, still one paragraph; only the internal punctuation changed.
   first time anyone notices.
 * `Nr` → `No` (doubt 1) and the `Wertebereich` glossary collision (doubt 4) are the two
   decisions I would most like a second opinion on.
+
+## Style pass
+
+Markdown cells only; every code cell is byte-identical to `HEAD` (`check_untouched.py`
+passes, as do `sync.py align`, `check_english.py`, `nbtext.py check` and `nbtext.py syntax`).
+**28 of 79 blocks changed**: c2.1, c2.2, c4.0, c6.0, c6.1, c8.0, c8.1, c8.3, c9.1, c9.2,
+c9.7, c9.13, c10.1, c12.0, c16.0, c23.0, c26.0, c29.0, c29.1, c31.0, c34.0, c36.0, c38.0,
+c40.0, c41.0, c46.1, c52.0, c54.0. No block merged, split or reordered; the three tables,
+the Definition admonition and its delimiters, the SQL fence, every link and every column
+name (`sepal_width`, `species`, `total_bill`, `Pclass`, …) are untouched.
+
+Kinds of change:
+
+* **"Anyone who …" / "Whoever …" → "If you …".** The German *wer … kennt / wer … hat* idiom
+  came through as "Anyone who knows R knows it as …; anyone who has so far used only Numpy
+  can think of it as …" (c2.1) and "Anyone who finds a dataset suddenly longer after a join
+  than before almost always has the problem here" (c34.0). Now "If you know R, you know it
+  as …; if you have only used Numpy so far, think of it as …" and "If a dataset is suddenly
+  longer after a join than before, this is almost always where the problem lies". One
+  instance stays as a participle: "Anyone pulling data out of a live system" (c9.2).
+* **"one takes" → "you use"** (c29.1), per the brief's *one* rule; "nobody is in a position
+  to hand out numbers centrally" → "nobody can hand out numbers centrally".
+* **Connectives translated one-for-one, replaced.** The paragraph-initial "For the type
+  system of Pandas goes beyond the Numpy types" (German *Denn*) is not English; now "That
+  last one is worth a look because the Pandas type system goes beyond the Numpy types"
+  (c8.1), which makes the same link to the data-type overview just named in c8.0. "For that
+  it is worth placing the language briefly" (*einzuordnen*) → "A few words on where that
+  language fits are in order first" (c9.1).
+* **Nominal to verbal.** "Splitting data into groups, working out aggregated statistics,
+  putting the groups back together – that is a `GROUP BY`" → "Split the data into groups,
+  compute aggregate statistics, put the groups back together – that is `GROUP BY`" (c23.0);
+  "Missing values are spotted with `isna`" → "`isna` spots missing values" (c52.0); "How
+  missing values, outliers, text fields and dates are dealt with systematically" → "How to
+  deal systematically with missing values, outliers, text fields and dates".
+* **Idiom.** "The way to disk and back goes with `to_csv`" → "To disk and back is `to_csv`"
+  (c6.1); "It is best thought of as an Excel sheet" (*Am ehesten ist es*) → "The nearest
+  thing to it is an Excel sheet"; "brings a database along with it" → "comes with a
+  database"; "something of the order of 40%" → "something like 40%"; "strings were housed
+  in an `object` column" → "strings lived in an `object` column"; "how much of a gap you
+  have let yourself in for" → "how many gaps you have let yourself in for" (c40.0);
+  "including those without a partner" → "partner or not" (c36.0); "the second data
+  structure Pandas has" → "the second of the two data structures Pandas has" (c6.0).
+* **Shorter.** "in which every column has its own data type" → "each column with its own
+  data type"; "the API reference with a page of its own per method (on
+  `pandas.DataFrame.groupby`, say)" → "the API reference with a page per method
+  (`pandas.DataFrame.groupby`, say)"; "new columns that are computed from old ones" → "new
+  columns computed from old ones"; "in the mathematical sense a relation is a *set* of
+  tuples and therefore has no order" → "mathematically, a relation is a *set* of tuples
+  and so has no order" (c9.13).
+* **Sentence joins inside a block.** c46.1: the two sentences "… compare this with the
+  Titanic notebook from the chapter on Numpy. There we converted …" become one, "… compare
+  this with the Titanic notebook from the chapter on Numpy, where we converted …". Same
+  block, same content. The glossary's *handwork* is kept.
+* **Passive → active where the agent is obvious.** "in Pandas the row order after a `merge`
+  is not guaranteed" → "Pandas does not guarantee the row order after a `merge`"; "the
+  'broken' CSV from there is read directly by `read_csv`, because it understands quotation
+  marks" → "… by `read_csv`, which understands quotation marks".
+
+Left alone on purpose:
+
+* The table cells, the SQL command table's imperative glosses ("select data and output
+  it") and the Definition admonition's text: terminology-dense, already plain, and the
+  translator's doubt 4 (the collapsed *Wertebereich (domain)* gloss) is a glossary matter.
+* c18.0 "Filtering data (selecting rows by conditions) with `WHERE`" has no terminal colon
+  in the German either; kept.
+* c20.0 "Combining several conditions logically with `OR |` or `AND &`" – the "logically"
+  is the German's *logisch verknüpfen*; harmless, kept.
+
+Noticed, not touched: c8.1's German opens with *Denn*, which justifies the previous
+paragraph's pointer at the data-type overview. My rewording makes that link explicit ("That
+last one is worth a look because …"). If a human prefers a flatter rendering, "The Pandas
+type system, after all, goes beyond the Numpy types" is the alternative; I chose the former
+because the bare "For …" sentence-opener was the most un-English line in the chapter.

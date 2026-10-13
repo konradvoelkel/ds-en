@@ -206,3 +206,60 @@ re-execution pass must actually reach this notebook, otherwise the chapter reads
 prints German; (c) cell 5 rewrites `titanic.tsv` on execution – the file is committed and
 other chapters read it, and re-execution must leave its checksum unchanged
 (`8fe78c34662af87d054287d94336515c` as of this translation).
+
+## Style pass
+
+Markdown cells only; every code cell is byte-identical to `HEAD` (`check_untouched.py`
+passes, as do `sync.py align`, `check_english.py`, `nbtext.py check` and `nbtext.py syntax`).
+**16 of 41 blocks changed**: c0.1, c0.3, c2.1, c4.0, c10.1, c16.1, c18.0, c18.2, c20.0,
+c20.1, c20.2, c22.0, c22.1, c22.3, c24.0, c25.1. No block merged, split or reordered; no
+maths, link, directive or column name touched.
+
+Kinds of change:
+
+* **German future and "shall" → English present or "will".** "we shall naively load" →
+  "we naively load"; "which we shall meet later" → "which we will meet later"; "we shall
+  quickly have the so-called correlation coefficient computed all the same" → "let us
+  quickly compute the so-called correlation coefficient all the same" (c25.1).
+* **"Whoever … wants" → "If you are … you want".** The *wer … will* construction in c22.0
+  ("Whoever plans lifeboats wants to overlook no survivor") is a German relative idiom;
+  English says "If you are planning lifeboats you want to overlook no survivor". The
+  glossary's *planning lifeboats* / *sorting out spam* are kept verbatim.
+* **Nominalisations and passives → verbs.** "We print the first two lines for manual
+  inspection" → "Let us print the first two lines and inspect them by hand" (c2.1); "How
+  data are held back so that …" → "How to hold data back so that …" (c22.1); "how such a
+  decision is taken systematically and put on record" → "how to take such decisions
+  systematically and put them on record" (c10.1).
+* **One sentence split.** c10.1: "Whether you replace missing values by the median or leave
+  those rows out is a decision that distorts the data; how …" → "Replacing missing values
+  with the median or dropping those rows: either is a decision that distorts the data. How
+  …". Same block, same two statements.
+* **Calques replaced.** "takes more of the dead for survivors" (*hält … für*) → "mistakes
+  more of the dead for survivors"; "the data we thought it up on" → "the data we dreamt it
+  up on"; "it is right in 62% of cases" → "it is right 62% of the time"; "nothing other
+  than" → "nothing more than"; "is something we shall meet again with Bayes' theorem" →
+  "… will meet again under Bayes' theorem".
+* **Clause order.** c16.1 "The label is the column we want to predict and which is known for
+  the rows we have, the *ground truth*" → "The label is the column we want to predict; for
+  the rows we already have it is known, and that is the *ground truth*", so that *ground
+  truth* lands on the thing it names. c20.0 "for every row it predicts the most frequent
+  class" → "it predicts the most frequent class for every row".
+* **Punctuation.** A comma after the fronted chapter reference in c20.1; a semicolon between
+  the two parallel clauses in c22.3; the parenthetical dash before "following the maxim" in
+  c22.0 so the example reads as an aside, as in the German *etwa nach der Losung*.
+
+Left alone on purpose:
+
+* `$1 - \text{Accuracy}$` in c20.1 keeps its capital (translator's doubt 8). It is maths and
+  `check_untouched.py` would flag it; the one-token inconsistency with lower-case "accuracy"
+  in the prose stands and is a human's call.
+* `summary_measures` versus `metrics` (translator's doubt 1) is a code question, outside this
+  pass.
+* "must never be repeated later on" (c22.1) keeps the German's *später*; it is slightly
+  redundant in English but it is the author's emphasis.
+* The chapter title "a first pass" (translator's doubt 3) reads well and was not revisited.
+
+Noticed, not touched: c0.1 calls the chapter "a discrete analysis of the Kaggle Titanic
+dataset". *Diskret* is the German's word and "discrete" is its translation, but the analysis
+is not about discrete variables in the technical sense – the author may have meant something
+like "a modest analysis". Meaning, so not mine to change.
