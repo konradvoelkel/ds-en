@@ -103,7 +103,7 @@ flowchart TB
 
 Every piece of mathematics you need for the exercises is in these notes (or among the course's entry requirements).
 
-**Why notes at all**, you might ask. Mainly, the notes serve us as a reference and as a guide to the exercises. There are excellent MOOCs (massive open online courses) freely available on the web, especially if your English is good – but unlike a MOOC, these notes accompany a taught course with exercises. Working through the exercises in earnest, and talking them over freely with fellow students, is what decides whether the learning succeeds. Teachers can only teach; the learning, students still have to do themselves.
+**Why notes at all**, you might ask. Mainly, the notes serve us as a reference and as a guide to the exercises. There are excellent MOOCs (massive open online courses) freely available on the web – but unlike a MOOC, these notes accompany a taught course with exercises. Working through the exercises in earnest, and talking them over freely with fellow students, is what decides whether the learning succeeds. Teachers can only teach; the learning, students still have to do themselves.
 
 
 ## Licence
