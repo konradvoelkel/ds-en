@@ -94,9 +94,12 @@ def translated() -> set[str]:
     return {f for f, s in _load("progress.json")["files"].items() if s.get("translated")}
 
 
-def cmd_align() -> int:
+def cmd_align(only: list[str] | None = None) -> int:
+    """With no arguments: every chapter marked translated. With arguments: exactly those
+    files, whether or not progress.json knows about them yet -- that is how a translator
+    checks their own chapter before handing it over."""
     commit = _load("upstream.json")["commit"]
-    done = translated()
+    done = set(only) if only else translated()
     bad = pending = 0
     for de_file, en_file in pairs():
         # A chapter still in German is trivially "misaligned": its declared drops (the
@@ -273,7 +276,7 @@ def main() -> int:
         return 2
     cmd = sys.argv[1]
     if cmd == "align":
-        return cmd_align()
+        return cmd_align(sys.argv[2:] or None)
     if cmd == "manifest":
         return cmd_manifest()
     if cmd == "check":

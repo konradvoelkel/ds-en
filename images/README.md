@@ -15,7 +15,7 @@ next to it, so the next change is an edit rather than an archaeology project.
 | `dsprozess-simplified-1.png` | descriptive-statistics | Ausschnitt, Rohdaten, Daten | to do |
 | `dsprozess-simplified-2.png` | descriptive-statistics | as above, plus Modell | to do |
 | `dsprozess-simplified-3.png` | descriptive-statistics | as above, plus Zielgröße | to do |
-| `stochastik-statistik-wtheorie.png` | intro-probability | Stochastik, Statistik, Wahrscheinlichkeitstheorie, Realität, Ausschnitt, Modelle | to do |
+| ~~`stochastik-statistik-wtheorie.png`~~ | intro-stochastics | Stochastik, Statistik, Wahrscheinlichkeitstheorie, Realität, Ausschnitt, Modelle | **done** → `stochastics-overview.svg` |
 | `entropie-gas-hoch.png` | relative-entropy | labels to check | to do |
 | `entropie-gas-niedrig.png` | relative-entropy | labels to check | to do |
 | `entropie-gas-hoch-geteilt.png` | relative-entropy | labels to check | to do |
@@ -35,3 +35,10 @@ inspects it and either redraws it or strikes the row.
 
 The file names stay as they are until a figure is actually redrawn; a renamed figure is
 renamed in the chapter that uses it, in the same commit.
+
+## Redrawn figures
+
+* `stochastics-overview.svg` – hand-written SVG, replaces `stochastik-statistik-wtheorie.png`.
+  Layout follows the original exactly; colours are the HHU house colours from `BRANDING.md`
+  (lines `#006AB3`). White background and dark text, like every other figure in the book.
+  Edit the SVG directly – it is the source.

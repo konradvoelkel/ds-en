@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 420" width="800" height="420"
+     font-family="Inter, Helvetica, Arial, sans-serif" role="img"
+     aria-label="Stochastics as the umbrella term over statistics and probability theory. Statistics works on a section of reality, probability theory works on the models, and the two exchange in both directions.">
+  <title>Stochastics as the umbrella term</title>
+  <rect width="800" height="420" fill="#ffffff"/>
+
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5"
+            markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#006AB3"/>
+    </marker>
+  </defs>
+
+  <!-- the umbrella and its two branches -->
+  <text x="400" y="36" text-anchor="middle" font-size="27" fill="#000000">Stochastics</text>
+  <path d="M 400 50 L 165 92" stroke="#006AB3" stroke-width="2" fill="none"/>
+  <path d="M 400 50 L 635 92" stroke="#006AB3" stroke-width="2" fill="none"/>
+
+  <text x="150" y="122" text-anchor="middle" font-size="25" fill="#000000">Statistics</text>
+  <text x="650" y="122" text-anchor="middle" font-size="25" fill="#000000">Probability theory</text>
+
+  <line x1="150" y1="136" x2="150" y2="216" stroke="#006AB3" stroke-width="2"/>
+  <line x1="650" y1="136" x2="650" y2="296" stroke="#006AB3" stroke-width="2"/>
+
+  <!-- reality, with the section of it that gets measured -->
+  <rect x="30" y="216" width="300" height="150" fill="#d9d9d9"/>
+  <text x="46" y="250" font-size="25" fill="#000000">Reality</text>
+
+  <rect x="165" y="296" width="165" height="70" fill="#fde3b8"/>
+  <text x="247" y="339" text-anchor="middle" font-size="25" fill="#000000">Section</text>
+
+  <!-- the models -->
+  <rect x="560" y="296" width="180" height="70" fill="#dcebc0"/>
+  <text x="650" y="339" text-anchor="middle" font-size="25" fill="#000000">Models</text>
+
+  <!-- modelling out, prediction back -->
+  <path d="M 336 322 C 420 268, 480 268, 554 316" stroke="#006AB3" stroke-width="2"
+        fill="none" marker-end="url(#arrow)"/>
+  <path d="M 554 348 C 480 398, 420 398, 336 342" stroke="#006AB3" stroke-width="2"
+        fill="none" marker-end="url(#arrow)"/>
+</svg>

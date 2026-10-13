@@ -4,7 +4,7 @@ You have already met the basics of (discrete) probability theory in Mathematics 
 
 Stochastics can be understood as an umbrella term for probability theory and statistics. Statistics is concerned with probabilistic models developed from observations, and draws conclusions from them. Probability theory is concerned with investigating those models and the theory behind them.
 
-```{figure} images/stochastik-statistik-wtheorie.png
+```{figure} images/stochastics-overview.svg
 :width: 480px
 :align: center
 :name: stochastik-uebersicht
