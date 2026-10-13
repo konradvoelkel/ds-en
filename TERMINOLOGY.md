@@ -251,7 +251,7 @@ First needed in `expectation-variance.md`.
 | Transinformation, gemeinsame Information | transinformation, mutual information | English really only has "mutual information"; I kept both names because the German offers two |
 | Trennwand | partition | the physical wall in the gas figures, not a set partition |
 | Tschebyscheff-Ungleichung | Chebyshev's inequality | transliteration changes; the German spelling is not kept |
-| Verschiebungssatz | shift theorem | $\mathbb{E}(X^2)-(\mathbb{E}X)^2$; see "Decisions and doubts" |
+| Verschiebungssatz | shortcut formula | $\mathbb{E}(X^2)-(\mathbb{E}X)^2$; "shift theorem" means the Fourier one in English |
 | zentrales Moment | central moment |  |
 | zentriertes Sample / zentrierte Zufallsvariable | centred sample / centred random variable |  |
 | Ziehen mit/ohne Zurücklegen | drawing with/without replacement |  |
@@ -325,7 +325,7 @@ First needed in `relative-entropy.md`.
 | Entropischer Satz von Bayes | entropic Bayes' theorem |  |
 | Funktionalgleichung | functional equation |  |
 | gemeinsame Information, Transinformation | mutual information | the German glosses itself with "englisch *mutual information*"; see *Decisions* |
-| Information, Selbstinformation | surprisal | the pointwise $I(x) = -\log P(\{x\})$; "self-information" is the other standard name. See *Decisions* – `expectation-variance.md` defines it and has to agree |
+| Information, Selbstinformation | information, self-information | the pointwise $I(x) = -\log P(\{x\})$; `expectation-variance.md` defines it this way and `relative-entropy.md` follows it. Not "surprisal" |
 | invariantes Maß | invariant measure | Jaynes's $m$ |
 | KL-Divergenz | KL divergence | no hyphen in English (`KL divergence to the labels`) |
 | Klassenbezeichnung | class name | the labels whose permutation mutual information ignores |
