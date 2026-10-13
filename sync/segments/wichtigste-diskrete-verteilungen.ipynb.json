@@ -36,665 +36,665 @@
    "de": "c1.0",
    "kind": "heading",
    "digest": "ffc38d5aa65e5ac4",
-   "en": "c0.3",
+   "en": "c1.0",
    "preview": "## Konvention: diskrete Wahrscheinlichkeitsräume"
   },
   {
    "de": "c1.1",
    "kind": "prose",
    "digest": "57d1850391a4904f",
-   "en": "c1.0",
+   "en": "c1.1",
    "preview": "In diesem Kapitel ist $\\Omega$ stets *höchstens abzählbar*, meistens sog…"
   },
   {
    "de": "c1.2",
    "kind": "math",
    "digest": "bfbd6d5471ce8dd5",
-   "en": "c1.1",
+   "en": "c1.2",
    "preview": "$$ p(\\omega) := P(\\{\\omega\\}) $$"
   },
   {
    "de": "c1.3",
    "kind": "prose",
    "digest": "bfffc3c6f2af2b9c",
-   "en": "c1.2",
+   "en": "c1.3",
    "preview": "auf den einzelnen Ergebnissen — denn jedes Ereignis $A \\subseteq \\Omega$…"
   },
   {
    "de": "c1.4",
    "kind": "math",
    "digest": "684e9a75441d6e5d",
-   "en": "c1.3",
+   "en": "c1.4",
    "preview": "$$ \\mathbb{E}(X) = \\sum_{x} x\\,p_X(x), \\qquad \\mathbb{V}(X) = \\mathbb{E}…"
   },
   {
    "de": "c1.5",
    "kind": "directive",
    "digest": "110790ca03c77328",
-   "en": "c1.4",
+   "en": "c1.5",
    "preview": "```{admonition} Bemerkung :class: note Manche Quellen nennen die pmf im …"
   },
   {
    "de": "c2.0",
    "kind": "heading",
    "digest": "2d96a619a45afcb7",
-   "en": "c1.5",
+   "en": "c2.0",
    "preview": "## Diskrete Verteilungen in SciPy"
   },
   {
    "de": "c2.1",
    "kind": "prose",
    "digest": "6a4509a5031cb768",
-   "en": "c2.0",
+   "en": "c2.1",
    "preview": "Genau wie für stetige Verteilungen stellt `scipy.stats` auch für diskret…"
   },
   {
    "de": "c3",
    "kind": "code",
    "digest": "6c388aa05c6b3c2d",
-   "en": "c2.1",
+   "en": "c3",
    "preview": "import numpy as np import matplotlib.pyplot as plt import scipy.stats as…"
   },
   {
    "de": "c4.0",
    "kind": "prose",
    "digest": "24544a34902491a1",
-   "en": "c3",
+   "en": "c4.0",
    "preview": "Die Methoden, die wir immer wieder brauchen, sind für alle Verteilungen …"
   },
   {
    "de": "c4.1",
    "kind": "table",
    "digest": "021974f4d032055c",
-   "en": "c4.0",
+   "en": "c4.1",
    "preview": "| gesucht | Aufruf | |---|---| | $P(X = k)$ | `X.pmf(k)` | | $P(X \\leq k…"
   },
   {
    "de": "c4.2",
    "kind": "prose",
    "digest": "ac86556cbaf5e4af",
-   "en": "c4.1",
+   "en": "c4.2",
    "preview": "Das `sf` steht für *survival function*, gelegentlich auch *Überlebensfun…"
   },
   {
    "de": "c4.3",
    "kind": "directive",
    "digest": "2f8943cc0d1e6768",
-   "en": "c4.2",
+   "en": "c4.3",
    "preview": "```{admonition} Achtung :class: warning Bei diskreten Verteilungen ist d…"
   },
   {
    "de": "c5",
    "kind": "code",
    "digest": "eb38371afd354f87",
-   "en": "c4.3",
+   "en": "c5",
    "preview": "X = st.binom(10, 0.3) print(\"P(X = 3) =\", X.pmf(3)) print(\"P(X <= 3) =\",…"
   },
   {
    "de": "c6.0",
    "kind": "heading",
    "digest": "304464f81284f167",
-   "en": "c5",
+   "en": "c6.0",
    "preview": "## Diskrete Gleichverteilung"
   },
   {
    "de": "c6.1",
    "kind": "prose",
    "digest": "88c34fa21376d6c8",
-   "en": "c6.0",
+   "en": "c6.1",
    "preview": "* Parameter $n$, Notation $\\operatorname{Uni}\\{1,\\dots,n\\}$ * pmf $p(k) …"
   },
   {
    "de": "c6.2",
    "kind": "prose",
    "digest": "7494f0dd8dd35a1c",
-   "en": "c6.1",
+   "en": "c6.2",
    "preview": "Den Erwartungswert kennen wir bereits. Die Varianz rechnen wir mit $\\mat…"
   },
   {
    "de": "c6.3",
    "kind": "math",
    "digest": "40a0bc55f0e4a32a",
-   "en": "c6.2",
+   "en": "c6.3",
    "preview": "$$ \\mathbb{E}(X^2) = \\frac{1}{n}\\sum_{i=1}^n i^2 = \\frac{(n+1)(2n+1)}{6}…"
   },
   {
    "de": "c6.4",
    "kind": "prose",
    "digest": "f559773d494baa99",
-   "en": "c6.3",
+   "en": "c6.4",
    "preview": "und daher"
   },
   {
    "de": "c6.5",
    "kind": "math",
    "digest": "64196ad7c734df4c",
-   "en": "c6.4",
+   "en": "c6.5",
    "preview": "$$ \\mathbb{V}(X) = \\frac{(n+1)(2n+1)}{6} - \\frac{(n+1)^2}{4} = \\frac{(n+…"
   },
   {
    "de": "c7",
    "kind": "code",
    "digest": "dbd6bb7f4c1b7b4f",
-   "en": "c6.5",
+   "en": "c7",
    "preview": "n = 6 X = st.randint(1, n + 1) # obere Grenze exklusiv, also 1 bis 6 pri…"
   },
   {
    "de": "c8.0",
    "kind": "heading",
    "digest": "4ae09df26f1acf03",
-   "en": "c7",
+   "en": "c8.0",
    "preview": "## Kategoriale Verteilung"
   },
   {
    "de": "c8.1",
    "kind": "prose",
    "digest": "9ca1a04f67e08240",
-   "en": "c8.0",
+   "en": "c8.1",
    "preview": "* Parameter ein Wahrscheinlichkeitsvektor $p = (p_1,\\dots,p_n) \\in \\Delt…"
   },
   {
    "de": "c8.2",
    "kind": "prose",
    "digest": "20610d0363f3f2d4",
-   "en": "c8.1",
+   "en": "c8.2",
    "preview": "Der Parameterraum ist genau das Simplex $\\Delta_n$, das wir im Kapitel […"
   },
   {
    "de": "c8.3",
    "kind": "directive",
    "digest": "b6c2d72c1c77688c",
-   "en": "c8.2",
+   "en": "c8.3",
    "preview": "```{admonition} Bemerkung :class: note Im maschinellen Lernen taucht $\\D…"
   },
   {
    "de": "c9",
    "kind": "code",
    "digest": "c5cfeff30790dc74",
-   "en": "c8.3",
+   "en": "c9",
    "preview": "werte = np.arange(1, 5) p = np.array([0.1, 0.5, 0.3, 0.1]) X = st.rv_dis…"
   },
   {
    "de": "c10.0",
    "kind": "heading",
    "digest": "8454035261687513",
-   "en": "c9",
+   "en": "c10.0",
    "preview": "## Bernoulli-Verteilung"
   },
   {
    "de": "c10.1",
    "kind": "prose",
    "digest": "9f3d3ecff8e4d5f6",
-   "en": "c10.0",
+   "en": "c10.1",
    "preview": "* Parameter $p \\in [0,1]$, Notation $\\operatorname{Ber}(p)$ * pmf $p(1) …"
   },
   {
    "de": "c10.2",
    "kind": "prose",
    "digest": "382bbc7028a00ef9",
-   "en": "c10.1",
+   "en": "c10.2",
    "preview": "Die Bernoulli-Verteilung ist der Spezialfall $n=2$ der kategorialen Vert…"
   },
   {
    "de": "c10.3",
    "kind": "math",
    "digest": "86b2a257f4009f3b",
-   "en": "c10.2",
+   "en": "c10.3",
    "preview": "$$ \\mathbb{V}(X) = \\mathbb{E}(X^2) - {\\left(\\mathbb{E}X\\right)}^2 = p - …"
   },
   {
    "de": "c10.4",
    "kind": "prose",
    "digest": "c3d78b568749c943",
-   "en": "c10.3",
+   "en": "c10.4",
    "preview": "Die Varianz ist maximal bei $p = \\frac12$ und verschwindet für $p \\in \\{…"
   },
   {
    "de": "c10.5",
    "kind": "prose",
    "digest": "e2bac31425641d37",
-   "en": "c10.4",
+   "en": "c10.5",
    "preview": "Im Kapitel [Zufallsvariablen und Verteilungen](zufallsvariablen-verteilu…"
   },
   {
    "de": "c11.0",
    "kind": "heading",
    "digest": "5d36775bd856b757",
-   "en": "c10.5",
+   "en": "c11.0",
    "preview": "### Die binäre Entropiefunktion"
   },
   {
    "de": "c11.1",
    "kind": "prose",
    "digest": "52726055670d09ea",
-   "en": "c11.0",
+   "en": "c11.1",
    "preview": "Die Entropie einer Bernoulli-Verteilung als Funktion von $p$ ist interes…"
   },
   {
    "de": "c11.2",
    "kind": "math",
    "digest": "24cf206010f9fe03",
-   "en": "c11.1",
+   "en": "c11.2",
    "preview": "$$ \\frac{d}{dp}\\left( -p\\log_2 p \\right) = -\\log_2 p - \\frac{1}{\\ln 2}, …"
   },
   {
    "de": "c11.3",
    "kind": "prose",
    "digest": "96cc83e067337832",
-   "en": "c11.2",
+   "en": "c11.3",
    "preview": "die beiden Konstanten heben sich also weg und es bleibt"
   },
   {
    "de": "c11.4",
    "kind": "math",
    "digest": "9e28c741ea9b55f4",
-   "en": "c11.3",
+   "en": "c11.4",
    "preview": "$$ h'(p) = \\log_2(1-p) - \\log_2 p = -\\log_2\\frac{p}{1-p}. $$"
   },
   {
    "de": "c11.5",
    "kind": "prose",
    "digest": "9dba282467f93184",
-   "en": "c11.4",
+   "en": "c11.5",
    "preview": "Die einzige Nullstelle liegt bei $p = 1-p$, also bei $p = \\frac12$: Der …"
   },
   {
    "de": "c11.6",
    "kind": "directive",
    "digest": "18a66b10f43a2224",
-   "en": "c11.5",
+   "en": "c11.6",
    "preview": "```{admonition} Ausblick :class: tip Der Ausdruck $\\log_2\\frac{p}{1-p}$,…"
   },
   {
    "de": "c12",
    "kind": "code",
    "digest": "9ba894512f58d53c",
-   "en": "c11.6",
+   "en": "c12",
    "preview": "p = np.linspace(1e-4, 1 - 1e-4, 500) h = -p * np.log2(p) - (1 - p) * np.…"
   },
   {
    "de": "c13.0",
    "kind": "heading",
    "digest": "e5144c2dc7149059",
-   "en": "c12",
+   "en": "c13.0",
    "preview": "## Binomialverteilung"
   },
   {
    "de": "c13.1",
    "kind": "prose",
    "digest": "f41a72a4978aa212",
-   "en": "c13.0",
+   "en": "c13.1",
    "preview": "* Parameter $n \\in \\mathbb{N}$ und $p \\in [0,1]$, Notation $\\operatornam…"
   },
   {
    "de": "c13.2",
    "kind": "prose",
    "digest": "2d7ed65fca859409",
-   "en": "c13.1",
+   "en": "c13.2",
    "preview": "Die Binomialverteilung entsteht aus der Bernoulli-Verteilung durch Wiede…"
   },
   {
    "de": "c13.3",
    "kind": "math",
    "digest": "4984a0950a34d62a",
-   "en": "c13.2",
+   "en": "c13.3",
    "preview": "$$ X := \\sum_{i=1}^n X_i $$"
   },
   {
    "de": "c13.4",
    "kind": "prose",
    "digest": "40d469f4c8ceb84a",
-   "en": "c13.3",
+   "en": "c13.4",
    "preview": "die Anzahl der Erfolge, und es ist $X \\sim \\operatorname{Bin}(n,p)$. Sie…"
   },
   {
    "de": "c13.5",
    "kind": "prose",
    "digest": "1fcc53df0dfcd202",
-   "en": "c13.4",
+   "en": "c13.5",
    "preview": "Warum die pmf so aussieht: Ein einzelnes festes Muster aus $k$ Erfolgen …"
   },
   {
    "de": "c13.6",
    "kind": "prose",
    "digest": "aa3cea7a0a6ef041",
-   "en": "c13.5",
+   "en": "c13.6",
    "preview": "Erwartungswert und Varianz bekommen wir jetzt geschenkt. Der Erwartungsw…"
   },
   {
    "de": "c13.7",
    "kind": "math",
    "digest": "c8eff2a2d2bf9f88",
-   "en": "c13.6",
+   "en": "c13.7",
    "preview": "$$ \\mathbb{E}(X) = \\sum_{i=1}^n \\mathbb{E}(X_i) = n\\,p. $$"
   },
   {
    "de": "c13.8",
    "kind": "prose",
    "digest": "43bd77e15a7b9645",
-   "en": "c13.7",
+   "en": "c13.8",
    "preview": "Für die Varianz brauchen wir die Unabhängigkeit — das ist genau die Rech…"
   },
   {
    "de": "c13.9",
    "kind": "math",
    "digest": "d92454f4fd7097a4",
-   "en": "c13.8",
+   "en": "c13.9",
    "preview": "$$ \\mathbb{V}(X) = \\sum_{i=1}^n \\mathbb{V}(X_i) = n\\,p(1-p). $$"
   },
   {
    "de": "c13.10",
    "kind": "prose",
    "digest": "d3139eda87f1ca99",
-   "en": "c13.9",
+   "en": "c13.10",
    "preview": "Ohne Unabhängigkeit wäre das falsch. Man sieht hier gut, wozu diese Rege…"
   },
   {
    "de": "c14",
    "kind": "code",
    "digest": "f552f556dff1e9a3",
-   "en": "c13.10",
+   "en": "c14",
    "preview": "n, p = 10, 0.3 X = st.binom(n, p) print(\"E(X) =\", X.mean(), \" erwartet:\"…"
   },
   {
    "de": "c15.0",
    "kind": "heading",
    "digest": "512910f109d07753",
-   "en": "c14",
+   "en": "c15.0",
    "preview": "### Welches $p$ passt am besten zu den Daten?"
   },
   {
    "de": "c15.1",
    "kind": "prose",
    "digest": "cee7ced6c80bfe2d",
-   "en": "c15.0",
+   "en": "c15.1",
    "preview": "Bisher haben wir $p$ als gegeben angesehen und nach der Wahrscheinlichke…"
   },
   {
    "de": "c15.2",
    "kind": "prose",
    "digest": "580d92566bfd3cbe",
-   "en": "c15.1",
+   "en": "c15.2",
    "preview": "Die pmf gibt uns für **jedes** $p$ eine Wahrscheinlichkeit für genau die…"
   },
   {
    "de": "c15.3",
    "kind": "math",
    "digest": "babe46b6d912ff06",
-   "en": "c15.2",
+   "en": "c15.3",
    "preview": "$$ P(X = 3) = \\binom{10}{3}p^3(1-p)^{7}. $$"
   },
   {
    "de": "c15.4",
    "kind": "prose",
    "digest": "8be5b1c0d26f3dcc",
-   "en": "c15.3",
+   "en": "c15.4",
    "preview": "Vergleichen wir zwei Kandidaten, $p = 0{,}2$ und $p = 0{,}5$. Der Binomi…"
   },
   {
    "de": "c15.5",
    "kind": "math",
    "digest": "48d2a7fe1e554129",
-   "en": "c15.4",
+   "en": "c15.5",
    "preview": "$$ 0{,}2^3 \\cdot 0{,}8^7 = 0{,}008 \\cdot 0{,}2097\\ldots \\approx 0{,}0016…"
   },
   {
    "de": "c15.6",
    "kind": "prose",
    "digest": "2356ff0cac921440",
-   "en": "c15.5",
+   "en": "c15.6",
    "preview": "Unsere Beobachtung ist unter $p = 0{,}2$ also etwa $1{,}7$-mal so wahrsc…"
   },
   {
    "de": "c15.7",
    "kind": "prose",
    "digest": "694611461ddffc62",
-   "en": "c15.6",
+   "en": "c15.7",
    "preview": "Damit liegt die Frage nahe, welches $p$ denn am allerbesten passt. Wir s…"
   },
   {
    "de": "c15.8",
    "kind": "math",
    "digest": "b5dbd37d9810438c",
-   "en": "c15.7",
+   "en": "c15.8",
    "preview": "$$ \\frac{d}{dp}\\left( p^k(1-p)^{n-k} \\right) = k\\,p^{k-1}(1-p)^{n-k} - (…"
   },
   {
    "de": "c15.9",
    "kind": "prose",
    "digest": "7964c6c9a0bea617",
-   "en": "c15.8",
+   "en": "c15.9",
    "preview": "Für $0 < p < 1$ ist der vordere Faktor nicht null, es bleibt also die Be…"
   },
   {
    "de": "c15.10",
    "kind": "math",
    "digest": "944ce2c0008cd510",
-   "en": "c15.9",
+   "en": "c15.10",
    "preview": "$$ p = \\frac{k}{n}. $$"
   },
   {
    "de": "c15.11",
    "kind": "prose",
    "digest": "db22f8d486e6e093",
-   "en": "c15.10",
+   "en": "c15.11",
    "preview": "Für unsere Beobachtung ist das $p = \\frac{3}{10} = 0{,}3$ — schlicht der…"
   },
   {
    "de": "c16",
    "kind": "code",
    "digest": "a02fd9e6c4cf91bb",
-   "en": "c15.11",
+   "en": "c16",
    "preview": "k, n = 3, 10 p = np.linspace(0.001, 0.999, 500) wahrscheinlichkeit = st.…"
   },
   {
    "de": "c17.0",
    "kind": "prose",
    "digest": "352611352da9ad19",
-   "en": "c16",
+   "en": "c17.0",
    "preview": "Dieses Vorgehen — den Parameter zu wählen, der die Beobachtung am wahrsc…"
   },
   {
    "de": "c18.0",
    "kind": "heading",
    "digest": "0a9c5b8b21db8455",
-   "en": "c17.0",
+   "en": "c18.0",
    "preview": "## Exkurs: Poisson-Binomialverteilung"
   },
   {
    "de": "c18.1",
    "kind": "directive",
    "digest": "b5fcf24ef18e40d9",
-   "en": "c18.0",
+   "en": "c18.1",
    "preview": "```{admonition} Hinweis :class: note Dieser Exkurs dient vornehmlich der…"
   },
   {
    "de": "c18.2",
    "kind": "prose",
    "digest": "52f0441e46e8a342",
-   "en": "c18.1",
+   "en": "c18.2",
    "preview": "* Parameter $p_1,\\dots,p_n \\in [0,1]$, eine Wahrscheinlichkeit je Versuc…"
   },
   {
    "de": "c18.3",
    "kind": "prose",
    "digest": "278ce20f1f1db545",
-   "en": "c18.2",
+   "en": "c18.3",
    "preview": "Wir werfen jetzt nicht mehr $n$-mal dieselbe Münze, sondern $n$ verschie…"
   },
   {
    "de": "c18.4",
    "kind": "prose",
    "digest": "b6313d2eb8faf209",
-   "en": "c18.3",
+   "en": "c18.4",
    "preview": "Die pmf selbst ist unhandlich — die Summe läuft über $\\binom{n}{k}$ Teil…"
   },
   {
    "de": "c18.5",
    "kind": "prose",
    "digest": "793bf2c7e52d8f3a",
-   "en": "c18.4",
+   "en": "c18.5",
    "preview": "Interessant wird der Fall vieler kleiner $p_i$. Setzen wir alle $p_i = \\…"
   },
   {
    "de": "c18.6",
    "kind": "directive",
    "digest": "2d074b3f96901463",
-   "en": "c18.5",
+   "en": "c18.6",
    "preview": "```{admonition} Satz Sei $\\lambda > 0$ und $(p_n)_n$ eine Folge in $[0,1…"
   },
   {
    "de": "c19",
    "kind": "code",
    "digest": "c45ecef1aace140c",
-   "en": "c18.6",
+   "en": "c19",
    "preview": "def poisson_binomial_pmf(ps): \"\"\"pmf einer Poisson-Binomialverteilung, i…"
   },
   {
    "de": "c20",
    "kind": "code",
    "digest": "b67cf90de5fbe1f7",
-   "en": "c19",
+   "en": "c20",
    "preview": "# Der Grenzuebergang: alle p_i gleich lambda/n, n waechst. lam = 2.0 k =…"
   },
   {
    "de": "c21.0",
    "kind": "heading",
    "digest": "8de7bdca68ce4231",
-   "en": "c20",
+   "en": "c21.0",
    "preview": "## Poissonverteilung"
   },
   {
    "de": "c21.1",
    "kind": "prose",
    "digest": "81e48e32da4aea87",
-   "en": "c21.0",
+   "en": "c21.1",
    "preview": "* Parameter $\\lambda > 0$, Notation $\\operatorname{Pois}(\\lambda)$ * pmf…"
   },
   {
    "de": "c21.2",
    "kind": "prose",
    "digest": "f76f94d9d8d46e2d",
-   "en": "c21.1",
+   "en": "c21.2",
    "preview": "Die Leitfrage lautet: Wie viele Ereignisse treten in einem festen Zeitra…"
   },
   {
    "de": "c21.3",
    "kind": "prose",
    "digest": "51d1ac0ea769872e",
-   "en": "c21.2",
+   "en": "c21.3",
    "preview": "Dass sich die pmf zu $1$ aufsummiert, sieht man mit der Exponentialreihe…"
   },
   {
    "de": "c21.4",
    "kind": "math",
    "digest": "f202013bcdd45984",
-   "en": "c21.3",
+   "en": "c21.4",
    "preview": "$$ \\sum_{k=0}^\\infty e^{-\\lambda}\\frac{\\lambda^k}{k!} = e^{-\\lambda}e^{\\…"
   },
   {
    "de": "c21.5",
    "kind": "prose",
    "digest": "779f678338446bbb",
-   "en": "c21.4",
+   "en": "c21.5",
    "preview": "Der Erwartungswert folgt mit einer Indexverschiebung — der Summand für $…"
   },
   {
    "de": "c21.6",
    "kind": "math",
    "digest": "6f1555263a3b7243",
-   "en": "c21.5",
+   "en": "c21.6",
    "preview": "$$ \\mathbb{E}(X) = \\sum_{k=1}^\\infty k\\,e^{-\\lambda}\\frac{\\lambda^k}{k!}…"
   },
   {
    "de": "c21.7",
    "kind": "prose",
    "digest": "f03dde68297f5e68",
-   "en": "c21.6",
+   "en": "c21.7",
    "preview": "Für die Varianz rechnet man genauso $\\mathbb{E}(X(X-1)) = \\lambda^2$ aus…"
   },
   {
    "de": "c21.8",
    "kind": "directive",
    "digest": "af783560eccb6b3a",
-   "en": "c21.7",
+   "en": "c21.8",
    "preview": "```{admonition} Bemerkung Zählt man Ereignisse mit $\\operatorname{Pois}(…"
   },
   {
    "de": "c22",
    "kind": "code",
    "digest": "8d858bccac918c43",
-   "en": "c21.8",
+   "en": "c22",
    "preview": "lam = 2.5 X = st.poisson(lam) print(\"E(X) =\", X.mean(), \" V(X) =\", X.var…"
   },
   {
    "de": "c23.0",
    "kind": "heading",
    "digest": "b65c58019c77a913",
-   "en": "c22",
+   "en": "c23.0",
    "preview": "## Der Vollständigkeit halber: geometrische Verteilung"
   },
   {
    "de": "c23.1",
    "kind": "prose",
    "digest": "5a227335449c747a",
-   "en": "c23.0",
+   "en": "c23.1",
    "preview": "* Parameter $p \\in (0,1]$, Notation $\\operatorname{Geom}(p)$ * pmf $p(k)…"
   },
   {
    "de": "c23.2",
    "kind": "prose",
    "digest": "8351886ad3a961ec",
-   "en": "c23.1",
+   "en": "c23.2",
    "preview": "Wir wiederholen ein Bernoulli-Experiment so lange, bis zum ersten Mal ei…"
   },
   {
    "de": "c23.3",
    "kind": "prose",
    "digest": "1757055e7dd90629",
-   "en": "c23.2",
+   "en": "c23.3",
    "preview": "Die geometrische Verteilung ist *gedächtnislos*: Hat man schon zehnmal v…"
   },
   {
    "de": "c23.4",
    "kind": "directive",
    "digest": "e7a42fb607708374",
-   "en": "c23.3",
+   "en": "c23.4",
    "preview": "```{admonition} Achtung :class: warning Es gibt zwei gängige Konventione…"
   },
   {
    "de": "c24",
    "kind": "code",
    "digest": "8ddccea3651b2175",
-   "en": "c23.4",
+   "en": "c24",
    "preview": "p = 1 / 6 X = st.geom(p) print(\"E(X) =\", X.mean(), \" erwartet:\", 1 / p) …"
   },
   {
    "de": "c25.0",
    "kind": "heading",
    "digest": "69c5668cba045c3e",
-   "en": "c24",
+   "en": "c25.0",
    "preview": "## Rückblick"
   },
   {
    "de": "c25.1",
    "kind": "prose",
    "digest": "8d4be89220b673f2",
-   "en": "c25.0",
+   "en": "c25.1",
    "preview": "Alle Verteilungen dieses Kapitels hängen zusammen:"
   },
   {
    "de": "c25.2",
    "kind": "prose",
    "digest": "7970db842c07a33b",
-   "en": "c25.1",
+   "en": "c25.2",
    "preview": "* Die **kategoriale Verteilung** ist die allgemeinste Verteilung auf ein…"
   },
   {
    "de": "c25.3",
    "kind": "prose",
    "digest": "4eddcb72e7a84a0e",
-   "en": "c25.2",
+   "en": "c25.3",
    "preview": "Im nächsten Schritt verlassen wir die abzählbaren Ergebnismengen. Wenn m…"
   }
  ]

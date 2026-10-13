@@ -34,6 +34,9 @@ wrong about seven of its rows in both directions.
 | ~~`likelihood-scale.png`~~ | statistical-tests | none – the IPCC table, published in English | **clean** |
 | ~~`normalmarginal.png`~~ | covariance | none – inspected, no text at all | **clean** |
 
+`ProbOnto2.5.jpg` (important-continuous-distributions) was inspected too: ~200 node
+labels, all English, no redraw needed.
+
 "Labels to check" means the file has not been inspected yet; the chapter's translator
 inspects it and either redraws it or strikes the row. The "used in" column was guessed from
 file names when this list was first written and has been corrected twice already – trust the
