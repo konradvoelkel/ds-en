@@ -30,7 +30,7 @@ $$
 d_1(v,w) := \sum_{i=1}^n \left| v_i - w_i \right| = \left\| v - w \right\|_1 = n \cdot \texttt{mae}(v,w),
 $$
 
-und der Faktor $\frac1n$ in der Definition ist genau das, was $\texttt{mae}$ von der Länge des Vektors unabhängig macht: $d_1$ wächst mit $n$, auch wenn das Modell gleich gut bleibt, $\texttt{mae}$ nicht. Vergleichen will man fast immer, also nimmt man fast immer den Mittelwert. (Zur Rolle der verschiedenen Normen siehe auch die Bemerkung zu $L_0$, $L_1$ und $L_2$ im Kapitel [Deskriptive Statistik](deskriptive-statistik.md) sowie die L1- und L2-Regularisierung im Kapitel [Regressionsanalyse](lineare-regression.ipynb).)
+und der Faktor $\frac1n$ in der Definition ist genau das, was $\texttt{mae}$ von der Länge des Vektors unabhängig macht: $d_1$ wächst mit $n$, auch wenn das Modell gleich gut bleibt, $\texttt{mae}$ nicht. Vergleichen will man fast immer, also nimmt man fast immer den Mittelwert. (Zur Rolle der verschiedenen Normen siehe auch die Bemerkung zu $L_0$, $L_1$ und $L_2$ im Kapitel [Deskriptive Statistik](descriptive-statistics.md) sowie die L1- und L2-Regularisierung im Kapitel [Regressionsanalyse](linear-regression.ipynb).)
 
 :::{admonition} Beispiel
 Bis hierher war $w$ konstant. Es muss aber nicht konstant sein: Seien $v$ vier gemessene Körpergrößen in Zentimetern und $w$ das, was ein Modell für dieselben vier Personen vorhergesagt hat.
@@ -217,7 +217,7 @@ $$
 In der Sprache der linearen Algebra ist die Sample-Standardabweichung also nichts anderes als die euklidische Länge des zentrierten Vektors, geteilt durch $\sqrt{n}$, und die Varianz das Skalarprodukt dieses Vektors mit sich selbst, geteilt durch $n$.
 :::
 
-Diese Sichtweise trägt weiter, als sie zunächst aussieht. Im Kapitel [Kovarianz und Abhängigkeit](kovarianz.md) stellt sich heraus, dass die Kovarianz zweier Zufallsvariablen sich genau wie ein Skalarprodukt verhält — die Varianz ist dann der Spezialfall „Vektor mit sich selbst“, und der Korrelationskoeffizient wird zum Kosinus des Winkels zwischen zwei zentrierten Vektoren.
+Diese Sichtweise trägt weiter, als sie zunächst aussieht. Im Kapitel [Kovarianz und Abhängigkeit](covariance.md) stellt sich heraus, dass die Kovarianz zweier Zufallsvariablen sich genau wie ein Skalarprodukt verhält — die Varianz ist dann der Spezialfall „Vektor mit sich selbst“, und der Korrelationskoeffizient wird zum Kosinus des Winkels zwischen zwei zentrierten Vektoren.
 
 ### Informationsgehalt
 
@@ -226,7 +226,7 @@ Wenn wir z.B. wissen, dass $v$ ein Sample einer auf $\{0,1\}$ gleichverteilten Z
 
 ### Lagemaße zentraler Tendenz
 
-Zu Median und Mittelwert gehört traditionell noch der **Modus**, der häufigste Wert. Er passt in dasselbe Muster: Der Median ist das beste konstante Modell für den absoluten Fehler, der Mittelwert für den quadratischen, und der Modus für den *Zählfehler*, der jede Abweichung gleich zählt, egal wie groß sie ist. Für ein nominales Merkmal, etwa die Spalte `Survived` der Titanic-Liste, ist das der einzige Fehler, der Sinn ergibt; das beste konstante Modell ist dann die häufigste Klasse, und der Anteil, in dem es richtig liegt, ist seine *Accuracy* (siehe [Titanic EDA](explorative-analyse-mit-numpy.ipynb)).
+Zu Median und Mittelwert gehört traditionell noch der **Modus**, der häufigste Wert. Er passt in dasselbe Muster: Der Median ist das beste konstante Modell für den absoluten Fehler, der Mittelwert für den quadratischen, und der Modus für den *Zählfehler*, der jede Abweichung gleich zählt, egal wie groß sie ist. Für ein nominales Merkmal, etwa die Spalte `Survived` der Titanic-Liste, ist das der einzige Fehler, der Sinn ergibt; das beste konstante Modell ist dann die häufigste Klasse, und der Anteil, in dem es richtig liegt, ist seine *Accuracy* (siehe [Titanic EDA](titanic-eda-numpy.ipynb)).
 [Hier gibt es ein kurzes Erklärvideo (auf Englisch) vom Crash Course Statistics zu Mean, Median und Mode](https://www.youtube.com/watch?v=kn83BA7cRNM&list=PL8dPuuaLjXtNM_Y-bUAhblSAdWRnmBUcr). [Das in der Playlist folgende Video diskutiert die damit zusammenhängenden Begriffe für Streuung von Daten](https://www.youtube.com/watch?v=R4yfNi_8Kqw) (die Abweichung, mit der wir angefangen haben).
 
 
@@ -257,7 +257,7 @@ Der Erwartungswert eines fairen Würfels ist also $3{,}5$, eine Zahl, die der W�
 Ein gezinkter Würfel mit $p = \left(\frac{1}{10},\frac{1}{10},\frac{1}{10},\frac{1}{10},\frac{1}{10},\frac{5}{10}\right)$ hat $N = 10$, das idealisierte Sample $(1,2,3,4,5,6,6,6,6,6)$ und damit den Erwartungswert $\frac{45}{10} = 4{,}5$.
 :::
 
-Der Spezialfall $k = 1$ ist die Probe aufs Exempel: Eine Verteilung, die einen einzigen Wert $y_1$ mit Wahrscheinlichkeit $1$ annimmt — das Dirac-Maß $\delta_{y_1}$ aus dem Kapitel [Formalismus der Stochastik](intro-stochastik.md) — hat das idealisierte Sample $(y_1,\dots,y_1)$ und folglich den Erwartungswert $y_1$. Ein konstantes Modell und der Wert, den es vorhersagt, sind dasselbe. In der Sprache des vorigen Abschnitts: Das beste konstante Modell für den quadratischen Fehler war der Mittelwert der Daten, und als Verteilung gelesen ist ein konstantes Modell ein Dirac-Maß.
+Der Spezialfall $k = 1$ ist die Probe aufs Exempel: Eine Verteilung, die einen einzigen Wert $y_1$ mit Wahrscheinlichkeit $1$ annimmt — das Dirac-Maß $\delta_{y_1}$ aus dem Kapitel [Formalismus der Stochastik](intro-probability.md) — hat das idealisierte Sample $(y_1,\dots,y_1)$ und folglich den Erwartungswert $y_1$. Ein konstantes Modell und der Wert, den es vorhersagt, sind dasselbe. In der Sprache des vorigen Abschnitts: Das beste konstante Modell für den quadratischen Fehler war der Mittelwert der Daten, und als Verteilung gelesen ist ein konstantes Modell ein Dirac-Maß.
 
 :::{admonition} Beispiel
 Auf $\Omega = \{0,1,\dots,n-1\}$ — genau das, was `range(n)` in Python aufzählt — sei $P$ die Gleichverteilung. Für $Y(\omega) := \omega$ ist
@@ -288,7 +288,7 @@ Für endliches $\Omega$ ist die Summe endlich und existiert immer. Ist $\Omega$ 
 
 Festhalten lässt sich: Nimmt $X$ nur endlich viele Werte an, so existieren nicht nur der Erwartungswert, sondern auch alle höheren Momente $\mathbb{E}(X^k)$ — es sind endliche Summen, und die konvergieren immer. Bei abzählbar unendlich vielen Werten muss man dagegen jedes Mal hinsehen. Ein Beispiel, das nicht nur ein mathematisches Kuriosum ist: Beim *St.-Petersburg-Paradoxon* wird so lange eine Münze geworfen, bis zum ersten Mal Kopf fällt, und bei $k$ Würfen $2^k$ Euro ausgezahlt. Die Wahrscheinlichkeit dafür ist $2^{-k}$, der Erwartungswert also $\sum_{k \geq 1} 2^k \cdot 2^{-k} = \sum_{k \geq 1} 1 = \infty$. Ein Spiel mit unendlichem Erwartungswert — und trotzdem würde niemand einen hohen Einsatz dafür zahlen.
 
-Für stetige Zufallsvariablen, die überabzählbar viele Werte annehmen, tritt an die Stelle der Summe ein Integral über eine Dichte $f$: $\mathbb{E}(X) = \int x f(x)\,dx$. Diese Definition geben wir im Kapitel [Stetige Verteilungen](stetige-verteilungen.md), sobald wir Dichten kennen. Alles, was wir in diesem Kapitel über den Erwartungswert festhalten, gilt für stetige Zufallsvariablen genauso, mit Integralen an Stelle von Summen.
+Für stetige Zufallsvariablen, die überabzählbar viele Werte annehmen, tritt an die Stelle der Summe ein Integral über eine Dichte $f$: $\mathbb{E}(X) = \int x f(x)\,dx$. Diese Definition geben wir im Kapitel [Stetige Verteilungen](continuous-distributions.md), sobald wir Dichten kennen. Alles, was wir in diesem Kapitel über den Erwartungswert festhalten, gilt für stetige Zufallsvariablen genauso, mit Integralen an Stelle von Summen.
 
 ### Exkurs: Erwartungswert allgemein
 
@@ -465,7 +465,7 @@ Die Tschebyscheff-Ungleichung für $\overline{X_n}$ liefert nun $P(|\overline{X_
 
 Das ist genau die stochastische Konvergenz, die wir oben aus dem (unbewiesenen) starken Gesetz der großen Zahlen gefolgert hatten: Das schwache Gesetz ist die Form, die wir mit unseren Mitteln beweisen können; das starke Gesetz mit seiner fast sicheren Konvergenz braucht mehr Werkzeug, kommt dafür aber ohne die Voraussetzung endlicher Varianz aus.
 
-Das schwache Gesetz ist außerdem das Gesetz der großen Zahlen mit einer Zahl dran: Die Wahrscheinlichkeit einer Abweichung um mehr als $c$ fällt wie $1/n$, oder anders gelesen, der typische Fehler des Stichprobenmittels schrumpft wie $1/\sqrt{n}$. Wer den Fehler halbieren will, braucht die vierfache Stichprobe. Die Schranke ist grob; das Kapitel [Normalverteilung](normalverteilung.ipynb) liefert mit dem zentralen Grenzwertsatz eine schärfere, und das Kapitel [Statistische Tests](statistische-tests.md) macht daraus das Rezept, mit dem man von der Stichprobe auf die Population schließt.
+Das schwache Gesetz ist außerdem das Gesetz der großen Zahlen mit einer Zahl dran: Die Wahrscheinlichkeit einer Abweichung um mehr als $c$ fällt wie $1/n$, oder anders gelesen, der typische Fehler des Stichprobenmittels schrumpft wie $1/\sqrt{n}$. Wer den Fehler halbieren will, braucht die vierfache Stichprobe. Die Schranke ist grob; das Kapitel [Normalverteilung](normal-distribution.ipynb) liefert mit dem zentralen Grenzwertsatz eine schärfere, und das Kapitel [Statistische Tests](statistical-tests.md) macht daraus das Rezept, mit dem man von der Stichprobe auf die Population schließt.
 
 :::{admonition} Bemerkung
 Im Deep Learning ist der wahre Loss eines Modells der Erwartungswert der Loss-Funktion über die Verteilung der Daten, und den kann man nicht ausrechnen, weil man diese Verteilung nicht kennt. Ein Mini-Batch aus wenigen Datenpunkten liefert stattdessen ein Stichprobenmittel des Loss: billig, aber mit hoher Varianz, also genau die Situation des schwachen Gesetzes der großen Zahlen, und $\mathbb{V}X / n$ sagt, wie viel Rauschen ein Batch der Größe $n$ mitbringt. Die Vorlesung *Einführung in Deep Learning* baut darauf auf (stochastischer Gradientenabstieg).
@@ -591,7 +591,7 @@ $$
 \lim_{x \to 0^+} x \log x = 0
 $$
 
-(mit l'Hospital auf $\frac{\log x}{1/x}$), und vereinbart $0 \log 0 := 0$. Summanden zu unmöglichen Ergebnissen tragen also nichts bei, und die Summe läuft effektiv nur über die $\omega$ mit $P(\{\omega\}) > 0$. Das ist die Konvention, mit der im Kapitel [Relative Entropie](relative-entropie.md) die Summen „über $p_i \neq 0$“ geschrieben werden.
+(mit l'Hospital auf $\frac{\log x}{1/x}$), und vereinbart $0 \log 0 := 0$. Summanden zu unmöglichen Ergebnissen tragen also nichts bei, und die Summe läuft effektiv nur über die $\omega$ mit $P(\{\omega\}) > 0$. Das ist die Konvention, mit der im Kapitel [Relative Entropie](relative-entropy.md) die Summen „über $p_i \neq 0$“ geschrieben werden.
 :::
 
 :::{admonition} Beispiel
@@ -631,7 +631,7 @@ Auf einer endlichen Menge $\Omega$ gilt also stets $0 \leq H(X) \leq \log_2|\Ome
 wobei das Minimum genau von den Dirac-Verteilungen angenommen wird (davon gibt es $|\Omega|$ Stück, eine je Element)
 und das Maximum ausschließlich von der Gleichverteilung.
 
-Am besten versteht man die Entropie als eine relative Größe, und das werden wir später noch tun. Im weiteren Verlauf des Kurses begegnet sie uns an zwei Stellen: beim Aufstellen statistischer Modelle — das Maximum-Entropie-Prinzip im Kapitel [Normalverteilung](normalverteilung.ipynb) und das eng verwandte Maximum-Likelihood-Prinzip im Kapitel [Statistische Modelle und Schätzer](statistische-modelle.md) — und bei der Bewertung der Modellgüte, wo Kreuzentropie und relative Entropie im Kapitel [Relative Entropie](relative-entropie.md) die Werkzeuge sind.
+Am besten versteht man die Entropie als eine relative Größe, und das werden wir später noch tun. Im weiteren Verlauf des Kurses begegnet sie uns an zwei Stellen: beim Aufstellen statistischer Modelle — das Maximum-Entropie-Prinzip im Kapitel [Normalverteilung](normal-distribution.ipynb) und das eng verwandte Maximum-Likelihood-Prinzip im Kapitel [Statistische Modelle und Schätzer](statistical-models.md) — und bei der Bewertung der Modellgüte, wo Kreuzentropie und relative Entropie im Kapitel [Relative Entropie](relative-entropy.md) die Werkzeuge sind.
 
 
 ## Unabhängigkeit
@@ -680,7 +680,7 @@ $$
 
 Die beiden Ereignisse sind also *nicht* unabhängig. Das ist auch inhaltlich richtig: Wenn zuerst das rote Bonbon gezogen wurde, bleiben nur noch grün und blau übrig, und grün ist im zweiten Zug auf einmal wahrscheinlicher geworden — von $\frac13$ auf $\frac12$. Genau diese Zahl bekommt weiter unten einen Namen, sie ist die bedingte Wahrscheinlichkeit $P(B \mid A)$.
 
-Ziehen ohne Zurücklegen ist in Python `random.sample`, Ziehen mit Zurücklegen `random.choices` (siehe [Stochastik programmieren](stochastik-programmieren.ipynb)) — der Unterschied zwischen den beiden Funktionen ist genau der Unterschied zwischen abhängig und unabhängig.
+Ziehen ohne Zurücklegen ist in Python `random.sample`, Ziehen mit Zurücklegen `random.choices` (siehe [Stochastik programmieren](programming-probability.ipynb)) — der Unterschied zwischen den beiden Funktionen ist genau der Unterschied zwischen abhängig und unabhängig.
 :::
 
 :::{admonition} Definition
@@ -696,7 +696,7 @@ $$
 P(X \in A,\ Y \in B) = P(X \in A)\,P(Y \in B)
 $$
 
-für alle Ereignisse $A, B$ gilt. Die linke Seite ist dabei eine Abkürzung für $P\left( (X,Y) \in A \times B \right)$ — sie handelt also nicht von $X$ und $Y$ einzeln, sondern von dem Paar $(X,Y)$, aufgefasst als *eine* Zufallsvariable mit Werten in $\mathbb{R}^2$. Deren Verteilung heißt die **gemeinsame Verteilung** von $X$ und $Y$; formal definieren wir sie im Kapitel [Kovarianz und Abhängigkeit](kovarianz.md).
+für alle Ereignisse $A, B$ gilt. Die linke Seite ist dabei eine Abkürzung für $P\left( (X,Y) \in A \times B \right)$ — sie handelt also nicht von $X$ und $Y$ einzeln, sondern von dem Paar $(X,Y)$, aufgefasst als *eine* Zufallsvariable mit Werten in $\mathbb{R}^2$. Deren Verteilung heißt die **gemeinsame Verteilung** von $X$ und $Y$; formal definieren wir sie im Kapitel [Kovarianz und Abhängigkeit](covariance.md).
 
 Wichtig ist die Reihenfolge: Die gemeinsame Verteilung ist die eigentliche Information, und die Verteilungen von $X$ und $Y$ einzeln ergeben sich daraus. Umgekehrt geht es *nicht* — aus den Einzelverteilungen allein lässt sich die gemeinsame im Allgemeinen nicht rekonstruieren. Genau das ist der Inhalt der Unabhängigkeit: Sie ist die Zusatzannahme, unter der das Produkt $p(x)q(y)$ der beiden pmf die gemeinsame pmf ist.
 :::
@@ -728,9 +728,9 @@ Bedingte Wahrscheinlichkeiten treten also stets dann auf (bzw. sind besonders in
 :::{admonition} Ausblick
 Unabhängigkeit ist eine Alles-oder-nichts-Eigenschaft; in echten Daten ist die interessantere Frage, *wie stark* zwei Größen zusammenhängen. Dafür lernen wir zwei Maße kennen, und es lohnt sich, sie von Anfang an auseinanderzuhalten.
 
-Das erste ist die **Kovarianz** und der aus ihr gebildete Korrelationskoeffizient (Kapitel [Kovarianz und Abhängigkeit](kovarianz.md)). Sie misst *lineare* Zusammenhänge. Aus Unabhängigkeit folgt, dass die Kovarianz $0$ ist — aber nicht umgekehrt: Zwei Größen können perfekt voneinander abhängen und trotzdem unkorreliert sein, etwa $X$ und $X^2$ bei symmetrisch verteiltem $X$. „Korreliert“ ist also eine stärkere Aussage als „abhängig“, und „unkorreliert“ eine schwächere als „unabhängig“.
+Das erste ist die **Kovarianz** und der aus ihr gebildete Korrelationskoeffizient (Kapitel [Kovarianz und Abhängigkeit](covariance.md)). Sie misst *lineare* Zusammenhänge. Aus Unabhängigkeit folgt, dass die Kovarianz $0$ ist — aber nicht umgekehrt: Zwei Größen können perfekt voneinander abhängen und trotzdem unkorreliert sein, etwa $X$ und $X^2$ bei symmetrisch verteiltem $X$. „Korreliert“ ist also eine stärkere Aussage als „abhängig“, und „unkorreliert“ eine schwächere als „unabhängig“.
 
-Das zweite Maß erfasst Abhängigkeit beliebiger Form: die **relative Entropie** zwischen der gemeinsamen Verteilung und dem Produkt der Einzelverteilungen, auch *Transinformation* oder *gemeinsame Information* $I(X;Y)$ genannt (Kapitel [Relative Entropie](relative-entropie.md)). Sie ist genau dann $0$, wenn die beiden Zufallsvariablen unabhängig sind — sie misst also wirklich Abhängigkeit und nicht nur ihren linearen Anteil. Der Preis dafür: Man braucht die gemeinsame Verteilung, und die zu schätzen ist deutlich aufwendiger, als eine Kovarianz auszurechnen.
+Das zweite Maß erfasst Abhängigkeit beliebiger Form: die **relative Entropie** zwischen der gemeinsamen Verteilung und dem Produkt der Einzelverteilungen, auch *Transinformation* oder *gemeinsame Information* $I(X;Y)$ genannt (Kapitel [Relative Entropie](relative-entropy.md)). Sie ist genau dann $0$, wenn die beiden Zufallsvariablen unabhängig sind — sie misst also wirklich Abhängigkeit und nicht nur ihren linearen Anteil. Der Preis dafür: Man braucht die gemeinsame Verteilung, und die zu schätzen ist deutlich aufwendiger, als eine Kovarianz auszurechnen.
 :::
 
 ### Rechenregeln für die Varianz
@@ -773,15 +773,15 @@ $$
 $$
 
 Sind $X$ und $Y$ unabhängig, so ist der Klammerausdruck nach der Produktregel gleich $0$.
-Der allgemeine Fall folgt genauso durch Ausmultiplizieren: Alle gemischten Terme $\mathbb{E}(X_iX_j) - \mathbb{E}X_i\,\mathbb{E}X_j$ mit $i \neq j$ verschwinden, und dafür genügt paarweise Unabhängigkeit (Kapitel [Kovarianz](kovarianz.md)).
+Der allgemeine Fall folgt genauso durch Ausmultiplizieren: Alle gemischten Terme $\mathbb{E}(X_iX_j) - \mathbb{E}X_i\,\mathbb{E}X_j$ mit $i \neq j$ verschwinden, und dafür genügt paarweise Unabhängigkeit (Kapitel [Kovarianz](covariance.md)).
 :::
 
 Der Term $\mathbb{E}(XY) - \mathbb{E}(X)\mathbb{E}(Y)$, der hier gerade verschwindet, ist eine eigene interessante Größe:
 Er heißt *Kovarianz* von $X$ und $Y$ und misst, wie stark die beiden Variablen linear zusammenhängen.
-Im Kapitel [Kovarianz](kovarianz.md) nehmen wir ihn genauer unter die Lupe und beweisen die Regel dort noch einmal
+Im Kapitel [Kovarianz](covariance.md) nehmen wir ihn genauer unter die Lupe und beweisen die Regel dort noch einmal
 in der allgemeinen Fassung, ohne die Voraussetzung der Unabhängigkeit.
 
 Regel (2) ist der Grund dafür, dass sich die Varianz einer Summe unabhängiger Wiederholungen desselben Experiments
 so einfach ausrechnen lässt — das nutzen wir im Kapitel
-[Wichtigste diskrete Verteilungen](wichtigste-diskrete-verteilungen.ipynb)
+[Wichtigste diskrete Verteilungen](important-discrete-distributions.ipynb)
 bei der Binomialverteilung.

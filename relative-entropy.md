@@ -4,7 +4,7 @@
 
 ## Logarithmen
 
-Die elementaren Eigenschaften des Logarithmus — Definition, Basiswechsel, bit und nat — stehen im Einschub im Kapitel [Erwartungswert und Varianz](erwartungswert.md). Hier geht es um die Frage, warum in der Informationstheorie ausgerechnet der Logarithmus auftaucht und keine andere Funktion.
+Die elementaren Eigenschaften des Logarithmus — Definition, Basiswechsel, bit und nat — stehen im Einschub im Kapitel [Erwartungswert und Varianz](expectation-variance.md). Hier geht es um die Frage, warum in der Informationstheorie ausgerechnet der Logarithmus auftaucht und keine andere Funktion.
 
 :::{admonition} Lemma
 Sei $l \colon \{1,\dots\} = \mathbb{N}_{>0} \to \mathbb{R}$ eine Funktion mit
@@ -75,7 +75,7 @@ Die Funktion $g(x) := F(x)/x$ erfüllt $g(xy) = g(x) + g(y)$ und ist nach Voraus
 :::
 
 :::{admonition} Bemerkung
-Wir sehen also, dass der Entropie-Beitrag $-p\log(p)$ eines Ergebnisses mit Wahrscheinlichkeit $p$ eine sehr natürliche Größe ist. (Die *Information* $I(x) = -\log P(\{x\})$ aus dem Kapitel [Erwartungswert und Varianz](erwartungswert.md) ist der Faktor hinter dem $p$.)
+Wir sehen also, dass der Entropie-Beitrag $-p\log(p)$ eines Ergebnisses mit Wahrscheinlichkeit $p$ eine sehr natürliche Größe ist. (Die *Information* $I(x) = -\log P(\{x\})$ aus dem Kapitel [Erwartungswert und Varianz](expectation-variance.md) ist der Faktor hinter dem $p$.)
 :::
 
 :::{admonition} Lemma

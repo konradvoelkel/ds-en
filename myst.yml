@@ -31,48 +31,48 @@ project:
     - file: landing-page.md
     - title: Einführung
       children:
-        - file: was-ist-data-science.md
-        - file: intro-stochastik.md
+        - file: what-is-data-science.md
+        - file: intro-probability.md
         - file: intro-python.ipynb
     - title: Diskrete Stochastik und Numpy
       children:
-        - file: stochastik-programmieren.ipynb
-        - file: zufallsvariablen-verteilungen.md
-        - file: erwartungswert.md
+        - file: programming-probability.ipynb
+        - file: random-variables-distributions.md
+        - file: expectation-variance.md
         - file: numpy.ipynb
-        - file: wichtigste-diskrete-verteilungen.ipynb
-        - file: explorative-analyse-mit-numpy.ipynb
+        - file: important-discrete-distributions.ipynb
+        - file: titanic-eda-numpy.ipynb
     - title: Stetige Stochastik und Scipy
       children:
-        - file: stetige-verteilungen.md
-        - file: normalverteilung.ipynb
-        - file: wichtigste-stetige-verteilungen.ipynb
+        - file: continuous-distributions.md
+        - file: normal-distribution.ipynb
+        - file: important-continuous-distributions.ipynb
     - title: Explorative Datenanalyse
       children:
-        - file: deskriptive-statistik.md
-        - file: explorative-analyse-beispiele.ipynb
+        - file: descriptive-statistics.md
+        - file: eda-examples.ipynb
         - file: iris.ipynb
         - file: pandas.ipynb
         - file: data-cleaning.ipynb
     - title: Multivariate Stochastik
       children:
-        - file: kovarianz.md
-        - file: multivariate-normalverteilung.ipynb
-        - file: relative-entropie.md
+        - file: covariance.md
+        - file: multivariate-normal.ipynb
+        - file: relative-entropy.md
     - title: Datenschutz
       children:
-        - file: datenschutz.md
+        - file: data-protection.md
     - title: Maschinelles Lernen
       children:
         - file: kmeans.ipynb
-        - file: statistische-modelle.md
-        - file: dimensionsreduktion.ipynb
-        - file: lineare-regression.ipynb
-        - file: kernel-methoden.ipynb
-        - file: statistische-tests.md
+        - file: statistical-models.md
+        - file: dimensionality-reduction.ipynb
+        - file: linear-regression.ipynb
+        - file: kernel-methods.ipynb
+        - file: statistical-tests.md
         - file: model-selection.ipynb
         - file: expectation-maximization.ipynb
-    - file: folien.md
+    - file: slides.md
 site:
   options:
     logo: images/logo-wide.svg

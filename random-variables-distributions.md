@@ -28,7 +28,7 @@ An drei Stellen begegnet er uns trotzdem ganz konkret:
 
 - **Bei der Auswahl.** Wenn wir aus vorhandenen Daten eine Teilmenge ziehen — eine Stichprobe, ein Mini-Batch, eine Aufteilung in Trainings- und Testdaten —, dann ist der Zufall der unsere. Wir ziehen absichtlich zufällig, damit die Auswahl keine Struktur mitbringt, die wir hinterher für ein Ergebnis halten.
 - **Beim Sampling aus einem Modell.** Aus einer Modellverteilung zu ziehen, erzeugt synthetische Daten. Auch dieser Zufall ist unserer.
-- **Im Rechner gar nicht.** Beides läuft auf einem deterministischen Gerät, das nur *Pseudozufall* erzeugt: eine Zahlenfolge, die zufällig aussieht, aber vollständig durch ihren Startwert (den *Seed*) bestimmt ist. Das ist kein Mangel, sondern der Grund, warum Auswertungen reproduzierbar sind (siehe [Stochastik programmieren](stochastik-programmieren.ipynb)).
+- **Im Rechner gar nicht.** Beides läuft auf einem deterministischen Gerät, das nur *Pseudozufall* erzeugt: eine Zahlenfolge, die zufällig aussieht, aber vollständig durch ihren Startwert (den *Seed*) bestimmt ist. Das ist kein Mangel, sondern der Grund, warum Auswertungen reproduzierbar sind (siehe [Stochastik programmieren](programming-probability.ipynb)).
 
 Der Weg, den die Daten dabei nehmen, lässt sich in drei Bildern erzählen. Zuerst die Erhebung: Aus der Welt wird ein Ausschnitt gewählt, über den Rohdaten anfallen, und aus den Rohdaten werden durch Bereinigung die Daten, mit denen man arbeitet.
 
@@ -136,7 +136,7 @@ $$
 
 Das ist der Normalfall beim Rechnen mit induzierten Maßen: Man sucht das Urbild, zerlegt es in disjunkte Stücke und addiert.
 
-*(c)* Verkettet man mit $x \mapsto 2x$, so erhält man die Zufallsvariable $2X$ mit Werten in $\{2,4,6,8,10,12\}$, jeder mit Wahrscheinlichkeit $\frac16$. Mit Zufallsvariablen lässt sich also rechnen wie mit Zahlen — man darf sie verdoppeln, addieren, quadrieren —, und die Verteilung ändert sich dabei mit. Wie sich dabei Erwartungswert und Varianz verhalten, klärt das Kapitel [Erwartungswert und Varianz](erwartungswert.md) (Linearität des Erwartungswerts).
+*(c)* Verkettet man mit $x \mapsto 2x$, so erhält man die Zufallsvariable $2X$ mit Werten in $\{2,4,6,8,10,12\}$, jeder mit Wahrscheinlichkeit $\frac16$. Mit Zufallsvariablen lässt sich also rechnen wie mit Zahlen — man darf sie verdoppeln, addieren, quadrieren —, und die Verteilung ändert sich dabei mit. Wie sich dabei Erwartungswert und Varianz verhalten, klärt das Kapitel [Erwartungswert und Varianz](expectation-variance.md) (Linearität des Erwartungswerts).
 :::
 
 Wenn uns nur die Verteilung $P_X$ interessiert, können wir $\Omega$ ignorieren,
@@ -162,7 +162,7 @@ Ein anderer gebräuchlicher Name für die pmf ist *Zähldichte*.
 
 Die pmf der Gleichverteilung auf $\Omega$ ist $p(\omega) = \frac{1}{|\Omega|}$.
 
-Die pmf der Dirac-Verteilung mit Masse an einem festen $\xi \in \Omega$ (siehe [Formalismus der Stochastik](intro-stochastik.md)) ist
+Die pmf der Dirac-Verteilung mit Masse an einem festen $\xi \in \Omega$ (siehe [Formalismus der Stochastik](intro-probability.md)) ist
 
 $$
 p(\omega) = \begin{cases} 1 & \omega = \xi,\\ 0 & \text{sonst.} \end{cases}
@@ -224,10 +224,10 @@ Die Dirac-Verteilung mit Masse an $\xi \in \Omega$ entspricht $p \in \Delta_n$ m
 Geometrisch ist das ein Eckpunkt von $\Delta_n$ (davon gibt es $n$ Stück).
 :::
 
-Eine so durch $p \in \Delta_n$ gegebene Verteilung heißt auch *kategoriale Verteilung*; wir treffen sie im Kapitel [Wichtigste diskrete Verteilungen](wichtigste-diskrete-verteilungen.ipynb) wieder, wo wir auch ihren Erwartungswert und ihre Varianz ausrechnen. Ihr einfachster Fall hat einen eigenen Namen.
+Eine so durch $p \in \Delta_n$ gegebene Verteilung heißt auch *kategoriale Verteilung*; wir treffen sie im Kapitel [Wichtigste diskrete Verteilungen](important-discrete-distributions.ipynb) wieder, wo wir auch ihren Erwartungswert und ihre Varianz ausrechnen. Ihr einfachster Fall hat einen eigenen Namen.
 
 :::{admonition} Definition
-Der Fall $n = 2$ hat einen eigenen Namen. Auf $\Omega = \{0,1\}$ ist ein Wahrscheinlichkeitsvektor durch eine einzige Zahl festgelegt, denn aus $p_0 + p_1 = 1$ folgt $p_0 = 1 - p_1$. Schreibt man $\pi := p_1$, so heißt die zugehörige Verteilung die **Bernoulli-Verteilung zum Parameter $\pi$**, und man notiert $X \sim \operatorname{Ber}(\pi)$ für eine Zufallsvariable mit dieser Verteilung. (Im Kapitel [Wichtigste diskrete Verteilungen](wichtigste-diskrete-verteilungen.ipynb) und in der Literatur heißt dieser Parameter meist $p$; hier schreiben wir $\pi$, weil $p$ in diesem Abschnitt schon der Wahrscheinlichkeitsvektor ist.)
+Der Fall $n = 2$ hat einen eigenen Namen. Auf $\Omega = \{0,1\}$ ist ein Wahrscheinlichkeitsvektor durch eine einzige Zahl festgelegt, denn aus $p_0 + p_1 = 1$ folgt $p_0 = 1 - p_1$. Schreibt man $\pi := p_1$, so heißt die zugehörige Verteilung die **Bernoulli-Verteilung zum Parameter $\pi$**, und man notiert $X \sim \operatorname{Ber}(\pi)$ für eine Zufallsvariable mit dieser Verteilung. (Im Kapitel [Wichtigste diskrete Verteilungen](important-discrete-distributions.ipynb) und in der Literatur heißt dieser Parameter meist $p$; hier schreiben wir $\pi$, weil $p$ in diesem Abschnitt schon der Wahrscheinlichkeitsvektor ist.)
 :::
 
 :::{admonition} Beispiel
@@ -298,7 +298,7 @@ wenn wir davon ausgehen, dass immer die selbe Münze geworfen wurde.
 In der Sprache von oben: Jeder einzelne Wurf ist $\operatorname{Ber}(\pi)$-verteilt, und $\hat{\pi}$ ist eine Schätzung für den Parameter dieser Verteilung — wir suchen also einen Punkt auf der Strecke $\Delta_2$.
 :::
 
-Damit haben wir schon alle Rollen der Statistik besetzt, auch wenn wir die Wörter erst später brauchen: Die Münze, die man beliebig oft werfen könnte, ist die **Population**, die $N$ Würfe sind eine **Stichprobe** daraus, und $\hat{\pi}$ ist eine Aussage über die Population, die man aus der Stichprobe gewonnen hat. Genauso ist eine Tüte Süßigkeiten die Population und eine Handvoll daraus die Stichprobe, aus der man die Farbverteilung in der Tüte schätzt. Was man vor dem Hineingreifen schon weiß oder vermutet (die Münze sieht normal aus, die Tüte ist eine Standardmischung), heißt später **Prior**. Dass der Schluss von der Stichprobe auf die Population nie sicher ist und wie man seine Unsicherheit beziffert, ist Thema der Kapitel [Erwartungswert und Varianz](erwartungswert.md) (Tschebyscheff-Ungleichung) und [Statistische Tests](statistische-tests.md).
+Damit haben wir schon alle Rollen der Statistik besetzt, auch wenn wir die Wörter erst später brauchen: Die Münze, die man beliebig oft werfen könnte, ist die **Population**, die $N$ Würfe sind eine **Stichprobe** daraus, und $\hat{\pi}$ ist eine Aussage über die Population, die man aus der Stichprobe gewonnen hat. Genauso ist eine Tüte Süßigkeiten die Population und eine Handvoll daraus die Stichprobe, aus der man die Farbverteilung in der Tüte schätzt. Was man vor dem Hineingreifen schon weiß oder vermutet (die Münze sieht normal aus, die Tüte ist eine Standardmischung), heißt später **Prior**. Dass der Schluss von der Stichprobe auf die Population nie sicher ist und wie man seine Unsicherheit beziffert, ist Thema der Kapitel [Erwartungswert und Varianz](expectation-variance.md) (Tschebyscheff-Ungleichung) und [Statistische Tests](statistical-tests.md).
 
 Die Verteilung der Daten ist noch kein Modell — sie ist nur eine andere Schreibweise für die Daten selbst. Ein Modell entsteht erst, wenn eine Annahme dazukommt. Nehmen wir an, der Farbdatensatz von oben sei um einen fünften Eintrag gewachsen:
 
@@ -308,13 +308,13 @@ Die Verteilung der Daten ist noch kein Modell — sie ist nur eine andere Schrei
 
 Die Verteilung der Daten ist jetzt $\left(\frac{3}{5},\frac{1}{5},\frac{1}{5}\right)$. Wenn wir aber annehmen, dass die Farben gleich häufig sind bis auf eine, die doppelt so oft vorkommt, dann wählen wir als Modell die Verteilung $p = \left(\frac{1}{2},\frac{1}{4},\frac{1}{4}\right)$ — obwohl die beobachteten relativen Häufigkeiten andere sind. Eine so gewählte Verteilung heißt **Modellverteilung**. Sie hat in aller Regel weniger Parameter als der Datensatz Einträge, sie ist glatter, und sie macht auch Aussagen über Werte, die in den Daten gar nicht vorkommen.
 
-Ein Modell lässt sich in beide Richtungen benutzen. Aus Daten eine Modellverteilung zu bestimmen, ist das Schätzproblem, mit dem sich das Kapitel [Statistische Modelle und Schätzer](statistische-modelle.md) beschäftigt. Umgekehrt kann man aus einer Modellverteilung ziehen und erhält **synthetische Daten**: einen Datensatz, der aussieht wie ein echter, aber keiner ist. Synthetische Daten sind das Standardwerkzeug, um ein Auswertungsverfahren zu prüfen — denn hier kennt man die richtige Antwort und kann nachsehen, ob das Verfahren sie findet.
+Ein Modell lässt sich in beide Richtungen benutzen. Aus Daten eine Modellverteilung zu bestimmen, ist das Schätzproblem, mit dem sich das Kapitel [Statistische Modelle und Schätzer](statistical-models.md) beschäftigt. Umgekehrt kann man aus einer Modellverteilung ziehen und erhält **synthetische Daten**: einen Datensatz, der aussieht wie ein echter, aber keiner ist. Synthetische Daten sind das Standardwerkzeug, um ein Auswertungsverfahren zu prüfen — denn hier kennt man die richtige Antwort und kann nachsehen, ob das Verfahren sie findet.
 
 :::{admonition} Übung
-Ziehen Sie $1000$ synthetische Farbwerte zur Modellverteilung $p = \left(\frac{1}{2},\frac{1}{4},\frac{1}{4}\right)$ und bestimmen Sie die Verteilung der so erzeugten Daten. Wie weit weicht sie von $p$ ab, und wie ändert sich das bei nur $10$ gezogenen Werten? In der Standardbibliothek zieht `random.choices(werte, weights=..., k=1000)`, in Numpy `rng.choice(werte, size=1000, p=...)` (`random.choices` im Kapitel [Stochastik programmieren](stochastik-programmieren.ipynb), `rng.choice` im Kapitel [Numpy](numpy.ipynb), Abschnitt *Wahrscheinlichkeitsvektoren*).
+Ziehen Sie $1000$ synthetische Farbwerte zur Modellverteilung $p = \left(\frac{1}{2},\frac{1}{4},\frac{1}{4}\right)$ und bestimmen Sie die Verteilung der so erzeugten Daten. Wie weit weicht sie von $p$ ab, und wie ändert sich das bei nur $10$ gezogenen Werten? In der Standardbibliothek zieht `random.choices(werte, weights=..., k=1000)`, in Numpy `rng.choice(werte, size=1000, p=...)` (`random.choices` im Kapitel [Stochastik programmieren](programming-probability.ipynb), `rng.choice` im Kapitel [Numpy](numpy.ipynb), Abschnitt *Wahrscheinlichkeitsvektoren*).
 :::
 
-Damit liegen zwei Verteilungen auf demselben $\Omega$ vor: die der Daten und die des Modells. Die nächste Frage ist die nach der Güte des Modells — sehen die Daten so aus, als wären sie aus dem Modell gezogen worden? Auf Englisch fragt man *how likely is that?*, und die Zahl, die das beantwortet, heißt **Likelihood**: die Wahrscheinlichkeit, genau die beobachteten Daten zu sehen, wenn das Modell stimmt. Ein Modell, das diese Zahl möglichst groß macht, ist nach dem **Maximum-Likelihood-Prinzip** das beste; dieses Prinzip zieht sich durch den Rest des Kurses und bekommt im Kapitel [Statistische Modelle und Schätzer](statistische-modelle.md) einen eigenen Abschnitt. Es ist nicht der einzige Weg, den Unterschied zwischen zwei Verteilungen zu beziffern: Das Kapitel [Erwartungswert und Varianz](erwartungswert.md) misst den Abstand zwischen Daten und synthetischen Daten direkt im Datenraum, und das Kapitel [Relative Entropie](relative-entropie.md) misst ihn zwischen den Verteilungen selbst.
+Damit liegen zwei Verteilungen auf demselben $\Omega$ vor: die der Daten und die des Modells. Die nächste Frage ist die nach der Güte des Modells — sehen die Daten so aus, als wären sie aus dem Modell gezogen worden? Auf Englisch fragt man *how likely is that?*, und die Zahl, die das beantwortet, heißt **Likelihood**: die Wahrscheinlichkeit, genau die beobachteten Daten zu sehen, wenn das Modell stimmt. Ein Modell, das diese Zahl möglichst groß macht, ist nach dem **Maximum-Likelihood-Prinzip** das beste; dieses Prinzip zieht sich durch den Rest des Kurses und bekommt im Kapitel [Statistische Modelle und Schätzer](statistical-models.md) einen eigenen Abschnitt. Es ist nicht der einzige Weg, den Unterschied zwischen zwei Verteilungen zu beziffern: Das Kapitel [Erwartungswert und Varianz](expectation-variance.md) misst den Abstand zwischen Daten und synthetischen Daten direkt im Datenraum, und das Kapitel [Relative Entropie](relative-entropy.md) misst ihn zwischen den Verteilungen selbst.
 
 Damit ist der Weg abgesteckt, den der Rest des Kurses geht, und der sich auch in {numref}`ds-prozess-modell` wiederfindet: einen Ausschnitt der Welt wählen, Daten erheben, sie putzen ([Daten putzen](data-cleaning.ipynb)) und in brauchbare Merkmale übersetzen — man sagt **Features** —, daraus Modelle bilden und die Modelle an den Daten messen. Alles Weitere ist die Ausarbeitung dieser fünf Schritte. Das nächste Kapitel beginnt mit dem letzten dieser Schritte: dem Vergleich von Daten und Modell in einer einzigen Zahl.
 

@@ -77,7 +77,7 @@ $$
 die *Varianz* von $X$, sofern diese Integrale existieren. Für $D = \mathbb{R}$ ist etwa $\mathbb{E}(X) = \int_{-\infty}^{\infty} x f(x) dx$.
 :::
 
-Das ist das stetige Gegenstück zur Summe über die Wahrscheinlichkeitsmassefunktion im Kapitel [Erwartungswert und Varianz](erwartungswert.md): An die Stelle der pmf tritt die Dichte, an die Stelle der Summe das Integral. Dass wir auch andere Funktionen von $X$ auf diese Weise integrieren dürfen, sagt der folgende Satz.
+Das ist das stetige Gegenstück zur Summe über die Wahrscheinlichkeitsmassefunktion im Kapitel [Erwartungswert und Varianz](expectation-variance.md): An die Stelle der pmf tritt die Dichte, an die Stelle der Summe das Integral. Dass wir auch andere Funktionen von $X$ auf diese Weise integrieren dürfen, sagt der folgende Satz.
 
 :::{admonition} Satz (Transformationsformel)
 Sei $X$ eine stetige Zufallsvariable mit Dichte $f \colon D \to [0,\infty)$ und $g \colon D \to \mathbb{R}$ eine (messbare) Funktion. Dann ist
@@ -128,7 +128,7 @@ $$
 :::{admonition} Bemerkung
 **Nullmengen.** Für $X \sim U([a,b])$ und $a \leq c < d \leq b$ ist $P(c \leq X \leq d) = \int_c^d \frac{dx}{b-a} = \frac{d-c}{b-a}$, und dasselbe Integral ergibt sich für $P(c < X < d)$, $P(c \leq X < d)$ und $P(c < X \leq d)$: Ob die Intervallgrenzen dazugehören oder nicht, ändert am Integral nichts. Insbesondere ist $P(X = c) = \int_c^c f(x) dx = 0$ für jeden einzelnen Punkt $c$, obwohl $f(c) = \frac{1}{b-a} \neq 0$ ist.
 
-Das gilt für jede Verteilung mit Dichte: Einzelne Punkte haben Wahrscheinlichkeit $0$, wegen der endlichen Additivität also auch jede endliche Menge, und wegen der $\sigma$-Additivität aus dem Kapitel [Herleitung des mathematischen Formalismus der Stochastik](intro-stochastik.md) auch jede abzählbare Menge $A = \{a_1, a_2, \dots\}$, denn $P(X \in A) = \sum_{i} P(X = a_i) = 0$. Mengen mit Wahrscheinlichkeit $0$ nennt man *Nullmengen*. Ändert man eine Dichte $f$ auf einer Nullmenge ab (etwa an endlich vielen Stellen), so ändert sich kein einziges Integral $\int_A f(x) dx$, also auch nicht das zugehörige Wahrscheinlichkeitsmaß.
+Das gilt für jede Verteilung mit Dichte: Einzelne Punkte haben Wahrscheinlichkeit $0$, wegen der endlichen Additivität also auch jede endliche Menge, und wegen der $\sigma$-Additivität aus dem Kapitel [Herleitung des mathematischen Formalismus der Stochastik](intro-probability.md) auch jede abzählbare Menge $A = \{a_1, a_2, \dots\}$, denn $P(X \in A) = \sum_{i} P(X = a_i) = 0$. Mengen mit Wahrscheinlichkeit $0$ nennt man *Nullmengen*. Ändert man eine Dichte $f$ auf einer Nullmenge ab (etwa an endlich vielen Stellen), so ändert sich kein einziges Integral $\int_A f(x) dx$, also auch nicht das zugehörige Wahrscheinlichkeitsmaß.
 :::
 
 :::{admonition} Beispiel
@@ -159,7 +159,7 @@ $$
 \mathbb{E}(X) = \int_5^8 x f(x) dx = \frac{4}{7} \cdot \frac{11}{2} + \frac{2}{7} \cdot \frac{13}{2} + \frac{1}{7} \cdot \frac{15}{2} = \frac{85}{14} = 6 + \frac{1}{14},
 $$
 
-denn auf jedem Teilintervall $[k, k+1)$ ist $\int_k^{k+1} x\, dx = k + \frac{1}{2}$ (dasselbe ergibt $\mathbb{E}(Y) + \mathbb{E}(Z) = \frac{39}{7} + \frac{1}{2}$). Eine solche Verteilung, bei der zuerst eine diskrete Wahl getroffen wird und dann innerhalb der gewählten Klasse eine stetige, nennt man *Mischverteilung*; ein weiteres Beispiel ist die kontaminierte Normalverteilung im Kapitel [Wichtigste stetige Verteilungen](wichtigste-stetige-verteilungen.ipynb), wo auch genau diese Verteilung auf $[5,8)$ simuliert wird.
+denn auf jedem Teilintervall $[k, k+1)$ ist $\int_k^{k+1} x\, dx = k + \frac{1}{2}$ (dasselbe ergibt $\mathbb{E}(Y) + \mathbb{E}(Z) = \frac{39}{7} + \frac{1}{2}$). Eine solche Verteilung, bei der zuerst eine diskrete Wahl getroffen wird und dann innerhalb der gewählten Klasse eine stetige, nennt man *Mischverteilung*; ein weiteres Beispiel ist die kontaminierte Normalverteilung im Kapitel [Wichtigste stetige Verteilungen](important-continuous-distributions.ipynb), wo auch genau diese Verteilung auf $[5,8)$ simuliert wird.
 :::
 
 :::{admonition} Definition
@@ -193,4 +193,4 @@ $$
 und mit Dichte ist das gerade $\int_a^b f(t)dt$.
 :::
 
-Die cdf steigt also genau dort steil an, wo die Dichte groß ist. Im Kapitel [Wichtigste stetige Verteilungen](wichtigste-stetige-verteilungen.ipynb) werden pdf und cdf jeweils gemeinsam geplottet; beobachten Sie das dort.
+Die cdf steigt also genau dort steil an, wo die Dichte groß ist. Im Kapitel [Wichtigste stetige Verteilungen](important-continuous-distributions.ipynb) werden pdf und cdf jeweils gemeinsam geplottet; beobachten Sie das dort.

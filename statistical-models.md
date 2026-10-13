@@ -41,7 +41,7 @@ Die beiden Formeln liefern also merklich verschiedene Zahlen — gut zwei Prozen
 In diesen Formeln muss man nun etwas aufpassen, wenn man das praktisch implementieren will - denn was ist $\mu$?
 In der Anwendung kenne ich $\mu(X)$ nicht, muss also $\mu(x)$ verwenden. Dann aber stellt sich heraus, dass die Information in $\{x_i-\mu(x)\}_{i=1}^{n-1}$ genügt, um $x_n - \mu(x)$ zu berechnen, denn nach Definition von $\mu(x)$ ist $x_n - \mu(x) = \sum_{i=1}^{n-1} (\mu(x) - x_i)$. Gewissermaßen gibt es also, wenn man $\mu(x)$ anstelle von $\mu(X)$ verwendet, einen Freiheitsgrad weniger als $n$. Wir werden gleich sehen, wie sich das auf die Eigenschaften dieser beiden Schätzer für $\sigma(X)$ auswirkt.
 
-Wenn man statistische Modelle formal definiert hat, kann man auch sehr gut über Konfidenzintervalle und Hypothesentests sprechen, was das Kapitel [Statistische Tests](statistische-tests.md) erledigt. Konfidenzintervalle erweitern des Ansatz des bloßen Schätzens einer Statistik um die Information, welchen Fehlerbereich man dieser Schätzung beimisst. Hypothesentests erweitern den Ansatz darum, schließlich zu Entscheidungen zu kommen. Bei der Diskussion um Hypothesentests ist es unvermeidlich, auch über den problematischen Begriff der **Signifikanz** zu sprechen. Aber eins nach dem anderen!
+Wenn man statistische Modelle formal definiert hat, kann man auch sehr gut über Konfidenzintervalle und Hypothesentests sprechen, was das Kapitel [Statistische Tests](statistical-tests.md) erledigt. Konfidenzintervalle erweitern des Ansatz des bloßen Schätzens einer Statistik um die Information, welchen Fehlerbereich man dieser Schätzung beimisst. Hypothesentests erweitern den Ansatz darum, schließlich zu Entscheidungen zu kommen. Bei der Diskussion um Hypothesentests ist es unvermeidlich, auch über den problematischen Begriff der **Signifikanz** zu sprechen. Aber eins nach dem anderen!
 
 Als Landkarte für die folgenden Definitionen — links, worüber man redet, rechts, was es formal wird:
 
@@ -150,7 +150,7 @@ Ein anderer möglicher Schätzer ist das arithmetische Mittel $\texttt{mean} \co
 :::
 
 :::{admonition} Beispiel
-In den meisten statistischen Modellen können wir die Abbildung $\sigma \colon \Theta \to \mathbb{R}_{\geq 0}$ betrachten, die einem Parameter $\theta$ die Standardabweichung $\sigma(P_\theta)$ der Verteilung $P_\theta$ zuordnet (es geht nur dann nicht, wenn das zweite Moment nicht existiert, also $\mathbb{V}(P_\theta)=\infty$ vorkommt). Dafür kennen wir die beiden Schätzer $\sigma,\ \sigma^\ast \colon \mathcal{X} \to \mathbb{R}_{\geq 0}$. Die beiden hängen über $\sigma^\ast(x) = \sqrt{\frac{n}{n-1}}\,\sigma(x)$ zusammen, gleichbedeutend $\sigma^\ast(x)^2 = \frac{n}{n-1}\,\sigma(x)^2$; dieser Faktor heißt **Bessel-Korrektur** (vgl. [Deskriptive Statistik](deskriptive-statistik.md)). Welcher der beiden Schätzer der bessere ist, klärt der nächste Abschnitt.
+In den meisten statistischen Modellen können wir die Abbildung $\sigma \colon \Theta \to \mathbb{R}_{\geq 0}$ betrachten, die einem Parameter $\theta$ die Standardabweichung $\sigma(P_\theta)$ der Verteilung $P_\theta$ zuordnet (es geht nur dann nicht, wenn das zweite Moment nicht existiert, also $\mathbb{V}(P_\theta)=\infty$ vorkommt). Dafür kennen wir die beiden Schätzer $\sigma,\ \sigma^\ast \colon \mathcal{X} \to \mathbb{R}_{\geq 0}$. Die beiden hängen über $\sigma^\ast(x) = \sqrt{\frac{n}{n-1}}\,\sigma(x)$ zusammen, gleichbedeutend $\sigma^\ast(x)^2 = \frac{n}{n-1}\,\sigma(x)^2$; dieser Faktor heißt **Bessel-Korrektur** (vgl. [Deskriptive Statistik](descriptive-statistics.md)). Welcher der beiden Schätzer der bessere ist, klärt der nächste Abschnitt.
 :::
 
 ### Erwartungstreue
@@ -207,7 +207,7 @@ $$
 
 wobei $I(\theta)$ die *Fisher-Information* ist. Ein erwartungstreuer Schätzer, der diese Schranke annimmt, ist also gleichmäßig bester Schätzer. Für Verteilungen aus einer sogenannten *Exponentialfamilie* (in gewissem Sinne eine gemeinsame Verallgemeinerung der Normalverteilung, Binomialverteilung, Gamma-Verteilung, etc.) lassen sich die gleichmäßig besten Schätzer damit direkt beschreiben.
 
-Für viele praktisch wichtige Modelle gibt es aber gar keine geschlossene Formel für einen guten Schätzer — die [kontaminierte Normalverteilung](wichtigste-stetige-verteilungen.ipynb) ist das Beispiel, das uns im Kurs noch begegnet. Dann braucht man ein Prinzip, das statt einer Formel ein Optimierungsproblem liefert, dessen Lösung sich numerisch annähern lässt. Genau das leistet das Maximum-Likelihood-Prinzip, und das zugehörige Iterationsverfahren ist der [EM-Algorithmus](expectation-maximization.ipynb).
+Für viele praktisch wichtige Modelle gibt es aber gar keine geschlossene Formel für einen guten Schätzer — die [kontaminierte Normalverteilung](important-continuous-distributions.ipynb) ist das Beispiel, das uns im Kurs noch begegnet. Dann braucht man ein Prinzip, das statt einer Formel ein Optimierungsproblem liefert, dessen Lösung sich numerisch annähern lässt. Genau das leistet das Maximum-Likelihood-Prinzip, und das zugehörige Iterationsverfahren ist der [EM-Algorithmus](expectation-maximization.ipynb).
 
 
 ### Maximum Likelihood
@@ -216,7 +216,7 @@ Für viele praktisch wichtige Modelle gibt es aber gar keine geschlossene Formel
 Gegeben ein statistisches Standardmodell $(\mathcal{X}, P_\theta : \theta \in \Theta)$ mit Dichte $f_\theta$ für $P_\theta$ heißt $\rho \colon \mathcal{X} \times \Theta \to \mathbb{R}_{\geq 0}$ mit $\rho(x, \theta) := L_x(\theta) := f_\theta(x)$ die **Likelihood-Funktion** und für festes $x$ heißt $L_x =\rho(x, \cdot) \colon \Theta \to \mathbb{R}_{\geq 0}$ die **Likelihood**-Funktion zum Beobachtungswert $x$.
 :::
 
-Wenn wir also Daten $x$ gegeben haben, drückt die Likelihood-Funktion zu $x$ für jeden Parameter $\theta$ aus, wie die Wahrscheinlichkeitsdichte an der Stelle $x$ von $P_\theta$ ausfällt. Ist die Dichte groß, so ist $x$ eine Beobachtung, die unter dem Parameter $\theta$ wahrscheinlich ist. Ist die Dichte klein, so ist $x$ unter $\theta$ unwahrscheinlich. Zur Erinnerung: Wenn wir die Hypothese $H = ( \theta$ ist der wahre Parameter $)$ haben, und $D=x$ (für Daten) schreiben, so ist $P(D|H) = L_x(\theta) = f_\theta(x)$ die Likelihood (vgl. den Satz von Bayes, Fassung 3, im Kapitel [Kovarianz und Abhängigkeit](kovarianz.md)).
+Wenn wir also Daten $x$ gegeben haben, drückt die Likelihood-Funktion zu $x$ für jeden Parameter $\theta$ aus, wie die Wahrscheinlichkeitsdichte an der Stelle $x$ von $P_\theta$ ausfällt. Ist die Dichte groß, so ist $x$ eine Beobachtung, die unter dem Parameter $\theta$ wahrscheinlich ist. Ist die Dichte klein, so ist $x$ unter $\theta$ unwahrscheinlich. Zur Erinnerung: Wenn wir die Hypothese $H = ( \theta$ ist der wahre Parameter $)$ haben, und $D=x$ (für Daten) schreiben, so ist $P(D|H) = L_x(\theta) = f_\theta(x)$ die Likelihood (vgl. den Satz von Bayes, Fassung 3, im Kapitel [Kovarianz und Abhängigkeit](covariance.md)).
 
 :::{admonition} Definition
 Ein Schätzer $T \colon \mathcal{X} \to \Theta$ für den Parameter $\theta$ heißt **Maximum-Likelihood-Schätzer** (maximum likelihood estimator, MLE), wenn für alle $x \in \mathcal{X}$ gilt:
@@ -233,7 +233,7 @@ $$
 :::
 
 Ein erstes Beispiel dafür haben wir bereits gerechnet, ohne den Namen zu benutzen: Im Kapitel
-[Wichtigste diskrete Verteilungen](wichtigste-diskrete-verteilungen.ipynb) haben wir zu $k$ Erfolgen
+[Wichtigste diskrete Verteilungen](important-discrete-distributions.ipynb) haben wir zu $k$ Erfolgen
 in $n$ Versuchen dasjenige $p$ bestimmt, unter dem diese Beobachtung am wahrscheinlichsten ist, und
 $\hat p = \frac{k}{n}$ erhalten. In der Sprache dieses Kapitels ist das der Maximum-Likelihood-Schätzer
 im Binomialmodell $\mathcal{X} = \{0,\dots,n\}$, $\Theta = [0,1]$, $P_p = \operatorname{Bin}(n,p)$.
@@ -294,7 +294,7 @@ Wenn $\theta_0$ der 'wahre' Parameter für $X$ ist (mit dem $x$ gesampelt wurde)
 :::
 
 :::{admonition} Beispiel
-**Anwendung: Server-Logfiles.** Aus den Zeitstempeln einer Web-Anwendung berechnen wir die Abstände zwischen zwei Aufrufen, also Wartezeiten $x_1,\dots,x_n$. Um zusammen mit der mittleren Laufzeit eines Aufrufs die zu erwartende Last abzuschätzen, modellieren wir sie als $\operatorname{Exp}(\lambda)$-verteilt und schätzen $\lambda$ wie im Beispiel oben: $\hat\lambda = 1/\texttt{mean}(x)$. Wir rechnen also mit einer mittleren Wartezeit von $\texttt{mean}(x)$ zwischen zwei Aufrufen, und für die Anzahl der Aufrufe je Zeiteinheit mit der Poissonverteilung zum selben $\lambda$ (Kapitel [Wichtigste diskrete Verteilungen](wichtigste-diskrete-verteilungen.ipynb)).
+**Anwendung: Server-Logfiles.** Aus den Zeitstempeln einer Web-Anwendung berechnen wir die Abstände zwischen zwei Aufrufen, also Wartezeiten $x_1,\dots,x_n$. Um zusammen mit der mittleren Laufzeit eines Aufrufs die zu erwartende Last abzuschätzen, modellieren wir sie als $\operatorname{Exp}(\lambda)$-verteilt und schätzen $\lambda$ wie im Beispiel oben: $\hat\lambda = 1/\texttt{mean}(x)$. Wir rechnen also mit einer mittleren Wartezeit von $\texttt{mean}(x)$ zwischen zwei Aufrufen, und für die Anzahl der Aufrufe je Zeiteinheit mit der Poissonverteilung zum selben $\lambda$ (Kapitel [Wichtigste diskrete Verteilungen](important-discrete-distributions.ipynb)).
 :::
 
 :::{admonition} Beispiel

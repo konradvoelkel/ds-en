@@ -65,7 +65,7 @@ Bevor wir Tests definieren, halten wir fest, was wir eigentlich wollen. Alle Ken
 
 Für Schritt 2 gibt es zwei Wege.
 
-**Der Standardfehler.** Nach dem [zentralen Grenzwertsatz](normalverteilung.ipynb) ist das Mittel einer Stichprobe der Größe $n$ näherungsweise normalverteilt mit Standardabweichung $\sigma/\sqrt{n}$, dem *Standardfehler*. In $95\,\%$ der Stichproben liegt der Populationsmittelwert dann im Intervall
+**Der Standardfehler.** Nach dem [zentralen Grenzwertsatz](normal-distribution.ipynb) ist das Mittel einer Stichprobe der Größe $n$ näherungsweise normalverteilt mit Standardabweichung $\sigma/\sqrt{n}$, dem *Standardfehler*. In $95\,\%$ der Stichproben liegt der Populationsmittelwert dann im Intervall
 
 $$
 \texttt{mean}(x) \pm 1{,}96 \cdot \dfrac{\sigma}{\sqrt{n}},
@@ -73,7 +73,7 @@ $$
 
 wobei man $\sigma$ durch die Stichprobenstandardabweichung ersetzt. Für einen Anteil $\hat p$ ist $\sigma = \sqrt{\hat p(1-\hat p)}$. Beispiel Münzwurf: Bei $45$ Erfolgen in $100$ Würfen ist $\hat p = 0{,}45$ und der Standardfehler $\sqrt{0{,}45 \cdot 0{,}55/100} \approx 0{,}05$, das Intervall also etwa $[0{,}35,\ 0{,}55]$. Die $\frac12$ liegt darin, die Münze könnte fair sein. Um das zu verwerfen, müsste das Intervall enger werden, und es schrumpft nur mit $\sqrt{n}$: Für ein Intervall der halben Breite braucht man die vierfache Stichprobe. (Mit der gröberen Tschebyscheff-Ungleichung statt der Normalapproximation kommt man auf ein Intervall von $\pm 0{,}22$ und eine nötige Stichprobe von über $2000$ Würfen; die Rechnung steht im Ausblick unten.)
 
-**Der Bootstrap.** Für Kennzahlen, für die es keine Formel gibt oder man sie nicht kennt, tut man so, als wäre die Stichprobe die Population: Man zieht aus ihr *mit Zurücklegen* eine neue Stichprobe derselben Größe, berechnet die Kennzahl, und wiederholt das viele tausend Mal. Die Streuung dieser Bootstrap-Kennzahlen ist eine Schätzung für die Streuung der Kennzahl über echte Stichproben, und das $2{,}5$- und das $97{,}5$-Perzentil geben ein $95\,\%$-Intervall. Mit den Arrays `survived` und `sex` aus dem Kapitel [Titanic EDA](explorative-analyse-mit-numpy.ipynb):
+**Der Bootstrap.** Für Kennzahlen, für die es keine Formel gibt oder man sie nicht kennt, tut man so, als wäre die Stichprobe die Population: Man zieht aus ihr *mit Zurücklegen* eine neue Stichprobe derselben Größe, berechnet die Kennzahl, und wiederholt das viele tausend Mal. Die Streuung dieser Bootstrap-Kennzahlen ist eine Schätzung für die Streuung der Kennzahl über echte Stichproben, und das $2{,}5$- und das $97{,}5$-Perzentil geben ein $95\,\%$-Intervall. Mit den Arrays `survived` und `sex` aus dem Kapitel [Titanic EDA](titanic-eda-numpy.ipynb):
 
 ```python
 rng = np.random.default_rng(0)
@@ -121,7 +121,7 @@ Natürlich ist das kein besonders nützlicher Konfidenzbereich, stellt aber klar
 
 :::{admonition} Beispiel
 **Münzwurf:**
-Der $n$-fach wiederholte Münzwurf einer unfairen Münze mit Erfolgswahrscheinlichkeit $p$ lässt sich modellieren mit dem **Binomialmodell** (siehe [Wichtigste diskrete Verteilungen](wichtigste-diskrete-verteilungen.ipynb)): $\mathcal{X} = \{0,\dots,n\}$ ist die Anzahl der Erfolge, der unbekannte Parameter ist $\theta = p \in \Theta = [0,1]$ und $P_\theta = \operatorname{Bin}(n,\theta)$ (und $\tau = id$, also schätzen wir den Parameter $\theta$).
+Der $n$-fach wiederholte Münzwurf einer unfairen Münze mit Erfolgswahrscheinlichkeit $p$ lässt sich modellieren mit dem **Binomialmodell** (siehe [Wichtigste diskrete Verteilungen](important-discrete-distributions.ipynb)): $\mathcal{X} = \{0,\dots,n\}$ ist die Anzahl der Erfolge, der unbekannte Parameter ist $\theta = p \in \Theta = [0,1]$ und $P_\theta = \operatorname{Bin}(n,\theta)$ (und $\tau = id$, also schätzen wir den Parameter $\theta$).
 
 Den Maximum-Likelihood-Schätzer für $\theta$ haben wir dort schon berechnet: $\hat\theta = \frac{x}{n}$, der Anteil der Erfolge. Ganz konkret: werfen wir die Münze $100$ mal und es kommt $45$ mal Zahl, so schätzen wir $\theta$ als $\frac{45}{100}$ (also insbesondere, dass die Münze wirklich unfair ist).
 :::
@@ -380,7 +380,7 @@ Die Take-Home-Message ist: für einfache Hypothesen gibt es immer beste Tests, u
 
 ## Der z-Test
 
-Wenn man Daten hat, deren einzelne Datenpunkte unabhängig (und identisch verteilt) sind (also etwa als Stichprobe einer Zufallsvariable), die einer Normalverteilung folgen, und man die Standardabweichung $\sigma$ kennt, dann kann man einen **z-Test** (auch **Gauß-Test**) machen. Das ist die 'einfachere' Variante vom t-Test (s.u.). Kennt man $\sigma$ nicht und setzt die Stichprobenstandardabweichung ein, ist das bei großem $n$ noch vertretbar, weil die t-Verteilung dann praktisch eine Normalverteilung ist; die verbreitete Faustregel „$n > 30$“ ist dafür allerdings so grob, wie im Kapitel [Normalverteilung](normalverteilung.ipynb) unter *Der $N \ge 30$-Mythos* beschrieben.
+Wenn man Daten hat, deren einzelne Datenpunkte unabhängig (und identisch verteilt) sind (also etwa als Stichprobe einer Zufallsvariable), die einer Normalverteilung folgen, und man die Standardabweichung $\sigma$ kennt, dann kann man einen **z-Test** (auch **Gauß-Test**) machen. Das ist die 'einfachere' Variante vom t-Test (s.u.). Kennt man $\sigma$ nicht und setzt die Stichprobenstandardabweichung ein, ist das bei großem $n$ noch vertretbar, weil die t-Verteilung dann praktisch eine Normalverteilung ist; die verbreitete Faustregel „$n > 30$“ ist dafür allerdings so grob, wie im Kapitel [Normalverteilung](normal-distribution.ipynb) unter *Der $N \ge 30$-Mythos* beschrieben.
 
 Bei diesem Test möchte man herausfinden, ob ein Sample $x$ einer Normalverteilung mit Mittelwert $\mu_0$ folgt. Für $\mu_0 = \texttt{mean}(x)$ (den Maximum-Likelihood-Schätzer) ist nichts zu testen - wir schlussfolgern sofort, dass $\mu = \mu_0$ plausibel ist. Was aber ist mit Werten $\neq \texttt{mean}(x)$? Angenommen, unsere Stichprobe folgt *beinahe* einer Standardnormalverteilung - dann wäre es sinnvoll, einen Test zu machen, ob die Hypothese einer Standardnormalverteilung angenommen oder verworfen werden soll, auch wenn der Maximum-Likelihood-Schätzer etwas anderes als $0$ als $\mu$ schätzt.
 

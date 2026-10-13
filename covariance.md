@@ -70,7 +70,7 @@ wobei $p_{Y|X}(\cdot \mid x)$ für jedes feste $x$ mit $p_X(x) > 0$ die pmf der 
 :::{admonition} Proposition
 Seien $X, Y \colon \Omega \to \mathbb{R}$ diskrete Zufallsvariablen. Dann sind äquivalent:
 
-1. $X$ und $Y$ sind unabhängig (im Sinne des Kapitels [Erwartungswert und Varianz](erwartungswert.md), Abschnitt *Unabhängigkeit*);
+1. $X$ und $Y$ sind unabhängig (im Sinne des Kapitels [Erwartungswert und Varianz](expectation-variance.md), Abschnitt *Unabhängigkeit*);
 2. die gemeinsame pmf faktorisiert: $p_{X,Y}(x,y) = p_X(x)\, p_Y(y)$ für alle $x,y$;
 3. bedingen ändert nichts: $p_{Y|X}(y \mid x) = p_Y(y)$ für alle $x$ mit $p_X(x) > 0$ und alle $y$.
 :::
@@ -79,7 +79,7 @@ Seien $X, Y \colon \Omega \to \mathbb{R}$ diskrete Zufallsvariablen. Dann sind �
 Die Unabhängigkeit von $X$ und $Y$ bedeutet $P(X = x, Y = y) = P(X = x)\,P(Y = y)$ für alle $x,y$, und das ist wörtlich Aussage 2. Für die Äquivalenz von 2 und 3 setzen wir die Definition $p_{Y|X}(y \mid x) = \frac{p_{X,Y}(x,y)}{p_X(x)}$ ein: Gilt 2, so kürzt sich $p_X(x) > 0$ heraus und es bleibt $p_{Y|X}(y\mid x) = p_Y(y)$. Gilt umgekehrt 3, so ist $p_{X,Y}(x,y) = p_{Y|X}(y\mid x)\,p_X(x) = p_Y(y)\,p_X(x)$ für alle $x$ mit $p_X(x) > 0$; für $x$ mit $p_X(x) = 0$ sind beide Seiten $0$.
 :::
 
-Aussage 3 ist die Verallgemeinerung von $P(A \mid B) = P(A)$ aus dem Kapitel [Erwartungswert und Varianz](erwartungswert.md): Wissen über $X$ verschiebt die Verteilung von $Y$ nicht. Im stetigen Fall gilt dieselbe Äquivalenz mit Dichten, allerdings nur "fast überall" — Dichten sind ja nur bis auf Nullmengen bestimmt (siehe [Stetige Verteilungen](stetige-verteilungen.md)).
+Aussage 3 ist die Verallgemeinerung von $P(A \mid B) = P(A)$ aus dem Kapitel [Erwartungswert und Varianz](expectation-variance.md): Wissen über $X$ verschiebt die Verteilung von $Y$ nicht. Im stetigen Fall gilt dieselbe Äquivalenz mit Dichten, allerdings nur "fast überall" — Dichten sind ja nur bis auf Nullmengen bestimmt (siehe [Stetige Verteilungen](continuous-distributions.md)).
 
 :::{admonition} Satz
 **von Bayes:**
@@ -91,7 +91,7 @@ $$
 :::
 
 :::{admonition} Beispiel
-**Warum die Basisrate zählt.** Ein Test erkennt eine seltene Krankheit zuverlässig: $99\,\%$ der Kranken werden erkannt, und nur $1\,\%$ der Gesunden bekommen fälschlich ein positives Ergebnis. Trotzdem ist bei einem positiven Test die Wahrscheinlichkeit, tatsächlich krank zu sein, klein. Der Grund ist die *Basisrate* $P(A)$: Ist nur einer von tausend krank, so kommen auf einen richtig erkannten Kranken etwa zehn fälschlich positive Gesunde — die kleine Fehlerrate von $1\,\%$ wirkt auf eine tausendmal größere Gruppe. In der Sprache der Konfusionsmatrix aus dem Kapitel [Titanic EDA](explorative-analyse-mit-numpy.ipynb): Der Test ist ein Klassifikator, die $99\,\%$ sind sein Recall (die *Sensitivität*), das $1\,\%$ seine Falsch-Positiv-Rate, und gesucht ist seine Precision, der Anteil der Kranken unter den positiv Getesteten. Mit $A$ = „krank“ und $B$ = „Test positiv“ rechnet der Satz von Bayes genau diese Gewichtung aus:
+**Warum die Basisrate zählt.** Ein Test erkennt eine seltene Krankheit zuverlässig: $99\,\%$ der Kranken werden erkannt, und nur $1\,\%$ der Gesunden bekommen fälschlich ein positives Ergebnis. Trotzdem ist bei einem positiven Test die Wahrscheinlichkeit, tatsächlich krank zu sein, klein. Der Grund ist die *Basisrate* $P(A)$: Ist nur einer von tausend krank, so kommen auf einen richtig erkannten Kranken etwa zehn fälschlich positive Gesunde — die kleine Fehlerrate von $1\,\%$ wirkt auf eine tausendmal größere Gruppe. In der Sprache der Konfusionsmatrix aus dem Kapitel [Titanic EDA](titanic-eda-numpy.ipynb): Der Test ist ein Klassifikator, die $99\,\%$ sind sein Recall (die *Sensitivität*), das $1\,\%$ seine Falsch-Positiv-Rate, und gesucht ist seine Precision, der Anteil der Kranken unter den positiv Getesteten. Mit $A$ = „krank“ und $B$ = „Test positiv“ rechnet der Satz von Bayes genau diese Gewichtung aus:
 
 $$
 P(A|B) = \dfrac{0{,}99 \cdot 0{,}001}{0{,}99 \cdot 0{,}001 + 0{,}01 \cdot 0{,}999} = \dfrac{0{,}00099}{0{,}00099 + 0{,}00999} \approx 0{,}09.
@@ -156,7 +156,7 @@ $$
 P(D \mid H) = \prod_{i=1}^n p_{\mu,\sigma}(x_i) = \prod_{i=1}^n \dfrac{1}{\sqrt{2\pi}\,\sigma} \exp\left( -\dfrac{(x_i - \mu)^2}{2\sigma^2} \right) \quad \text{mit } \mu = 0,\ \sigma = 2.
 $$
 
-Drei Rollen sind dabei sauber zu trennen: die *datenerzeugende Verteilung*, die es in der Welt gibt und die wir nicht kennen; die *beobachteten Daten* $D$, die wir haben; und die *Modellverteilung*, die wir zur Hypothese erklären. Die Likelihood vergleicht die zweite mit der dritten. Lässt man $\mu$ und $\sigma$ variieren, statt sie festzuhalten, wird aus der Zahl eine Funktion $L(\mu,\sigma) := \prod_{i=1}^n p_{\mu,\sigma}(x_i)$, und die Parameter zu suchen, die sie maximieren, ist das Maximum-Likelihood-Prinzip — siehe [Statistische Modelle und Schätzer](statistische-modelle.md), wo aus dem Produkt durch Logarithmieren eine Summe wird.
+Drei Rollen sind dabei sauber zu trennen: die *datenerzeugende Verteilung*, die es in der Welt gibt und die wir nicht kennen; die *beobachteten Daten* $D$, die wir haben; und die *Modellverteilung*, die wir zur Hypothese erklären. Die Likelihood vergleicht die zweite mit der dritten. Lässt man $\mu$ und $\sigma$ variieren, statt sie festzuhalten, wird aus der Zahl eine Funktion $L(\mu,\sigma) := \prod_{i=1}^n p_{\mu,\sigma}(x_i)$, und die Parameter zu suchen, die sie maximieren, ist das Maximum-Likelihood-Prinzip — siehe [Statistische Modelle und Schätzer](statistical-models.md), wo aus dem Produkt durch Logarithmieren eine Summe wird.
 :::
 
 :::{admonition} Satz
@@ -174,12 +174,12 @@ $$
 P(H|D) = \dfrac{0{,}99 \cdot 0{,}09}{0{,}99 \cdot 0{,}09 + 0{,}01 \cdot 0{,}91} \approx 0{,}91.
 $$
 
-Zwei positive Tests hintereinander machen aus einem Promille erst neun Prozent und dann einundneunzig. Jede neue Beobachtung schiebt den Posterior weiter, und das Ergebnis hängt vom ersten Prior ab: Wer mit $P(H) = 0{,}001$ startet, braucht zwei Tests, wer mit $0{,}5$ startet (etwa, weil schon Symptome vorliegen), ist nach einem Test bei $0{,}99$. Diesen Prozess nennt man *Bayessches Updaten*; das Kapitel [Statistische Modelle](statistische-modelle.md) macht aus der Likelihood ein allgemeines Schätzverfahren.
+Zwei positive Tests hintereinander machen aus einem Promille erst neun Prozent und dann einundneunzig. Jede neue Beobachtung schiebt den Posterior weiter, und das Ergebnis hängt vom ersten Prior ab: Wer mit $P(H) = 0{,}001$ startet, braucht zwei Tests, wer mit $0{,}5$ startet (etwa, weil schon Symptome vorliegen), ist nach einem Test bei $0{,}99$. Diesen Prozess nennt man *Bayessches Updaten*; das Kapitel [Statistische Modelle](statistical-models.md) macht aus der Likelihood ein allgemeines Schätzverfahren.
 :::
 
 ## Kovarianz
 
-Vorab eine Warnung, die wir schon aus dem Kapitel [Deskriptive Statistik](deskriptive-statistik.md) kennen: Kovarianz und Korrelation messen einen Zusammenhang über *alle* Datenpunkte. Zerfallen die Daten in Gruppen, kann der Zusammenhang in jeder Gruppe das umgekehrte Vorzeichen haben, siehe das [Simpson-Paradoxon](deskriptive-statistik.md). Die Zahlen in diesem Kapitel sind also erst dann aussagekräftig, wenn man weiß, dass die Stichprobe aus einer Population stammt.
+Vorab eine Warnung, die wir schon aus dem Kapitel [Deskriptive Statistik](descriptive-statistics.md) kennen: Kovarianz und Korrelation messen einen Zusammenhang über *alle* Datenpunkte. Zerfallen die Daten in Gruppen, kann der Zusammenhang in jeder Gruppe das umgekehrte Vorzeichen haben, siehe das [Simpson-Paradoxon](descriptive-statistics.md). Die Zahlen in diesem Kapitel sind also erst dann aussagekräftig, wenn man weiß, dass die Stichprobe aus einer Population stammt.
 
 :::{admonition} Definition
 Gegeben zwei Zufallsvariablen $X,Y \colon \Omega \to \mathbb{R}$ ist die **Kovarianz**
@@ -215,7 +215,7 @@ $$
 \operatorname{Cov}(x,y) := \frac{1}{n} \sum_{i=1}^n (x_i - \bar x)(y_i - \bar y) = \frac{1}{n}\, \tilde x \cdot \tilde y, \qquad r := \frac{\operatorname{Cov}(x,y)}{\sigma(x)\,\sigma(y)} = \frac{\tilde x \cdot \tilde y}{\lVert \tilde x \rVert \, \lVert \tilde y \rVert},
 $$
 
-mit den zentrierten Vektoren $\tilde x, \tilde y$ aus dem Kapitel [Erwartungswert und Varianz](erwartungswert.md). Der Korrelationskoeffizient von Daten ist also wörtlich der Kosinus des Winkels zwischen den zentrierten Spalten. Das ist die Zahl, die `np.corrcoef(x, y)[0, 1]` im Kapitel [Titanic EDA](explorative-analyse-mit-numpy.ipynb) ausgibt; `np.cov(x, y, ddof=0)` liefert die Kovarianzmatrix in der $n$-Version (ohne `ddof=0` teilt Numpy hier, anders als bei `np.var`, durch $n-1$). Für die Iris-Aufgabe aus dem Kapitel [Deskriptive Statistik](deskriptive-statistik.md) rechnet man einmal über alle Zeilen und einmal je Spezies:
+mit den zentrierten Vektoren $\tilde x, \tilde y$ aus dem Kapitel [Erwartungswert und Varianz](expectation-variance.md). Der Korrelationskoeffizient von Daten ist also wörtlich der Kosinus des Winkels zwischen den zentrierten Spalten. Das ist die Zahl, die `np.corrcoef(x, y)[0, 1]` im Kapitel [Titanic EDA](titanic-eda-numpy.ipynb) ausgibt; `np.cov(x, y, ddof=0)` liefert die Kovarianzmatrix in der $n$-Version (ohne `ddof=0` teilt Numpy hier, anders als bei `np.var`, durch $n-1$). Für die Iris-Aufgabe aus dem Kapitel [Deskriptive Statistik](descriptive-statistics.md) rechnet man einmal über alle Zeilen und einmal je Spezies:
 
 ```python
 x = datasets.load_iris().data; y = datasets.load_iris().target
@@ -258,11 +258,11 @@ $$
 \mathbb{E}\big(XY - X\,\mathbb{E}Y - Y\,\mathbb{E}X + \mathbb{E}X\,\mathbb{E}Y\big) = \mathbb{E}(XY) - 2\,\mathbb{E}X\,\mathbb{E}Y + \mathbb{E}X\,\mathbb{E}Y = \mathbb{E}(XY) - \mathbb{E}X\,\mathbb{E}Y.
 $$
 
-Regel (4) ist das Gegenstück zur Formel $\mathbb{V}(X) = \mathbb{E}(X^2) - (\mathbb{E}X)^2$ aus dem Kapitel [Erwartungswert und Varianz](erwartungswert.md); für $X = Y$ fallen beide zusammen. Aus (1) folgt außerdem $\mathbb{V}(X_1 + \dots + X_n) = \sum_i \mathbb{V}(X_i)$, sobald die $X_i$ paarweise unkorreliert sind.
+Regel (4) ist das Gegenstück zur Formel $\mathbb{V}(X) = \mathbb{E}(X^2) - (\mathbb{E}X)^2$ aus dem Kapitel [Erwartungswert und Varianz](expectation-variance.md); für $X = Y$ fallen beide zusammen. Aus (1) folgt außerdem $\mathbb{V}(X_1 + \dots + X_n) = \sum_i \mathbb{V}(X_i)$, sobald die $X_i$ paarweise unkorreliert sind.
 :::
 
 :::{admonition} Satz
-**Unabhängige Zufallsvariablen sind unkorreliert.** Sind $X$ und $Y$ unabhängig (im Sinne des Kapitels [Erwartungswert und Varianz](erwartungswert.md), Abschnitt Unabhängigkeit) und haben sie endliche Varianz, so gilt $\mathbb{E}(XY) = \mathbb{E}(X)\,\mathbb{E}(Y)$ und damit $\operatorname{Cov}(X,Y) = 0$.
+**Unabhängige Zufallsvariablen sind unkorreliert.** Sind $X$ und $Y$ unabhängig (im Sinne des Kapitels [Erwartungswert und Varianz](expectation-variance.md), Abschnitt Unabhängigkeit) und haben sie endliche Varianz, so gilt $\mathbb{E}(XY) = \mathbb{E}(X)\,\mathbb{E}(Y)$ und damit $\operatorname{Cov}(X,Y) = 0$.
 :::
 
 :::{admonition} Beweis

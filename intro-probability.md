@@ -182,7 +182,7 @@ Daran sieht man, was bei der Modellierung die eigentliche Arbeit ist: nicht das 
 :::{admonition} Beispiel
 Auf einer endlichen Menge $\Omega$ von Kardinalität $N := |\Omega|$ (also Anzahl der Elemente $N$) ist mit $\mathcal{F} := \mathcal{P}(\Omega)$ und $P(A) := |A| / N$ ein Wahrscheinlichkeitsmaß definiert, das wir *Gleichverteilung* nennen.
 
-Der faire Würfel ist der Fall $\Omega = \{1,\dots,6\}$: Das Ereignis „gerade Augenzahl“ ist $\{2,4,6\}$ und hat die Wahrscheinlichkeit $P(\{2,4,6\}) = \frac{3}{6} = \frac12$. Nachrechnen lässt sich das auch im Code, siehe [Stochastik programmieren](stochastik-programmieren.ipynb).
+Der faire Würfel ist der Fall $\Omega = \{1,\dots,6\}$: Das Ereignis „gerade Augenzahl“ ist $\{2,4,6\}$ und hat die Wahrscheinlichkeit $P(\{2,4,6\}) = \frac{3}{6} = \frac12$. Nachrechnen lässt sich das auch im Code, siehe [Stochastik programmieren](programming-probability.ipynb).
 :::
 
 :::{admonition} Beispiel

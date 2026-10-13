@@ -113,7 +113,7 @@ Die beschreibende (deskriptive) Statistik besteht aus den Datenanalysen, die *vo
       * Der Mittelwert minimiert die mittlere quadratische Abweichung ($L_2$)
       * Die Bereichsmitte minimiert die maximale absolute Abweichung ($L_\infty$)
       
-      Die beiden mittleren Aussagen sind im Kapitel [Erwartungswert und Varianz](erwartungswert.md), Abschnitt „Abweichung quantifizieren“, bewiesen.
+      Die beiden mittleren Aussagen sind im Kapitel [Erwartungswert und Varianz](expectation-variance.md), Abschnitt „Abweichung quantifizieren“, bewiesen.
       
   
   * Form (Shape)
@@ -143,14 +143,14 @@ Die Maßzahlen oben sind nicht für jedes Merkmal sinnvoll. Ein Mittelwert über
 
 Jedes Skalenniveau erlaubt zusätzlich alle Maßzahlen der Zeilen darüber: Für ein kardinales Merkmal darf man auch Median und Modus angeben, für ein ordinales auch den Modus. Umgekehrt geht es nicht — Mittelwert und Varianz einer nominalen Variablen sind bedeutungslos, auch wenn die Ausprägungen als Zahlen gespeichert sind. Eine Spalte mit dem Datentyp `int` ist also noch lange nicht kardinalskaliert: Eine ID ist nominal, eine Schulnote ordinal.
 
-**Zwei nominale Merkmale.** Für den Zusammenhang zweier nominaler Merkmale gibt es keinen Korrelationskoeffizienten, aber eine ebenso einfache Maßzahl: die **Kreuztabelle** (Kontingenztafel), die für jede Kombination von Ausprägungen zählt, wie oft sie vorkommt. Eine Kreuztabelle aus Ground Truth und Vorhersage heißt Konfusionsmatrix; das Kapitel [Titanic EDA](explorative-analyse-mit-numpy.ipynb) liest daraus die Güte eines Klassifikators ab, und pandas erzeugt sie mit `pd.crosstab`.
+**Zwei nominale Merkmale.** Für den Zusammenhang zweier nominaler Merkmale gibt es keinen Korrelationskoeffizienten, aber eine ebenso einfache Maßzahl: die **Kreuztabelle** (Kontingenztafel), die für jede Kombination von Ausprägungen zählt, wie oft sie vorkommt. Eine Kreuztabelle aus Ground Truth und Vorhersage heißt Konfusionsmatrix; das Kapitel [Titanic EDA](titanic-eda-numpy.ipynb) liest daraus die Güte eines Klassifikators ab, und pandas erzeugt sie mit `pd.crosstab`.
 
 **Kodierung kategorialer Merkmale.** Die meisten Verfahren des maschinellen Lernens (etwa die lineare Regression) rechnen mit Zahlen, und die Frage, wie man ein nominales oder ordinales Merkmal in Zahlen übersetzt, hängt an derselben Tabelle:
 
 * Ein **ordinales** Merkmal darf man als ganze Zahlen entlang seiner Ordnung kodieren („niedrig“ $= 1$, „mittel“ $= 2$, „hoch“ $= 3$; *Integer-* oder *Ordinal-Encoding*). Die Ordnung ist echt, nur die gleichen Abstände sind eine Modellannahme, die man im Blick behalten sollte.
 * Ein **nominales** Merkmal darf man das *nicht*: Kodiert man Studiengänge als $1, 2, 3$, erfindet man eine Reihenfolge und Abstände, die es nicht gibt, und ein lineares Modell würde damit rechnen. Stattdessen legt man je Ausprägung eine eigene Spalte an, die $1$ ist, wenn die Ausprägung vorliegt, und sonst $0$ (*One-Hot-Encoding*, die Spalten heißen auch *Dummy-Variablen*). Aus einer Spalte „Studiengang“ mit drei Ausprägungen werden so drei Spalten mit Nullen und Einsen.
 
-Wie man das mit pandas macht und was es für eine Regression bedeutet, zeigt das Kapitel [Lineare Regression](lineare-regression.ipynb) am Melbourne-Datensatz. Wie man unterschiedliche Schreibweisen einer Kategorie vorher vereinheitlicht, steht im Kapitel [Daten putzen](data-cleaning.ipynb).
+Wie man das mit pandas macht und was es für eine Regression bedeutet, zeigt das Kapitel [Lineare Regression](linear-regression.ipynb) am Melbourne-Datensatz. Wie man unterschiedliche Schreibweisen einer Kategorie vorher vereinheitlicht, steht im Kapitel [Daten putzen](data-cleaning.ipynb).
 
 ### Durchgerechnetes Beispiel
 
@@ -213,7 +213,7 @@ Dieses Phänomen heißt **Simpson-Paradoxon**: Ein Zusammenhang, der in der Gesa
 Simpson-Paradoxon mit stetigen Merkmalen: Innerhalb jeder Gruppe steigt $y$ mit $x$, über alle Punkte zusammen fällt der Trend.
 ```
 
-Im Nierenstein-Beispiel kannten wir die Steingröße. Oft ist die Variable, die die Gruppen erzeugt, aber gar nicht in der Tabelle: Dann sehen wir nur die Punktwolke rechts, ohne Farben, und der fallende Trend sieht völlig überzeugend aus. Eine solche nicht beobachtete Variable heißt **latente Variable**. An dem Wort ist nichts Geheimnisvolles, es heißt nur "nicht beobachtet". Die Gesamtverteilung ist dann eine **Mischung** aus zwei Gruppenverteilungen, und die Frage, ob sich eine Punktwolke in solche Gruppen zerlegen lässt, begegnet uns im ganzen Buch: bei der [kontaminierten Normalverteilung](wichtigste-stetige-verteilungen.ipynb), beim [Clustering mit k-Means](kmeans.ipynb) und schließlich bei den [gemischten Gaußschen Modellen](expectation-maximization.ipynb). Dass Kovarianz und Korrelation genau in diese Falle laufen, sehen wir im Kapitel [Kovarianz](kovarianz.md).
+Im Nierenstein-Beispiel kannten wir die Steingröße. Oft ist die Variable, die die Gruppen erzeugt, aber gar nicht in der Tabelle: Dann sehen wir nur die Punktwolke rechts, ohne Farben, und der fallende Trend sieht völlig überzeugend aus. Eine solche nicht beobachtete Variable heißt **latente Variable**. An dem Wort ist nichts Geheimnisvolles, es heißt nur "nicht beobachtet". Die Gesamtverteilung ist dann eine **Mischung** aus zwei Gruppenverteilungen, und die Frage, ob sich eine Punktwolke in solche Gruppen zerlegen lässt, begegnet uns im ganzen Buch: bei der [kontaminierten Normalverteilung](important-continuous-distributions.ipynb), beim [Clustering mit k-Means](kmeans.ipynb) und schließlich bei den [gemischten Gaußschen Modellen](expectation-maximization.ipynb). Dass Kovarianz und Korrelation genau in diese Falle laufen, sehen wir im Kapitel [Kovarianz](covariance.md).
 
 :::{admonition} Take-Home-Message
 Bevor Sie eine Tabelle aggregieren oder einen Trend ablesen, fragen Sie, ob die Daten heimlich aus mehreren Stichproben zusammengesetzt sind. Wenn ja, rechnen Sie je Gruppe. Und rechnen Sie mit absoluten Zahlen nach, nicht nur mit Prozenten.
@@ -226,7 +226,7 @@ Der Iris-Datensatz (den wir ab dem Kapitel [Iris](iris.ipynb) oft benutzen) enth
 
 :::{admonition} Lösung
 :class: dropdown
-Über alle Pflanzen hinweg ist der Zusammenhang schwach negativ (Korrelationskoeffizient etwa $-0{,}12$): breitere Kelchblätter gehen mit kürzeren einher. Innerhalb jeder Spezies ist er deutlich positiv (setosa etwa $0{,}74$, versicolor $0{,}53$, virginica $0{,}46$). Die Spezies ist der Confounder: *setosa* hat kurze, breite Kelchblätter, die anderen beiden lange, schmale. Wer die Spezies nicht kennt, sieht einen Trend, der in keiner Gruppe gilt. Wie man die Zahlen berechnet, steht in der Bemerkung *Für Daten* im Kapitel [Kovarianz](kovarianz.md).
+Über alle Pflanzen hinweg ist der Zusammenhang schwach negativ (Korrelationskoeffizient etwa $-0{,}12$): breitere Kelchblätter gehen mit kürzeren einher. Innerhalb jeder Spezies ist er deutlich positiv (setosa etwa $0{,}74$, versicolor $0{,}53$, virginica $0{,}46$). Die Spezies ist der Confounder: *setosa* hat kurze, breite Kelchblätter, die anderen beiden lange, schmale. Wer die Spezies nicht kennt, sieht einen Trend, der in keiner Gruppe gilt. Wie man die Zahlen berechnet, steht in der Bemerkung *Für Daten* im Kapitel [Kovarianz](covariance.md).
 :::
 
 ## Visualisierung
@@ -237,7 +237,7 @@ Wozu visualisieren? Der erste Grund: Zusammenfassende Zahlen können lügen, ohn
 >
 > Alberto Cairo, 2016
 
-Justin Matejka und George Fitzmaurice haben daraus die 'Datasaurus Dozen' entwickelt {cite}`matejka2017`, eine Reihe von zwölf Datensätzen, die allesamt gleiche zusammenfassende Statistiken aufweisen (auf zwei Nachkommastellen dieselben Mittelwerte und Standardabweichungen von $x$ und $y$, und auch denselben Korrelationskoeffizienten von etwa $-0{,}06$; was der misst, kommt im Kapitel [Kovarianz und Abhängigkeit](kovarianz.md)), aber visuell sehr deutliche Unterschiede zeigen.
+Justin Matejka und George Fitzmaurice haben daraus die 'Datasaurus Dozen' entwickelt {cite}`matejka2017`, eine Reihe von zwölf Datensätzen, die allesamt gleiche zusammenfassende Statistiken aufweisen (auf zwei Nachkommastellen dieselben Mittelwerte und Standardabweichungen von $x$ und $y$, und auch denselben Korrelationskoeffizienten von etwa $-0{,}06$; was der misst, kommt im Kapitel [Kovarianz und Abhängigkeit](covariance.md)), aber visuell sehr deutliche Unterschiede zeigen.
 
 ```{figure} images/AllDinosGrey_1.png
 :width: 480px
@@ -257,7 +257,7 @@ Der zweite Grund, immer zu plotten, ist das Simpson-Paradoxon von oben: Eine Ken
     
     Histogramme sind also spezielle Bar charts / Column charts. Für nominal skalierte Merkmale lässt sich direkt der entsprechende Bar chart betrachten, der gleich breite Rechtecke mit Höhe entsprechend der Häufigkeit einer Ausprägung enthält. Dazu muss noch eine willkürliche Anordnung der Ausprägungen gewählt werden.
 
-    Willkürlich ist die Anordnung allerdings nur bei *nominalen* Merkmalen; bei einem ordinalen Merkmal sollte die $x$-Achse der Ordnung folgen, sonst verschenkt man die Information, die in ihr steckt. Will man mehrere Gruppen im selben Diagramm zeigen, stapelt man die Balken übereinander (`plt.bar(..., bottom=...)`) — ein *stacked bar chart*. Das ist genau dann sinnvoll, wenn die Summe der Gruppen selbst eine Bedeutung hat; sonst sind nebeneinandergestellte Balken leichter zu vergleichen, weil sie alle auf derselben Grundlinie stehen. Ein einfaches Beispiel mit `plt.bar` steht im Kapitel [Titanic EDA](explorative-analyse-mit-numpy.ipynb).
+    Willkürlich ist die Anordnung allerdings nur bei *nominalen* Merkmalen; bei einem ordinalen Merkmal sollte die $x$-Achse der Ordnung folgen, sonst verschenkt man die Information, die in ihr steckt. Will man mehrere Gruppen im selben Diagramm zeigen, stapelt man die Balken übereinander (`plt.bar(..., bottom=...)`) — ein *stacked bar chart*. Das ist genau dann sinnvoll, wenn die Summe der Gruppen selbst eine Bedeutung hat; sonst sind nebeneinandergestellte Balken leichter zu vergleichen, weil sie alle auf derselben Grundlinie stehen. Ein einfaches Beispiel mit `plt.bar` steht im Kapitel [Titanic EDA](titanic-eda-numpy.ipynb).
     
     Ein Histogramm besteht also eigentlich aus einer statistischen Transformation von stetigen (kardinal skalierten) Daten in diskrete Daten, die dann gebarchartet werden.
     
@@ -276,7 +276,7 @@ Der zweite Grund, immer zu plotten, ist das Simpson-Paradoxon von oben: Eine Ken
     plt.scatter(daten[:, 0], daten[:, 1], c=daten[:, 2])   # dritte Spalte als Farbe
     ```
 
-    Die dritte Zeile ist der Trick, mit dem ein Scatterplot eine dritte Variable unterbringt: `c=` färbt jeden Punkt nach seinem Wert, und `cmap=` bestimmt, welche Farbskala dafür benutzt wird. Für ein kategoriales Merkmal mit wenigen Ausprägungen ergibt das Gruppen in verschiedenen Farben — so eingefärbt ist der Iris-Scatterplot im Kapitel [Iris](iris.ipynb) (dort mit `cmap=plt.cm.cividis_r`), und im Kapitel [Explorative Analyse: Beispiele](explorative-analyse-beispiele.ipynb) trägt die Farbe im Wein-Datensatz die Rebsorte.
+    Die dritte Zeile ist der Trick, mit dem ein Scatterplot eine dritte Variable unterbringt: `c=` färbt jeden Punkt nach seinem Wert, und `cmap=` bestimmt, welche Farbskala dafür benutzt wird. Für ein kategoriales Merkmal mit wenigen Ausprägungen ergibt das Gruppen in verschiedenen Farben — so eingefärbt ist der Iris-Scatterplot im Kapitel [Iris](iris.ipynb) (dort mit `cmap=plt.cm.cividis_r`), und im Kapitel [Explorative Analyse: Beispiele](eda-examples.ipynb) trägt die Farbe im Wein-Datensatz die Rebsorte.
     
   * Boxplot, auch Box-and-Whiskers-plot
   
@@ -416,9 +416,9 @@ Die Forschung über gut geeignete Farbpaletten ist nicht beendet - so gab es etw
 
 Die Werkzeuge dieses Kapitels — Skalenniveaus, Lage- und Streuungsmaße, Visualisierung — sind Mittel zum Zweck. Der Zweck heißt *explorative Datenanalyse* (EDA): sich einen Datensatz Schritt für Schritt zu erschließen und am Ende etwas darüber sagen zu können. „Schritt für Schritt“ ist dabei wörtlich zu nehmen, und vor allem: im Kreis. Man durchläuft die folgenden fünf Schritte nicht einmal, sondern immer wieder, weil jeder Durchgang neue Fragen aufwirft.
 
-1. **Forschungsfragen formulieren.** Was will man eigentlich wissen? Welche Skalenniveaus haben die Merkmale, welche Verteilungen erwartet man, welche Zusammenhänge hält man für plausibel? Ohne diesen Schritt produziert man Diagramme statt Erkenntnisse. Im Kapitel [Explorative Analyse: Beispiele](explorative-analyse-beispiele.ipynb) steht dieser Schritt ausdrücklich am Anfang.
+1. **Forschungsfragen formulieren.** Was will man eigentlich wissen? Welche Skalenniveaus haben die Merkmale, welche Verteilungen erwartet man, welche Zusammenhänge hält man für plausibel? Ohne diesen Schritt produziert man Diagramme statt Erkenntnisse. Im Kapitel [Explorative Analyse: Beispiele](eda-examples.ipynb) steht dieser Schritt ausdrücklich am Anfang.
 2. **Daten visualisieren.** Der schnellste Weg, eine Verteilung, einen Ausreißer oder einen Zusammenhang zu sehen, ist ein Bild — das ist der Inhalt des vorigen Abschnitts, und der Datasaurus hat gezeigt, warum zusammenfassende Zahlen allein nicht reichen.
-3. **Daten putzen.** Ausreißer prüfen und gegebenenfalls entfernen, fehlende Werte imputieren oder interpolieren, Fehler in der Codierung beheben. Im Kapitel [Titanic EDA](explorative-analyse-mit-numpy.ipynb) werden fehlende Altersangaben durch den Median ersetzt; das Kapitel [Daten putzen](data-cleaning.ipynb) macht daraus ein eigenes Programm.
+3. **Daten putzen.** Ausreißer prüfen und gegebenenfalls entfernen, fehlende Werte imputieren oder interpolieren, Fehler in der Codierung beheben. Im Kapitel [Titanic EDA](titanic-eda-numpy.ipynb) werden fehlende Altersangaben durch den Median ersetzt; das Kapitel [Daten putzen](data-cleaning.ipynb) macht daraus ein eigenes Programm.
 4. **Daten transformieren.** Teilmengen auswählen, Merkmale umskalieren, neue Merkmale bilden — etwa Altersgruppen aus dem Alter (*Binning*) oder eine Fläche aus Länge und Breite. Solche neuen Merkmale heißen **Features**, und sie zu finden ist oft der eigentliche Erkenntnisgewinn.
 5. **Daten modellieren.** Ein statistisches Modell wählen und an die Daten anpassen, etwa eine Normalverteilung oder eine Regressionsgerade. Damit beschäftigen sich die folgenden Kapitel.
 

@@ -15,7 +15,7 @@ Auch **pseudonymisierte** oder **verschlüsselte** Daten fallen unter den Schutz
 Beispiele:
 - Die Lieblingsfarbe von Gummibärchen ist kein personenbezogenes Datum. Dieselbe Angabe in einer Tabelle mit Matrikelnummer ist eins.
 - Eine Längsschnittbefragung an Schulen will die Antworten derselben Kinder über Jahre verknüpfen, ohne Namen zu speichern. Ein Code aus den Anfangsbuchstaben der Elternnamen oder ein Hash des Namens mit festem Präfix ist ein **Pseudonym**: Wer die Regel kennt, kann zurückrechnen, also bleiben die Daten personenbezogen. Eine Nummer, die man den Kindern mitgibt, bringt im nächsten Jahr niemand mit, und ein Link mit kodierter Nummer zerstört das Vertrauen in die Anonymität.
-- Ob Daten anonym sind, ist eine Frage der Information, nicht der Namen: Wer über eine Person genug Bits gesammelt hat (Postleitzahl, Geburtsdatum und Geschlecht reichen für die meisten Menschen), hat personenbezogene Daten, auch ohne Namen. Das ist die [Entropie](erwartungswert.md) aus dem Stochastik-Teil in juristischer Verkleidung.
+- Ob Daten anonym sind, ist eine Frage der Information, nicht der Namen: Wer über eine Person genug Bits gesammelt hat (Postleitzahl, Geburtsdatum und Geschlecht reichen für die meisten Menschen), hat personenbezogene Daten, auch ohne Namen. Das ist die [Entropie](expectation-variance.md) aus dem Stochastik-Teil in juristischer Verkleidung.
 
 ## Vorgeschichte der DSGVO
 
