@@ -224,3 +224,80 @@ Smaller calls, for the record:
 * **One `check_english.py` finding, recorded in `sync/check-ignore/`.** Block c25.2, "German
   function word": the licence name **MIT** in "the data come under the MIT licence" matches
   the German *mit* case-insensitively. A proper name, so it stays.
+
+## Style pass
+
+Markdown cells only; every code cell is byte-identical to before (`check_untouched.py HEAD`
+confirms "prose only"), and `sync.py align` (184 blocks), `check_english.py`, `nbtext.py
+check` and `nbtext.py syntax` all pass. Done in two imports (cells 0–11, then 12–64), with
+all checks re-run after each. 29 of the 34 markdown cells were touched, 79 paragraphs in
+all; no block was merged, split or reordered, no maths, link, citation key, directive or
+admonition line changed, and the hard line breaks (trailing double spaces) in the cell 1
+admonition are preserved exactly.
+
+**Kinds of change.**
+
+* *The lecturer's throat-clearing shortened*: "We want to make one further observation:" →
+  "One further observation:"; "We now want to make one more observation:" → "One more
+  observation:"; "We want to note that a fat $1$ …" → "Note that a fat $1$ …"; "As a first
+  step we look at" / "As a next step we look at" → "First we look at" / "Next we look at";
+  "In order to be able to implement the algorithm concretely we must of course …, and that
+  is what we now want to do" → "To implement the algorithm concretely we must of course …,
+  and that is what we do now".
+* *Nominalisations turned into verbs*: "We can multiply through by $\sigma_j^2$ and rearrange
+  for $\mu_j$; then we obtain the closed formula" → "Multiplying through by $\sigma_j^2$ and
+  solving for $\mu_j$ gives the closed formula"; "we can therefore maximise $Q$ in $\theta$
+  and have thereby maximised $L$" → "maximising $Q$ in $\theta$ therefore also maximises
+  $L$"; "the modelling decision that the division … be expressed by probabilities" → "the
+  modelling decision to express the division … by probabilities"; "If one uses the soft
+  assignment instead, it is a weighted mean" → "With the soft assignment instead, it is a
+  weighted mean".
+* *Calques replaced*: "which is why we gave the child a name" (*dem Kind einen Namen geben*)
+  → "which is why we have given it a name"; "We can weaken our aims a little" → "We can lower
+  our sights a little"; "What is charming about the expression" → "The charm of the
+  expression"; "left untreated" → "left out"; "the perspective of practice"
+  → "the practitioner's perspective"; "Simply because it can be done" → "Simply because we
+  can"; "one commits oneself: one makes a hard assignment" → "commits itself – it makes a
+  hard assignment".
+* *Long German periods re-cut*: the generative-process sentence in c3.0 now ends "– once for
+  each data point" instead of "and doing so as often as there are data points"; the MM
+  paragraph in c12 is one sentence with the expansion in dashes rather than three "one speaks
+  of" clauses; the E-step bullet's "so as to set up a correct formula for $Q(\theta,\theta)$
+  once more, or rather a new estimate for $q$ and with it for $L(\theta, q)$" is now "so as to
+  have a correct formula … again – or rather a new estimate of $q$, and with it of $L$".
+* *Word order*: "In the iteration we are given, at step $t$, the parameters" → "At step $t$
+  of the iteration we are given the parameters"; "it gives us, for every point and every
+  class, a probability" → "for every point and every class, it gives us a probability".
+
+**Left alone, deliberately.** "Division into classes" everywhere (all ten partition
+occurrences, per the brief); "fat $1$" (both occurrences, the callback depends on it); "that
+sum business"; "stopgap"; "sample expected value"; `## Auxiliary Functions` in title case
+and the plot title "mixed Gaussian model, sklearn EM-fit" (both already English in the
+German, the latter in code); "the relative entropy of the estimated distribution $q$ to the
+actual distribution" (the chapter's own preposition, consistent with `relative-entropy.md`).
+The scare quotes `'soft'` in c64 and the double quotes `"zeros"` in c49 are as the German
+has them.
+
+**For a human to look at.**
+
+* c10.0, the stopgap sentence. The German "dann maximieren, und dann die anderen
+  Teilausdrücke konstant halten bzw. darüber maximieren" had become "maximise, and then hold
+  those other subexpressions constant instead and maximise over them", where "them" points at
+  the subexpressions just held constant – the wrong set. It now reads "and maximise, then
+  hold the other subexpressions constant instead and maximise over the rest", which is right
+  under either reading of *bzw.* This is the one edit in the chapter that touches sense
+  rather than shape; I believe it restores the German's meaning rather than changes it, but
+  it should be checked.
+* c11.6 "which makes the corresponding factor $1$" (German *und damit der entsprechende
+  Faktor $1$*) is ambiguous in both languages: the factors with exponent $0$ are the ones that
+  become $1$. Left as it was; a clarifying "so every other factor is $1$" would be an edit to
+  the book, not to the English.
+* c13.13 "the responsibility of $x_i$ for class $j$" reads reversed to an English ear (the
+  $\tau_{ij}$ is class $j$'s responsibility for $x_i$); the German says it the same way. Not
+  touched.
+* The lecture course is "the course *Introduction to Deep Learning*" here (c9 Remark and
+  c64) and "the lecture course *Einführung in Deep Learning* (introduction to deep learning)"
+  in `model-selection.ipynb` c3.3. One book should do one thing; names are not mine to move.
+* *Decisions and doubts* §1 above is now stale: `nbtext.py syntax` reports "all code cells
+  compile" for this notebook, so the magic-line handling has evidently been fixed in
+  `tools/` since the translation pass. The cells themselves are untouched.

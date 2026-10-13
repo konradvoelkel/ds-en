@@ -151,3 +151,69 @@ needed) is this one:
 
 The figure's `:name: probonto-diagram` label and its CC-BY-SA caption are untranslated by
 TRANSLATION.md §3 and §3's proper-names rule; the caption was already English.
+
+## Style pass
+
+Markdown cells only; all code cells are byte-identical to before (verified cell by cell
+against a pre-pass copy), so the stored outputs still match the code. **21 of 51 blocks**
+changed, no block merged, split or reordered. `sync.py align`, `check_english.py`,
+`nbtext.py check`, `nbtext.py syntax` and `check_untouched.py HEAD` all pass ("prose only").
+
+Kinds of change:
+
+* **Calques removed**: "a *so-called* mixture model" (*sogenannt*; in English "so-called"
+  casts doubt on the name) → "a *mixture model*"; "Both times $\lambda$ is the same rate"
+  (*beide Male*) → "In both cases"; "have not missed the fact that several distributions can
+  perfectly well be parametrised" → "have noticed that several of them can"; "we want to gain
+  an overview" → "we want an overview"; "obtain through Scikit-Learn" → "get from";
+  "To begin with, Numpy's built-in `np.genfromtxt` will do" → "for now, …".
+* **German fronting undone**: "a differential entropy it does not have" → "it has no
+  differential entropy"; "there is, after all, no density" → "there is no density, after
+  all"; "For each of the distributions we will look at plots of … and of the …" → "For each
+  distribution we will look at plots of … and the …".
+* **Verbs for nouns, and subjects set straight**: "a great deal of data *satisfies* none of the
+  distributions" → "*fits* none"; "a two-stage process in which, depending on the outcome of a
+  Bernoulli experiment, a different normal distribution is sampled from" → "in which the
+  outcome of a Bernoulli experiment decides which normal distribution is sampled from";
+  "every act of modelling carries the potential to make a part of reality invisible that one
+  may not want to make invisible at all" → "has the potential to render invisible a part of
+  reality that you may not want invisible at all"; "It contains variables with a spatial
+  distribution, and time series of" → "It holds spatially distributed variables and time
+  series of"; "Comparing the histogram … is what shows you best how close we are" → "is the
+  best way to see how close we are".
+* **Sentence rhythm**: "For this we use the Python module `matplotlib.pyplot`. It emulates the
+  behaviour of MATLAB." → one sentence with "which"; "toy data, which are also much
+  discussed" → "much-discussed toy data"; "So that we can get a little practice in plotting
+  data and fitting distributions to data (and then in turn visualising that in a plot)" →
+  "To get a little practice in plotting data and fitting distributions to it (and then
+  visualising the fit in a plot)"; the ProbOnto sentence's long relative clause is now set
+  off with dashes; "These are mostly assembled in stages out of the simple models, though" →
+  "Mostly, though, these are assembled in stages from the simple models".
+* **Profile bullets**: only single-word changes, the skeleton untouched – "How high is the
+  wind speed?" → "What is the wind speed?", "greatest amount of precipitation on a single day"
+  → "largest amount of precipitation to fall on a single day", the bus "went" → "left",
+  "an odd moment $\neq 0$ is therefore a sign" → "so an odd moment $\neq 0$ is a sign",
+  "further examples are given in" → "more examples are listed in".
+
+Kept deliberately:
+
+* The exponential-distribution bullet "How long does it take until the next packet arrives at
+  the server?" is quoted verbatim in the Poisson Remark of
+  `important-discrete-distributions.ipynb`; both left word for word.
+* "Python method" in c9.0. The thing defined is a plain function, and "Python function" is
+  what an English reader expects, but the German says *Methode* and the fix is a correction,
+  not style – **a human may want to make it**.
+* "extremely punctually" in the bus example, the gender wording the translator flagged under
+  *Decisions* 1, and every glossary term (Gaussian distribution, Gaussian mixture, mixture
+  model, contaminated normal distribution, flip side, waiting time, shape parameter, support,
+  toy data, heavy rainfall events, manufacturing precision, continuous uniform distribution,
+  log-normal distribution, Dirac distribution / Dirac measures, overview diagram).
+
+Noticed, not touched (not style):
+
+* The profile bullets write the notation as `$Exp(\lambda)$`, `$Lognormal(\mu,\sigma^2)$`,
+  `$Weibull(\lambda,k)$` (upright-less, italic), while the running prose of c20.2 and the
+  discrete chapter use `\operatorname{Exp}`. Maths, so out of scope for this pass; an author
+  might want `\operatorname{}` throughout.
+* c16.1, the Hubble bullet: "the 'actual' distribution of the stars behind it" – "it" is the
+  photograph; reads fine once seen, left.

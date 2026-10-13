@@ -55,6 +55,11 @@ This edition is a standalone book, not courseware for the Düsseldorf lecture ha
   German usage. Quote the German and gloss it in English where the reader needs it.
 * **Proper names**, including HHU, the module name and the author.
 
+A course title is translated when the book only mentions it (*Introduction to Deep
+Learning*), and kept in German when the book links to it (*Einführung in Python*), because
+there the reader has to recognise the page they land on. Sixteen mentions of the deep
+learning course had drifted into four spellings before this was written down.
+
 German-language *links*, on the other hand, are handled: a link to German Wikipedia is
 replaced by its English counterpart where one exists, and a link that stays German (a German
 course, a German video) is marked "(in German)" so the reader is not sent somewhere useless.

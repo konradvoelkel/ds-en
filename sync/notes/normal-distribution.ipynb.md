@@ -195,3 +195,69 @@ bleibt erhalten" and the translation accordingly says "the *shape* is preserved"
   axis labels, titles and legend entries.
 * The heading section at the top of this file: confirm that a substring match is what the
   `statistical-tests.md` reference needs, and that keeping *A practical example:* was right.
+
+## Style pass
+
+Markdown cells only; the three code cells are byte-identical to before (verified against a
+pre-pass copy), so the stored figures still match the code. **43 of 120 blocks** changed, no
+block merged, split or reordered. `sync.py align`, `check_english.py`, `nbtext.py check`,
+`nbtext.py syntax` and `check_untouched.py HEAD` all pass ("prose only"). The heading
+`## A practical example: The "$N \ge 30$" myth` is untouched, grep-verified, so the prose
+reference in `statistical-tests.md` still finds it.
+
+Kinds of change:
+
+* **Impersonal "one" → "you"/"we"**: "a more general statement that one needs all the time"
+  → "that you will need all the time"; "one obtains the standardisation" → "we get"; "one can
+  also estimate the speed of the convergence" → "the speed of the convergence can be
+  estimated too"; "one might imagine" → "you might suspect"; "it can be computed how many" →
+  "we can compute how many".
+* **Calques of German connectives and idioms**: "squaring both sides of the equation suggests
+  itself" (*bietet sich an*) → "The square root on the right-hand side suggests squaring both
+  sides"; "This approximation is helpful in that" → "The approximation is useful because";
+  "Of course: if the expected value is not $0$" → "Naturally, if"; "To give two concrete
+  examples:" → "Two concrete examples:"; "there is in fact *also* Stirling's formula" and
+  "is *also* known as the theorem of de Moivre–Laplace" lost their *auch*; "the details we
+  leave to you" → "we leave the details to you"; "Less clear is that" → "What is less clear is
+  that"; "is no longer a statement – it is useless" → "says nothing at all – it is useless".
+* **Nominalisations trimmed**: "the version of the sum $S_N$, which we looked at above …,
+  normalised to" → "the sum $S_N$ we looked at above …, normalised to"; "has point symmetry
+  about $0$" → "is point-symmetric about $0$"; "an odd function" → "odd"; "the third power of
+  the standard deviation" → "the cube"; "higher by a factor of $33$" → "$33$ times higher"
+  (the maths token itself is unchanged).
+* **Long sentences re-hinged or split**: c6.1 (tabulation / efficiency, now one sentence with
+  a dash), c14.7 (the corollary with $\mathcal{N}(\mu,1)$ and $\mathcal{N}(\mu,\sigma^2)$, now
+  one sentence instead of a fragment), c12.21 (the proof idea: "for a random variable $X$ with
+  density $p_X$, $Y = aX+b$ has the density" → "if a random variable $X$ has density $p_X$,
+  then $Y = aX+b$ has density"), c13.11 (the GNSS/manufacturing examples).
+* **Repetition cut**: "converges to the cumulative distribution function of a standard normal
+  distribution" → "converges to that of"; the same in the Berry–Esseen statement for $\Phi$.
+* **Smaller**: "runs placidly off into the negatives" → "into negative territory"; "almost the
+  whole probability mass" → "almost all the probability mass"; "What matters … then the
+  corresponding normal distribution" lost its *then*; "is not a formality here but the actual
+  modelling assumption" → "is no formality here; it is the actual modelling assumption";
+  "spread probability mass where there can be no values at all" → "put probability mass where
+  no values can occur at all"; "assume as little in addition as possible" → "as little extra
+  as possible"; "centred on expected value $0$" → "centred to have expected value $0$".
+
+Kept deliberately: all admonition titles, the **Aside**: / **Idea:** / **Without proof** /
+**The standard error.** / **The Laplace condition.** lead-ins, the maximum-entropy table, the
+Titanic numbers, every formula, and the glossary terms (standardisation, normality, stable
+under convolution, convergence in distribution, disturbance, source of error, position
+fixing, analysis protocol, normal approximation, bell curve / bell shape, profile, truncated
+normal distribution, rule of thumb, take-home message, percentage points).
+
+`check_untouched.py` comes back clean. In c6.0 the token `$x$` now follows the sequence maths
+("has to be substituted for $x$" instead of "where for $x$ … has to be substituted"); that is
+a reordering of unchanged maths, which the tool tolerates.
+
+Noticed, not touched (not style):
+
+* c12.0, the Definition "A random variable with $X \sim \mathcal{N}(0,1)$ is also called
+  *standard normally distributed*" has no full stop. The German has none either; left.
+* c11.6: "because the function is point-symmetric about $0$" – strictly it is the integrand
+  $x\,e^{-x^2/2\sigma^2}$ that is odd, not "the function". Clear enough from context; left.
+* c13.1: the theorem's parenthetical "(iid = independent identically distributed)" after
+  "identically distributed, mutually independent" is the German's own belt-and-braces; left.
+* The H1 "The Gaussian normal distribution" against the three shorter link texts elsewhere –
+  already flagged under *Decisions* 1 above; still open.

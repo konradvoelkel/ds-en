@@ -213,3 +213,69 @@ precise and less faithful, since the theorem on the preceding block is the conve
 statement and the plot is only the picture. And *Rückblick* → "Looking back" is built by
 symmetry with *Ausblick* → "Looking ahead" rather than from precedent – "In summary" or
 "Taking stock" would both be defensible, but the symmetry seemed worth more.
+
+## Style pass
+
+Markdown cells only; every code cell is byte-identical to before (verified cell by cell
+against a pre-pass copy), so the stored outputs still match the code. **43 of 98 blocks**
+changed, no block merged, split or reordered. `sync.py align`, `check_english.py`,
+`nbtext.py check`, `nbtext.py syntax` and `check_untouched.py HEAD` all pass; the last one
+reports "prose only".
+
+Kinds of change:
+
+* **Impersonal "one" → "you" or an imperative** (c13.10, c15.11, c18.3, c18.4, c21.7, c23.2,
+  c25.3): "One sees clearly here" → "Here you can see clearly", "In practice one computes it
+  iteratively: one starts with … and works the coins in" → "it is computed iteratively: start
+  with … and work the coins in", "easy enough to compute oneself" → "yourself", "if one has
+  already thrown the die" → "if you have".
+* **German fronting undone**: "The variance we compute with …" → "For the variance we use …";
+  "another name in common use is *discrete density*" → "*discrete density* is another name in
+  common use"; "Just as for continuous distributions, `scipy.stats` provides …" →
+  "`scipy.stats` provides objects for discrete distributions just as it does for continuous
+  ones".
+* **Nominalisations and padding → verbs**: "in general not simplifiable any further" → "which
+  in general does not simplify any further"; "special cases of it or constructions built from
+  it" → "either a special case of it or built from it"; "come to us for free" → "come for
+  free"; "cancel out" → "cancel"; "That fits with the uniform distribution being the maximum
+  entropy distribution" → "That fits: the uniform distribution is the maximum entropy
+  distribution".
+* **Calques and near-misses**: "that is at $p = \frac12$" → "that is, at"; "delivers integers"
+  → "returns integers"; "an unfair coin included" → "unfair coins included"; "only no longer
+  identically distributed" → "just no longer"; "is not random at all any more" → "is no longer
+  random at all"; "How often do I have to throw a die" → "How many times"; "careful, as with
+  `range` the upper bound" → "careful: as with `range`, the upper bound".
+* **Two sentences whose grammar pointed the wrong way**: "For the first $k-1$ trials to fail
+  and the $k$-th to succeed *takes* $(1-p)^{k-1}p$" → "*has probability*"; "a practical test
+  of whether a dataset can fit a Poisson distribution" → "whether a Poisson distribution can
+  fit a dataset". Same meaning, right subject.
+* **A dangling comparison** (c21.1): "In contrast to all the distributions of this chapter so
+  far, the support is not finite" compared a support to distributions; now "In contrast to
+  every distribution in this chapter so far, this one does not have finite support".
+* **The combinatorial argument** (c13.5) re-hinged so that "by independence" comes first and
+  "namely as many as there are subsets" becomes "one for each subset".
+* **The closing paragraph** (c25.3) turned from "If one looks at … the passage to the limit
+  leads …, with which the chapter begins" into "Look at …, and the passage to the limit leads
+  …, and the chapter opens with it".
+
+Kept deliberately:
+
+* The **profile skeletons** are untouched apart from single words inside a bullet (returns,
+  An urn, unfair coins, in a specimen, How many times). The repetition across the seven
+  profiles is the chapter's design.
+* The quoted question in the Poisson Remark (c21.8), "How long does it take until the next
+  packet arrives at the server?", is the exponential-distribution bullet of
+  `important-continuous-distributions.ipynb` word for word, and both were left as they are so
+  the quotation stays a quotation.
+* Every glossary term: pmf, trial, Bernoulli trial, passage to the limit, limiting case,
+  rules of calculation, flip side, waiting time, source of error, specimen, index shift,
+  exponential series, odds, logit, maximum entropy distribution, idealised, survival function.
+
+Noticed, not touched (not style):
+
+* c13.1, the binomial entropy bullet: "it is smaller than $\log_2(n+1)$, since the maximum
+  would be the uniform distribution on $\{0,\dots,n\}$" is loose – the *maximum entropy* is
+  attained by the uniform distribution, the distribution is not "the maximum". The German is
+  presumably just as loose; left for the author.
+* c4.0, the table header "wanted | call" is terse to the point of oddness in English but is
+  what the German has; a reviewer may prefer "probability | call".
