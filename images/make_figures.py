@@ -155,10 +155,78 @@ def student_t() -> None:
         extra=("standard normal distribution", stats.norm.pdf(x)))
 
 
+# ------------------------------------------------------------ the data-science process
+
+# Three stages of the same picture: the world, then boxes with arrows between them. The
+# German originals are PNGs with no source, and their globe is a detailed drawing of the
+# Americas; this redraw uses a plain graticule globe instead, which says the same thing
+# and can be edited.
+DS_PROCESS = {
+    "ds-process-1.svg": ["Section", "Raw data", "Data"],
+    "ds-process-2.svg": ["Data", "Model", "Synthetic data"],
+    "ds-process-3.svg": ["Data", "Transformed data", "Target variable"],
+}
+BOX_W, BOX_H, GAP = 158, 120, 90
+
+
+def _wrapped(label: str, width: int = 15) -> list[str]:
+    lines, line = [], ""
+    for word in label.split():
+        if line and len(line) + 1 + len(word) > width:
+            lines.append(line)
+            line = word
+        else:
+            line = f"{line} {word}".strip()
+    lines.append(line)
+    return lines
+
+
+def ds_process() -> None:
+    for filename, labels in DS_PROCESS.items():
+        start = 212  # the globe ends at 118, leaving room for the arrow into the first box
+        width = start + len(labels) * BOX_W + (len(labels) - 1) * GAP + 20
+        parts = [
+            f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {width} 150" '
+            f'width="{width}" height="150" font-family="Inter, Helvetica, Arial, sans-serif" '
+            f'role="img" aria-label="The world, then {", then ".join(labels).lower()}.">',
+            f"  <title>{' to '.join(labels)}</title>",
+            f'  <rect width="{width}" height="150" fill="#ffffff"/>',
+            '  <defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6"',
+            '    markerHeight="6" orient="auto-start-reverse">',
+            '    <path d="M 0 0 L 10 5 L 0 10 z" fill="#1a1a1a"/></marker></defs>',
+            # a globe: ocean disc, two parallels and two meridians
+            '  <circle cx="62" cy="75" r="56" fill="#4a7ebb" stroke="#1f3a4d" stroke-width="3"/>',
+            '  <path d="M 6 75 H 118 M 14 47 H 110 M 14 103 H 110" stroke="#ffffff"',
+            '        stroke-width="2" fill="none" opacity="0.85"/>',
+            '  <path d="M 62 19 C 30 47, 30 103, 62 131 M 62 19 C 94 47, 94 103, 62 131"',
+            '        stroke="#ffffff" stroke-width="2" fill="none" opacity="0.85"/>',
+        ]
+        x = start
+        parts.append(f'  <line x1="126" y1="75" x2="{x - 8}" y2="75" stroke="#1a1a1a" '
+                     f'stroke-width="3" marker-end="url(#a)"/>')
+        for i, label in enumerate(labels):
+            parts.append(f'  <rect x="{x}" y="15" width="{BOX_W}" height="{BOX_H}" fill="#ffffff" '
+                         f'stroke="#1f3a4d" stroke-width="3"/>')
+            lines = _wrapped(label)
+            start = 75 - (len(lines) - 1) * 16
+            for j, line in enumerate(lines):
+                parts.append(f'  <text x="{x + BOX_W // 2}" y="{start + j * 32 + 9}" '
+                             f'text-anchor="middle" font-size="26" fill="#000000">{line}</text>')
+            x += BOX_W
+            if i < len(labels) - 1:
+                parts.append(f'  <line x1="{x}" y1="75" x2="{x + GAP - 8}" y2="75" '
+                             f'stroke="#1a1a1a" stroke-width="3" marker-end="url(#a)"/>')
+                x += GAP
+        parts.append("</svg>")
+        (HERE / filename).write_text("\n".join(parts) + "\n")
+
+
 if __name__ == "__main__":
+    ds_process()
     simpson()
     colour_vision()
     chi_squared()
     student_t()
-    print("wrote simpson-paradox.png, colour-vision-simulation.png, "
-          "chi-squared-distributions.png and student-t-distributions.png")
+    print("wrote the three ds-process SVGs, simpson-paradox.png, "
+          "colour-vision-simulation.png, chi-squared-distributions.png "
+          "and student-t-distributions.png")

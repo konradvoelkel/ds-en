@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 886 150" width="886" height="150" font-family="Inter, Helvetica, Arial, sans-serif" role="img" aria-label="The world, then data, then transformed data, then target variable.">
+  <title>Data to Transformed data to Target variable</title>
+  <rect width="886" height="150" fill="#ffffff"/>
+  <defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6"
+    markerHeight="6" orient="auto-start-reverse">
+    <path d="M 0 0 L 10 5 L 0 10 z" fill="#1a1a1a"/></marker></defs>
+  <circle cx="62" cy="75" r="56" fill="#4a7ebb" stroke="#1f3a4d" stroke-width="3"/>
+  <path d="M 6 75 H 118 M 14 47 H 110 M 14 103 H 110" stroke="#ffffff"
+        stroke-width="2" fill="none" opacity="0.85"/>
+  <path d="M 62 19 C 30 47, 30 103, 62 131 M 62 19 C 94 47, 94 103, 62 131"
+        stroke="#ffffff" stroke-width="2" fill="none" opacity="0.85"/>
+  <line x1="126" y1="75" x2="204" y2="75" stroke="#1a1a1a" stroke-width="3" marker-end="url(#a)"/>
+  <rect x="212" y="15" width="158" height="120" fill="#ffffff" stroke="#1f3a4d" stroke-width="3"/>
+  <text x="291" y="84" text-anchor="middle" font-size="26" fill="#000000">Data</text>
+  <line x1="370" y1="75" x2="452" y2="75" stroke="#1a1a1a" stroke-width="3" marker-end="url(#a)"/>
+  <rect x="460" y="15" width="158" height="120" fill="#ffffff" stroke="#1f3a4d" stroke-width="3"/>
+  <text x="539" y="68" text-anchor="middle" font-size="26" fill="#000000">Transformed</text>
+  <text x="539" y="100" text-anchor="middle" font-size="26" fill="#000000">data</text>
+  <line x1="618" y1="75" x2="700" y2="75" stroke="#1a1a1a" stroke-width="3" marker-end="url(#a)"/>
+  <rect x="708" y="15" width="158" height="120" fill="#ffffff" stroke="#1f3a4d" stroke-width="3"/>
+  <text x="787" y="84" text-anchor="middle" font-size="26" fill="#000000">Target variable</text>
+</svg>

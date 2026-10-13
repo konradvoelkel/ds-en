@@ -30,7 +30,7 @@ In three places we do meet it quite concretely all the same:
 
 The path the data take along the way can be told in three pictures. First the data collection: a section of the world is chosen, raw data accrue about it, and cleaning turns the raw data into the data one actually works with.
 
-```{figure} images/dsprozess-simplified-1.png
+```{figure} images/ds-process-1.svg
 :width: 480px
 :align: center
 :name: ds-prozess-erhebung
@@ -40,7 +40,7 @@ Data collection: from the world via a section and raw data to the data.
 
 Then the modelling. A model is built from the data, and from the model data can be generated again – synthetic data. Whether the model is any good is decided by whether its synthetic data resemble the real thing.
 
-```{figure} images/dsprozess-simplified-2.png
+```{figure} images/ds-process-2.svg
 :width: 480px
 :align: center
 :name: ds-prozess-modell
@@ -50,7 +50,7 @@ Modelling: from the data to the model and back to synthetic data.
 
 And finally the path to the target variable, which is what we are actually after: the data are transformed, and from the transformed data the one number we wanted to know is computed.
 
-```{figure} images/dsprozess-simplified-3.png
+```{figure} images/ds-process-3.svg
 :width: 480px
 :align: center
 :name: ds-prozess-zielgroesse
