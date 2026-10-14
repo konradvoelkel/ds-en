@@ -1,5 +1,7 @@
 # HHU Data Science course — English edition
 
+**Read it at <https://konradvoelkel.github.io/ds-en/>**
+
 English edition of the lecture notes for the course "Data Science" at
 Heinrich Heine University Düsseldorf, 4th semester of the BSc in Computer Science.
 
@@ -39,6 +41,19 @@ Same toolchain as the original: [MyST](https://mystmd.org) (`mystmd`, Jupyter Bo
 uv sync
 uv run myst build --html     # -> _build/html
 uv run myst build --pdf      # -> exports/ds-en.pdf (needs TeX, latexmk, imagemagick)
+```
+
+To publish: `tools/deploy-pages.sh`. It builds with `BASE_URL=/ds-en` (the site is served
+from a subpath, and without that every asset link breaks) and force-pushes the result to
+the `gh-pages` branch as a single commit. That branch is build output, not source.
+
+The better route is a GitHub Actions workflow, which would deploy from an artifact and
+keep the generated site out of git entirely. The workflows are written and waiting on
+the `ci-workflows` branch; pushing them needs a token with the `workflow` scope:
+
+```
+gh auth refresh -h github.com -s workflow
+git push origin ci-workflows:main   # or cherry-pick the one commit
 ```
 
 Notebooks are **not** executed by MyST; their outputs are committed. After changing code
