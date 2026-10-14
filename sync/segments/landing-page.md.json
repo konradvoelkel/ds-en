@@ -14,133 +14,133 @@
    "de": "1",
    "kind": "prose",
    "digest": "15f5b9d100aaee76",
-   "en": "5",
+   "en": "1",
    "preview": "Dieses Skript ist eine Einführung in die Data Science, die bei der Stoch…"
   },
   {
    "de": "2",
    "kind": "heading",
    "digest": "16367fa701bc3203",
-   "en": "6",
+   "en": "2",
    "preview": "## Aufbau der Vorlesung"
   },
   {
    "de": "3",
    "kind": "prose",
    "digest": "b3b5c8bb9db878e8",
-   "en": "7",
+   "en": "3",
    "preview": "Die Vorlesung ruht auf drei Säulen. Die erste ist der *Background aus de…"
   },
   {
    "de": "4",
    "kind": "prose",
    "digest": "b5db0fb72099800d",
-   "en": "8",
+   "en": "4",
    "preview": "Die zweite Säule ist die *Programmierübung mit Python*. Wir arbeiten mit…"
   },
   {
    "de": "5",
    "kind": "prose",
    "digest": "989d604312579e36",
-   "en": "9",
+   "en": "5",
    "preview": "Die dritte Säule sind *Algorithmen und Datenstrukturen*: Wir programmier…"
   },
   {
    "de": "6",
    "kind": "prose",
    "digest": "17aa476f137f863b",
-   "en": "10",
+   "en": "6",
    "preview": "Die Kapitel des Skripts folgen dieser Reihenfolge; das Inhaltsverzeichni…"
   },
   {
    "de": "7",
    "kind": "directive",
    "digest": "3aa7c929a97a0a6a",
-   "en": "11",
+   "en": "7",
    "preview": "```{mermaid} flowchart TB subgraph E[\"Einführung\"] direction LR E1[\"Was …"
   },
   {
    "de": "8",
    "kind": "heading",
    "digest": "67a5b68c50cff6c4",
-   "en": "12",
+   "en": "8",
    "preview": "## Was Sie danach können"
   },
   {
    "de": "9",
    "kind": "prose",
    "digest": "0f060cc29d70b991",
-   "en": "13",
+   "en": "9",
    "preview": "Unser Ziel ist eine Einführung in die „Data Science“. Sie soll Orientier…"
   },
   {
    "de": "10",
    "kind": "prose",
    "digest": "e1e34a8bc5588856",
-   "en": "14",
+   "en": "10",
    "preview": "Hinter der Kompetenzliste des Modulhandbuchs (sie steht im [Organisatori…"
   },
   {
    "de": "11",
    "kind": "prose",
    "digest": "a35d5aedd6e9cd52",
-   "en": "15",
+   "en": "11",
    "preview": "Beruflich öffnet das mehrere Türen. Die naheliegende ist eine Bewerbung …"
   },
   {
    "de": "12",
    "kind": "heading",
    "digest": "9ad5a6a1bf11eff1",
-   "en": "16",
+   "en": "12",
    "preview": "## Was diese Vorlesung nicht ist"
   },
   {
    "de": "13",
    "kind": "prose",
    "digest": "1d1fc272016228d9",
-   "en": "17",
+   "en": "13",
    "preview": "Diese Vorlesung behandelt keine Data Science auf verteilten Systemen, da…"
   },
   {
    "de": "14",
    "kind": "prose",
    "digest": "eef3f358a45deb2b",
-   "en": "18",
+   "en": "14",
    "preview": "Bei der Auswahl und Verarbeitung von Daten sowie der Bewertung von Model…"
   },
   {
    "de": "15",
    "kind": "heading",
    "digest": "f55a014918d8facb",
-   "en": "19",
+   "en": "15",
    "preview": "## Voraussetzungen"
   },
   {
    "de": "16",
    "kind": "prose",
    "digest": "692e51cf9fbc7f8b",
-   "en": "20",
+   "en": "16",
    "preview": "In diesem Text gehen wir davon aus, dass wir alle einmal 3 Semester Grun…"
   },
   {
    "de": "17",
    "kind": "prose",
    "digest": "e29bdcd39014438c",
-   "en": "21",
+   "en": "17",
    "preview": "In der Schulzeit haben Sie womöglich bereits erste Kontakte mit Stochast…"
   },
   {
    "de": "18",
    "kind": "prose",
    "digest": "4911a0ac7d99659e",
-   "en": "22",
+   "en": "18",
    "preview": "Alle Grundlagen der Mathematik, die Sie zur Bearbeitung der Übungsaufgab…"
   },
   {
    "de": "19",
    "kind": "heading",
    "digest": "7e28ffe3faf956e4",
-   "en": "23",
+   "en": "19",
    "preview": "## Das Skript lesen"
   },
   {
@@ -163,56 +163,56 @@
    "de": "22",
    "kind": "prose",
    "digest": "67f3f7053d669739",
-   "en": "24",
+   "en": "20",
    "preview": "Wir werden immer wieder auf zusätzliche Quellen stoßen, um einzelne Them…"
   },
   {
    "de": "23",
    "kind": "heading",
    "digest": "4a7a0de77842dc8f",
-   "en": "25",
+   "en": "21",
    "preview": "## Inhaltsverzeichnis"
   },
   {
    "de": "24",
    "kind": "directive",
    "digest": "599c3f8c1a8fa099",
-   "en": "26",
+   "en": "22",
    "preview": "```{tableofcontents} ```"
   },
   {
    "de": "25",
    "kind": "heading",
    "digest": "86f6ebaceddb8843",
-   "en": "27",
+   "en": "23",
    "preview": "## Lizenz"
   },
   {
    "de": "26",
    "kind": "prose",
    "digest": "5ca5bc4f44fd231c",
-   "en": "28",
+   "en": "24",
    "preview": "Dieses Vorlesungsskript steht unter der [Creative Commons Lizenz Namensn…"
   },
   {
    "de": "27",
    "kind": "prose",
    "digest": "5da41b2ce11d8a7f",
-   "en": "29",
+   "en": "25",
    "preview": "Davon ausgenommen sind gekennzeichnete Fremdinhalte, die unter ihrer jew…"
   },
   {
    "de": "28",
    "kind": "heading",
    "digest": "465bdf090bc6cd1d",
-   "en": "30",
+   "en": "26",
    "preview": "## Quellen"
   },
   {
    "de": "29",
    "kind": "prose",
    "digest": "920d86bd69a9a910",
-   "en": "31",
+   "en": "27",
    "preview": "Nichts in diesem Buch ist neu, bis auf die Reihenfolge und sicherlich de…"
   }
  ]

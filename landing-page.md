@@ -4,21 +4,6 @@ short_title: "Lecture notes"
 description: "A complete set of lecture notes on data science: probability spaces, distributions, estimators and tests, together with Numpy, Pandas and Scikit-learn – and the learning algorithms implemented rather than called."
 ---
 
-:::{note}
-
-**About this edition.** This is an English edition of a book that was written in German:
-the *Data Science* lecture notes by Konrad Völkel for the Bachelor's programme in Computer
-Science at Heinrich Heine University Düsseldorf. The German original is the authoritative
-version and is published at
-[voelkel.pages.cs.uni-duesseldorf.de/ds-skript](https://voelkel.pages.cs.uni-duesseldorf.de/ds-skript/).
-
-The translation was produced with a large language model and reviewed afterwards – an
-experiment in keeping a translated edition alive alongside a book that keeps changing.
-Where this edition and the German original disagree, the original is right. If something
-reads oddly, or a formula or a figure looks wrong, it is worth checking against it.
-
-:::
-
 These notes are an introduction to data science that begins with stochastics and ends with machine learning, without leaving a gap in between. What separates them from a tools course is the third pillar below: the methods here are not called, they are reimplemented. If you want to know what `model.fit()` actually does, you write it once yourself – k-means, principal component analysis, regression, the EM algorithm. Everything you need for that is in this book.
 
 ## How the course is built
@@ -113,3 +98,15 @@ and {cite}`joelgrusdsfs` for the Python part.
 Both books hold material for more than one course, and neither is aimed at quite our audience.
 A complementary book worth reading, with some further mathematical foundations (linear algebra in particular), is {cite}`Deisenroth2020`.
 If rummaging through package documentation is not your idea of fun, you may be happier with Jake VanderPlas's book for Numpy, Pandas and Matplotlib, which can even be read online for free {cite}`pythondsh`.
+
+:::{note}
+
+**About this edition.** This is an English edition of a book that was written in German:
+the *Data Science* lecture notes by Konrad Völkel for the Bachelor's programme in Computer
+Science at Heinrich Heine University Düsseldorf. The German original is published at
+[voelkel.pages.cs.uni-duesseldorf.de/ds-skript](https://voelkel.pages.cs.uni-duesseldorf.de/ds-skript/).
+
+The translation was produced with a large language model and reviewed afterwards – an
+experiment in keeping a translated edition alive alongside a book that keeps changing.
+
+:::
