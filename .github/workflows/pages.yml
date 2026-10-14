@@ -1,0 +1,55 @@
+name: pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+# One deploy at a time; a queued run waits rather than racing an in-flight one.
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Build the book
+        # The site is served from https://konradvoelkel.github.io/ds-en/, a subpath. Without
+        # BASE_URL every asset path points at the domain root and the published site loads
+        # nothing at all -- while still answering 200, so it fails quietly.
+        env:
+          BASE_URL: /ds-en
+        run: |
+          npm install -g mystmd
+          myst build --html
+
+      - name: Refuse to publish a site that would load nothing
+        run: |
+          test -f _build/html/index.html
+          grep -q '/ds-en/build/' _build/html/index.html
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: _build/html
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

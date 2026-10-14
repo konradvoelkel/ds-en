@@ -43,18 +43,15 @@ uv run myst build --html     # -> _build/html
 uv run myst build --pdf      # -> exports/ds-en.pdf (needs TeX, latexmk, imagemagick)
 ```
 
-To publish: `tools/deploy-pages.sh`. It builds with `BASE_URL=/ds-en` (the site is served
-from a subpath, and without that every asset link breaks) and force-pushes the result to
-the `gh-pages` branch as a single commit. That branch is build output, not source.
+Publishing is automatic: every push to `main` builds the site and deploys it to GitHub
+Pages (`.github/workflows/pages.yml`). The build sets `BASE_URL=/ds-en`, because the site
+is served from a subpath and without it every asset link breaks — the workflow refuses to
+deploy if that prefix is missing, since the failure is otherwise silent.
 
-The better route is a GitHub Actions workflow, which would deploy from an artifact and
-keep the generated site out of git entirely. The workflows are written and waiting on
-the `ci-workflows` branch; pushing them needs a token with the `workflow` scope:
-
-```
-gh auth refresh -h github.com -s workflow
-git push origin ci-workflows:main   # or cherry-pick the one commit
-```
+Two more workflows run in CI: `checks.yml` on every push (block alignment against the
+German original, the leftover-German scan, notebook round-trips, and the build), and
+`upstream.yml` weekly, which opens an issue when ds-skript has changed in a way that makes
+part of this edition stale.
 
 Notebooks are **not** executed by MyST; their outputs are committed. After changing code
 in a notebook, re-execute and commit the result:
