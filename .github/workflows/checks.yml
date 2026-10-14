@@ -15,7 +15,19 @@ jobs:
       # The German original is public, so no secret is needed. A blobless clone keeps
       # this to seconds; `git show` fetches the few files the checks actually read.
       - name: Clone the German original
-        run: git clone --filter=blob:none https://gitlab.cs.uni-duesseldorf.de/voelkel/ds-skript.git ../ds-skript
+        # The HHU GitLab is not always reachable from GitHub's runners -- one dispatch of
+        # this workflow timed out after 137 s and the next cloned in seconds. Retry rather
+        # than report a stale-check failure that is really a network failure.
+        run: |
+          for attempt in 1 2 3; do
+            git clone --filter=blob:none \
+              https://gitlab.cs.uni-duesseldorf.de/voelkel/ds-skript.git ../ds-skript && exit 0
+            echo "clone attempt $attempt failed; retrying in 30 s"
+            rm -rf ../ds-skript
+            sleep 30
+          done
+          echo "could not reach the HHU GitLab after three attempts"
+          exit 1
 
       - uses: actions/setup-python@v5
         with:

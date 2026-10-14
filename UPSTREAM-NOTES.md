@@ -24,8 +24,13 @@ anyway, and nobody notices.
   rules-of-calculation list in `erwartungswert.md` does.
 
 *Fixed in this edition* (`templates/tex/ds-en/template.tex`): figures become non-floating
-`[H]` boxes, and `enumitem` is loaded. Both fixes are three lines and apply unchanged to
-ds-skript.
+`[H]` boxes, and `enumitem` is loaded.
+
+**Fixed upstream too**, in ds-skript `b7f8209` (2026-10-14), which is the first thing this
+edition gave back to the original. That commit also sharpens the second diagnosis: without
+`enumitem`, `article` does not error on `[resume]` at all — it typesets the word as literal
+text, the resumed item loses its number, and the items after it run into one unnumbered
+paragraph. Silent, so a non-forced build would not have caught it either.
 
 ## Factual slips
 
