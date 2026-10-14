@@ -1,14 +1,14 @@
 {
  "source": "statistische-tests.md",
  "target": "statistical-tests.md",
- "upstream": "b7f820945bad521245066a6e9a09bade0361b5a6",
+ "upstream": "a60d9a42492e2b5767cb2b0f01a914c391b5dfe4",
  "blocks": [
   {
    "de": "0",
-   "kind": "heading",
-   "digest": "6b477019fbc8925f",
+   "kind": "prose",
+   "digest": "aa41b03ddd7053d0",
    "en": "0",
-   "preview": "# Statistische Tests"
+   "preview": "--- title: \"Statistische Tests: z-Test, t-Test und der p-Wert\" short_tit…"
   },
   {
    "de": "1",

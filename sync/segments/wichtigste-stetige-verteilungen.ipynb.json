@@ -1,14 +1,14 @@
 {
  "source": "wichtigste-stetige-verteilungen.ipynb",
  "target": "important-continuous-distributions.ipynb",
- "upstream": "b7f820945bad521245066a6e9a09bade0361b5a6",
+ "upstream": "a60d9a42492e2b5767cb2b0f01a914c391b5dfe4",
  "blocks": [
   {
    "de": "c0.0",
-   "kind": "heading",
-   "digest": "367c2275d8f5a757",
+   "kind": "prose",
+   "digest": "b4a35a3151bc03e0",
    "en": "c0.0",
-   "preview": "# Wichtigste stetige Verteilungen"
+   "preview": "--- title: \"Wichtigste stetige Verteilungen in SciPy\" short_title: \"Wich…"
   },
   {
    "de": "c0.1",

@@ -1,14 +1,14 @@
 {
  "source": "numpy.ipynb",
  "target": "numpy.ipynb",
- "upstream": "b7f820945bad521245066a6e9a09bade0361b5a6",
+ "upstream": "a60d9a42492e2b5767cb2b0f01a914c391b5dfe4",
  "blocks": [
   {
    "de": "c0.0",
-   "kind": "heading",
-   "digest": "584028f0a9c8e478",
+   "kind": "prose",
+   "digest": "26481311d2f6e98a",
    "en": "c0.0",
-   "preview": "# Numpy"
+   "preview": "--- title: \"Numpy: Vektorisierung und Arrays\" short_title: \"Numpy\" descr…"
   },
   {
    "de": "c1.0",

@@ -1,14 +1,14 @@
 {
  "source": "zufallsvariablen-verteilungen.md",
  "target": "random-variables-distributions.md",
- "upstream": "b7f820945bad521245066a6e9a09bade0361b5a6",
+ "upstream": "a60d9a42492e2b5767cb2b0f01a914c391b5dfe4",
  "blocks": [
   {
    "de": "0",
-   "kind": "heading",
-   "digest": "24d07680094155a9",
+   "kind": "prose",
+   "digest": "bf9abb29a7ff9b80",
    "en": "0",
-   "preview": "# Zufallsvariablen und Verteilungen"
+   "preview": "--- title: \"Zufallsvariablen und Verteilungen\" description: \"Zufallsvari…"
   },
   {
    "de": "1",

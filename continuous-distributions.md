@@ -1,4 +1,8 @@
-# Continuous distributions
+---
+title: "Continuous distributions and density functions"
+short_title: "Continuous distributions"
+description: "From the probability mass function to the density: why single points are null sets, what a density function does, and how it relates to the cumulative distribution function."
+---
 
 :::{admonition} Definition
 Let $X \colon \Omega \to \mathbb{R}$ be a random variable, that is, let $\Omega$ be a probability space (a set $\Omega$ together with a probability measure $P_\Omega$) and let $X$ be a map such that $P(X \in A) := P_\Omega(X^{-1}(A))$ is defined for all events $A \subseteq \mathbb{R}$.

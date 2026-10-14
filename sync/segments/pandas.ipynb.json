@@ -1,14 +1,14 @@
 {
  "source": "pandas.ipynb",
  "target": "pandas.ipynb",
- "upstream": "b7f820945bad521245066a6e9a09bade0361b5a6",
+ "upstream": "a60d9a42492e2b5767cb2b0f01a914c391b5dfe4",
  "blocks": [
   {
    "de": "c0.0",
-   "kind": "heading",
-   "digest": "a4886bc44f5dbb7a",
+   "kind": "prose",
+   "digest": "0bc0eee1776710a8",
    "en": "c0.0",
-   "preview": "# Pandas"
+   "preview": "--- title: \"Pandas: DataFrames, Series und der Weg von SQL\" short_title:…"
   },
   {
    "de": "c0.1",

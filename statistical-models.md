@@ -1,4 +1,8 @@
-# Statistical models and estimators
+---
+title: "Statistical models, estimators and maximum likelihood"
+short_title: "Statistical models and estimators"
+description: "What a statistical model claims, what an estimator is, what unbiasedness means, and how the maximum likelihood principle produces estimators."
+---
 
 In the data science process, the road from the data to a product (be it a report, a prediction or new and interesting data), we model the data. Strictly speaking we model partial aspects, sections of the data (just as the data themselves are only a section of reality).
 In doing so we may be interested in how the data came about, but we may equally be driven by the wish to be able to say something particular about them, or to do something particular with them. So it helps to be clear about what kind of information one wants to coax out of the data, and then to tune the models to that.

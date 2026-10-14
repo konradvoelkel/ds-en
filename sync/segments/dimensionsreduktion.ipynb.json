@@ -1,14 +1,14 @@
 {
  "source": "dimensionsreduktion.ipynb",
  "target": "dimensionality-reduction.ipynb",
- "upstream": "b7f820945bad521245066a6e9a09bade0361b5a6",
+ "upstream": "a60d9a42492e2b5767cb2b0f01a914c391b5dfe4",
  "blocks": [
   {
    "de": "c0.0",
-   "kind": "heading",
-   "digest": "dfede09f7a55c1bd",
+   "kind": "prose",
+   "digest": "95f1c0b2dca7f438",
    "en": "c0.0",
-   "preview": "# Dimensionsreduktion"
+   "preview": "--- title: \"Dimensionsreduktion: Hauptkomponentenanalyse (PCA)\" short_ti…"
   },
   {
    "de": "c0.1",

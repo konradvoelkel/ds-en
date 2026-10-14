@@ -1,14 +1,14 @@
 {
  "source": "explorative-analyse-mit-numpy.ipynb",
  "target": "titanic-eda-numpy.ipynb",
- "upstream": "b7f820945bad521245066a6e9a09bade0361b5a6",
+ "upstream": "a60d9a42492e2b5767cb2b0f01a914c391b5dfe4",
  "blocks": [
   {
    "de": "c0.0",
-   "kind": "heading",
-   "digest": "76f7ba00f64928cd",
+   "kind": "prose",
+   "digest": "46c61b708b52648f",
    "en": "c0.0",
-   "preview": "# Titanic EDA, erster Anlauf"
+   "preview": "--- title: \"Titanic EDA mit Numpy, erster Anlauf\" short_title: \"Titanic …"
   },
   {
    "de": "c0.1",

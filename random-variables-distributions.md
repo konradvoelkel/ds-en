@@ -1,4 +1,7 @@
-# Random variables and distributions
+---
+title: "Random variables and distributions"
+description: "Random variables as the interface to distributions: the induced probability measure, the probability mass function, the probability vector, and the road from data to models."
+---
 
 The typical 'interface' to probability distributions is the random variable.
 Unlike a bare distribution, a random variable also keeps track of which concrete values can turn up as outcomes.

@@ -1,14 +1,14 @@
 {
  "source": "model-selection.ipynb",
  "target": "model-selection.ipynb",
- "upstream": "b7f820945bad521245066a6e9a09bade0361b5a6",
+ "upstream": "a60d9a42492e2b5767cb2b0f01a914c391b5dfe4",
  "blocks": [
   {
    "de": "c0.0",
-   "kind": "heading",
-   "digest": "e70c0f654662d314",
+   "kind": "prose",
+   "digest": "26e361676319265c",
    "en": "c0.0",
-   "preview": "# Modell-Auswahl"
+   "preview": "--- title: \"Modell-Auswahl: Kreuzvalidierung und Gütemaße\" short_title: …"
   },
   {
    "de": "c0.1",

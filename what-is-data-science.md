@@ -1,4 +1,7 @@
-# What is Data Science?
+---
+title: "What is Data Science?"
+description: "What data science is and what it is not, introduced through the Reinhart–Rogoff case, whose spreadsheet error helped justify European austerity. Data, the disciplines involved, the job."
+---
 
 ## First off: a spreadsheet that sent Europe into austerity
 

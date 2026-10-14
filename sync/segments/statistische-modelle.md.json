@@ -1,14 +1,14 @@
 {
  "source": "statistische-modelle.md",
  "target": "statistical-models.md",
- "upstream": "b7f820945bad521245066a6e9a09bade0361b5a6",
+ "upstream": "a60d9a42492e2b5767cb2b0f01a914c391b5dfe4",
  "blocks": [
   {
    "de": "0",
-   "kind": "heading",
-   "digest": "ecdbbb87915653f4",
+   "kind": "prose",
+   "digest": "10dbad6f874ca088",
    "en": "0",
-   "preview": "# Statistische Modelle und Schätzer"
+   "preview": "--- title: \"Statistische Modelle, Schätzer und Maximum Likelihood\" short…"
   },
   {
    "de": "1",

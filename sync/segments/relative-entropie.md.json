@@ -1,14 +1,14 @@
 {
  "source": "relative-entropie.md",
  "target": "relative-entropy.md",
- "upstream": "b7f820945bad521245066a6e9a09bade0361b5a6",
+ "upstream": "a60d9a42492e2b5767cb2b0f01a914c391b5dfe4",
  "blocks": [
   {
    "de": "0",
-   "kind": "heading",
-   "digest": "aea75bb8ba697e54",
+   "kind": "prose",
+   "digest": "14afd3621a70897a",
    "en": "0",
-   "preview": "# Relative Entropie"
+   "preview": "--- title: \"Relative Entropie und Kullback-Leibler-Divergenz\" short_titl…"
   },
   {
    "de": "1",

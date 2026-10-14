@@ -1,6 +1,11 @@
-# Lecture notes
+---
+title: "Data Science: from stochastics to machine learning with Python"
+short_title: "Lecture notes"
+description: "A complete set of lecture notes on data science: probability spaces, distributions, estimators and tests, together with Numpy, Pandas and Scikit-learn – and the learning algorithms implemented rather than called."
+---
 
 :::{note}
+
 **About this edition.** This is an English edition of a book that was written in German:
 the *Data Science* lecture notes by Konrad Völkel for the Bachelor's programme in Computer
 Science at Heinrich Heine University Düsseldorf. The German original is the authoritative
@@ -11,50 +16,10 @@ The translation was produced with a large language model and reviewed afterwards
 experiment in keeping a translated edition alive alongside a book that keeps changing.
 Where this edition and the German original disagree, the original is right. If something
 reads oddly, or a formula or a figure looks wrong, it is worth checking against it.
+
 :::
 
-## Prerequisites
-
-In this text we assume that we have all been through three semesters of foundational mathematics: we know what a vector is, what a matrix is, and what the derivative of a function of several real variables is. We have also all learned a programming language before and know the basic data structures.
-
-You may well have had a first brush with stochastics, statistics and probability theory at school. We introduce the foundations systematically, so that nothing beyond "mathematics for computer scientists" should be needed – but we do it at the brisk pace that mathematicians and computer scientists are used to. If you would first like an overview of what school could have taught you, the [Online Mathematik Brückenkurs Plus](https://www.ombplus.de/ombplus/link/OmbpluModuleStocha/Ueberb) is an excellent place to start (free, in German, didactically sound, and in the same notation as these notes).
-
-## Aims
-
-Our aim is an introduction to "data science".
-It should give you orientation and an overview, and get you to first applications in descriptive, exploratory and inferential data analysis, with a particular eye on machine learning.
-Along the way we cover the theoretical background in stochastics that this needs, and do some practical exercises in Python.
-From there you could go deeper into artificial intelligence; HHU has the [master's programme "Artificial Intelligence and Data Science"](https://www.heicad.hhu.de/lehre/masters-programme-ai-and-data-science) for that.
-
-If you want to work as a data scientist across the full breadth of the field, then beyond this course you should also know the content of courses on statistics, databases and machine learning, and have some practice on concrete projects. Depending on where you end up, you will also need algorithms for distributed systems (Data Science 2) or deep learning. To move easily between other people's projects you should be able to read R code (and Julia may yet become more important); to go deeper into the programming itself there is the course *Einführung in Python*, which has notes of its own, [Einführung in Python](https://eipy-skript-7dd28c.pages.cs.uni-duesseldorf.de/) (in German, under construction).
-None of that is needed yet for "junior data analyst" jobs, which essentially come down to applying simple statistics in reports and dashboards – for those, this course teaches you the tools of the trade, and all you need to add is practice with whichever software packages your application calls for.
-
-Along the way we will keep meeting further sources that go deeper into individual topics or look at them from another angle.
-The first session gave us an overview of what data science is and what we are going to do.
-
-
-**Competencies**
-After completing the course, students should be able to apply the basic concepts of probability competently, should have a working grasp of the probability foundations that machine learning rests on, and should be able to work a machine learning problem out in detail and apply basic machine learning algorithms. After successfully completing this module they should be in a position to
-1. analyse a dataset exploratorily,
-1. transform data for further processing,
-1. select subsets of the data for further processing,
-1. merge suitable datasets,
-1. describe and visualise findings in data,
-1. set up statistical models from data,
-1. assess the quality of models,
-1. and use them for classifying and predicting further data.
-
-On top of that, you will know how to carry these tasks out in Python.
-
-**Wider aims.** Behind that list is a simpler picture of what you should be able to do at the end: pick up a dataset and straight away be able to ask questions of it *and* answer them. Coming up with research questions is very much part of exploratory data analysis. Beyond that, you should be able to read specialist articles and reports that argue with statistics – and notice when something in them does not add up.
-
-Professionally, this opens several doors. The obvious one is applying for a job as a "junior data scientist" or "junior data analyst"; the second is the master's programme [Artificial Intelligence and Data Science](https://www.heicad.hhu.de/lehre/masters-programme-ai-and-data-science), which this course prepares you for. The third is easy to overlook: data science techniques are useful in plenty of places where nobody carries that job title – in product development (*data-driven design*), in optimising running systems from their log files, in performance comparisons that feed decisions (*data-driven decision making*), in quality control, and wherever a machine learning component has to be built into a larger system.
-
-**What this course is not**
-This course does not deal with data science on distributed systems; that is the subject of Data Science 2. It is not an introduction to deep learning, for which there is the course "Introduction to Deep Learning". It does not introduce R/RStudio or other tools. It does not reduce data science to calling `model.fit()`: we reimplement estimators and algorithms ourselves so that we understand what goes on inside them. And it is not a programming course, even though it assumes no prior knowledge of Python; what we need is in the chapter [Introduction to Python](intro-python.ipynb).
-
-Selecting and processing data, and assessing models, raise ethical questions too. Of these, the notes treat the legal framework of data protection in a chapter of its own, written as a glossary of the most important terms; the wider ethical discussion is not part of the book.
-
+These notes are an introduction to data science that begins with stochastics and ends with machine learning, without leaving a gap in between. What separates them from a tools course is the third pillar below: the methods here are not called, they are reimplemented. If you want to know what `model.fit()` actually does, you write it once yourself – k-means, principal component analysis, regression, the EM algorithm. Everything you need for that is in this book.
 
 ## How the course is built
 
@@ -99,23 +64,46 @@ flowchart TB
   E --> D --> S --> X --> M --> P --> L
 ```
 
-## The notes and the course
+## What you will be able to do
+
+Our aim is an introduction to "data science".
+It should give you orientation and an overview, and get you to first applications in descriptive, exploratory and inferential data analysis, with a particular eye on machine learning.
+Along the way we cover the theoretical background in stochastics that this needs, and do some practical exercises in Python.
+From there you could go deeper into artificial intelligence; HHU has the [master's programme "Artificial Intelligence and Data Science"](https://www.heicad.hhu.de/lehre/masters-programme-ai-and-data-science) for that.
+
+Behind the list of competencies in the module handbook lies a simpler picture of what you should be able to do at the end: pick up a dataset and straight away be able to ask questions of it *and* answer them. Coming up with research questions is very much part of exploratory data analysis. Beyond that, you should be able to read specialist articles and reports that argue with statistics – and notice when something in them does not add up.
+
+Professionally, this opens several doors. The obvious one is applying for a job as a "junior data scientist" or "junior data analyst"; the second is the master's programme [Artificial Intelligence and Data Science](https://www.heicad.hhu.de/lehre/masters-programme-ai-and-data-science), which this course prepares you for. The third is easy to overlook: data science techniques are useful in plenty of places where nobody carries that job title – in product development (*data-driven design*), in optimising running systems from their log files, in performance comparisons that feed decisions (*data-driven decision making*), in quality control, and wherever a machine learning component has to be built into a larger system.
+
+## What this course is not
+
+This course does not deal with data science on distributed systems; that is the subject of Data Science 2. It is not an introduction to deep learning, for which there is the course "Introduction to Deep Learning". It does not introduce R/RStudio or other tools. It does not reduce data science to calling `model.fit()`: we reimplement estimators and algorithms ourselves so that we understand what goes on inside them. And it is not a programming course, even though it assumes no prior knowledge of Python; what we need is in the chapter [Introduction to Python](intro-python.ipynb).
+
+Selecting and processing data, and assessing models, raise ethical questions too. Of these, the notes treat the legal framework of data protection in a chapter of its own, written as a glossary of the most important terms; the wider ethical discussion is not part of the book.
+
+## Prerequisites
+
+In this text we assume that we have all been through three semesters of foundational mathematics: we know what a vector is, what a matrix is, and what the derivative of a function of several real variables is. We have also all learned a programming language before and know the basic data structures.
+
+You may well have had a first brush with stochastics, statistics and probability theory at school. We introduce the foundations systematically, so that nothing beyond "mathematics for computer scientists" should be needed – but we do it at the brisk pace that mathematicians and computer scientists are used to. If you would first like an overview of what school could have taught you, the [Online Mathematik Brückenkurs Plus](https://www.ombplus.de/ombplus/link/OmbpluModuleStocha/Ueberb) is an excellent place to start (free, in German, didactically sound, and in the same notation as these notes).
 
 Every piece of mathematics you need for the exercises is in these notes (or among the course's entry requirements).
 
-**Why notes at all**, you might ask. Mainly, the notes serve us as a reference and as a guide to the exercises. There are excellent MOOCs (massive open online courses) freely available on the web – but unlike a MOOC, these notes accompany a taught course with exercises. Working through the exercises in earnest, and talking them over freely with fellow students, is what decides whether the learning succeeds. Teachers can only teach; the learning, students still have to do themselves.
+## Reading these notes
 
+Along the way we will keep meeting further sources that go deeper into individual topics or look at them from another angle.
+The first session gave us an overview of what data science is and what we are going to do.
+
+## Table of contents
+
+```{tableofcontents}
+```
 
 ## Licence
 
 These lecture notes are published under the [Creative Commons Attribution–ShareAlike 4.0 licence (CC BY-SA 4.0)](https://creativecommons.org/licenses/by-sa/4.0/). <a href="https://creativecommons.org/licenses/by-sa/4.0/"><img src="https://mirrors.creativecommons.org/presskit/buttons/80x15/png/by-sa.png" height="20"/></a> All code is additionally under the GPL3.
 
 The exception is third-party content, marked as such, each item under its own licence: the xkcd comics (CC BY-NC 2.5), Drew Conway's Venn diagram (CC BY-NC 3.0) and Anthony Pino's Melbourne housing dataset (CC BY-NC-SA 4.0). The source of each is given where it appears.
-
-## Table of contents
-
-```{tableofcontents}
-```
 
 ## Sources
 

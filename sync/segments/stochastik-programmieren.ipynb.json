@@ -1,14 +1,14 @@
 {
  "source": "stochastik-programmieren.ipynb",
  "target": "programming-stochastics.ipynb",
- "upstream": "b7f820945bad521245066a6e9a09bade0361b5a6",
+ "upstream": "a60d9a42492e2b5767cb2b0f01a914c391b5dfe4",
  "blocks": [
   {
    "de": "c0.0",
-   "kind": "heading",
-   "digest": "bf58a40c55722c97",
+   "kind": "prose",
+   "digest": "25d6b8ebc429e005",
    "en": "c0.0",
-   "preview": "# Stochastik programmieren"
+   "preview": "--- title: \"Stochastik programmieren: Zufallsexperimente simulieren\" sho…"
   },
   {
    "de": "c1.0",

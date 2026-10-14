@@ -1,14 +1,14 @@
 {
  "source": "intro-python.ipynb",
  "target": "intro-python.ipynb",
- "upstream": "b7f820945bad521245066a6e9a09bade0361b5a6",
+ "upstream": "a60d9a42492e2b5767cb2b0f01a914c391b5dfe4",
  "blocks": [
   {
    "de": "c0.0",
-   "kind": "heading",
-   "digest": "80be48bc0085b350",
+   "kind": "prose",
+   "digest": "aa82527bf56faca5",
    "en": "c0.0",
-   "preview": "# Einführung in Python"
+   "preview": "--- title: \"Einführung in Python\" description: \"Das Python, das dieses S…"
   },
   {
    "de": "c0.1",
@@ -161,7 +161,7 @@
   {
    "de": "c2.4",
    "kind": "prose",
-   "digest": "d064f7871bee2371",
+   "digest": "294fbf1bba3ecec4",
    "en": "c2.4",
    "preview": "**4. Sprachmodelle können Python.** Von allen Programmiersprachen ist Py…"
   },

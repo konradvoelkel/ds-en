@@ -1,14 +1,14 @@
 {
  "source": "intro-stochastik.md",
  "target": "intro-stochastics.md",
- "upstream": "b7f820945bad521245066a6e9a09bade0361b5a6",
+ "upstream": "a60d9a42492e2b5767cb2b0f01a914c391b5dfe4",
  "blocks": [
   {
    "de": "0",
-   "kind": "heading",
-   "digest": "df3ed4c3831fee31",
+   "kind": "prose",
+   "digest": "5cdb3de4e4b01c04",
    "en": "0",
-   "preview": "# Herleitung des mathematischen Formalismus der Stochastik"
+   "preview": "--- title: \"Herleitung des mathematischen Formalismus der Stochastik\" sh…"
   },
   {
    "de": "1",

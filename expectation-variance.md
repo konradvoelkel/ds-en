@@ -1,4 +1,7 @@
-# Expected value and variance
+---
+title: "Expected value and variance"
+description: "Quantifying deviation: absolute and squared deviation, the sample standard deviation, moments, the expected value discrete and continuous. With a digression on entropy in physics."
+---
 
 ## Quantifying deviation
 

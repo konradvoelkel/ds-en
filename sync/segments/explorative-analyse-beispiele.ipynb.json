@@ -1,14 +1,14 @@
 {
  "source": "explorative-analyse-beispiele.ipynb",
  "target": "eda-examples.ipynb",
- "upstream": "b7f820945bad521245066a6e9a09bade0361b5a6",
+ "upstream": "a60d9a42492e2b5767cb2b0f01a914c391b5dfe4",
  "blocks": [
   {
    "de": "c0.0",
-   "kind": "heading",
-   "digest": "a72bd238c6c9cd9e",
+   "kind": "prose",
+   "digest": "07b28e802cbb82a7",
    "en": "c0.0",
-   "preview": "# Explorative Analyse: Beispiele"
+   "preview": "--- title: \"Explorative Datenanalyse: Wein, Starkregen, Titanic\" short_t…"
   },
   {
    "de": "c0.1",

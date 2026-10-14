@@ -4,7 +4,7 @@ project:
   short_title: DS
   title: Data Science Lecture Notes from Konrad Völkel
   subtitle: BSc Computer Science
-  description: English edition of the Data Science lecture notes, translated from the German original
+  description: "Data Science lecture notes: stochastics, statistics and Python from the foundations to machine learning, with the learning algorithms implemented rather than called. English edition."
   authors:
     - name: Dr. Konrad Völkel
       affiliations:
@@ -27,6 +27,79 @@ project:
     - format: pdf
       template: ./templates/tex/ds-en
       output: exports/ds-en.pdf
+      articles:
+        - title: 'Introduction'
+          level: 1
+        - file: what-is-data-science.md
+          level: 2
+        - file: intro-stochastics.md
+          level: 2
+        - file: intro-python.ipynb
+          level: 2
+        - title: 'Discrete stochastics and Numpy'
+          level: 1
+        - file: programming-stochastics.ipynb
+          level: 2
+        - file: random-variables-distributions.md
+          level: 2
+        - file: expectation-variance.md
+          level: 2
+        - file: numpy.ipynb
+          level: 2
+        - file: important-discrete-distributions.ipynb
+          level: 2
+        - file: titanic-eda-numpy.ipynb
+          level: 2
+        - title: 'Continuous stochastics and Scipy'
+          level: 1
+        - file: continuous-distributions.md
+          level: 2
+        - file: normal-distribution.ipynb
+          level: 2
+        - file: important-continuous-distributions.ipynb
+          level: 2
+        - title: 'Exploratory data analysis'
+          level: 1
+        - file: descriptive-statistics.md
+          level: 2
+        - file: eda-examples.ipynb
+          level: 2
+        - file: iris.ipynb
+          level: 2
+        - file: pandas.ipynb
+          level: 2
+        - file: data-cleaning.ipynb
+          level: 2
+        - title: 'Multivariate stochastics'
+          level: 1
+        - file: covariance.md
+          level: 2
+        - file: multivariate-normal.ipynb
+          level: 2
+        - file: relative-entropy.md
+          level: 2
+        - title: 'Data protection'
+          level: 1
+        - file: data-protection.md
+          level: 2
+        - title: 'Machine learning'
+          level: 1
+        - file: kmeans.ipynb
+          level: 2
+        - file: statistical-models.md
+          level: 2
+        - file: dimensionality-reduction.ipynb
+          level: 2
+        - file: linear-regression.ipynb
+          level: 2
+        - file: kernel-methods.ipynb
+          level: 2
+        - file: statistical-tests.md
+          level: 2
+        - file: model-selection.ipynb
+          level: 2
+        - file: expectation-maximization.ipynb
+          level: 2
   toc:
     - file: landing-page.md
     - title: Introduction

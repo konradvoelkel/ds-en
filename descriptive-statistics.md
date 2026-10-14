@@ -1,4 +1,7 @@
-# Descriptive statistics and visualisation
+---
+title: "Descriptive statistics and visualisation"
+description: "Levels of measurement and the summary measures they permit, a worked example, Simpson's paradox, and visualisation: exploratory data analysis as a process."
+---
 
 {cite}`dds`, p. 41 shows schematically how we go about 'data science':
 

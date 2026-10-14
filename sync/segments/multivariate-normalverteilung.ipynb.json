@@ -1,14 +1,14 @@
 {
  "source": "multivariate-normalverteilung.ipynb",
  "target": "multivariate-normal.ipynb",
- "upstream": "b7f820945bad521245066a6e9a09bade0361b5a6",
+ "upstream": "a60d9a42492e2b5767cb2b0f01a914c391b5dfe4",
  "blocks": [
   {
    "de": "c0.0",
-   "kind": "heading",
-   "digest": "3226994a2a021748",
+   "kind": "prose",
+   "digest": "89d045887337f4f9",
    "en": "c0.0",
-   "preview": "# Multivariate Normalverteilung"
+   "preview": "--- title: \"Multivariate Normalverteilung\" description: \"Dichten in mehr…"
   },
   {
    "de": "c0.1",

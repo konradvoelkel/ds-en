@@ -1,4 +1,8 @@
-# Data protection
+---
+title: "Data protection and the GDPR: a glossary"
+short_title: "Data protection"
+description: "The terms of data protection law that genuinely come up when working with data: personal data, the principles of Art. 5, legal bases, privacy by design."
+---
 
 In computer science, **handling personal data responsibly** is a central concern – legally as much as ethically. This chapter gives an overview of the most important terms and principles of data protection in the context of the European General Data Protection Regulation (GDPR; in German *Datenschutz-Grundverordnung*, DSGVO).
 

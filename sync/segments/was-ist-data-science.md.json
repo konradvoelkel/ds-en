@@ -1,14 +1,14 @@
 {
  "source": "was-ist-data-science.md",
  "target": "what-is-data-science.md",
- "upstream": "b7f820945bad521245066a6e9a09bade0361b5a6",
+ "upstream": "a60d9a42492e2b5767cb2b0f01a914c391b5dfe4",
  "blocks": [
   {
    "de": "0",
-   "kind": "heading",
-   "digest": "c4601633b33178ac",
+   "kind": "prose",
+   "digest": "7cccbda6f6669e86",
    "en": "0",
-   "preview": "# Was ist Data Science?"
+   "preview": "--- title: \"Was ist Data Science?\" description: \"Was Data Science ist un…"
   },
   {
    "de": "1",

@@ -1,4 +1,8 @@
-# Multivariate statistics: covariance and dependence
+---
+title: "Multivariate statistics: covariance and dependence"
+short_title: "Covariance and dependence"
+description: "The joint distribution, marginal distributions and Bayes' theorem, then covariance: how it behaves like an inner product, and why the correlation coefficient is a cosine."
+---
 
 ## Joint distribution and Bayes
 

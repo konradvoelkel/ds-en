@@ -1,14 +1,14 @@
 {
  "source": "erwartungswert.md",
  "target": "expectation-variance.md",
- "upstream": "b7f820945bad521245066a6e9a09bade0361b5a6",
+ "upstream": "a60d9a42492e2b5767cb2b0f01a914c391b5dfe4",
  "blocks": [
   {
    "de": "0",
-   "kind": "heading",
-   "digest": "016be8da36e90d9c",
+   "kind": "prose",
+   "digest": "884ae2f41a81a017",
    "en": "0",
-   "preview": "# Erwartungswert und Varianz"
+   "preview": "--- title: \"Erwartungswert und Varianz\" description: \"Abweichung quantif…"
   },
   {
    "de": "1",

@@ -1,14 +1,14 @@
 {
  "source": "iris.ipynb",
  "target": "iris.ipynb",
- "upstream": "b7f820945bad521245066a6e9a09bade0361b5a6",
+ "upstream": "a60d9a42492e2b5767cb2b0f01a914c391b5dfe4",
  "blocks": [
   {
    "de": "c0.0",
-   "kind": "heading",
-   "digest": "7f580a0be3abafda",
+   "kind": "prose",
+   "digest": "787c48b2ec1b20ee",
    "en": "c0.0",
-   "preview": "# Iris"
+   "preview": "--- title: \"Der Iris-Datensatz: Scatterplots und Jittering\" short_title:…"
   },
   {
    "de": "c0.1",

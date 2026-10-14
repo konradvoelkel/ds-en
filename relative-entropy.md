@@ -1,4 +1,8 @@
-# Relative entropy
+---
+title: "Relative entropy and Kullback–Leibler divergence"
+short_title: "Relative entropy"
+description: "Why the logarithm turns up in information theory, the definition and properties of relative entropy, together with joint entropy and continuous entropy."
+---
 
 ## Logarithms
 

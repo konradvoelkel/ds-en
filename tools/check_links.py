@@ -35,9 +35,17 @@ from sync import german, pairs, translated  # noqa: E402
 
 ROOT = Path(__file__).resolve().parent.parent
 
-# A link label: short, single-line, no maths. The narrowness matters -- `[5,8)$ ... [x](y)`
-# in a formula otherwise reads as a link label the width of a paragraph.
-LINK = re.compile(r"\[([^\]\n$]{1,70})\]\(([a-zäöüß0-9_-]+\.(?:md|ipynb))\)")
+# A link label: short, no maths, but it may be wrapped across lines. Upstream hard-wraps
+# its Markdown, so `[Einführung in\nPython](intro-python.ipynb)` is one label in two lines;
+# requiring a single line made the German look as though it had dropped the link entirely.
+# `$` stays excluded: `[5,8)$ ... [x](y)` in a formula would otherwise read as a label the
+# width of a paragraph.
+LINK = re.compile(r"\[([^\]$]{1,120})\]\(([a-zäöüß0-9_-]+\.(?:md|ipynb))\)", re.S)
+
+
+def _label(raw: str) -> str:
+    """Compare labels by their words, not their line breaks."""
+    return " ".join(raw.split())
 
 
 def _text(raw: str, notebook: bool) -> str:
@@ -60,11 +68,11 @@ def main() -> int:
         english = _text((ROOT / en_file).read_text(), en_file.endswith(".ipynb"))
         original = _text(german(de_file, commit), de_file.endswith(".ipynb"))
         for label, target in LINK.findall(english):
-            en_labels[target][label] += 1
+            en_labels[target][_label(label)] += 1
         for label, target in LINK.findall(original):
             mapped = filemap.get(target)
             if mapped:
-                de_labels[mapped][label] += 1
+                de_labels[mapped][_label(label)] += 1
 
     bad = noted = 0
     for target in sorted(set(en_labels) | set(de_labels)):
