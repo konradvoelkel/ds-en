@@ -319,6 +319,34 @@ invisible in the printed book with nothing to say so. The original was bitten by
 twice. Publishing a PDF without that guard would have imported the trap along with the
 feature.
 
+## 7b. hreflang (2026-10-15)
+
+Both editions now link to each other, so the language pair could finally be declared.
+This edition's half ships: three tags per page -- the German counterpart, a
+self-reference, and `x-default` pointing at the English edition, which is the one that
+serves readers whose language matches neither.
+
+The pairing is not guessed. `sync/filemap.json` already maps every German source file to
+its English counterpart; it is what the staleness tooling runs on and what CI checks, and
+chapter-to-chapter hreflang is that mapping rendered as link tags. The slugs genuinely
+differ -- `kovarianz` against `covariance` -- which is the case hreflang exists for. All
+30 German targets were fetched once and answer 200.
+
+`tools/hreflang.py` refuses rather than guesses: it will not run before the canonical
+exists, it will not emit a self-reference that disagrees with the canonical, and it stops
+if two English pages claim the same German counterpart. The deploy then counts three tags
+per page and checks the German URLs are unique, because a cluster missing its
+self-reference is discarded whole and a duplicated counterpart poisons both clusters.
+
+**What CI here cannot check is the half that matters most.** A one-sided hreflang is
+ignored, and the German side's tags live in ds-skript. `tools/hreflang.py --verify`
+fetches the German pages and reports how many pairs are actually bidirectional; it is
+deliberately not in CI, because it would make every deploy depend on a server that
+GitHub's runners already cannot reach reliably. Run at the time of writing it says
+`0/30`, which is correct: ds-skript has not landed its half yet. Publishing ours first
+costs nothing -- an unmatched declaration is ignored, not penalised -- and the pair starts
+counting the moment the other side appears.
+
 ## 8. The process failure behind all of this
 
 The original fixed its sitemap, canonical and `og:image` on 2026-10-14 (`d929f14`,

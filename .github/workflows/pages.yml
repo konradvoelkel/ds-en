@@ -30,6 +30,10 @@ permissions:
 env:
   SITE_ORIGIN: https://datascience.konradvoelkel.com
   BASE_URL: ""
+  # The German edition, for the hreflang pair. It stays at the HHU for now (Konrad,
+  # 2026-10-15). If it ever moves, this line and ds-skript's own half move together --
+  # an hreflang pointing at a dead URL is worse than none.
+  DE_SITE: https://voelkel.pages.cs.uni-duesseldorf.de/ds-skript
 
 jobs:
   build:
@@ -171,6 +175,11 @@ jobs:
           python3 -c "import yaml" 2>/dev/null || python3 -m pip install --quiet pyyaml
           python3 tools/llms_txt.py "$SITE" _build/html
 
+          # Chapter-to-chapter hreflang, paired from sync/filemap.json. Must run after
+          # the canonical above: the self-reference has to be the URL each page already
+          # calls canonical, and the tool refuses if it is not.
+          python3 tools/hreflang.py "$SITE" "$DE_SITE" _build/html
+
       - name: Refuse to publish a site that would load nothing, or that crawlers cannot use
         run: |
           SITE="$SITE_ORIGIN$BASE_URL"
@@ -244,7 +253,17 @@ jobs:
             echo "::warning::no PDF in this build -- the site deploys without a download button"
           fi
 
-          echo "$pages pages, $canon canonicals, $locs sitemap entries, $mds Markdown, all absolute, CNAME $want_host"
+          # Three tags per page: the German counterpart, the self-reference and
+          # x-default. A cluster missing its self-reference is discarded whole.
+          hrefl=$(find _build/html -name index.html -exec grep -o 'hreflang=' {} + | wc -l)
+          [ "$hrefl" = "$((pages * 3))" ] || fail "$hrefl hreflang tags, expected $((pages * 3))"
+          # Every German URL claimed exactly once -- two English pages naming the same
+          # counterpart is a mapping error, and silently poisons both clusters.
+          de_total=$(find _build/html -name index.html -exec grep -ho 'hreflang="de" href="[^"]*"' {} + | wc -l)
+          de_uniq=$(find _build/html -name index.html -exec grep -ho 'hreflang="de" href="[^"]*"' {} + | sort -u | wc -l)
+          [ "$de_total" = "$de_uniq" ] || fail "a German counterpart is claimed by more than one page"
+
+          echo "$pages pages, $canon canonicals, $locs sitemap entries, $mds Markdown, $hrefl hreflang, all absolute, CNAME $want_host"
 
       - uses: actions/upload-pages-artifact@v3
         with:
