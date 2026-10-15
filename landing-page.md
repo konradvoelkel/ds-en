@@ -17,37 +17,11 @@ The third pillar is *algorithms and data structures*: we reimplement the most im
 
 The chapters follow this order; the table of contents below lists them one by one. The diagram that follows gives a second view: how the parts build on one another.
 
-```{mermaid}
-flowchart TB
-  subgraph E["Introduction"]
-    direction LR
-    E1["What is Data Science?"] --> E2["Stochastics"] --> E3["Python"]
-  end
-  subgraph D["Discrete stochastics and Numpy"]
-    direction LR
-    D1["Random variables, distributions,<br/>expected value"] --> D2["Numpy"] --> D3["Discrete distributions,<br/>first exploration"]
-  end
-  subgraph S["Continuous stochastics and Scipy"]
-    direction LR
-    S1["Continuous distributions,<br/>normal distribution, Scipy"]
-  end
-  subgraph X["Exploratory data analysis"]
-    direction LR
-    X1["Descriptive statistics,<br/>examples, Iris"] --> X2["Pandas, data cleaning"]
-  end
-  subgraph M["Multivariate stochastics"]
-    direction LR
-    M1["Covariance, multivariate<br/>normal distribution, relative entropy"]
-  end
-  subgraph P["Data protection"]
-    direction LR
-    P1["Data protection glossary"]
-  end
-  subgraph L["Machine learning"]
-    direction LR
-    L1["Clustering,<br/>dimensionality reduction"] --> L2["Statistical models,<br/>regression, kernels"] --> L3["Tests, model selection,<br/>expectation maximization"]
-  end
-  E --> D --> S --> X --> M --> P --> L
+```{figure} images/course-structure.svg
+:alt: Seven parts in sequence, each leading to the next: Introduction (what is data science, stochastics, Python); Discrete stochastics and Numpy; Continuous stochastics and Scipy; Exploratory data analysis; Multivariate stochastics; Data protection; Machine learning.
+:width: 100%
+
+How the parts of the course build on one another.
 ```
 
 ## What you will be able to do

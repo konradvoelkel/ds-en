@@ -181,7 +181,8 @@ correctly, and this edition went on serving a sitemap whose 30 URLs all pointed 
 `http://localhost:3000` — the whole site effectively un-crawlable — until someone looked
 by hand.
 
-**The rule:** when `upstream.yml` opens a staleness issue, or whenever the pin in
+**The rule:** when `upstream.yml` opens a staleness issue — it is triggered by a push in
+ds-skript since 2026-10-15, not by a schedule — or whenever the pin in
 `sync/upstream.json` is moved, also read the original's `git log` for commits that touch
 CI, `myst.yml` or `tools/`, and decide each one deliberately. Most will not apply — the
 deploy targets genuinely differ. The ones that do apply are usually the ones no reader

@@ -55,10 +55,18 @@ of that workflow, and everything that names the site — canonical URLs, sitemap
 data, preview cards — is derived from them at build time. The workflow refuses to deploy
 if any of that comes out wrong, because every one of those failures is silent in a browser.
 
-Two more workflows run in CI: `checks.yml` on every push (block alignment against the
-German original, the leftover-German scan, notebook round-trips, and the build), and
-`upstream.yml` weekly, which opens an issue when ds-skript has changed in a way that makes
-part of this edition stale.
+Two more workflows run in CI. `checks.yml` on every push: block alignment, the PDF export
+against the table of contents, the leftover-German scan, notebook round-trips, the
+generated artwork against its generators, and the build. It needs no network beyond
+GitHub — the alignment check reads `sync/segments/`, not the German repository, because
+GitHub's runners cannot reach the HHU GitLab.
+
+`upstream.yml` opens an issue when ds-skript has changed in a way that makes part of this
+edition stale. It is triggered *by ds-skript*: its CI calls GitHub's dispatch API after a
+push, so the check runs at a moment when that server is demonstrably up. There is no
+schedule any more. If the GitLab side ever stops calling, the silence here is
+indistinguishable from "nothing changed" — the dispatch token's expiry is the thing to
+diarise.
 
 Notebooks are **not** executed by MyST; their outputs are committed. After changing code
 in a notebook, re-execute and commit the result:

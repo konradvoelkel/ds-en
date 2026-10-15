@@ -263,7 +263,53 @@ see the difference — which is precisely why the divergence is tabulated in
 the foot of the landing page still says where the book comes from, because provenance is
 not courseware.
 
-## 7. The process failure behind all of this
+## 7. The third critique (2026-10-15), and what came of it
+
+Checked against the live site, as before. Three of its claims do not hold: it asks to
+verify a `<meta http-equiv="refresh">` stub that does not exist (GitHub issues a real
+301, path-preserving — verified); it prescribes Cloudflare Bot-Fight and Caddy
+`handle_errors` settings for a site that runs on neither (`server: GitHub.com`, `via:
+varnish`), and reads a `PERMISSION_DENIED` from its own tooling as a property of the site;
+and it asks for `alt` attributes that were added the day before. It also proposes adding
+notebook downloads, which 29 chapters already have — `/build/kmeans-….ipynb`, 1.66 MB,
+served as `application/x-ipynb+json`.
+
+What it got right, and what was done:
+
+* **A custom 404.** GitHub was serving its own "Page not found · GitHub Pages" with no
+  way back into the book. `_site/404.html` now ships with the site, self-contained: no
+  stylesheet, no script, no image, because MyST fingerprints asset names and any
+  reference would rot silently. Its links are absolute, because GitHub Pages serves it
+  under paths of arbitrary depth.
+* **The course diagram is a real image now.** `tools/course_diagram.py` draws
+  `images/course-structure.svg` from the same structure the mermaid block described. The
+  static HTML had an empty `<figure></figure>`; it now carries an `<img>`, an `alt`
+  describing the seven parts in order, and a caption. Mermaid could not take a
+  `:caption:` (tested), and pre-rendering it would have pulled headless Chromium into the
+  build for one picture. The SVG follows the reader's light/dark setting.
+* **`llms.txt`, `llms-full.txt`, and Markdown per chapter.** `tools/llms_txt.py` writes
+  each chapter's source to `<slug>.md` and `<slug>/index.md`, adds
+  `<link rel="alternate" type="text/markdown">` to every page, and builds both index files
+  in reading order. Written as a tool rather than the inline shell that was suggested,
+  which had three faults: chapter titles live in YAML frontmatter and not in a leading
+  `# ` line, so its `grep` would have labelled every entry with a slug; the landing page's
+  source is `landing-page.md` while its URL is the site root, which its loop did not
+  handle; and it sed-ed a multi-kilobyte payload into `</head>`.
+* **The PDF.** `pages.yml` now installs TeX and builds `myst build --pdf` *before* the
+  HTML build — MyST attaches the finished export to the site and renders the download
+  button from it, so the order is the whole trick. The step is allowed to fail: a book
+  this size has many ways to upset latexmk, and a broken PDF must not take the website
+  down. When it fails the deploy logs a warning instead of leaving it to be discovered by
+  a student who wanted the download. 318 pages, 19 MB, built and checked locally first.
+
+And one thing the critique could not have known to ask for: `tools/check_pdf_articles.py`,
+ported from the original. `myst.yml` holds the book's structure twice — once as the toc,
+once as the PDF's article list — and a chapter present in one but not the other is
+invisible in the printed book with nothing to say so. The original was bitten by this
+twice. Publishing a PDF without that guard would have imported the trap along with the
+feature.
+
+## 8. The process failure behind all of this
 
 The original fixed its sitemap, canonical and `og:image` on 2026-10-14 (`d929f14`,
 `6e75f56`, `c3e74d3`). Every one of those fixes lived in `.gitlab-ci.yml`. `sync.py`

@@ -12,35 +12,43 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      # The German original is public, so no secret is needed. A blobless clone keeps
-      # this to seconds; `git show` fetches the few files the checks actually read.
-      - name: Clone the German original
-        # The HHU GitLab is not always reachable from GitHub's runners -- one dispatch of
-        # this workflow timed out after 137 s and the next cloned in seconds. Retry rather
-        # than report a stale-check failure that is really a network failure.
-        run: |
-          for attempt in 1 2 3; do
-            git clone --filter=blob:none \
-              https://gitlab.cs.uni-duesseldorf.de/voelkel/ds-skript.git ../ds-skript && exit 0
-            echo "clone attempt $attempt failed; retrying in 30 s"
-            rm -rf ../ds-skript
-            sleep 30
-          done
-          echo "could not reach the HHU GitLab after three attempts"
-          exit 1
-
       - uses: actions/setup-python@v5
         with:
           python-version: '3.13'
 
+      # No clone of the German original any more. It used to be cloned for the alignment
+      # check alone, and from GitHub's runners the HHU GitLab is not reachable: every
+      # attempt since 2026-10-14 timed out after ~134 s, three times per run, and turned
+      # every push red for a reason that had nothing to do with the push.
+      #
+      # The alignment check does not need it. sync/segments/ records the block structure
+      # of the original per chapter, for a named upstream commit, and align refuses to run
+      # if that commit no longer matches the pin. Checking the manifest against the real
+      # German text is `sync.py check`, and that now runs in upstream.yml when ds-skript
+      # tells us it has moved -- i.e. at a moment when its server is demonstrably up.
       - name: Block alignment with the German original
         run: python3 tools/sync.py align
+
+      - name: The PDF export still matches the table of contents
+        # myst.yml holds the structure twice. A chapter in the toc but missing from the
+        # export list is invisible in the printed book and nothing else would say so.
+        run: |
+          python3 -c "import yaml" 2>/dev/null || python3 -m pip install --quiet pyyaml
+          python3 tools/check_pdf_articles.py
 
       - name: German left behind in the English text
         run: python3 tools/check_english.py
 
       - name: Notebook sources survive an export/import round-trip
         run: for nb in *.ipynb; do python3 tools/nbtext.py check "$nb"; done
+
+      - name: Committed artwork still matches its generator
+        # Both are generated files kept in the repository: editing one by hand, or
+        # changing the generator without re-running it, would otherwise go unnoticed
+        # until someone looked at the published page.
+        run: |
+          python3 tools/social_card.py --check
+          python3 tools/course_diagram.py --check
 
       - uses: actions/setup-node@v4
         with:

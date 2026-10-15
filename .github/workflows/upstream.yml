@@ -1,11 +1,29 @@
 name: upstream check
 
-# The German original is frozen until February 2027, so weekly is plenty; the point of
-# running it now is that the machinery is warm when the freeze lifts.
+# Triggered by the German original, not by a clock. ds-skript's own CI calls GitHub's
+# dispatch API after a push to its default branch, and this runs then -- a moment when
+# the HHU GitLab is demonstrably up, which is the whole point: pulling from it on a
+# schedule failed, because GitHub's runners cannot reach that server (every attempt since
+# 2026-10-14 timed out after ~134 s). Pushing out of HHU works; pulling into it does not.
+#
+# The weekly schedule is gone (Konrad, 2026-10-15). One consequence worth knowing: if the
+# GitLab side ever stops calling -- an expired token, a changed CI file -- nothing here
+# will say so, and the silence looks exactly like "the original has not changed".
+#
+#   >>> The dispatch token in ds-skript's CI expires on 2027-10-01. <<<
+#
+# On that day this workflow stops being triggered, silently. If you are reading this
+# after it and wondering why no upstream issue has appeared in a while, that is the
+# first thing to check: ds-skript -> Settings -> CI/CD -> Variables -> GH_DISPATCH_TOKEN.
+# A manual run (workflow_dispatch, above) tells you whether the check itself still works.
 on:
-  schedule:
-    - cron: '17 6 * * 1'
+  repository_dispatch:
+    types: [ds-skript-push]
   workflow_dispatch:
+    inputs:
+      commit:
+        description: 'ds-skript commit to check against (default: its current HEAD)'
+        required: false
 
 permissions:
   contents: read
@@ -16,10 +34,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+
       - name: Clone the German original
-        # The HHU GitLab is not always reachable from GitHub's runners -- one dispatch of
-        # this workflow timed out after 137 s and the next cloned in seconds. Retry rather
-        # than report a stale-check failure that is really a network failure.
+        # Still retried: the dispatch says the server was up a second ago, not that it
+        # will answer this clone. A blobless clone keeps this to seconds.
         run: |
           for attempt in 1 2 3; do
             git clone --filter=blob:none \
@@ -28,20 +46,27 @@ jobs:
             rm -rf ../ds-skript
             sleep 30
           done
-          echo "could not reach the HHU GitLab after three attempts"
+          echo "::error::could not reach the HHU GitLab after three attempts, although it"
+          echo "::error::just dispatched to us. Re-run this workflow by hand when it is up."
           exit 1
+
       - uses: actions/setup-python@v5
         with:
           python-version: '3.13'
 
       - name: What went stale?
         id: check
+        env:
+          # Whatever the caller said it pushed, for the issue title. Only used for
+          # display; the comparison always runs against the clone's actual HEAD.
+          CLAIMED: ${{ github.event.client_payload.sha || inputs.commit }}
         run: |
           set +e
           python3 tools/sync.py check > /tmp/out.txt 2>&1
           echo "status=$?" >> "$GITHUB_OUTPUT"
           head -c 200000 /tmp/out.txt
           echo "sha=$(git -C ../ds-skript rev-parse --short HEAD)" >> "$GITHUB_OUTPUT"
+          echo "claimed=$CLAIMED" >> "$GITHUB_OUTPUT"
 
       - name: Open an issue if anything needs re-translating
         if: steps.check.outputs.status == '1'

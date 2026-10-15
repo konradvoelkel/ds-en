@@ -1,0 +1,86 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 920 994" width="920" height="994" role="img" aria-labelledby="ttl dsc">
+<title id="ttl">How the parts of the course build on one another</title>
+<desc id="dsc">Seven parts in sequence, each leading to the next: Introduction (What is Data Science?, Stochastics, Python); Discrete stochastics and Numpy (Random variables, distributions, expected value, Numpy, Discrete distributions, first exploration); Continuous stochastics and Scipy (Continuous distributions, normal distribution, Scipy); Exploratory data analysis (Descriptive statistics, examples, Iris, Pandas, data cleaning); Multivariate stochastics (Covariance, multivariate normal distribution, relative entropy); Data protection (Data protection glossary); Machine learning (Clustering, dimensionality reduction, Statistical models, regression, kernels, Tests, model selection, expectation maximization).</desc>
+<style>
+  :root { color-scheme: light dark; }
+  .band  { fill: #f2fbfb; stroke: #bfe4e4; }
+  .node  { fill: #ffffff; stroke: #007d7e; stroke-width: 1.5; }
+  .ptitle{ fill: #006364; font-weight: 600; }
+  .ntext { fill: #1a1a1a; }
+  .arrow { stroke: #007d7e; stroke-width: 2; fill: none; }
+  .head  { fill: #007d7e; }
+  text { font-family: Inter, -apple-system, "Segoe UI", Helvetica, Arial, sans-serif; }
+  @media (prefers-color-scheme: dark) {
+    .band  { fill: #16211f; stroke: #2a3d3c; }
+    .node  { fill: #1b2225; stroke: #2cc5c5; }
+    .ptitle{ fill: #6fdcdc; }
+    .ntext { fill: #e9ecef; }
+    .arrow { stroke: #2cc5c5; }
+    .head  { fill: #2cc5c5; }
+  }
+</style>
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="head" d="M0,0 L10,5 L0,10 z"/></marker></defs>
+<rect class="band" x="18" y="18" width="884" height="99" rx="10"/>
+<text class="ptitle" x="34" y="37" font-size="13.5">Introduction</text>
+<rect class="node" x="245.6" y="60.0" width="169.5" height="39.0" rx="7"/>
+<text class="ntext" x="330.3" y="83.0" font-size="12.5" text-anchor="middle">What is Data Science?</text>
+<path class="arrow" marker-end="url(#a)" d="M422.1,79.5 H449.1"/>
+<rect class="node" x="457.1" y="60.0" width="104.0" height="39.0" rx="7"/>
+<text class="ntext" x="509.1" y="83.0" font-size="12.5" text-anchor="middle">Stochastics</text>
+<path class="arrow" marker-end="url(#a)" d="M568.1,79.5 H595.2"/>
+<rect class="node" x="603.2" y="60.0" width="71.3" height="39.0" rx="7"/>
+<text class="ntext" x="638.8" y="83.0" font-size="12.5" text-anchor="middle">Python</text>
+<rect class="band" x="18" y="147" width="884" height="116" rx="10"/>
+<text class="ptitle" x="34" y="166" font-size="13.5">Discrete stochastics and Numpy</text>
+<rect class="node" x="173.5" y="189.0" width="241.6" height="56.0" rx="7"/>
+<text class="ntext" x="294.3" y="212.0" font-size="12.5" text-anchor="middle">Random variables, distributions,</text>
+<text class="ntext" x="294.3" y="229.0" font-size="12.5" text-anchor="middle">expected value</text>
+<path class="arrow" marker-end="url(#a)" d="M422.1,217.0 H449.1"/>
+<rect class="node" x="457.1" y="197.5" width="64.8" height="39.0" rx="7"/>
+<text class="ntext" x="489.5" y="220.5" font-size="12.5" text-anchor="middle">Numpy</text>
+<path class="arrow" marker-end="url(#a)" d="M528.9,217.0 H555.9"/>
+<rect class="node" x="563.9" y="189.0" width="182.7" height="56.0" rx="7"/>
+<text class="ntext" x="655.2" y="212.0" font-size="12.5" text-anchor="middle">Discrete distributions,</text>
+<text class="ntext" x="655.2" y="229.0" font-size="12.5" text-anchor="middle">first exploration</text>
+<rect class="band" x="18" y="293" width="884" height="116" rx="10"/>
+<text class="ptitle" x="34" y="312" font-size="13.5">Continuous stochastics and Scipy</text>
+<rect class="node" x="358.9" y="335.0" width="202.3" height="56.0" rx="7"/>
+<text class="ntext" x="460.0" y="358.0" font-size="12.5" text-anchor="middle">Continuous distributions,</text>
+<text class="ntext" x="460.0" y="375.0" font-size="12.5" text-anchor="middle">normal distribution, Scipy</text>
+<rect class="band" x="18" y="439" width="884" height="116" rx="10"/>
+<text class="ptitle" x="34" y="458" font-size="13.5">Exploratory data analysis</text>
+<rect class="node" x="262.9" y="481.0" width="182.7" height="56.0" rx="7"/>
+<text class="ntext" x="354.2" y="504.0" font-size="12.5" text-anchor="middle">Descriptive statistics,</text>
+<text class="ntext" x="354.2" y="521.0" font-size="12.5" text-anchor="middle">examples, Iris</text>
+<path class="arrow" marker-end="url(#a)" d="M452.5,509.0 H479.5"/>
+<rect class="node" x="487.5" y="489.5" width="169.5" height="39.0" rx="7"/>
+<text class="ntext" x="572.3" y="512.5" font-size="12.5" text-anchor="middle">Pandas, data cleaning</text>
+<rect class="band" x="18" y="585" width="884" height="116" rx="10"/>
+<text class="ptitle" x="34" y="604" font-size="13.5">Multivariate stochastics</text>
+<rect class="node" x="322.8" y="627.0" width="274.4" height="56.0" rx="7"/>
+<text class="ntext" x="460.0" y="650.0" font-size="12.5" text-anchor="middle">Covariance, multivariate</text>
+<text class="ntext" x="460.0" y="667.0" font-size="12.5" text-anchor="middle">normal distribution, relative entropy</text>
+<rect class="band" x="18" y="731" width="884" height="99" rx="10"/>
+<text class="ptitle" x="34" y="750" font-size="13.5">Data protection</text>
+<rect class="node" x="365.4" y="773.0" width="189.2" height="39.0" rx="7"/>
+<text class="ntext" x="460.0" y="796.0" font-size="12.5" text-anchor="middle">Data protection glossary</text>
+<rect class="band" x="18" y="860" width="884" height="116" rx="10"/>
+<text class="ptitle" x="34" y="879" font-size="13.5">Machine learning</text>
+<rect class="node" x="150.6" y="902.0" width="189.2" height="56.0" rx="7"/>
+<text class="ntext" x="245.2" y="925.0" font-size="12.5" text-anchor="middle">Clustering,</text>
+<text class="ntext" x="245.2" y="942.0" font-size="12.5" text-anchor="middle">dimensionality reduction</text>
+<path class="arrow" marker-end="url(#a)" d="M346.8,930.0 H373.8"/>
+<rect class="node" x="381.8" y="902.0" width="156.4" height="56.0" rx="7"/>
+<text class="ntext" x="460.0" y="925.0" font-size="12.5" text-anchor="middle">Statistical models,</text>
+<text class="ntext" x="460.0" y="942.0" font-size="12.5" text-anchor="middle">regression, kernels</text>
+<path class="arrow" marker-end="url(#a)" d="M545.2,930.0 H572.2"/>
+<rect class="node" x="580.2" y="902.0" width="189.2" height="56.0" rx="7"/>
+<text class="ntext" x="674.8" y="925.0" font-size="12.5" text-anchor="middle">Tests, model selection,</text>
+<text class="ntext" x="674.8" y="942.0" font-size="12.5" text-anchor="middle">expectation maximization</text>
+<path class="arrow" marker-end="url(#a)" d="M460,121 V142"/>
+<path class="arrow" marker-end="url(#a)" d="M460,267 V288"/>
+<path class="arrow" marker-end="url(#a)" d="M460,413 V434"/>
+<path class="arrow" marker-end="url(#a)" d="M460,559 V580"/>
+<path class="arrow" marker-end="url(#a)" d="M460,705 V726"/>
+<path class="arrow" marker-end="url(#a)" d="M460,834 V855"/>
+</svg>

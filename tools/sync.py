@@ -88,16 +88,51 @@ def expected_blocks(de_file: str, commit: str) -> list[Block]:
     return [b for b in segment_text(de_file, german(de_file, commit)) if b.bid not in drops]
 
 
+def expected_from_manifest(de_file: str, commit: str) -> list[Block]:
+    """The same list, read from sync/segments/ instead of the German repository.
+
+    `align` only ever asks how many blocks there should be and of what kind, and the
+    manifest records both, per block, for a named upstream commit. So the check does not
+    need the original at all -- which matters, because the HHU GitLab is not reachable
+    from GitHub's runners and every push was failing on the clone.
+
+    What this gives up is the guarantee that the manifest still describes that commit.
+    That guarantee is not lost, it moves: `check` verifies the stored digests against the
+    real German text at the pinned commit, and it is `check` that the dispatch from
+    ds-skript now triggers. Per push: fast, offline, deterministic. On an upstream push:
+    against the source of truth.
+    """
+    path = SYNC / "segments" / f"{de_file}.json"
+    if not path.exists():
+        raise SystemExit(
+            f"no manifest for {de_file}. Run `tools/sync.py manifest` (needs the German "
+            f"repository), or pass --from-german to compare against it directly."
+        )
+    man = json.loads(path.read_text())
+    if man["upstream"] != commit:
+        raise SystemExit(
+            f"{path.relative_to(ROOT)} describes upstream {man['upstream'][:8]}, but "
+            f"sync/upstream.json pins {commit[:8]}. Re-run `tools/sync.py manifest` after "
+            f"moving the pin -- otherwise this check compares against the wrong original."
+        )
+    # text= carries the stored preview: align uses it only to describe a mismatch.
+    return [Block(bid=e["de"], kind=e["kind"], text=e.get("preview", ""), digest=e["digest"])
+            for e in man["blocks"] if "dropped" not in e]
+
+
 # --------------------------------------------------------------------------- align
 
 def translated() -> set[str]:
     return {f for f, s in _load("progress.json")["files"].items() if s.get("translated")}
 
 
-def cmd_align(only: list[str] | None = None) -> int:
+def cmd_align(only: list[str] | None = None, from_german: bool = False) -> int:
     """With no arguments: every chapter marked translated. With arguments: exactly those
     files, whether or not progress.json knows about them yet -- that is how a translator
-    checks their own chapter before handing it over."""
+    checks their own chapter before handing it over.
+
+    Reads the block structure from sync/segments/ unless --from-german is given; see
+    expected_from_manifest for why."""
     commit = _load("upstream.json")["commit"]
     done = set(only) if only else translated()
     bad = pending = 0
@@ -107,7 +142,8 @@ def cmd_align(only: list[str] | None = None) -> int:
         if en_file not in done:
             pending += 1
             continue
-        want = expected_blocks(de_file, commit)
+        want = (expected_blocks(de_file, commit) if from_german
+                else expected_from_manifest(de_file, commit))
         path = ROOT / en_file
         if not path.exists():
             print(f"✗ {en_file}: missing")
@@ -133,7 +169,9 @@ def cmd_align(only: list[str] | None = None) -> int:
         note = f", {len(extra)} English-only" if extra else ""
         print(f"✓ {en_file}: {len(paired)} blocks aligned{note}")
     checked = len(done)
-    print(f"-- {checked - bad}/{checked} translated files aligned, {pending} not translated yet")
+    source = "the German original" if from_german else "sync/segments/"
+    print(f"-- {checked - bad}/{checked} translated files aligned against {source}, "
+          f"{pending} not translated yet")
     return 1 if bad else 0
 
 
@@ -276,7 +314,8 @@ def main() -> int:
         return 2
     cmd = sys.argv[1]
     if cmd == "align":
-        return cmd_align(sys.argv[2:] or None)
+        args = [a for a in sys.argv[2:] if not a.startswith("--")]
+        return cmd_align(args or None, from_german="--from-german" in sys.argv)
     if cmd == "manifest":
         return cmd_manifest()
     if cmd == "check":

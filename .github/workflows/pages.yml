@@ -41,13 +41,42 @@ jobs:
         with:
           node-version: '22'
 
-      - name: Build the book
-        # The site is served from a subpath. Without BASE_URL every asset path points at
-        # the domain root and the published site loads nothing at all -- while still
-        # answering 200, so it fails quietly.
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+
+      - name: Install mystmd
+        run: npm install -g mystmd
+
+      - name: TeX, for the PDF edition
+        # The package list is the one the repository's own Dockerfile already uses, which
+        # is where it was proven: latexmk drives xelatex and bibtex, the texlive-* sets
+        # cover what the book's LaTeX template needs, imagemagick lets MyST convert
+        # GIF/WebP figures for the LaTeX export.
         run: |
-          npm install -g mystmd
-          myst build --html
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq --no-install-recommends \
+            imagemagick latexmk texlive-xetex texlive-latex-recommended \
+            texlive-latex-extra texlive-fonts-recommended texlive-bibtex-extra \
+            texlive-lang-german
+
+      - name: Build the PDF edition
+        # Before the HTML build, not after: MyST attaches the finished export to the site
+        # and renders the download button from it. Built after, the PDF would be published
+        # but nothing would link to it.
+        #
+        # Allowed to fail, deliberately. latexmk runs in force mode and a book this size
+        # has many ways to upset it; a broken PDF must not take the website down with it.
+        # When it fails there is simply no download button -- see the guard below, which
+        # says so in the log rather than letting it pass unnoticed.
+        continue-on-error: true
+        run: myst build --pdf
+
+      - name: Build the book
+        # Without BASE_URL every asset path points at the domain root -- or, when the site
+        # is served from a subpath, at the wrong place entirely. The published site then
+        # loads nothing at all while still answering 200, so it fails quietly.
+        run: myst build --html
 
       - name: Write the absolute URLs MyST cannot write itself
         run: |
@@ -93,6 +122,18 @@ jobs:
           # GitHub Pages reads the custom domain from this file. Derived from SITE_ORIGIN
           # so it cannot drift from the origin everything else was built with.
           echo "${SITE_ORIGIN#https://}" > _build/html/CNAME
+
+          # GitHub Pages serves 404.html from the site root for any address that does not
+          # exist. Without it a mistyped or stale link lands on GitHub's own branded page
+          # with no way back into the book. Its links are absolute because it is served
+          # under paths of arbitrary depth.
+          sed "s|__SITE__|$SITE|g" _site/404.html > _build/html/404.html
+
+          # Raw Markdown per chapter, the <link rel="alternate"> that points at it, and
+          # llms.txt / llms-full.txt. MyST publishes HTML and a JSON payload; neither is
+          # what a research tool wants to read.
+          python3 -c "import yaml" 2>/dev/null || python3 -m pip install --quiet pyyaml
+          python3 tools/llms_txt.py "$SITE" _build/html
 
       - name: Refuse to publish a site that would load nothing, or that crawlers cannot use
         run: |
@@ -152,7 +193,22 @@ jobs:
           [ "$(cat _build/html/CNAME)" = "$want_host" ] \
             || fail "CNAME says $(cat _build/html/CNAME), SITE_ORIGIN says $want_host"
 
-          echo "$pages pages, $canon canonicals, $locs sitemap entries, all absolute, CNAME $want_host"
+          grep -q "$SITE/" _build/html/404.html || fail "404.html has no link back into the book"
+          test -s _build/html/llms.txt || fail "llms.txt is missing or empty"
+          test -s _build/html/llms-full.txt || fail "llms-full.txt is missing or empty"
+          # Every chapter must have a Markdown twin, or llms.txt points at 404s.
+          mds=$(find _build/html -name index.md | wc -l)
+          [ "$pages" = "$mds" ] || fail "$pages pages but $mds Markdown sources"
+
+          # The PDF is allowed to fail; say so loudly rather than leaving it to be noticed
+          # weeks later by a student who wanted the download.
+          if ls _build/html/build/*.pdf >/dev/null 2>&1; then
+            echo "PDF: $(du -h _build/html/build/*.pdf | head -1 | cut -f1)"
+          else
+            echo "::warning::no PDF in this build -- the site deploys without a download button"
+          fi
+
+          echo "$pages pages, $canon canonicals, $locs sitemap entries, $mds Markdown, all absolute, CNAME $want_host"
 
       - uses: actions/upload-pages-artifact@v3
         with:
