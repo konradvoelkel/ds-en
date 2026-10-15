@@ -48,6 +48,12 @@ uv run myst build --html     # -> _build/html
 uv run myst build --pdf      # -> exports/ds-en.pdf (needs TeX, latexmk, imagemagick)
 ```
 
+**Build with `uv run myst`, not a globally installed `myst`.** `uv.lock` is the only
+place the renderer's version is decided, and a second copy on the `PATH` will be a
+different one. CI installs mystmd at the version `requirements.txt` names and refuses to
+build if what it got disagrees — that guard exists because for one day the published site
+was rendered by a version nobody had chosen.
+
 Publishing is automatic: every push to `main` builds the site and deploys it to GitHub
 Pages (`.github/workflows/pages.yml`), served under the custom domain
 `datascience.konradvoelkel.com`. Origin and base path are the two `env:` lines at the top

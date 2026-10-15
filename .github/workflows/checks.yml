@@ -62,10 +62,22 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
-      - name: Build the book
+      - name: Install mystmd, at the version this repository pins
+        # Was a bare `npm install -g mystmd`, which is how the published site came to be
+        # built by 1.11.0 on the day npm released it, while uv.lock still said 1.10.1 --
+        # nobody decided that, and nothing recorded it. The version now comes from
+        # requirements.txt, so there is one number, and a drift between the two is a red
+        # build instead of a silent change of renderer.
         run: |
-          npm install -g mystmd
-          myst build --html
+          v=$(grep '^mystmd==' requirements.txt | cut -d= -f3)
+          [ -n "$v" ] || { echo "::error::no mystmd pin found in requirements.txt"; exit 1; }
+          npm install -g "mystmd@$v"
+          got=$(myst --version | tr -d 'v[:space:]')
+          [ "$got" = "$v" ] || { echo "::error::myst reports $got, requirements.txt pins $v"; exit 1; }
+          echo "mystmd $v"
+
+      - name: Build the book
+        run: myst build --html
 
       - uses: actions/upload-artifact@v4
         with:
