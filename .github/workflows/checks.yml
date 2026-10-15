@@ -42,12 +42,21 @@ jobs:
       - name: Notebook sources survive an export/import round-trip
         run: for nb in *.ipynb; do python3 tools/nbtext.py check "$nb"; done
 
-      - name: Committed artwork still matches its generator
-        # Both are generated files kept in the repository: editing one by hand, or
-        # changing the generator without re-running it, would otherwise go unnoticed
-        # until someone looked at the published page.
+      - name: Committed artwork is still what it claims to be
+        # Both are generated files kept in the repository, but they can be checked to
+        # different depths, and only one of them honestly.
+        #
+        # The diagram is built as text, so re-generating it here gives the same bytes as
+        # on any other machine: a hand-edit or an un-rerun generator is caught exactly.
+        #
+        # The card is *rendered*, through Pillow, zlib, freetype and system fonts, none of
+        # which is pinned on a runner. Comparing its bytes here would be a check that
+        # fails for reasons having nothing to do with the card. So CI asserts the property
+        # that actually matters and needs no dependency -- that the card is present and
+        # still 1200x630, an undersized card being the bug the file exists to prevent.
+        # The byte-exact comparison stays available locally as --check.
         run: |
-          python3 tools/social_card.py --check
+          python3 tools/social_card.py --verify
           python3 tools/course_diagram.py --check
 
       - uses: actions/setup-node@v4

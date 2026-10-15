@@ -5,7 +5,15 @@ when the title or the brand colour changes, rather than redrawn by hand. It is n
 run in CI -- CI only copies the committed PNG.
 
     python3 tools/social_card.py            # write images/social-card.png
-    python3 tools/social_card.py --check    # fail if the committed card is out of date
+    python3 tools/social_card.py --check    # byte-exact: needs Pillow, for local use
+    python3 tools/social_card.py --verify   # shape only, stdlib: what CI can rely on
+
+Why two checks. `--check` re-renders and compares bytes, which catches an edited PNG or a
+changed generator -- but only where the rendering is identical, i.e. on a machine with the
+same Pillow, zlib, freetype and fonts. It is useless in CI, where none of that is pinned.
+`--verify` reads the PNG header with the standard library and asserts the card is present
+and still 1200x630, which is the property that actually matters: an undersized card is the
+bug this file exists to prevent, and it needs no dependency to detect.
 
 Why a card at all: MyST derives og:image from the first image of a page, and where a page
 has none it reaches for the first image of the project -- which was the CC BY-SA licence
@@ -22,7 +30,7 @@ from __future__ import annotations
 import sys
 from pathlib import Path
 
-from PIL import Image, ImageDraw, ImageFont
+
 
 ROOT = Path(__file__).resolve().parent.parent
 OUT = ROOT / "images" / "social-card.png"
@@ -35,6 +43,13 @@ WHITE = (255, 255, 255)
 # DejaVu ships with the system and covers "Völkel"; the site's Inter is a webfont and
 # not needed here, because the card is rendered once and committed as a PNG.
 FONTS = Path("/usr/share/fonts/truetype/dejavu")
+
+
+def _png_size(data: bytes) -> tuple[int, int]:
+    """Width and height out of a PNG's IHDR, without Pillow."""
+    if data[:8] != b"\x89PNG\r\n\x1a\n" or data[12:16] != b"IHDR":
+        raise ValueError("not a PNG")
+    return int.from_bytes(data[16:20], "big"), int.from_bytes(data[20:24], "big")
 
 
 def font(name: str, size: int) -> ImageFont.FreeTypeFont:
@@ -77,6 +92,24 @@ def draw_card() -> Image.Image:
 
 
 def main() -> int:
+    if "--verify" in sys.argv:
+        if not OUT.exists():
+            print(f"✗ {OUT.relative_to(ROOT)} is missing; run tools/social_card.py")
+            return 1
+        try:
+            size = _png_size(OUT.read_bytes())
+        except ValueError as exc:
+            print(f"✗ {OUT.relative_to(ROOT)}: {exc}")
+            return 1
+        if size != (W, H):
+            print(f"✗ {OUT.relative_to(ROOT)} is {size[0]}x{size[1]}, expected {W}x{H}. "
+                  "Below 200x200 no platform renders a preview card at all.")
+            return 1
+        print(f"✓ {OUT.relative_to(ROOT)} is a {W}x{H} PNG")
+        return 0
+
+    from PIL import Image, ImageDraw, ImageFont  # noqa: F401  (only the two render paths)
+    globals().update(Image=Image, ImageDraw=ImageDraw, ImageFont=ImageFont)
     img = draw_card()
     if "--check" in sys.argv:
         if not OUT.exists():
