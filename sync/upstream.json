@@ -1,7 +1,7 @@
 {
   "repo": "git@gitlab.cs.uni-duesseldorf.de:voelkel/ds-skript.git",
-  "commit": "2a52229b050c0f0ef35502c26388ba5439f4dd05",
-  "commit_date": "2026-10-15",
+  "commit": "f7b7f6ef3fc05245ad90a4d0ab06bb097d3eab16",
+  "commit_date": "2026-10-16",
   "local_hint": "../ds-skript",
   "_comment": "The ds-skript commit this edition corresponds to. Bump it only together with a regenerated sync/segments/ and the re-translations the staleness report asked for."
 }

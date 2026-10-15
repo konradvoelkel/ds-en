@@ -1,7 +1,7 @@
 {
  "source": "landing-page.md",
  "target": "landing-page.md",
- "upstream": "2a52229b050c0f0ef35502c26388ba5439f4dd05",
+ "upstream": "f7b7f6ef3fc05245ad90a4d0ab06bb097d3eab16",
  "blocks": [
   {
    "de": "0",
@@ -55,9 +55,9 @@
   {
    "de": "7",
    "kind": "directive",
-   "digest": "3aa7c929a97a0a6a",
+   "digest": "5c1ff764d3083da1",
    "en": "7",
-   "preview": "```{mermaid} flowchart TB subgraph E[\"Einführung\"] direction LR E1[\"Was …"
+   "preview": "```{figure} images/course-structure.svg :alt: Sieben Teile nacheinander,…"
   },
   {
    "de": "8",

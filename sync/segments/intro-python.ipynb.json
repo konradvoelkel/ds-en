@@ -1,7 +1,7 @@
 {
  "source": "intro-python.ipynb",
  "target": "intro-python.ipynb",
- "upstream": "2a52229b050c0f0ef35502c26388ba5439f4dd05",
+ "upstream": "f7b7f6ef3fc05245ad90a4d0ab06bb097d3eab16",
  "blocks": [
   {
    "de": "c0.0",
@@ -126,7 +126,7 @@
   {
    "de": "c1.5",
    "kind": "prose",
-   "digest": "e4f6c83fa8231970",
+   "digest": "37a20d2662a4d175",
    "en": "c1.5",
    "preview": "Diese Pakete stimmen ihre Versionen untereinander ab: Nach [NEP 29](http…"
   },
@@ -182,7 +182,7 @@
   {
    "de": "c4.1",
    "kind": "prose",
-   "digest": "80cf364ebb52c7e9",
+   "digest": "d1b2ec99c96a3de9",
    "en": "c4.1",
    "preview": "Natürlich gibt es zu Python mittlerweile viel Material. Da die Sprache s…"
   },

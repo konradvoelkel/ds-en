@@ -1,7 +1,7 @@
 {
  "source": "numpy.ipynb",
  "target": "numpy.ipynb",
- "upstream": "2a52229b050c0f0ef35502c26388ba5439f4dd05",
+ "upstream": "f7b7f6ef3fc05245ad90a4d0ab06bb097d3eab16",
  "blocks": [
   {
    "de": "c0.0",
@@ -55,9 +55,9 @@
   {
    "de": "c1.6",
    "kind": "prose",
-   "digest": "ece5d5437c45ee6e",
+   "digest": "cd1557eec68ebe0b",
    "en": "c1.6",
-   "preview": "Wir verwenden Numpy in einer Version größergleich 2, wozu wenigstens Pyt…"
+   "preview": "Wir verwenden Numpy in einer Version größergleich 2.5, wozu Python 3.12 …"
   },
   {
    "de": "c2.0",
@@ -202,7 +202,7 @@
   {
    "de": "c19",
    "kind": "code",
-   "digest": "067ea711ac19de30",
+   "digest": "24da2dd9b40f7633",
    "en": "c19",
    "preview": "zahlen = list(range(1,10)) npmatrix = np.array(zahlen) print(\"not in sha…"
   },
