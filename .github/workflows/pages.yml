@@ -49,14 +49,21 @@ jobs:
         run: npm install -g mystmd
 
       - name: TeX, for the PDF edition
-        # The package list is the one the repository's own Dockerfile already uses, which
+        # The texlive list is the one the repository's own Dockerfile already uses, which
         # is where it was proven: latexmk drives xelatex and bibtex, the texlive-* sets
         # cover what the book's LaTeX template needs, imagemagick lets MyST convert
         # GIF/WebP figures for the LaTeX export.
+        #
+        # librsvg2-bin is *not* in that Dockerfile, and its absence here cost a run:
+        # xelatex cannot include an SVG, so four chapters failed with "Cannot determine
+        # size of graphic", latexmk carried on in force mode, and MyST reported success
+        # over an 84 kB stub of a 19 MB book. ImageMagick cannot rasterise SVG on its own
+        # -- it delegates, and on this runner there was nothing to delegate to. The local
+        # build only worked because Inkscape happened to be installed.
         run: |
           sudo apt-get update -qq
           sudo apt-get install -y -qq --no-install-recommends \
-            imagemagick latexmk texlive-xetex texlive-latex-recommended \
+            imagemagick librsvg2-bin latexmk texlive-xetex texlive-latex-recommended \
             texlive-latex-extra texlive-fonts-recommended texlive-bibtex-extra \
             texlive-lang-german
 
@@ -71,6 +78,29 @@ jobs:
         # says so in the log rather than letting it pass unnoticed.
         continue-on-error: true
         run: myst build --pdf
+
+      - name: A PDF that is too small is not a PDF
+        # latexmk runs in force mode: it reports errors and produces a file anyway, and
+        # MyST passes that on as success. So a failed PDF does not arrive as a failure, it
+        # arrives as a stub -- 84 kB instead of 19 MB, every figure missing. Deleted here,
+        # before the HTML build, so MyST does not attach a download button to it. The
+        # floor is deliberately far below the real size: this is a smoke test for a
+        # collapsed build, not a size assertion.
+        run: |
+          pdf=exports/ds-en.pdf
+          if [ ! -f "$pdf" ]; then
+            echo "::warning::no PDF was produced; the site will have no download button"
+            exit 0
+          fi
+          bytes=$(stat -c%s "$pdf")
+          if [ "$bytes" -lt 5000000 ]; then
+            echo "::warning::the PDF is only $((bytes / 1024)) kB -- a 318-page book with"
+            echo "::warning::figures is ~19 MB, so this build collapsed. Check the latexmk"
+            echo "::warning::log for 'Cannot determine size of graphic'. Not publishing it."
+            rm -f "$pdf"
+          else
+            echo "PDF looks complete: $((bytes / 1024 / 1024)) MB"
+          fi
 
       - name: Build the book
         # Without BASE_URL every asset path points at the domain root -- or, when the site
