@@ -1,7 +1,7 @@
 {
  "source": "expectation-maximization.ipynb",
  "target": "expectation-maximization.ipynb",
- "upstream": "f7b7f6ef3fc05245ad90a4d0ab06bb097d3eab16",
+ "upstream": "28944e7bcb989ae518b99d9b71a8d5564d7498bd",
  "blocks": [
   {
    "de": "c0.0",
@@ -511,9 +511,9 @@
   {
    "de": "c11.19",
    "kind": "heading",
-   "digest": "ad32a4f764578216",
+   "digest": "d3a6cd0255ef50ab",
    "en": "c11.19",
-   "preview": "### Der Unterschied zwischen $L(\\theta, q)$ und $Q(\\theta, \\theta)$"
+   "preview": "### Der Unterschied zwischen L(θ, q) und Q(θ, θ)"
   },
   {
    "de": "c11.20",
@@ -553,9 +553,9 @@
   {
    "de": "c11.25",
    "kind": "heading",
-   "digest": "b3e182a33e7ec8af",
+   "digest": "9a553f4d460fe3d1",
    "en": "c11.25",
-   "preview": "### Der Unterschied zwischen $\\ell(\\theta)$ und $L(\\theta, q)$"
+   "preview": "### Der Unterschied zwischen ℓ(θ) und L(θ, q)"
   },
   {
    "de": "c11.26",

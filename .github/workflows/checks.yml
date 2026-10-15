@@ -42,6 +42,16 @@ jobs:
       - name: Notebook sources survive an export/import round-trip
         run: for nb in *.ipynb; do python3 tools/nbtext.py check "$nb"; done
 
+      - name: Figure descriptions have not drifted
+        # Not a completeness gate: 155 figures still have none, and a check that stays red
+        # until the last one lands is a check nobody reads. This fails when a description
+        # that *was* written has since been overwritten -- which happens every time a
+        # notebook is re-executed without a following --apply -- or when its cell is gone.
+        # Swap --check for --complete on the day the last chapter is done.
+        run: |
+          python3 -c "import yaml" 2>/dev/null || python3 -m pip install --quiet pyyaml
+          python3 tools/alt_texts.py --check
+
       - name: Committed artwork is still what it claims to be
         # Both are generated files kept in the repository, but they can be checked to
         # different depths, and only one of them honestly.

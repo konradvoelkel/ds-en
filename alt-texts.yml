@@ -1,0 +1,32 @@
+# Text alternatives for the figures the notebooks produce as output.
+#
+# Why here and not in the notebook: MyST takes an output image's `alt` from that
+# output's `text/plain`, where matplotlib leaves "<Figure size 640x480 with 1 Axes>".
+# Cell metadata is ignored by this version of MyST (every spelling was tried -- see
+# tools/alt_texts.py). So this file is the source of truth, and
+# `tools/alt_texts.py --apply` writes it into the notebooks.
+#
+# **Run --apply after every re-execution of a notebook** -- executing resets text/plain
+# to the matplotlib repr. CI checks this with --check.
+#
+# Keyed by notebook, then by cell id, then one entry per figure of that cell, in output
+# order. Generate stubs with: python3 tools/alt_texts.py --skeleton <notebook>
+#
+# A description says what the figure shows, not that it is a figure: the shape of the
+# data, what distinguishes the groups, what a reader is meant to notice. Written against
+# the English plots, not translated from the German text -- the axes are labelled in
+# English and a description has to match the picture.
+
+iris.ipynb:
+  # The jittered scatter plot of the Iris data, with the histogram of petal length below it.
+  34796b74-d57a-499f-ab9b-c561cb1916cd:
+    - "Two plots, one above the other, of the Iris data. Above, a scatter plot of petal
+      length (1 to 7 cm) against petal width (0 to 2.5 cm), the three species told apart by
+      colour and the values slightly jittered so that equal measurements do not cover each
+      other up. One species, in yellow, forms a compact group at the bottom left, under 2 cm
+      long and under 0.7 cm wide, with empty space between it and everything else. The other
+      two run diagonally up to the right and merge into one another: an olive-grey species
+      around 3 to 5 cm long, and a dark blue one from about 4.8 cm, the widest petals
+      reaching 2.5 cm. Below, a histogram of petal length alone in the same colours: the
+      yellow species a narrow peak at 1.5 cm reaching fifteen plants per bin, the other two
+      broad and overlapping between 3 and 7 cm, with no gap to separate them."

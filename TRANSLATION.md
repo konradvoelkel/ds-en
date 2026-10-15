@@ -172,7 +172,14 @@ invisible to it, by construction, not by oversight:
 * `tools/` on either side;
 * files mapped to `null` in `filemap.json` (`folien.md`, `orga.md`);
 * the original's own repository documentation (`PROJECT_NOTES.md`, `BRANDING.md`,
-  `TODO.md`), which is where it records *why* it changed something.
+  `TODO.md`), which is where it records *why* it changed something;
+* **notebook outputs.** `segment.py` segments `source` and never `outputs`, so anything
+  living in an output is invisible — including, as it turned out, the text alternative of
+  every figure the book draws. MyST takes an output image's `alt` from that output's
+  `text/plain`. On 2026-10-16 the original wrote descriptions into all 156 of its figures,
+  touching eighteen files, and the staleness report showed five regions, all of them
+  headings. This is the same blind spot as the entries above, but closer in: it is *inside*
+  a mirrored file.
 
 **This has already cost us once.** On 2026-10-14 the original fixed its sitemap,
 `robots.txt`, canonical URLs and `og:image` (ds-skript `d929f14`, `6e75f56`, `c3e74d3`).

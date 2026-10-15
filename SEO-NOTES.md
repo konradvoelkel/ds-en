@@ -347,6 +347,44 @@ GitHub's runners already cannot reach reliably. Run at the time of writing it sa
 costs nothing -- an unmatched declaration is ignored, not penalised -- and the pair starts
 counting the moment the other side appears.
 
+## 7c. Figure descriptions (started 2026-10-16)
+
+Every figure this book draws — 156 of them — offered `<Figure size 2000x2000 with 2 Axes>`
+as its text alternative. That is worse than an empty `alt`: a check for "is alt missing?"
+passes cleanly while a screen reader reads out nonsense and image search finds nothing.
+All the accessibility work of 2026-10-15 (§3b) was about the handful of static images and
+missed this entirely, because the figures are notebook *outputs*.
+
+MyST takes an output image's `alt` from that output's own `text/plain`, and matplotlib
+writes its repr there. The German original tried every other route first — cell metadata
+in five spellings, `:alt:` on a `{figure}` directive wrapping a captioned code cell — and
+this version of MyST ignores all of them. So the truth lives in `alt-texts.yml` and
+`tools/alt_texts.py --apply` writes it into the notebooks. Re-executing a notebook undoes
+it, which is why CI checks.
+
+Set up here on 2026-10-16, with the mechanism proved end to end on one figure: the
+description reaches the rendered `alt` in the built page. 155 remain.
+
+Three differences from the original's version, all deliberate:
+
+* **`--check` is a regression gate, not a completeness gate.** Upstream wrote all 156 in
+  one sitting, so its check fails on any figure without a text. Here they will arrive
+  chapter by chapter, and a check that stays red until the last one lands is a check
+  nobody reads. `--check` fails on drift — a description overwritten by a re-execution, or
+  orphaned by a deleted cell — and reports the rest. `--complete` is the stricter gate, to
+  be wired in on the day the last chapter is done.
+* **`--skeleton` emits stubs** for one notebook with the drawing code as context, because
+  the writing is the work and finding the cells should not be.
+* **The descriptions are written, not translated.** The plots are labelled in English and
+  a description has to match the picture in front of the reader, not the German sentence
+  about a German picture.
+
+Four notebooks had to be normalised first: they were nbformat 4.4 with no cell ids, and
+ids are what the descriptions are keyed to, because cells move and ids do not. The ids
+were adopted from the original, whose cells correspond one to one — so a figure now
+carries the same id in both editions, and the two books' descriptions can be held against
+each other later.
+
 ## 8. The process failure behind all of this
 
 The original fixed its sitemap, canonical and `og:image` on 2026-10-14 (`d929f14`,
