@@ -15,6 +15,22 @@ permissions:
   pages: write
   id-token: write
 
+# Where the site is published, in one place. BASE_URL sets only the *path*; MyST 1.10 has
+# no setting at all for the origin (there is no SITE_URL), so the origin lives here and is
+# patched into the built files below.
+#
+# MOVING THE SITE IS THESE TWO LINES -- the canonical URLs, the sitemap, the structured
+# data and every preview card are derived from them at build time.
+#
+# Moved 2026-10-15 from https://konradvoelkel.github.io/ds-en to this custom domain. The
+# site is still built and served by GitHub Pages; only the name in front of it changed, so
+# the empty BASE_URL is what makes MyST build for a domain root instead of a subpath.
+# GitHub redirects the old konradvoelkel.github.io/ds-en URLs here on its own, which is a
+# real 301 and better than any stub we could publish.
+env:
+  SITE_ORIGIN: https://datascience.konradvoelkel.com
+  BASE_URL: ""
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -26,19 +42,117 @@ jobs:
           node-version: '22'
 
       - name: Build the book
-        # The site is served from https://konradvoelkel.github.io/ds-en/, a subpath. Without
-        # BASE_URL every asset path points at the domain root and the published site loads
-        # nothing at all -- while still answering 200, so it fails quietly.
-        env:
-          BASE_URL: /ds-en
+        # The site is served from a subpath. Without BASE_URL every asset path points at
+        # the domain root and the published site loads nothing at all -- while still
+        # answering 200, so it fails quietly.
         run: |
           npm install -g mystmd
           myst build --html
 
-      - name: Refuse to publish a site that would load nothing
+      - name: Write the absolute URLs MyST cannot write itself
         run: |
-          test -f _build/html/index.html
-          grep -q '/ds-en/build/' _build/html/index.html
+          SITE="$SITE_ORIGIN$BASE_URL"
+
+          # MyST fetches robots.txt and sitemap.xml from its own dev server during the
+          # static build and writes that server's origin into them. Without this step the
+          # deployed sitemap lists 30 URLs on "http://localhost:3000" and robots.txt sends
+          # crawlers to a machine that does not exist -- i.e. the site ships no sitemap.
+          sed -i "s|http://localhost:3000|$SITE|g" _build/html/sitemap.xml _build/html/robots.txt
+
+          # Point every <loc> at the URL that actually answers 200. GitHub Pages redirects
+          # "/ds-en/kmeans" with a 301 to "/ds-en/kmeans/", but MyST writes the form
+          # without the slash. A sitemap full of redirects -- and a canonical pointing at
+          # one -- is needless ambiguity.
+          sed -i "s|<loc>\($SITE[^<]*[^/]\)</loc>|<loc>\1/</loc>|g" _build/html/sitemap.xml
+          sed -i "s|<loc>$SITE</loc>|<loc>$SITE/</loc>|" _build/html/sitemap.xml
+
+          # og:image is root-relative ("/ds-en/build/<hash>.png"). OpenGraph requires an
+          # absolute URL; Slack, LinkedIn, Mastodon and WhatsApp cannot resolve a relative
+          # one and show no preview card at all.
+          find _build/html -name '*.html' -exec \
+            sed -i "s|content=\"$BASE_URL/build/|content=\"$SITE/build/|g" {} +
+
+          # MyST emits neither a canonical nor a twitter:card. The canonical matters
+          # because the same text is also published as a PDF and because this edition is
+          # due to move host; the twitter:card tag is what makes X render the 1200x630
+          # card large instead of cropping it to a small square.
+          for f in $(find _build/html -name 'index.html'); do
+            rel=$(dirname "${f#_build/html/}")
+            # With the trailing slash: that is the URL that answers 200, see above.
+            if [ "$rel" = "." ]; then url="$SITE/"; else url="$SITE/$rel/"; fi
+            grep -q 'rel="canonical"' "$f" || sed -i \
+              "s|</head>|<link rel=\"canonical\" href=\"$url\"/><meta name=\"twitter:card\" content=\"summary_large_image\"/></head>|" "$f"
+          done
+
+          # Structured data for the work as a whole, on the landing page only. MyST emits
+          # none, and it cannot live in landing-page.md: a {raw} html directive there
+          # would be an extra block and break alignment with the German original.
+          # python3 is preinstalled on ubuntu-latest.
+          python3 tools/inject_jsonld.py "$SITE" _build/html/index.html
+
+          # GitHub Pages reads the custom domain from this file. Derived from SITE_ORIGIN
+          # so it cannot drift from the origin everything else was built with.
+          echo "${SITE_ORIGIN#https://}" > _build/html/CNAME
+
+      - name: Refuse to publish a site that would load nothing, or that crawlers cannot use
+        run: |
+          SITE="$SITE_ORIGIN$BASE_URL"
+          fail() { echo "::error::$1"; exit 1; }
+
+          test -f _build/html/index.html || fail "no index.html was built"
+          grep -q "$BASE_URL/build/" _build/html/index.html \
+            || fail "index.html has no $BASE_URL asset paths; BASE_URL did not take"
+
+          # Everything below guards the step above. Written as if/then/fi, not as
+          # "check && fail": a bare "&& fail" as the last statement of the script makes the
+          # step fail precisely when the check passes.
+          if grep -rq "localhost:3000" _build/html/sitemap.xml _build/html/robots.txt; then
+            fail "a localhost URL survived in sitemap.xml or robots.txt"
+          fi
+
+          pages=$(find _build/html -name index.html | wc -l)
+          canon=$(find _build/html -name index.html -exec grep -l 'rel="canonical"' {} + | wc -l)
+          locs=$(grep -c '<loc>' _build/html/sitemap.xml)
+          [ "$pages" = "$canon" ] || fail "$pages pages but $canon canonicals"
+          [ "$pages" = "$locs" ] || fail "$pages pages but $locs sitemap entries"
+
+          # A <loc> without a trailing slash is one that redirects.
+          if grep '<loc>' _build/html/sitemap.xml | grep -qv '/</loc>'; then
+            fail "a sitemap entry still points at a redirecting URL"
+          fi
+
+          # Every preview image must be absolute, or the card stays empty.
+          if find _build/html -name index.html -exec grep -ho 'og:image" content="[^"]*"' {} + \
+               | grep -v "content=\"$SITE_ORIGIN" | grep -q .; then
+            fail "an og:image is still relative"
+          fi
+
+          # The structured data must parse and must name this build's own origin --
+          # stale structured data after a move is worse than none.
+          python3 - "$SITE" <<'EOF'
+          import json, re, sys
+          html = open("_build/html/index.html", encoding="utf-8").read()
+          blocks = re.findall(r'<script type="application/ld\+json">(.*?)</script>', html, re.S)
+          if len(blocks) != 1:
+              sys.exit(f"::error::expected one JSON-LD block on the landing page, found {len(blocks)}")
+          data = json.loads(blocks[0])
+          want = sys.argv[1].rstrip("/") + "/"
+          if data.get("url") != want:
+              sys.exit(f"::error::JSON-LD url is {data.get('url')}, expected {want}")
+          if not str(data.get("image", "")).startswith("http"):
+              sys.exit("::error::JSON-LD image is not an absolute URL")
+          print(f"JSON-LD ok: {data['@type']} at {data['url']}")
+          EOF
+
+          # A missing or stale CNAME silently drops the site back onto the github.io
+          # address while every canonical keeps naming the custom domain -- the worst of
+          # both, and invisible from the build log.
+          want_host="${SITE_ORIGIN#https://}"
+          [ -f _build/html/CNAME ] || fail "no CNAME in the artifact; the custom domain would be dropped"
+          [ "$(cat _build/html/CNAME)" = "$want_host" ] \
+            || fail "CNAME says $(cat _build/html/CNAME), SITE_ORIGIN says $want_host"
+
+          echo "$pages pages, $canon canonicals, $locs sitemap entries, all absolute, CNAME $want_host"
 
       - uses: actions/upload-pages-artifact@v3
         with:

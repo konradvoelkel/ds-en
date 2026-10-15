@@ -2,6 +2,7 @@
 title: "Deriving the mathematical formalism of stochastics"
 short_title: "The formalism of stochastics"
 description: "Why probability spaces look the way they do: from the measure problem through σ-algebras to the triple of sample space, events and probability measure."
+thumbnail: images/social-card.png
 ---
 
 You have already met the basics of (discrete) probability theory in Mathematics for Computer Scientists 3. We will go over them again, as far as we need them. In this course we will mostly work with the probability mass function (for discrete random variables) and the probability density function (for continuous random variables), both of which build on the notion of a probability measure. At this point a short digression explains why things are done exactly this way, and how one might arrive at the notion of a probability measure in the first place. The notions of a sigma-algebra ($\sigma$-algebra) and of a measurable function are essential for proofs in probability theory, and for introducing more advanced notions (the ones mathematical finance or the theory of machine learning need) – here it is enough to take away when we are allowed to read past them.

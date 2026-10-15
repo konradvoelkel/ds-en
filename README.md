@@ -1,6 +1,6 @@
 # HHU Data Science course — English edition
 
-**Read it at <https://konradvoelkel.github.io/ds-en/>**
+**Read it at <https://datascience.konradvoelkel.com/>**
 
 English edition of the lecture notes for the course "Data Science" at
 Heinrich Heine University Düsseldorf, 4th semester of the BSc in Computer Science.
@@ -23,6 +23,11 @@ What *is* automated is noticing when the German original changes:
 * `tools/` holds the segmentation and the staleness check that turns an upstream diff
   into a list of English passages that need re-translating.
 
+What it does *not* notice is everything outside the mirrored chapters: the original's CI
+configuration, its `myst.yml`, its tooling. Those have to be followed by hand — see
+`TRANSLATION.md` §9, which exists because that gap once left this site serving a sitemap
+full of `localhost` URLs.
+
 English and German text are kept in **strict block alignment**: same number of
 paragraphs and notebook cells, same order. Translators and style passes may restructure
 freely *within* a block, never across block boundaries. That invariant is what lets the
@@ -44,9 +49,11 @@ uv run myst build --pdf      # -> exports/ds-en.pdf (needs TeX, latexmk, imagema
 ```
 
 Publishing is automatic: every push to `main` builds the site and deploys it to GitHub
-Pages (`.github/workflows/pages.yml`). The build sets `BASE_URL=/ds-en`, because the site
-is served from a subpath and without it every asset link breaks — the workflow refuses to
-deploy if that prefix is missing, since the failure is otherwise silent.
+Pages (`.github/workflows/pages.yml`), served under the custom domain
+`datascience.konradvoelkel.com`. Origin and base path are the two `env:` lines at the top
+of that workflow, and everything that names the site — canonical URLs, sitemap, structured
+data, preview cards — is derived from them at build time. The workflow refuses to deploy
+if any of that comes out wrong, because every one of those failures is silent in a browser.
 
 Two more workflows run in CI: `checks.yml` on every push (block alignment against the
 German original, the leftover-German scan, notebook round-trips, and the build), and

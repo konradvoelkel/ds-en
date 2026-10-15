@@ -3,8 +3,13 @@ project:
   id: ds-en
   short_title: DS
   title: Data Science Lecture Notes from Konrad Völkel
-  subtitle: BSc Computer Science
+  subtitle: An undergraduate introduction
   description: "Data Science lecture notes: stochastics, statistics and Python from the foundations to machine learning, with the learning algorithms implemented rather than called. English edition."
+  # Fallback preview image for pages that have no figure of their own. Without it MyST
+  # reaches for the first image of the project, which is the CC BY-SA button in the
+  # landing page's licence section: 267x50, under the 200x200 Facebook and LinkedIn
+  # need, so the preview card stayed empty. Regenerate with tools/social_card.py.
+  thumbnail: images/social-card.png
   authors:
     - name: Dr. Konrad Völkel
       affiliations:
@@ -148,6 +153,7 @@ project:
 site:
   options:
     logo: images/logo-wide.svg
+    logo_alt: "Data Science: lecture notes"
     favicon: images/favicon.ico
     folders: true
     style: _site/custom-style.css

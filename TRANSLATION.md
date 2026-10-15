@@ -40,8 +40,18 @@ This edition is a standalone book, not courseware for the Düsseldorf lecture ha
   will never sit the exam. Passing mentions of the course's exercises stay – they are part
   of the honest account of what these notes are – but nothing points the reader at a sheet
   they cannot have.
-* Nothing else. Course organisation and the module competencies stay: a reader is entitled
-  to know the context these notes were written in.
+* **The host institution's own apparatus.** Decided 2026-10-14, and this reverses the
+  earlier rule that course organisation stays. The English edition is not aimed at the
+  Düsseldorf BSc: named courses of that curriculum ("Data Science 2"), its module
+  handbook, its master's programme and its "three semesters" of prerequisites are
+  generalised to what they actually mean — a course on distributed systems, a list of
+  formal competencies, a master's in AI or data science, the mathematics of an
+  undergraduate degree. The German-language bridge course stays but is offered as what it
+  is, a resource for readers of German.
+* Nothing else. Where the book grew up still belongs to it, and the `:::{note}` at the
+  foot of the landing page says so plainly: these are lecture notes from a BSc course at
+  Heinrich Heine University Düsseldorf. The point is that a reader elsewhere is never sent
+  to a page, a programme or a timetable they have no access to.
 
 ## 3. What is not translated
 
@@ -148,3 +158,34 @@ probability theory and statistics together, and the book needs that name.
 4. **Mechanical checks** – `tools/sync.py align`, the build, the link check and a
    leftover-German scan.
 5. **Human review.**
+
+## 9. What the staleness check cannot see
+
+`tools/sync.py` compares *blocks of mirrored content files* — the Markdown chapters and
+the notebooks named in `sync/filemap.json`. Everything else about the original is
+invisible to it, by construction, not by oversight:
+
+* the build and deploy configuration (upstream `.gitlab-ci.yml`, here
+  `.github/workflows/`): different platforms, so there is nothing to map and nothing to
+  hash;
+* `myst.yml` — the table of contents, the PDF `articles` list, the site options;
+* `tools/` on either side;
+* files mapped to `null` in `filemap.json` (`folien.md`, `orga.md`);
+* the original's own repository documentation (`PROJECT_NOTES.md`, `BRANDING.md`,
+  `TODO.md`), which is where it records *why* it changed something.
+
+**This has already cost us once.** On 2026-10-14 the original fixed its sitemap,
+`robots.txt`, canonical URLs and `og:image` (ds-skript `d929f14`, `6e75f56`, `c3e74d3`).
+All four fixes lived in `.gitlab-ci.yml`. The weekly upstream check reported nothing,
+correctly, and this edition went on serving a sitemap whose 30 URLs all pointed at
+`http://localhost:3000` — the whole site effectively un-crawlable — until someone looked
+by hand.
+
+**The rule:** when `upstream.yml` opens a staleness issue, or whenever the pin in
+`sync/upstream.json` is moved, also read the original's `git log` for commits that touch
+CI, `myst.yml` or `tools/`, and decide each one deliberately. Most will not apply — the
+deploy targets genuinely differ. The ones that do apply are usually the ones no reader
+would ever report, because they are invisible in the rendered page.
+
+Infrastructure findings go in `SEO-NOTES.md` when they concern how the site is published,
+and in `UPSTREAM-NOTES.md` when they are a problem of the original.

@@ -2,6 +2,7 @@
 title: "Data Science: from stochastics to machine learning with Python"
 short_title: "Lecture notes"
 description: "A complete set of lecture notes on data science: probability spaces, distributions, estimators and tests, together with Numpy, Pandas and Scikit-learn – and the learning algorithms implemented rather than called."
+thumbnail: images/social-card.png
 ---
 
 These notes are an introduction to data science that begins with stochastics and ends with machine learning, without leaving a gap in between. What separates them from a tools course is the third pillar below: the methods here are not called, they are reimplemented. If you want to know what `model.fit()` actually does, you write it once yourself – k-means, principal component analysis, regression, the EM algorithm. Everything you need for that is in this book.
@@ -54,30 +55,30 @@ flowchart TB
 Our aim is an introduction to "data science".
 It should give you orientation and an overview, and get you to first applications in descriptive, exploratory and inferential data analysis, with a particular eye on machine learning.
 Along the way we cover the theoretical background in stochastics that this needs, and do some practical exercises in Python.
-From there you could go deeper into artificial intelligence; HHU has the [master's programme "Artificial Intelligence and Data Science"](https://www.heicad.hhu.de/lehre/masters-programme-ai-and-data-science) for that.
+From there you could go deeper into artificial intelligence, for which a master's programme in AI or data science is the usual next step.
 
-Behind the list of competencies in the module handbook lies a simpler picture of what you should be able to do at the end: pick up a dataset and straight away be able to ask questions of it *and* answer them. Coming up with research questions is very much part of exploratory data analysis. Beyond that, you should be able to read specialist articles and reports that argue with statistics – and notice when something in them does not add up.
+Behind any list of formal competencies lies a simpler picture of what you should be able to do at the end: pick up a dataset and straight away be able to ask questions of it *and* answer them. Coming up with research questions is very much part of exploratory data analysis. Beyond that, you should be able to read specialist articles and reports that argue with statistics – and notice when something in them does not add up.
 
-Professionally, this opens several doors. The obvious one is applying for a job as a "junior data scientist" or "junior data analyst"; the second is the master's programme [Artificial Intelligence and Data Science](https://www.heicad.hhu.de/lehre/masters-programme-ai-and-data-science), which this course prepares you for. The third is easy to overlook: data science techniques are useful in plenty of places where nobody carries that job title – in product development (*data-driven design*), in optimising running systems from their log files, in performance comparisons that feed decisions (*data-driven decision making*), in quality control, and wherever a machine learning component has to be built into a larger system.
+Professionally, this opens several doors. The obvious one is applying for a job as a "junior data scientist" or "junior data analyst"; the second is a master's programme in artificial intelligence or data science, for which this book covers much of the expected background. The third is easy to overlook: data science techniques are useful in plenty of places where nobody carries that job title – in product development (*data-driven design*), in optimising running systems from their log files, in performance comparisons that feed decisions (*data-driven decision making*), in quality control, and wherever a machine learning component has to be built into a larger system.
 
 ## What this course is not
 
-This course does not deal with data science on distributed systems; that is the subject of Data Science 2. It is not an introduction to deep learning, for which there is the course "Introduction to Deep Learning". It does not introduce R/RStudio or other tools. It does not reduce data science to calling `model.fit()`: we reimplement estimators and algorithms ourselves so that we understand what goes on inside them. And it is not a programming course, even though it assumes no prior knowledge of Python; what we need is in the chapter [Introduction to Python](intro-python.ipynb).
+This course does not deal with data science on distributed systems, and it is not an introduction to deep learning; each of those is a course in its own right. It does not introduce R/RStudio or other tools. It does not reduce data science to calling `model.fit()`: we reimplement estimators and algorithms ourselves so that we understand what goes on inside them. And it is not a programming course, even though it assumes no prior knowledge of Python; what we need is in the chapter [Introduction to Python](intro-python.ipynb).
 
 Selecting and processing data, and assessing models, raise ethical questions too. Of these, the notes treat the legal framework of data protection in a chapter of its own, written as a glossary of the most important terms; the wider ethical discussion is not part of the book.
 
 ## Prerequisites
 
-In this text we assume that we have all been through three semesters of foundational mathematics: we know what a vector is, what a matrix is, and what the derivative of a function of several real variables is. We have also all learned a programming language before and know the basic data structures.
+In this text we assume the foundational mathematics of an undergraduate degree in computer science or a related subject: we know what a vector is, what a matrix is, and what the derivative of a function of several real variables is. We have also all learned a programming language before and know the basic data structures.
 
-You may well have had a first brush with stochastics, statistics and probability theory at school. We introduce the foundations systematically, so that nothing beyond "mathematics for computer scientists" should be needed – but we do it at the brisk pace that mathematicians and computer scientists are used to. If you would first like an overview of what school could have taught you, the [Online Mathematik Brückenkurs Plus](https://www.ombplus.de/ombplus/link/OmbpluModuleStocha/Ueberb) is an excellent place to start (free, in German, didactically sound, and in the same notation as these notes).
+You may well have had a first brush with stochastics, statistics and probability theory at school. We introduce the foundations systematically, so that nothing beyond "mathematics for computer scientists" should be needed – but we do it at the brisk pace that mathematicians and computer scientists are used to. If you would first like an overview of what school could have taught you, any solid pre-university course in probability will do; readers of German have one in the [Online Mathematik Brückenkurs Plus](https://www.ombplus.de/ombplus/link/OmbpluModuleStocha/Ueberb), which is free, didactically sound and in the same notation as these notes.
 
-Every piece of mathematics you need for the exercises is in these notes (or among the course's entry requirements).
+Every piece of mathematics you need for the exercises is in these notes, or among the prerequisites above.
 
 ## Reading these notes
 
 Along the way we will keep meeting further sources that go deeper into individual topics or look at them from another angle.
-The first session gave us an overview of what data science is and what we are going to do.
+The opening chapter gives an overview of what data science is and what we are going to do.
 
 ## Table of contents
 
@@ -86,7 +87,7 @@ The first session gave us an overview of what data science is and what we are go
 
 ## Licence
 
-These lecture notes are published under the [Creative Commons Attribution–ShareAlike 4.0 licence (CC BY-SA 4.0)](https://creativecommons.org/licenses/by-sa/4.0/). <a href="https://creativecommons.org/licenses/by-sa/4.0/"><img src="https://mirrors.creativecommons.org/presskit/buttons/80x15/png/by-sa.png" height="20"/></a> All code is additionally under the GPL3.
+These lecture notes are published under the [Creative Commons Attribution–ShareAlike 4.0 licence (CC BY-SA 4.0)](https://creativecommons.org/licenses/by-sa/4.0/). <a href="https://creativecommons.org/licenses/by-sa/4.0/"><img src="https://mirrors.creativecommons.org/presskit/buttons/80x15/png/by-sa.png" height="20" alt="Creative Commons Attribution-ShareAlike 4.0 licence badge"/></a> All code is additionally under the GPL3.
 
 The exception is third-party content, marked as such, each item under its own licence: the xkcd comics (CC BY-NC 2.5), Drew Conway's Venn diagram (CC BY-NC 3.0) and Anthony Pino's Melbourne housing dataset (CC BY-NC-SA 4.0). The source of each is given where it appears.
 

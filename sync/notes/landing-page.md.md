@@ -59,3 +59,32 @@ Noticed but not touched:
 * The pillar paragraphs mix "we" and "you" ("we reimplement … so that we understand what
   happens when you call `model.fit()`"). That is the book's voice per TRANSLATION.md §6 and
   matches block 16; left.
+
+## Deliberate divergence from the original (2026-10-14)
+
+Under the revised TRANSLATION.md §2, this page no longer addresses the Düsseldorf BSc.
+Seven blocks were rewritten *in place* — the block count and kinds are unchanged, so
+`sync.py align` cannot see the difference, and neither can `sync.py check`, which hashes
+the **German** side only.
+
+**That is the hazard this note exists for.** When one of these German blocks changes
+upstream, the staleness report will ask for a re-translation, and a translator working
+from the German alone will faithfully put the university back in. Re-translate the German
+sentence, then apply the same generalisation again.
+
+| Block | German has | This edition says |
+|---|---|---|
+| 9 | — (the HHU master's link was an English-only addition) | "a master's programme in AI or data science is the usual next step" |
+| 10 | *Kompetenzliste des Modulhandbuchs* | "any list of formal competencies" |
+| 11 | the HEICAD master's programme, by name and link | "a master's programme in artificial intelligence or data science" |
+| 13 | *Data Science 2*, *Einführung in Deep Learning* | "each of those is a course in its own right" |
+| 16 | *3 Semester Grundlagen der Mathematik* | "the foundational mathematics of an undergraduate degree" |
+| 17 | the OMB+ bridge course, offered flat | the same link, offered to readers of German |
+| 18 | *in den Eingangsvoraussetzungen der Vorlesung* | "among the prerequisites above" |
+
+Block 20 ("The first session gave us an overview") became "The opening chapter gives an
+overview" — the same move, and one the style pass had already flagged and left under the
+old rule.
+
+What deliberately stays: the `:::{note}` at the foot, which says where the book comes
+from. Provenance is not courseware.

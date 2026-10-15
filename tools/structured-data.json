@@ -1,0 +1,47 @@
+{
+  "@context": "https://schema.org",
+  "@type": ["Book", "LearningResource"],
+  "@id": "__SITE__/#work",
+  "url": "__SITE__/",
+  "name": "Data Science: from stochastics to machine learning with Python",
+  "description": "An introduction to data science that begins with stochastics and ends with machine learning without leaving a gap in between, reimplementing the estimators and learning algorithms -- k-means, principal component analysis, regression, expectation maximization -- rather than calling them.",
+  "inLanguage": "en",
+  "isAccessibleForFree": true,
+  "license": "https://creativecommons.org/licenses/by-sa/4.0/",
+  "learningResourceType": "Lecture notes",
+  "educationalLevel": "Undergraduate",
+  "copyrightYear": 2026,
+  "teaches": [
+    "Probability spaces, random variables and distributions",
+    "Expected value, variance and the central limit theorem",
+    "Vectorised computation with Numpy and Scipy",
+    "Exploratory data analysis with Pandas and Matplotlib",
+    "Multivariate statistics, covariance and relative entropy",
+    "Machine learning algorithms implemented from scratch in Python",
+    "Statistical models, maximum likelihood, tests and model selection",
+    "Data protection and the GDPR"
+  ],
+  "about": [
+    { "@type": "Thing", "name": "Data science" },
+    { "@type": "Thing", "name": "Probability theory" },
+    { "@type": "Thing", "name": "Statistics" },
+    { "@type": "Thing", "name": "Machine learning" },
+    { "@type": "Thing", "name": "Python (programming language)" }
+  ],
+  "author": {
+    "@type": "Person",
+    "name": "Konrad Völkel",
+    "url": "https://konradvoelkel.com",
+    "affiliation": {
+      "@type": "CollegeOrUniversity",
+      "name": "Heinrich Heine University Düsseldorf",
+      "url": "https://www.hhu.de"
+    }
+  },
+  "translationOfWork": {
+    "@type": "Book",
+    "name": "Data Science Vorlesungsskript",
+    "inLanguage": "de",
+    "url": "https://voelkel.pages.cs.uni-duesseldorf.de/ds-skript/"
+  }
+}
