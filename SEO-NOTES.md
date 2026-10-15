@@ -302,6 +302,16 @@ What it got right, and what was done:
   down. When it fails the deploy logs a warning instead of leaving it to be discovered by
   a student who wanted the download. 318 pages, 19 MB, built and checked locally first.
 
+*Correction, same day.* The first CI build of the PDF produced an 84 kB stub: xelatex
+cannot include an SVG, the runner had ImageMagick but nothing for it to delegate
+rasterisation to, and latexmk's force mode reported success anyway. Fixed with
+`librsvg2-bin`, plus a floor that deletes an implausibly small PDF before the HTML build
+so no download button is attached to it. **The commit message for that fix guesses that
+the German original has the same gap. It does not.** Its figures in those chapters are
+PNGs with German labels; this edition redrew them as SVG in order to relabel them in
+English, which is why only this edition needs an SVG converter. Checked:
+`ds-skript/images/` contains exactly one SVG, the logo, and it is not in the PDF.
+
 And one thing the critique could not have known to ask for: `tools/check_pdf_articles.py`,
 ported from the original. `myst.yml` holds the book's structure twice — once as the toc,
 once as the PDF's article list — and a chapter present in one but not the other is

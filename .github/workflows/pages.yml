@@ -60,6 +60,12 @@ jobs:
         # over an 84 kB stub of a 19 MB book. ImageMagick cannot rasterise SVG on its own
         # -- it delegates, and on this runner there was nothing to delegate to. The local
         # build only worked because Inkscape happened to be installed.
+        #
+        # Why the Dockerfile could be right and this still wrong: the original's figures
+        # here are PNGs with German labels (stochastik-statistik-wtheorie.png,
+        # dsprozess-simplified-1..3.png). This edition redrew them as SVG to relabel them
+        # in English, so it is the only one of the two that needs an SVG converter. The
+        # upstream image is not missing anything.
         run: |
           sudo apt-get update -qq
           sudo apt-get install -y -qq --no-install-recommends \
