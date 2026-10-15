@@ -7,6 +7,10 @@
     },
     {
       "block": "21",
+      "reason": "the German edition's pointer at this English one. Reflecting it here would be a book telling its own readers that it exists; the provenance note at the foot of this page already says where the original lives, which is the direction that carries information. Added upstream in f7253683 together with the hreflang pair."
+    },
+    {
+      "block": "22",
       "reason": "pointer to orga.md, the course-organisation page this edition does not mirror"
     }
   ]

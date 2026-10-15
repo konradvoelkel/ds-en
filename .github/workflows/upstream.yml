@@ -87,4 +87,13 @@ jobs:
             echo
             head -c 60000 "$report"
           } > /tmp/body.md
-          gh issue create --title "$title" --body-file /tmp/body.md --label upstream
+          # The label is a convenience; the report is the point. `gh issue create` fails
+          # outright on a label the repository does not have -- which it did on the first
+          # dispatch that ever got this far, after the staleness check had already done
+          # its work. Create it if missing, and fall back to no label rather than lose
+          # the report.
+          gh label create upstream --color 007d7e \
+            --description "The German original moved; passages here may need re-translating" \
+            2>/dev/null || true
+          gh issue create --title "$title" --body-file /tmp/body.md --label upstream \
+            || gh issue create --title "$title" --body-file /tmp/body.md

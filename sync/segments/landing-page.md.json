@@ -1,12 +1,12 @@
 {
  "source": "landing-page.md",
  "target": "landing-page.md",
- "upstream": "a60d9a42492e2b5767cb2b0f01a914c391b5dfe4",
+ "upstream": "f7253683445bce00d307bce9d78b55c8975bdadd",
  "blocks": [
   {
    "de": "0",
    "kind": "prose",
-   "digest": "7ed21adb222a08f1",
+   "digest": "12f5dd8c8d263696",
    "en": "0",
    "preview": "--- title: \"Data Science: von der Stochastik zum Machine Learning mit Py…"
   },
@@ -154,62 +154,70 @@
   {
    "de": "21",
    "kind": "prose",
+   "digest": "e482f4a11581d687",
+   "en": null,
+   "dropped": "the German edition's pointer at this English one. Reflecting it here would be a book telling its own readers that it exists; the provenance note at the foot of this page already says where the original lives, which is the direction that carries information. Added upstream in f7253683 together with the hreflang pair.",
+   "preview": "Dieses Skript gibt es außerdem auf Englisch: [Data Science — lecture not…"
+  },
+  {
+   "de": "22",
+   "kind": "prose",
    "digest": "2eb0d2d0d77cec54",
    "en": null,
    "dropped": "pointer to orga.md, the course-organisation page this edition does not mirror",
    "preview": "Zum Betrieb der Vorlesung an der HHU — Aufzeichnungen, Folien, Übungsbet…"
   },
   {
-   "de": "22",
+   "de": "23",
    "kind": "prose",
    "digest": "67f3f7053d669739",
    "en": "20",
    "preview": "Wir werden immer wieder auf zusätzliche Quellen stoßen, um einzelne Them…"
   },
   {
-   "de": "23",
+   "de": "24",
    "kind": "heading",
    "digest": "4a7a0de77842dc8f",
    "en": "21",
    "preview": "## Inhaltsverzeichnis"
   },
   {
-   "de": "24",
+   "de": "25",
    "kind": "directive",
    "digest": "599c3f8c1a8fa099",
    "en": "22",
    "preview": "```{tableofcontents} ```"
   },
   {
-   "de": "25",
+   "de": "26",
    "kind": "heading",
    "digest": "86f6ebaceddb8843",
    "en": "23",
    "preview": "## Lizenz"
   },
   {
-   "de": "26",
+   "de": "27",
    "kind": "prose",
-   "digest": "5ca5bc4f44fd231c",
+   "digest": "aba2c7d3e0f8e699",
    "en": "24",
    "preview": "Dieses Vorlesungsskript steht unter der [Creative Commons Lizenz Namensn…"
   },
   {
-   "de": "27",
+   "de": "28",
    "kind": "prose",
    "digest": "5da41b2ce11d8a7f",
    "en": "25",
    "preview": "Davon ausgenommen sind gekennzeichnete Fremdinhalte, die unter ihrer jew…"
   },
   {
-   "de": "28",
+   "de": "29",
    "kind": "heading",
    "digest": "465bdf090bc6cd1d",
    "en": "26",
    "preview": "## Quellen"
   },
   {
-   "de": "29",
+   "de": "30",
    "kind": "prose",
    "digest": "920d86bd69a9a910",
    "en": "27",
