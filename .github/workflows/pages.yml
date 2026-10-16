@@ -436,6 +436,39 @@ jobs:
           de_uniq=$(find _build/html -name index.html -exec grep -ho 'hreflang="de" href="[^"]*"' {} + | sort -u | wc -l)
           [ "$de_total" = "$de_uniq" ] || fail "a German counterpart is claimed by more than one page"
 
+          # Two more invariants, adopted from ds-skript 6f193c7, which added them on its
+          # side after working out that a one-sided cluster takes *both* editions down:
+          # Google ignores unmatched hreflang, so 30/30 becomes 0/30 on both sides with
+          # nothing red anywhere. tools/hreflang.py already refuses to emit either of
+          # these wrong, so this is the artifact-level repeat of a generation-time rule --
+          # worth having because two later steps (vendor_assets.py, head_meta.py) rewrite
+          # the same <head> after hreflang has run.
+          python3 - <<'EOF'
+          import glob, os, re, sys
+          pages = sorted(glob.glob("_build/html/*/index.html")) + ["_build/html/index.html"]
+          bad = []
+          for f in pages:
+              html = open(f, encoding="utf-8").read()
+              name = os.path.basename(os.path.dirname(f)) or "index"
+              alt = dict(re.findall(
+                  r'<link rel="alternate" hreflang="([^"]+)" href="([^"]+)"', html))
+              canonical = re.search(r'<link rel="canonical" href="([^"]+)"', html)
+              if set(alt) != {"de", "en", "x-default"}:
+                  bad.append(f"{name}: hreflang tags {sorted(alt) or 'none'}, expected de/en/x-default")
+              elif alt["x-default"] != alt["en"]:
+                  bad.append(f"{name}: x-default {alt['x-default']} is not the hreflang=en URL {alt['en']}")
+              elif not canonical:
+                  bad.append(f"{name}: no canonical to check the self-reference against")
+              elif canonical.group(1) != alt["en"]:
+                  bad.append(f"{name}: canonical {canonical.group(1)} but self-reference {alt['en']}")
+          if bad:
+              for b in bad[:6]:
+                  print(f"::error::{b}")
+              sys.exit(f"::error::{len(bad)} page(s) with a broken hreflang cluster")
+          print(f"hreflang clusters ok on {len(pages)} pages: de/en/x-default, "
+                "x-default == en, self-reference == canonical")
+          EOF
+
           # Counts the dates back off the built artifact: every page with an
           # article:modified_time and every sitemap entry with a <lastmod>. A date that
           # silently failed to land is the kind of thing only a measurement finds -- the

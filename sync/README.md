@@ -14,6 +14,7 @@ What keeps this edition tied to the German original.
 | `notes/<english-file>.md` | what a chapter's translator wants merged: new glossary terms, figures to redraw, questions |
 | `reports/` | staleness reports from `tools/sync.py check` |
 | `style-pass-brief.md` | what the style pass may and may not change |
+| `handover-ds-skript.md` | findings and fixes to hand to the German original, measured and dated |
 
 One file per chapter on purpose: several translators work in parallel, and a shared JSON
 file would be a merge conflict waiting to happen.

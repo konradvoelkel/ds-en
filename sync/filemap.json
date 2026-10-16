@@ -1,5 +1,5 @@
 {
-  "_comment": "German upstream file (ds-skript) -> English file in this repo. The tracker resolves upstream paths through this map. Files whose name is already English or language-neutral map to themselves; null means the page is deliberately not mirrored (see TRANSLATION.md section 2).",
+  "_comment": "German upstream file (ds-skript) -> English file in this repo. The tracker resolves upstream paths through this map. Files whose name is already English or language-neutral map to themselves; null means the page is deliberately not mirrored (see TRANSLATION.md section 2).  PUBLISHED INTERFACE as of 2026-10-16: ds-skript fetches this file from https://raw.githubusercontent.com/konradvoelkel/ds-en/main/sync/filemap.json to build its own half of the hreflang pair (its tools/hreflang.py --fetch, commit 6f193c7). Moving or renaming it, or changing the shape of \"map\", silently degrades the German side to its committed fallback copy, which then goes stale without anything going red here. If this path has to change, change ds-skript's FILEMAP_URL in the same breath.",
   "map": {
     "data-cleaning.ipynb": "data-cleaning.ipynb",
     "datenschutz.md": "data-protection.md",

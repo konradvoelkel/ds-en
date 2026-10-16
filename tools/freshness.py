@@ -101,6 +101,23 @@ ROOT = Path(__file__).resolve().parent.parent
 META = '<meta property="article:modified_time" content="{date}"/>'
 
 
+def _git(args: list[str]) -> subprocess.CompletedProcess:
+    """Run git, turning "git is not here at all" into one message, in one place.
+
+    Both callers below need this: refuse_shallow() runs first, so without it a missing git
+    dies there with a bare FileNotFoundError naming nothing useful -- which is exactly the
+    outage ds-skript had in 5b7818b, where python:3.13-alpine ships no git.
+    """
+    try:
+        return subprocess.run(["git", *args], cwd=ROOT, capture_output=True, text=True)
+    except FileNotFoundError:
+        raise SystemExit(
+            "::error::git is not installed, so no date can be read from the history. "
+            "ubuntu-latest ships git; a slim container image may not, and then this step "
+            "needs it installed before it runs."
+        )
+
+
 def refuse_shallow() -> None:
     """Stop if the repository is a shallow clone, before reading a single date.
 
@@ -124,11 +141,7 @@ def refuse_shallow() -> None:
     So the depth is asserted directly instead of being inferred from a missing answer.
     Reported back in UPSTREAM-NOTES.md.
     """
-    res = subprocess.run(
-        ["git", "rev-parse", "--is-shallow-repository"],
-        cwd=ROOT, capture_output=True, text=True,
-    )
-    if res.stdout.strip() == "true":
+    if _git(["rev-parse", "--is-shallow-repository"]).stdout.strip() == "true":
         raise SystemExit(
             "::error::this is a shallow clone, so git would report HEAD's date for every\n"
             "  file and every page would claim to have changed at the moment of the\n"
@@ -158,13 +171,19 @@ def project(html: Path) -> dict:
 
 
 def git_date(name: str) -> str:
-    """ISO-8601 date of the last commit that touched this file."""
-    res = subprocess.run(
-        ["git", "log", "-1", "--format=%cI", "--", name],
-        cwd=ROOT,
-        capture_output=True,
-        text=True,
-    )
+    """ISO-8601 date of the last commit that touched this file.
+
+    Three distinct failures, kept distinct: git absent (in `_git`), git erroring, and git
+    simply not knowing the file. Adopted from ds-skript `5b7818b`, which separated them
+    after the first version cost half an hour of looking in the wrong direction: in its CI
+    container a *permissions* error was reported as "shallow clone", advice pointing the
+    opposite way. Here that would be worse still, now that refuse_shallow() has already
+    ruled the shallow case out -- a second, contradictory shallow-clone message would be
+    actively misleading.
+    """
+    res = _git(["log", "-1", "--format=%cI", "--", name])
+    if res.returncode != 0:
+        raise SystemExit(f"::error::git failed for {name}:\n  {res.stderr.strip()}")
     date = res.stdout.strip()
     if not date:
         raise SystemExit(

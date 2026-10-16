@@ -785,3 +785,111 @@ class.
 
 The German original has the identical six failures; `UPSTREAM-NOTES.md`, and the divergence
 is tabulated in `sync/notes/descriptive-statistics.md.md`.
+
+## 12. The first upstream round in this direction (2026-10-16)
+
+ds-skript pushed five commits after the pin at `2784f10c`: `6f193c7` (hreflang fallback and
+a hard check), `9f8fa33` and `bee8ac4` (a deliberate break and its revert — the failure case
+played through), `e229a9d` (structured data, date per page, llms.txt) and `5b7818b` (git
+into the pages image).
+
+**`tools/sync.py check` against `e229a9d`: 0 stale regions.** Correct, and exactly the
+blind spot §8 records — all five commits touch CI, `tools/` and `myst.yml`, which the block
+digests cannot see. `TRANSLATION.md` §9 is the rule that caught them: when the pin moves,
+read the original's log for commits touching CI, `myst.yml` and `tools/`.
+
+Three things came back from reading them.
+
+### `git_date()` conflated three failures; now it separates four
+
+`5b7818b` exists because `e229a9d` broke ds-skript's own deploy: python:3.13-alpine ships
+no git, `freshness.py` calls it, the job went red and the site stood still for 29 minutes.
+Their fix splits "git is absent" from "git failed" from "git does not know this file" —
+after the first version reported a *permissions* error as "shallow clone" and sent them the
+wrong way for half an hour.
+
+The version ported here had the same conflation, and it would have been worse, because
+`refuse_shallow()` has by then already ruled the shallow case out: a second, contradictory
+shallow-clone message. Adopted, and factored so the git-absent case is handled once rather
+than twice — without that, `refuse_shallow()` runs first and dies with a bare
+`FileNotFoundError` naming nothing. All four branches exercised with a stub `git`:
+
+```
+git absent      -> "git is not installed, so no date can be read from the history"
+git errors      -> "git failed for landing-page.md: fatal: detected dubious ownership"
+shallow clone   -> "this is a shallow clone... fetch-depth: 0"
+healthy         -> 30 pages dated, 30 sitemap entries with <lastmod>
+```
+
+Worth noting what the two editions found from opposite ends of the same function: upstream
+that git may be missing, here that git may answer for everything at once. Neither version
+alone covers both.
+
+### Two hreflang invariants adopted
+
+`6f193c7` added, on its side, that `x-default` must equal `hreflang=en` and the
+self-reference must equal the canonical — after working out that a one-sided cluster takes
+*both* editions down, Google ignoring unmatched hreflang, so 30/30 becomes 0/30 on both
+sides with nothing red anywhere.
+
+`tools/hreflang.py` here already refuses to emit either of those wrong, so this is the
+artifact-level repeat of a generation-time rule. Adopted anyway, because two later steps —
+`vendor_assets.py` and `head_meta.py` — rewrite the same `<head>` after hreflang has run,
+and a final check on what is actually published is cheap. Tested against the real artifact
+and against a page broken on purpose.
+
+### `sync/filemap.json` is now a published interface
+
+`6f193c7` makes ds-skript fetch
+`https://raw.githubusercontent.com/konradvoelkel/ds-en/main/sync/filemap.json` to build its
+half of the pair, with a committed copy as fallback. That path and the shape of its `map`
+are therefore an interface between the repositories, and nothing here said so. Recorded in
+the file's own `_comment`, where someone moving it will see it.
+
+### 12b. The upstream check has never been able to work
+
+The run on `9236ee0` failed, and the way it failed is the finding. Six attempts over sixteen
+minutes, each printing "reachable but the clone failed", then:
+
+```
+::error::the HHU GitLab did not answer in ~16 minutes, although it just dispatched to us.
+```
+
+which contradicts its own six preceding lines. git's actual message, in under a second
+every time:
+
+```
+fatal: could not read Username for 'https://gitlab.cs.uni-duesseldorf.de'
+```
+
+**ds-skript is private.** An anonymous clone cannot succeed, now or later, and no retry
+budget changes that. Confirmed rather than assumed: `git ls-remote` over HTTPS succeeds on
+this machine and fails with `GIT_TERMINAL_PROMPT=0 git -c credential.helper= ls-remote` —
+the earlier success was the local keyring, not public access. The comment in `upstream.yml`
+describing inbound blocking and ~134 s timeouts documents a *different*, real failure from
+2026-10-15; this one is instant and is authentication.
+
+Fixed here only as far as honesty goes: the auth case is now told apart and fails
+immediately with the real reason and the local command to run instead, rather than costing
+sixteen minutes and pointing at the network. The retry loop stays for genuine outages.
+
+**What is not fixed is that the check cannot run in CI at all.** Three ways out, and the
+choice is Konrad's, because the first one trades against a standing decision:
+
+1. A read-only deploy token in GitHub secrets — effective, and against §3's "this
+   repository has no secrets at all today, and that is worth keeping".
+2. Have the dispatch carry the per-chapter block digests of the German text, which is what
+   `sync.py check` diffs against. Then no clone is needed. The most honest shape, and work
+   on the ds-skript side.
+3. Reduce the workflow to opening an issue that says "upstream moved to `<sha>`, run
+   `tools/sync.py check` locally" — which is what effectively happens now, minus the
+   sixteen minutes and the wrong diagnosis.
+
+Until then the check is local-only, which is where it ran for this round.
+
+### The pin
+
+Left at `2784f10c`. With zero stale regions there is nothing to re-translate, and moving it
+means regenerating `sync/segments/` as its own `_comment` requires; that is a deliberate
+operation and not a side effect of reading the log. The empty reports
+`sync/reports/e229a9d.md` and `bee8ac45.md` record that the check was run and found nothing.

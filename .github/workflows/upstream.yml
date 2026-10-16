@@ -47,15 +47,41 @@ jobs:
         # budget in eight minutes of mostly waiting. `curl --connect-timeout 10` answers
         # in ten seconds, so the budget buys actual elapsed time for the far end to come
         # back instead of buying TCP timeouts.
+        #
+        # 2026-10-16: an authentication failure is now told apart from an outage, because
+        # for a day it was not. The run on 9236ee0 printed "reachable but the clone failed"
+        # six times and then concluded the server "did not answer in ~16 minutes" -- a
+        # self-contradiction, since the probe had just answered each time. git's actual
+        # message was
+        #     fatal: could not read Username for 'https://gitlab.cs.uni-duesseldorf.de'
+        # in well under a second: ds-skript is private, and an anonymous clone cannot
+        # work, now or later. Retrying that for sixteen minutes and then blaming the
+        # network sends the next reader in precisely the wrong direction.
+        #
+        # GIT_TERMINAL_PROMPT=0 so git says so instead of trying to open a prompt it has
+        # no terminal for.
         run: |
+          export GIT_TERMINAL_PROMPT=0
           for wait in 0 60 120 180 300 300; do
             [ "$wait" = 0 ] || { echo "unreachable; waiting ${wait}s"; sleep "$wait"; }
             curl -sS -o /dev/null --connect-timeout 10 --max-time 25 \
               https://gitlab.cs.uni-duesseldorf.de/ 2>/dev/null || continue
-            git clone --filter=blob:none \
-              https://gitlab.cs.uni-duesseldorf.de/voelkel/ds-skript.git ../ds-skript && exit 0
-            echo "reachable but the clone failed"
+            err=$(git clone --filter=blob:none \
+              https://gitlab.cs.uni-duesseldorf.de/voelkel/ds-skript.git ../ds-skript 2>&1) \
+              && exit 0
             rm -rf ../ds-skript
+            if printf '%s' "$err" | grep -qiE 'could not read Username|Authentication failed|terminal prompts disabled'; then
+              echo "::error::ds-skript needs credentials, so no number of retries will help:"
+              printf '::error::  %s\n' "$(printf '%s' "$err" | tail -1)"
+              echo "::error::The staleness check cannot run on a GitHub runner against a"
+              echo "::error::private GitLab repository without a token, and this repository"
+              echo "::error::deliberately has no secrets (SEO-NOTES.md section 3). Until"
+              echo "::error::that is decided, run it locally, where you have credentials:"
+              echo "::error::  DS_SKRIPT=../ds-skript python3 tools/sync.py check <commit>"
+              exit 1
+            fi
+            echo "reachable but the clone failed:"
+            printf '  %s\n' "$(printf '%s' "$err" | tail -1)"
           done
           echo "::error::the HHU GitLab did not answer in ~16 minutes, although it just"
           echo "::error::dispatched to us. Nothing is stale-checked; re-run this workflow"
