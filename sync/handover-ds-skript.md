@@ -19,11 +19,14 @@ button · `refuse_shallow()` and the `_git()` helper, adopted from ds-en in `ded
 
 Two notes on `dedfd0b`, neither a defect:
 
-* **`--stamp-source` and the visible date have no counterpart in ds-en**, deliberately:
-  the theme re-renders the page header from the hydration payload, so a line written into
-  the markup is gone after hydration. Your route through the frontmatter before the build
-  is the one that actually survives, and it is better than ds-en's "wait to be asked".
-  Worth porting the other way at some point.
+* **`--stamp-source` is now ported to ds-en** (2026-10-16, same day). ds-en had recorded
+  a visible date as "not included" because the theme re-renders the page header from the
+  hydration payload and markup written after the build is lost — true, and the wrong
+  conclusion. Your route through the frontmatter *before* the build survives, and it is
+  the first thing to travel in that direction on its own merits rather than as a
+  correction. Verified in a browser there: the date is still in the DOM after hydration.
+  The one cost you paid knowingly — the theme formatting the date in hard-coded English —
+  is simply the right format for an English edition.
 * **Your landing page's `article:modified_time` is the newest of all pages, not its own.**
   ds-en kept that tag per-document and imports `book_date()` only for the JSON-LD. Yours
   is defensible — the landing page is the title page, and "Stand der Ausgabe" is the right
