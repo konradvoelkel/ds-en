@@ -1,0 +1,91 @@
+Where these two files came from, and why they are committed rather than fetched
+===============================================================================
+
+Until 2026-10-16 custom-style.css opened with
+
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600
+                 &family=JetBrains+Mono:wght@400;500&display=swap');
+
+which cost three things at once:
+
+  1. A render-blocking request chain three deep. The browser had to fetch
+     myst-theme.css, parse it, discover the @import, fetch Google's CSS, parse
+     that, and only then discover the font files. An @import nested inside a
+     stylesheet cannot be preloaded or parallelised; a <link> at least starts
+     at depth one.
+  2. A third party on every page view, with no preconnect, which is also a
+     third party that sees every reader's IP address.
+  3. A GDPR exposure in a book that devotes a chapter to the GDPR. LG Muenchen I,
+     20 January 2022 (3 O 17493/20), awarded damages against a site operator for
+     exactly this -- embedding Google Fonts from Google's servers without
+     consent, because the IP address reaches Google. data-protection.md cites the
+     noyb complaints and the 2022 Google Analytics findings; serving the pages
+     that say so from fonts.googleapis.com was the one thing the chapter argues
+     against.
+
+Self-hosting fixes all three. The files are committed, not downloaded during the
+build, so that a deploy does not depend on a third party being up and the bytes
+cannot change underneath us.
+
+
+The files
+---------
+
+inter-latin.woff2           48256 bytes
+  sha256 3100e775e8616cd2611beecfa23a4263d7037586789b43f035236a2e6fbd4c62
+  Inter v20, latin subset, variable weight axis 100-900.
+  From https://fonts.gstatic.com/s/inter/v20/UcC73FwrK3iLTeHuS_nVMrMxCp50SjIa1ZL7.woff2
+  Licence: SIL Open Font License 1.1 -- OFL-Inter.txt
+  Copyright (c) 2016 The Inter Project Authors (https://github.com/rsms/inter)
+
+jetbrains-mono-latin.woff2  31432 bytes
+  sha256 83c005d49d8a6a50474c73a5a36ac0468076e9c4a29da7bdb14995d80560a5be
+  JetBrains Mono v24, latin subset, variable weight axis 400-800.
+  From https://fonts.gstatic.com/s/jetbrainsmono/v24/tDbv2o-flEEny0FZhsfKu5WU4zr3E_BX0PnT8RD8yKwBNntkaToggR7BYRbKPxDcwg.woff2
+  Licence: SIL Open Font License 1.1 -- OFL-JetBrainsMono.txt
+  Copyright 2020 The JetBrains Mono Project Authors (https://github.com/JetBrains/JetBrainsMono)
+
+Both licences permit redistribution; both require the licence to travel with the
+font, which is what the two OFL files next to this one are for. Neither font may
+be sold on its own and neither is being sold.
+
+These are the exact bytes Google served for the @import that was removed, fetched
+with a current Chrome user agent so that the woff2 rather than the ttf variant
+came back. Downloading them changed nothing about which glyphs a reader sees.
+
+
+One file per family, not one per weight
+---------------------------------------
+
+The old @import asked for Inter 400 and 600 and JetBrains Mono 400 and 500. Google
+answered both weights of each family with the *same* URL: these are variable fonts
+and the latin subset carries the whole weight axis. So two files cover four weights,
+and `font-weight: 400` and `600` are interpolated from one face. Asking for a third
+weight later costs no extra request.
+
+
+Coverage, and what deliberately falls back
+------------------------------------------
+
+The latin subset is U+0000-00FF plus the general-punctuation block, so it covers
+every character the running text actually uses: the German umlauts and sharp s in
+Voelkel, Duesseldorf and the glossary (ä ö ü ß Ö), the accented names (é), the
+en dash in Kullback-Leibler, and curly quotes.
+
+It does not cover Greek or the mathematical operators -- sigma, <=, and the rest.
+That is not a regression: the subset Google served was the same one, so those
+characters fell back to the system font before and fall back to it now. In the
+mathematics proper they never did either way, because KaTeX ships and uses its
+own fonts.
+
+
+Updating them
+-------------
+
+Refetch both URLs, check the sha256 here against what arrives, and if it differs
+read why before committing: a new vN in the path is a new release and worth a look
+at the changelog, while the same path serving different bytes is worth more than
+that. The CI guard in pages.yml checks that the files are present and that no
+build reaches fonts.googleapis.com or fonts.gstatic.com again; it does not pin the
+hashes, because a font that has legitimately been updated should not turn the
+build red.

@@ -1,6 +1,36 @@
 /* custom-style.css */
 
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=JetBrains+Mono:wght@400;500&display=swap');
+/* --- Schriften, selbst ausgeliefert ------------------------------------------------
+   Hier stand bis 2026-10-16 ein @import von fonts.googleapis.com. Der kostete drei
+   Dinge auf einmal: eine drei Ebenen tiefe, rendernde Anfragekette (myst-theme.css ->
+   Googles CSS -> die Schriftdateien, und ein @import in einem Stylesheet laesst sich
+   weder vorladen noch parallelisieren), einen Dritten bei jedem Seitenaufruf, und
+   ausgerechnet in diesem Buch einen DSGVO-Verstoss der Art, vor der data-protection.md
+   warnt (LG Muenchen I, 20.01.2022, 3 O 17493/20).
+
+   Die beiden Dateien liegen jetzt in _site/fonts/ und werden von pages.yml nach
+   _build/html/fonts/ kopiert. Es ist je *eine* Datei pro Familie: beide sind variable
+   Fonts, die Gewichtsachse steckt in der Datei, 400 und 600 werden daraus interpoliert.
+   Herkunft, Pruefsummen und Lizenzen: _site/fonts/PROVENANCE.txt.
+
+   __BASE__ ersetzt pages.yml durch BASE_URL -- derselbe Platzhalter-Trick wie __SITE__
+   in 404.html, damit ein Umzug des Buches eine Zeile im Workflow bleibt. Beim lokalen
+   `myst start` steht der Platzhalter noch da; die Schriften fallen dann auf die
+   Systemschrift zurueck, das Layout bleibt. */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url('__BASE__/fonts/inter-latin.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'JetBrains Mono';
+  font-style: normal;
+  font-weight: 400 800;
+  font-display: swap;
+  src: url('__BASE__/fonts/jetbrains-mono-latin.woff2') format('woff2');
+}
 
 :root {
   /* HHU Corporate Identity Colors */

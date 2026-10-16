@@ -402,3 +402,135 @@ correctly — and this edition kept serving a sitemap full of `localhost` URLs.
 
 The rule that follows is `TRANSLATION.md` §9: when the pin moves or a staleness issue
 opens, also read the original's log for commits touching CI, `myst.yml` and `tools/`.
+
+## 9. The fourth audit (2026-10-16), and what it cost to act on
+
+Measured, not reasoned about: all 30 pages fetched from the live site, Core Web Vitals
+taken in a real browser, every claim below checked against the artifact afterwards.
+
+### What held
+
+Everything the first three rounds built. 30/30 pages 200 and server-rendered; 30
+canonicals, 30 sitemap entries, all absolute and all with the trailing slash that answers
+200; `robots.txt` right; a real path-preserving 301 from `konradvoelkel.github.io/ds-en/`
+(§3 left this one open — it is now confirmed); a 404 that returns 404; JSON-LD parsing
+with the right origin; `lang`, viewport, one `<h1>` per page and **zero skipped heading
+levels** across all 30; 226 images with no missing `alt` and no matplotlib placeholder;
+mobile clean, with code blocks scrolling inside their own `overflow-auto` parents; CLS 0.
+
+**And the hreflang pair is live: `tools/hreflang.py --verify` now says 30/30
+bidirectional.** §7b recorded `0/30` because ds-skript had not landed its half. It has.
+Nothing here had to change for that; the declaration published in advance simply started
+counting.
+
+### What was actually wrong
+
+**The figures, which is where the whole budget went.** 197 distinct images, 21.3 MB. On
+`descriptive-statistics` the measured LCP was **2712 ms against a 2500 ms budget** on a
+fast desktop with a warm CDN, and the LCP element was `ds-process-oneill.png`: 3678×2259
+and 5.79 MB, rendered at 480×295. Total transfer for that page, 7.99 MB over 43 requests.
+
+Three separate causes, and the second is the one that mattered most:
+
+1. *Oversized sources.* Five images served at more than twice their display size; one at
+   1432×513 shown at 54×19.
+2. *RGBA.* Matplotlib writes an alpha channel the plots do not use, and PNG compresses
+   four channels far worse than one. One 790 kB figure has **232 distinct colours** — as a
+   palette image that is not an approximation, it is the same bytes-for-pixels picture at
+   a quarter of the size.
+3. *Preload.* MyST emits `<link rel="preload" as="image">` for **every** figure on the
+   page — twelve on kmeans. That, not the absence of `loading="lazy"`, is why a chapter
+   fetched its whole figure set before the load event. Adding the attribute alone would
+   have done nothing at all: a preloaded image is fetched regardless, and the preload
+   wins. The two had to move together.
+
+Result: `images/` 9.0 MB → 3.6 MB, the build's figures 9.0 MB lighter of 23.2 MB, and the
+on-load image payload of `descriptive-statistics` 6.4 MB → 1.66 MB.
+
+**Google Fonts, imported from our own stylesheet.** Line 3 of `_site/custom-style.css`.
+Three costs, and the third is the embarrassing one: a three-deep render-blocking chain, a
+third party on every page view, and the precise arrangement LG München I awarded damages
+over in January 2022 — in a book with a GDPR chapter that cites noyb. Self-hosted now;
+`_site/fonts/PROVENANCE.txt` has the files, hashes, licences and the reasoning, and the
+deploy fails if a `https://fonts.googleapis.com` reference ever comes back.
+
+**The title suffix.** `- Data Science Lecture Notes from Konrad Völkel` is 48 of the ~60
+characters a SERP renders, and on **29 of 30 pages it was truncated away entirely** —
+paying nothing, spending two thirds of the line, and inviting Google to rewrite the title
+rather than show it. Chapters now carry their own title alone; the landing page keeps the
+book's.
+
+*Correction to the audit that prompted this.* It also said the suffix ate into four
+chapter titles. It did not: those four are over 60 characters by themselves, and since
+the chapter title comes first a suffix cannot push it out — only fail to fit after it.
+Konrad's decision of 2026-10-15 to leave those four (§4) is untouched and unaffected.
+
+**`og:url` and `og:site_name`, absent on all 30.** MyST writes `og:title`,
+`og:description` and `og:image` and stops.
+
+### The trap in doing it
+
+Editing `<title>` in the markup fixed nothing a browser would see. The page is a Remix
+app: the whole document is serialised a second time into `window.__remixContext`, and on
+hydration the theme re-renders the title from *that*. The server-rendered head and the
+hydrated head then disagree — and Google renders before it indexes, so the copy that
+loses is the one we edited. Caught by loading the built page rather than grepping it.
+
+`tools/head_meta.py` therefore blanks `project.title` in the payload too, for chapters
+only, and `pages.yml` fails the deploy if a payload could put the suffix back. The logo,
+the sidebar, the part names and the previous/next footer labels were all checked in a
+browser afterwards: they come from their own fields and still render.
+
+`site.title` in `myst.yml` was the obvious alternative and was tested — it does set the
+HTML title independently of `project.title`, so it would not touch the PDF. It is not used
+because it is a single string doing two jobs: it becomes the chapter suffix *and* the
+landing page's entire title, and those want different lengths.
+
+### What was deliberately not done
+
+* **WebP.** Measured at 89% off a representative figure against 57% for palette PNG. Not
+  taken, because the filename would have to change and the filename appears twice per
+  page — in the `<img>` and inside the hydration payload. Get that half-right and the
+  server-rendered page is fine while the hydrated one 404s every figure: invisible to a
+  crawler, obvious to a reader. The half of the win that needs no reference rewriting
+  went first.
+* **The logo.** `images/logo-wide.svg` is 437 kB — one path alone is 117 kB of
+  coordinates — and it loads on all 30 pages, which now makes it a quarter of
+  `descriptive-statistics`'s on-load image payload. `svgo --precision 2` takes it to
+  162 kB and looks identical to the eye, but 7% of pixels differ by a visible amount even
+  at display size and svgo rewrites the `<text>` elements, so it is not a change to make
+  silently to the book's logo. Precision 3 is clean (671 pixels of 180,000) at 32% off and
+  still leaves 297 kB. **This wants a redraw or a raster export, not a squeeze**, and that
+  is Konrad's call.
+* **Blocking the PDF from the index.** See §9b.
+* **The third-party CSS.** font-awesome 4.7, KaTeX and `mpl_widget` still come from cdnjs
+  and jsdelivr on every page, render-blocking, with no `preconnect`. That is MyST's
+  markup rather than ours, and unlike the font `@import` it is not ours to delete from a
+  stylesheet; it needs either a theme override or a vendoring step of its own.
+* **Per-chapter structured data.** Still only the landing page. `BreadcrumbList` and a
+  `TechArticle` per chapter are defensible additions; they were not the day's bottleneck.
+
+### 9b. The PDF, and what `Disallow` actually does
+
+The audit's own phrasing — that `Disallow: /build/*.pdf` would keep the PDF "out of the
+index while keeping the download working" — **is wrong, and worth correcting here rather
+than quietly dropping.** `robots.txt` governs *crawling*, not *indexing*. A URL that is
+disallowed but linked can still be indexed, as a bare URL with no description; Google
+calls it "indexed, though blocked by robots.txt". And the site links the PDF from every
+chapter's download button, so that is exactly the case that would arise.
+
+The tool that actually prevents indexing is `X-Robots-Tag: noindex` in the HTTP response,
+which requires crawling to be *allowed* so the header can be read. **GitHub Pages cannot
+set response headers at all**, so that tool is not available here — a real cost of the
+hosting decision in §3, alongside the 10-minute `max-age` on fingerprinted assets.
+
+What `Disallow` would genuinely buy is narrower: Google could not read the PDF's contents,
+so the PDF could not rank *for the text of the book* against the HTML chapters. What it
+would cost is that the 19 MB download becomes invisible to anyone searching for a PDF of
+the book, and that the URL may still surface, stripped of everything useful.
+
+Not done, on that reading: a duplicate that cannot be described is a poor trade for a
+download students actually use, and Google has handled PDF-beside-HTML for twenty years.
+If it ever does start outranking the chapters, the lever is two lines appended to the
+`robots.txt` rewrite in `pages.yml` — the file is already post-processed there — and it
+can be added the day there is evidence for it.

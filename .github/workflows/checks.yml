@@ -75,6 +75,24 @@ jobs:
           python3 tools/social_card.py --verify
           python3 tools/course_diagram.py --check
 
+      - name: Committed figures are still optimised
+        # The repository's own images, not the build's -- pages.yml re-encodes the
+        # notebook output on the way out, but images/ is reviewed and committed, so a
+        # new 5 MB screenshot has to be caught here rather than quietly re-encoded on
+        # every deploy.
+        #
+        # --check changes nothing; it reports and fails with the command to run. The
+        # floor in the tool is what keeps this from failing on a few bytes of palette
+        # reordering, i.e. from being a guard that can never be made green.
+        #
+        # 1600 px is the cap for hand-made figures: the widest the page renders one is
+        # 480 px, and 1600 across a text-width figure is still over 300 dpi in the PDF.
+        run: |
+          pil=$(grep '^pillow==' requirements.txt | cut -d= -f3)
+          npy=$(grep '^numpy==' requirements.txt | cut -d= -f3)
+          python3 -m pip install --quiet "pillow==$pil" "numpy==$npy"
+          python3 tools/optimize_images.py images --max-width 1600 --check
+
       - uses: actions/setup-node@v4
         with:
           node-version: '22'

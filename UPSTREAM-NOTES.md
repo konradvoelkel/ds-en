@@ -115,3 +115,64 @@ three are in the German original too; none is fixed there.
   travels in the page's JSON payload and is drawn in the browser. There is no static
   fallback and no caption — the `mermaid` directive rejects `:caption:`. Not fixable in
   the source as things stand; a MyST limitation worth watching.
+
+## The web edition's weight, and a GDPR problem in the GDPR book
+
+Found auditing the English edition on 2026-10-16. **Each of the four was checked against
+the live German site that same day, not inferred** — the German edition has all of them.
+The first is the one to fix regardless of anything else.
+
+* **`custom-style.css` embeds Google Fonts from Google's servers.** Line 3 of both
+  editions' stylesheet is
+  `@import url('https://fonts.googleapis.com/css2?family=Inter…&family=JetBrains+Mono…')`,
+  and it is still there in `ds-skript`'s served `myst-theme.css`. It costs three things.
+  It is a render-blocking chain three deep, because an `@import` nested inside a
+  stylesheet can be discovered only after that stylesheet has been fetched and parsed,
+  and cannot be preloaded. It puts a third party on every page view. And it hands that
+  third party every reader's IP address — which is what LG München I ruled on in its
+  judgment of 20 January 2022 (3 O 17493/20), awarding damages against a site operator
+  for embedding Google Fonts without consent. The book has a chapter on the GDPR that
+  cites the noyb complaints and the 2022 Google Analytics findings; it is served from
+  fonts.googleapis.com.
+
+  *Fixed in this edition* (2026-10-16): the two files are committed in `_site/fonts/`
+  with their hashes and OFL licences in `PROVENANCE.txt`, declared as `@font-face`, and
+  copied into the artifact by `pages.yml`, with a CI guard that fails the deploy if a
+  `https://fonts.googleapis.com` reference ever returns. Two files cover all four
+  weights, because both families are variable fonts and Google was already answering
+  both weights of each with the same URL. **The fix is about 20 lines and needs no
+  translation**, which is why it is first in this list.
+
+* **Matplotlib's figures are RGBA, and PNG compresses four channels badly.** `savefig`
+  writes an opaque white background and an alpha channel nobody uses. A sampled German
+  figure (`5a741bbf…png`, 602×582) is 245,739 bytes and becomes 102,382 — **58% smaller**
+  — stored as a 256-colour palette PNG, which for a plot is at worst a tenth of a grey
+  level different and often exactly identical. Across the English edition this was 9.0 MB
+  of 23.2 MB. The German edition's figures are the same plots from the same seeds, so the
+  same proportion is there.
+
+  *Fixed in this edition*: `tools/optimize_images.py`, run over the build in `pages.yml`
+  and over the committed `images/` with a `--check` gate in `checks.yml`. It measures
+  before it quantises and refuses anything that moves a pixel it cannot account for, and
+  it leaves the four figures whose alpha channel is genuinely in use alone — flattening
+  one of those onto white would look right in the build and wrong in dark mode.
+
+* **MyST preloads every figure on the page, so nothing is deferred.** `ds-skript/kmeans/`
+  ships 12 `<link rel="preload" as="image">` and zero `loading="lazy"`, which is why a
+  chapter pulls its entire figure set before the load event — on the English
+  `descriptive-statistics` that was 6.4 MB. Adding `loading="lazy"` alone does nothing:
+  a preloaded image is fetched whatever `loading` says, and the preload wins. Both have
+  to move together, and the first figure must keep both, being the LCP element.
+
+  *Fixed in this edition* in `tools/head_meta.py`.
+
+* **No `og:url` and no `og:site_name`** on either edition. MyST writes `og:title`,
+  `og:description` and `og:image` and stops. Without `og:url` a platform has no canonical
+  identity for a shared link, so two spellings of one URL become two cards with two
+  comment threads. *Added in this edition*, same tool.
+
+One thing that is **not** in the German edition: its title suffix is
+`- Data Science Vorlesungsskript`, 31 characters against this edition's 48, so the
+truncation finding behind `head_meta.py`'s title trimming is much milder there. Worth
+knowing before someone ports that part across — the mechanism is identical, the
+measurement is not.

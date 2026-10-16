@@ -129,6 +129,27 @@ jobs:
         # loads nothing at all while still answering 200, so it fails quietly.
         run: myst build --html
 
+      - name: Re-encode the figures
+        # Measured on the live site 2026-10-16: 21.3 MB of images over 30 pages, and a
+        # 2712 ms LCP on descriptive-statistics against a 2500 ms budget. Matplotlib
+        # writes RGBA, a plot has no transparency and few colours, and PNG compresses one
+        # channel far better than four -- so this is ~45% off the figure payload with the
+        # filenames and the pixels unchanged. See tools/optimize_images.py for the quality
+        # gate and for what it refuses to touch.
+        #
+        # The committed images/ are optimised in the repository and checked by checks.yml;
+        # this pass is for the notebook output, which is generated at build time and so
+        # has nowhere else to be fixed.
+        #
+        # Versions come from requirements.txt for the same reason mystmd's does: so there
+        # is one number per dependency in this repository and not two.
+        run: |
+          pil=$(grep '^pillow==' requirements.txt | cut -d= -f3)
+          npy=$(grep '^numpy==' requirements.txt | cut -d= -f3)
+          [ -n "$pil" ] && [ -n "$npy" ] || { echo "::error::no pillow/numpy pin in requirements.txt"; exit 1; }
+          python3 -m pip install --quiet "pillow==$pil" "numpy==$npy"
+          python3 tools/optimize_images.py _build/html/build
+
       - name: Write the absolute URLs MyST cannot write itself
         run: |
           SITE="$SITE_ORIGIN$BASE_URL"
@@ -190,6 +211,30 @@ jobs:
           # the canonical above: the self-reference has to be the URL each page already
           # calls canonical, and the tool refuses if it is not.
           python3 tools/hreflang.py "$SITE" "$DE_SITE" _build/html
+
+          # The two webfonts, served from this origin instead of from Google's. The
+          # @import that used to be at the top of custom-style.css cost a three-deep
+          # render-blocking chain, a third party on every page view, and -- in a book with
+          # a GDPR chapter -- exactly the embedding that LG Muenchen I ruled on in 2022.
+          # _site/fonts/PROVENANCE.txt has the files, their hashes and their licences.
+          #
+          # myst-theme.css is custom-style.css copied verbatim, so the placeholder is
+          # substituted here, the same trick as __SITE__ in 404.html: a move of the book
+          # stays the two env: lines at the top of this file.
+          mkdir -p _build/html/fonts
+          cp _site/fonts/*.woff2 _site/fonts/OFL-*.txt _build/html/fonts/
+          # Every built stylesheet, not just myst-theme.css: MyST also drops a
+          # fingerprinted copy of the user stylesheet in build/, and while the theme
+          # loads /myst-theme.css, a copy serving a literal __BASE__ URL is not something
+          # to leave lying in the artifact.
+          find _build/html -name '*.css' -exec sed -i "s|__BASE__|$BASE_URL|g" {} +
+
+          # Trim the title suffix, add og:url and og:site_name, preload the fonts, and
+          # lazy-load the figures below the fold -- which also means dropping the
+          # <link rel=preload as=image> MyST writes for every figure, because a preloaded
+          # image is fetched whatever loading="lazy" says. Runs after the canonical step:
+          # og:url is given the same URL the canonical has.
+          python3 tools/head_meta.py "$SITE" _build/html --base "$BASE_URL"
 
       - name: Refuse to publish a site that would load nothing, or that crawlers cannot use
         run: |
@@ -262,6 +307,54 @@ jobs:
             echo "PDF: $(du -h _build/html/build/*.pdf | head -1 | cut -f1)"
           else
             echo "::warning::no PDF in this build -- the site deploys without a download button"
+          fi
+
+          # No third-party font, ever again. This is the guard the 2026-10-16 change
+          # exists for: the @import was one line in a stylesheet nobody re-reads, and
+          # nothing else in the build would have reported it coming back -- it never
+          # appears in the HTML, so none of the checks above could see it.
+          #
+          # Matched with the scheme, and only in the files a browser actually loads.
+          # Without the scheme it also matches the sentence in custom-style.css that
+          # explains why the @import was removed; and recursively it also matches the
+          # fingerprinted copies of *previous* builds that MyST leaves in build/, which
+          # nothing references and which a local incremental build will have lying
+          # around. Either would be a guard that fails for a reason that is not the bug.
+          for f in _build/html/myst-theme.css $(find _build/html -name index.html); do
+            if grep -qs 'https://fonts\.googleapis\.com\|https://fonts\.gstatic\.com' "$f"; then
+              fail "a Google Fonts reference is back in $f; see _site/fonts/PROVENANCE.txt"
+            fi
+          done
+          if grep -rq '__BASE__' --include='*.css' _build/html; then
+            fail "the __BASE__ placeholder survived in a stylesheet; the fonts would 404"
+          fi
+          for f in inter-latin.woff2 jetbrains-mono-latin.woff2; do
+            test -s "_build/html/fonts/$f" || fail "_build/html/fonts/$f is missing or empty"
+          done
+          # The @font-face must point at a file that is actually there. Catches a rename
+          # of either side, which would otherwise show up as the fallback font and
+          # nothing else. Not written as `... | while read`: a pipeline runs its loop in
+          # a subshell, so the exit 1 inside fail would leave the subshell and the step
+          # would pass -- the same trap as the `&& fail` noted above.
+          for u in $(grep -o "url('[^']*\.woff2')" _build/html/myst-theme.css | sed "s|url('||;s|')||"); do
+            test -s "_build/html${u#$BASE_URL}" \
+              || fail "myst-theme.css points at $u, which is not in the artifact"
+          done
+
+          # og:url and og:site_name on every page, and no chapter still carrying the
+          # 48-character title suffix that SERPs truncated away on 29 of 30 pages.
+          ogurl=$(find _build/html -name index.html -exec grep -l 'property="og:url"' {} + | wc -l)
+          [ "$pages" = "$ogurl" ] || fail "$pages pages but $ogurl og:url tags"
+          sitename=$(find _build/html -name index.html -exec grep -l 'property="og:site_name"' {} + | wc -l)
+          [ "$pages" = "$sitename" ] || fail "$pages pages but $sitename og:site_name tags"
+
+          # The document title is the *first* <title> in the file; the pages also carry
+          # SVG <title> elements, so a greedy match would read the wrong one.
+          suffix=" - $(grep -o '<title>[^<]*</title>' _build/html/index.html | head -1 | sed 's|</*title>||g')"
+          if find _build/html -mindepth 2 -name index.html -exec sh -c \
+               'for f; do grep -o "<title>[^<]*</title>" "$f" | head -1; done' sh {} + \
+               | grep -qF "$suffix</title>"; then
+            fail "a chapter title still ends in \"$suffix\""
           fi
 
           # Three tags per page: the German counterpart, the self-reference and
