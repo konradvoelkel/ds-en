@@ -301,3 +301,16 @@ has them.
 * *Decisions and doubts* §1 above is now stale: `nbtext.py syntax` reports "all code cells
   compile" for this notebook, so the magic-line handling has evidently been fixed in
   `tools/` since the translation pass. The cells themselves are untouched.
+
+## Title lengthened (2026-10-16)
+
+The chapter title diverges from the German original, deliberately. Both editions had
+left this one thin; this edition lengthened it, the original did not (checked at
+`2784f10`). `sync.py check` hashes the German side, so the divergence is invisible to it:
+if this block ever comes back as stale, re-translate the German sentence and then
+re-apply the longer title rather than restoring the short one.
+
+The constraint that shaped the wording is that a chapter title is also the printed
+heading in the PDF, so it had to read as a heading and not as a search phrase -- the same
+call the original made for its own twelve titles (`todo/seo-kritik-bewertung.md`,
+[SEO-8], Variante 2). `short_title` keeps the sidebar short.
