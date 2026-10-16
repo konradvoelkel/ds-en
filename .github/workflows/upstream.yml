@@ -60,16 +60,34 @@ jobs:
         #
         # GIT_TERMINAL_PROMPT=0 so git says so instead of trying to open a prompt it has
         # no terminal for.
+        #
+        # The clone target is a directory this step OWNS, never a sibling of the
+        # checkout. It used to be `../ds-skript`, which on a runner is throwaway space
+        # but locally is the real German repository: on 2026-10-16 a local trial of this
+        # very step -- a stubbed `git` that always failed, so the failure path ran -- hit
+        # the `rm -rf` below and deleted ds-skript off the author's machine. The stub
+        # covered `git`. It did not cover `rm`. Four weeks of gitignored working notes
+        # went with it.
+        #
+        # So: the path is constructed, never relative, and the guard below refuses to let
+        # `rm -rf` point anywhere but at our own directory name. Keep it that way.
         run: |
           export GIT_TERMINAL_PROMPT=0
+          UPSTREAM_DIR="${RUNNER_TEMP:-${TMPDIR:-/tmp}}/ds-skript-upstream"
+          case "$UPSTREAM_DIR" in
+            */ds-skript-upstream) ;;
+            *) echo "::error::refusing to touch $UPSTREAM_DIR"; exit 1 ;;
+          esac
+          echo "UPSTREAM_DIR=$UPSTREAM_DIR" >> "${GITHUB_ENV:-/dev/null}"
+          rm -rf "$UPSTREAM_DIR"
           for wait in 0 60 120 180 300 300; do
             [ "$wait" = 0 ] || { echo "unreachable; waiting ${wait}s"; sleep "$wait"; }
             curl -sS -o /dev/null --connect-timeout 10 --max-time 25 \
               https://gitlab.cs.uni-duesseldorf.de/ 2>/dev/null || continue
             err=$(git clone --filter=blob:none \
-              https://gitlab.cs.uni-duesseldorf.de/voelkel/ds-skript.git ../ds-skript 2>&1) \
+              https://gitlab.cs.uni-duesseldorf.de/voelkel/ds-skript.git "$UPSTREAM_DIR" 2>&1) \
               && exit 0
-            rm -rf ../ds-skript
+            rm -rf "$UPSTREAM_DIR"
             if printf '%s' "$err" | grep -qiE 'could not read Username|Authentication failed|terminal prompts disabled'; then
               echo "::error::ds-skript needs credentials, so no number of retries will help:"
               printf '::error::  %s\n' "$(printf '%s' "$err" | tail -1)"
@@ -100,10 +118,10 @@ jobs:
           CLAIMED: ${{ github.event.client_payload.sha || inputs.commit }}
         run: |
           set +e
-          python3 tools/sync.py check > /tmp/out.txt 2>&1
+          DS_SKRIPT="$UPSTREAM_DIR" python3 tools/sync.py check > /tmp/out.txt 2>&1
           echo "status=$?" >> "$GITHUB_OUTPUT"
           head -c 200000 /tmp/out.txt
-          echo "sha=$(git -C ../ds-skript rev-parse --short HEAD)" >> "$GITHUB_OUTPUT"
+          echo "sha=$(git -C "$UPSTREAM_DIR" rev-parse --short HEAD)" >> "$GITHUB_OUTPUT"
           echo "claimed=$CLAIMED" >> "$GITHUB_OUTPUT"
 
       - name: Open an issue if anything needs re-translating
