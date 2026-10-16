@@ -16,7 +16,13 @@ curves to fill a thumbnail.
 
 So the SVG becomes what it should always have been -- the *source* -- and the site is
 served a raster of it. It stays in the repository, and this tool is the link between
-them. 437,307 bytes to 18,150: **96% off every page on the site.**
+them. 437,307 bytes to 18,150.
+
+**On the wire that is 122,702 to 18,150 -- 105 kB and 85% off every page, not 96%.** An
+SVG is text and GitHub Pages serves it gzipped, so the figure to quote is the compressed
+one; the PNG is already compressed and gzip does nothing for it. Confirmed against the
+live site rather than computed: the on-load image payload of descriptive-statistics fell
+by 107,477 bytes across the change, which is this and nothing else.
 
 
 Why 216 x 108

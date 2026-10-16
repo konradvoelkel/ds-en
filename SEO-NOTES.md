@@ -545,7 +545,12 @@ clean and still leaves 297 kB. Both are a lot of Bezier curves for a thumbnail.
 Konrad's decision: keep the SVG as the source, serve a raster. `tools/logo_raster.py`
 renders it to `images/logo-wide.png` at **216 × 108** — 3× the display box, so a 3×-DPR
 phone maps one image pixel to one device pixel — and `myst.yml` points `site.options.logo`
-at the PNG. **437,307 bytes → 18,150. 96% off every page on the site.**
+at the PNG. 437,307 bytes → 18,150 on disk — but **on the wire 122,702 → 18,150, which
+is ~105 kB and 85% off every page, not 96%.** An SVG is text and is served gzipped; a PNG
+is already compressed and gzip does nothing for it, so the compressed pair is the honest
+one to quote. Confirmed against the live site rather than computed: the on-load image
+payload of `descriptive-statistics` fell by 107,477 bytes across this change, which is the
+logo and nothing else.
 
 Three things worth recording:
 

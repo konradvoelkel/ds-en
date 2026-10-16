@@ -118,9 +118,10 @@ three are in the German original too; none is fixed there.
 
 ## The web edition's weight, and a GDPR problem in the GDPR book
 
-Found auditing the English edition on 2026-10-16. **Each of the four was checked against
-the live German site that same day, not inferred** — the German edition has all of them.
-The first is the one to fix regardless of anything else.
+Found auditing the English edition on 2026-10-16. **Each of the five was checked against
+the live German site that same day, not inferred** — the German edition has all of them,
+and the logo is the byte-identical file. The first is the one to fix regardless of
+anything else.
 
 * **`custom-style.css` embeds Google Fonts from Google's servers.** Line 3 of both
   editions' stylesheet is
@@ -179,7 +180,9 @@ The first is the one to fix regardless of anything else.
 
   *Fixed in this edition* (2026-10-16): the SVG stays as the source, `tools/logo_raster.py`
   renders it to a 216 × 108 PNG (3×, so a 3×-DPR phone is pixel-exact), and `myst.yml`
-  points `site.options.logo` at that. **437,307 → 18,150 bytes, on every page.** Two
+  points `site.options.logo` at that. 437,307 → 18,150 bytes on disk, and — the figure
+that matters — **122,702 → 18,150 on the wire, about 105 kB off every page**, since an
+SVG is served gzipped and a PNG is already compressed. Two
   cautions for whoever ports it. The raster must keep the *SVG's* 2:1 viewBox and not the
   framing of the stale `logo-wide.png` that sits in both repositories unreferenced — that
   one is 609 × 417, the same drawing cropped tighter, and since the height is what is
