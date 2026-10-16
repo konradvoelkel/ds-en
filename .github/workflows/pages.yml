@@ -229,6 +229,18 @@ jobs:
           # to leave lying in the artifact.
           find _build/html -name '*.css' -exec sed -i "s|__BASE__|$BASE_URL|g" {} +
 
+          # The theme's own three stylesheets -- KaTeX, Font Awesome and the
+          # jupyter-matplotlib widget CSS -- served from here instead of from jsdelivr and
+          # cdnjs, along with the twenty KaTeX font files a page with mathematics pulls
+          # after them. Same argument as the webfonts above, one step further out: these
+          # are the theme's <link> tags rather than our stylesheet, so they are rewritten
+          # after the build. _site/vendor/PROVENANCE.txt has the files, hashes and licences.
+          #
+          # The URLs live in the client bundles as well as in the HTML, so the rewrite
+          # covers .js too -- without that, hydration re-adds the CDN links and the page
+          # fetches both copies. See the tool's docstring.
+          python3 tools/vendor_assets.py _build/html --base "$BASE_URL"
+
           # Trim the title suffix, add og:url and og:site_name, preload the fonts, and
           # lazy-load the figures below the fold -- which also means dropping the
           # <link rel=preload as=image> MyST writes for every figure, because a preloaded
@@ -339,6 +351,34 @@ jobs:
           for u in $(grep -o "url('[^']*\.woff2')" _build/html/myst-theme.css | sed "s|url('||;s|')||"); do
             test -s "_build/html${u#$BASE_URL}" \
               || fail "myst-theme.css points at $u, which is not in the artifact"
+          done
+
+          # The theme's three stylesheets must not come from a CDN any more. Matched by
+          # their specific URLs and not by the hostnames: thebe's runtime legitimately
+          # fetches Pyodide, MathJax and require.js from those same two hosts when a
+          # reader starts a live kernel, which is tens of megabytes and not vendorable.
+          # Reading the book contacts no third party; running the code in it does, and a
+          # guard written against the hostnames could only be satisfied by deleting thebe.
+          for u in 'katex@[0-9.]*/dist/katex.min.css' \
+                   'font-awesome/[0-9.]*/css/font-awesome.css' \
+                   'jupyter-matplotlib@[0-9.]*/css/mpl_widget.css'; do
+            if grep -rqsE "https://[^\"' ]*$u" --include='*.html' --include='*.js' --include='*.css' _build/html; then
+              fail "a CDN reference to $u survived; see tools/vendor_assets.py"
+            fi
+          done
+          for p in vendor/katex/katex.min.css vendor/font-awesome/css/font-awesome.css \
+                   vendor/jupyter-matplotlib/mpl_widget.css; do
+            test -s "_build/html/$p" || fail "_build/html/$p is missing or empty"
+          done
+          # The KaTeX stylesheet names its fonts relative to itself, so a missing fonts/
+          # directory shows up only as mathematics set in a fallback font.
+          katexfonts=$(ls _build/html/vendor/katex/fonts/*.woff2 2>/dev/null | wc -l)
+          [ "$katexfonts" = "20" ] || fail "$katexfonts KaTeX woff2 files in the artifact, expected 20"
+          test -s _build/html/vendor/font-awesome/fonts/fontawesome-webfont.woff2 \
+            || fail "the Font Awesome face is missing; thebe's run/stop icons would be blank squares"
+          # The OFL requires the licence to travel with the font it covers.
+          for l in vendor/katex/LICENSE vendor/font-awesome/LICENSE vendor/jupyter-matplotlib/LICENSE; do
+            test -s "_build/html/$l" || fail "_build/html/$l is missing"
           done
 
           # og:url and og:site_name on every page, and no chapter still carrying the

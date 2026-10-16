@@ -118,7 +118,7 @@ three are in the German original too; none is fixed there.
 
 ## The web edition's weight, and a GDPR problem in the GDPR book
 
-Found auditing the English edition on 2026-10-16. **Each of the five was checked against
+Found auditing the English edition on 2026-10-16. **Each of the six was checked against
 the live German site that same day, not inferred** — the German edition has all of them,
 and the logo is the byte-identical file. The first is the one to fix regardless of
 anything else.
@@ -191,6 +191,35 @@ SVG is served gzipped and a PNG is already compressed. Two
   reader's light/dark setting, so a logo flattened onto white is a white block in dark
   mode. A palette PNG is a third the size but shifts colours by up to 36/255, which the
   globe's three radial gradients show as banding; plain RGBA is exact.
+
+* **The theme's own three stylesheets come from two CDNs**, on every page of both
+  editions — verified on the live German site, which serves the identical three URLs with
+  the identical KaTeX SRI hash:
+
+      cdn.jsdelivr.net/npm/katex@0.15.2/dist/katex.min.css
+      cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css
+      cdn.jsdelivr.net/npm/jupyter-matplotlib@0.11.3/css/mpl_widget.css
+
+  All three render-blocking, none preloadable, and on any page with mathematics up to
+  twenty KaTeX font files from jsdelivr behind them — pulled relative to that stylesheet's
+  own URL, so they are invisible in the HTML. Same GDPR argument as the Google Fonts
+  `@import` above, and the same chapter it sits awkwardly beside.
+
+  *Fixed in this edition* (2026-10-16): committed in `_site/vendor/` and rewritten after
+  the build by `tools/vendor_assets.py`. Three cautions, each of which cost something to
+  learn. **Font Awesome must not be deleted** even though no built page has a single `fa-`
+  class and the browser reports the face as `unloaded`: the client bundle applies
+  `fa-play`, `fa-stop` and five more to thebe's notebook controls, which appear only once
+  a reader makes a notebook live, so deleting it leaves blank squares in exactly that
+  feature. **The URLs are in the client bundles too**, so rewriting only the HTML means
+  hydration re-adds the CDN links and the page fetches both copies. And the KaTeX
+  stylesheet **names its fonts relative to itself**, so vendoring the CSS without the
+  twenty woff2 files beside it silently sets the mathematics in a fallback font.
+
+  What it does not fix, in either edition: thebe's runtime still fetches Pyodide, MathJax
+  and require.js from those hosts when a reader starts a kernel. Pyodide is tens of
+  megabytes; that one is not vendorable. Reading contacts no third party, running code
+  does.
 
 One thing that is **not** in the German edition: its title suffix is
 `- Data Science Vorlesungsskript`, 31 characters against this edition's 48, so the

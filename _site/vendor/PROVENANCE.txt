@@ -1,0 +1,116 @@
+The three third-party stylesheets the MyST book theme loads, and why they are here
+=================================================================================
+
+Until 2026-10-16 every page of this site fetched three stylesheets from two CDNs:
+
+    cdn.jsdelivr.net/npm/katex@0.15.2/dist/katex.min.css
+    cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css
+    cdn.jsdelivr.net/npm/jupyter-matplotlib@0.11.3/css/mpl_widget.css
+
+and, on any page with mathematics, up to twenty font files from jsdelivr on top -- nine
+of them on expectation-variance alone, pulled by the KaTeX stylesheet relative to its own
+URL.
+
+All three are render-blocking, none of them could be preloaded (a stylesheet is
+discovered before its own contents are), and all of them hand a third party the IP
+address of every reader of a book that devotes a chapter to the GDPR. _site/fonts/ already
+records that argument for the Google Fonts @import; this is the same argument for the rest
+of the page. The two cases differ only in who had to be asked: the @import was ours to
+delete, these are the theme's markup, so they are rewritten after the build instead.
+
+Committed rather than fetched during the build, for the same reasons as the webfonts: a
+deploy must not depend on a third party being up, and the bytes must not change
+underneath us.
+
+
+What is here, and that it is unmodified
+---------------------------------------
+
+**Nothing in this directory has been edited.** Every file is exactly what the CDN served,
+which is the property that makes it checkable against upstream later. In particular the
+stylesheets still reference `.woff`, `.ttf`, `.eot` and `.svg` variants that are
+deliberately *not* vendored -- see the note at the end.
+
+katex/katex.min.css
+  23,112 bytes
+  sha256 f7808d67f6c9b70ac1619ad7842381be9078ad9533067bc0b22ac5bf7d53306a
+  from https://cdn.jsdelivr.net/npm/katex@0.15.2/dist/katex.min.css
+  sha384-MlJdn/WNKDGXveldHDdyRP1R4CTHr3FeuDNfhsLPYrq2t0UBkUdK2jyTnXPEK1NQ
+  ^ this is the integrity hash the theme itself published on the <link> it
+    emitted, so the vendored copy is provably the exact bytes the site was
+    already loading. Verified at vendor time.
+
+font-awesome/css/font-awesome.css
+  37,414 bytes
+  sha256 36e0a7e08bee65774168528938072c536437669c1b7458ac77976ec788e4439c
+  from https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css
+
+jupyter-matplotlib/mpl_widget.css
+  911 bytes
+  sha256 e14a545216f676853ee3ff11b2d906f06620f62c7f700a5092fa65ccb1016abb
+  from https://cdn.jsdelivr.net/npm/jupyter-matplotlib@0.11.3/css/mpl_widget.css
+
+katex/fonts/*.woff2
+  20 files, 259,792 bytes total
+  from https://cdn.jsdelivr.net/npm/katex@0.15.2/dist/fonts/<name>
+  Every woff2 the stylesheet names. Which of the twenty a reader actually downloads
+  depends on the mathematics on the page: nine on expectation-variance, none on a
+  chapter without formulae.
+
+font-awesome/fonts/fontawesome-webfont.woff2
+  77,160 bytes
+  sha256 2adefcbc041e7d18fcf2d417879dc5a09997aa64d675b7a3c4b6ce33da13f3fe
+  from https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/fonts/fontawesome-webfont.woff2
+
+Licences
+--------
+
+    katex/LICENSE               MIT, Khan Academy and other contributors
+    font-awesome/LICENSE        font SIL OFL 1.1, CSS MIT, Dave Gandy
+    jupyter-matplotlib/LICENSE  BSD 3-clause, Matplotlib Contributors
+
+All three permit redistribution. The OFL requires its licence to travel with the font,
+which is what font-awesome/LICENSE is for.
+
+
+Why Font Awesome is here at all, when nothing on the page uses it
+-----------------------------------------------------------------
+
+It looks unused and nearly is: across all thirty built pages there is **not one** element
+with a `fa-` class, and the browser reports the FontAwesome face as `unloaded` on every
+page -- the stylesheet is fetched and the font it asks for never is.
+
+It is not unused. The theme's client bundle contains `"fa fa-"` together with `fa-play`,
+`fa-stop`, `fa-pause`, `fa-check`, `fa-times`, `fa-caret` and `fa-retweet`: these are
+thebe's run / stop / restart controls, which appear only once a reader makes a notebook
+live. Deleting the stylesheet -- the obvious move on the evidence of a normal page load --
+would have left those buttons as blank squares in the one feature that most needs them to
+be legible.
+
+So: vendored, not removed. On an ordinary page view this costs one same-origin stylesheet
+and no font at all.
+
+
+Why only the woff2, and nothing is edited
+------------------------------------------
+
+The stylesheets name four or five formats per face; only the woff2 is vendored. Every
+browser that can run this site has supported woff2 since 2016, woff2 is listed before the
+older formats in every one of these `src` lists, and _site/fonts/ already ships
+woff2-only for the same reason.
+
+The alternative was to strip the other formats out of the CSS, which would have left no
+dangling references -- and would have meant these files were no longer byte-for-byte what
+upstream published, so the sha256 above would check nothing. Keeping them exact and
+accepting references that only a pre-2016 browser would follow is the better trade: a
+reference nobody requests costs nothing, and verifiability is worth something.
+
+
+Updating them
+-------------
+
+tools/vendor_assets.py fails the build if the theme starts asking for a version other than
+the one vendored here, and names both versions when it does. That is the signal to refetch
+all of it -- stylesheet, fonts and licence -- check the hashes, and update this file. It is
+deliberately a failure and not a fallback to the CDN: silently going back to jsdelivr is
+the exact outcome this directory exists to prevent.

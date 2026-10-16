@@ -497,10 +497,7 @@ landing page's entire title, and those want different lengths.
 * **The logo** — at the time of writing. It was left for Konrad to decide and he decided
   the same day: see §9c.
 * **Blocking the PDF from the index.** See §9b.
-* **The third-party CSS.** font-awesome 4.7, KaTeX and `mpl_widget` still come from cdnjs
-  and jsdelivr on every page, render-blocking, with no `preconnect`. That is MyST's
-  markup rather than ours, and unlike the font `@import` it is not ours to delete from a
-  stylesheet; it needs either a theme override or a vendoring step of its own.
+* **The third-party CSS** — at the time of writing. Done the same day instead: see §9d.
 * **Per-chapter structured data.** Still only the landing page. `BreadcrumbList` and a
   `TechArticle` per chapter are defensible additions; they were not the day's bottleneck.
 
@@ -584,3 +581,64 @@ less than its floor — checked rather than assumed.
 
 **The German edition serves the byte-identical 437 kB SVG** (same sha, same path hash
 under its own build). Passed upstream.
+
+### 9d. The theme's own three stylesheets (2026-10-16, same day)
+
+The last third parties on the page. Every page view fetched
+
+    cdn.jsdelivr.net/npm/katex@0.15.2/dist/katex.min.css
+    cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css
+    cdn.jsdelivr.net/npm/jupyter-matplotlib@0.11.3/css/mpl_widget.css
+
+all three render-blocking, none preloadable — a stylesheet is discovered before its own
+contents are — and on any page with mathematics up to twenty KaTeX font files from
+jsdelivr behind them, nine of them on `expectation-variance`, pulled relative to that
+stylesheet's own URL.
+
+Same argument as the Google Fonts `@import` in §9, one step further out. The difference
+is whose markup it is: the `@import` was line 3 of our own stylesheet and could be
+deleted, these are the theme's `<link>` tags, so they are rewritten after the build by
+`tools/vendor_assets.py` and the files are committed in `_site/vendor/` — 28 files,
+480 kB, unmodified, with hashes and licences in `PROVENANCE.txt`.
+
+Four things worth recording:
+
+* **Font Awesome looks unused and is not.** Across all thirty built pages there is not one
+  element with a `fa-` class, and the browser reports the face as `unloaded` on every one:
+  the stylesheet is fetched and the font it asks for never is. The obvious move on that
+  evidence is to delete the link. It would have been wrong — the theme's client bundle
+  contains `"fa fa-"` with `fa-play`, `fa-stop`, `fa-pause`, `fa-check`, `fa-times`,
+  `fa-caret` and `fa-retweet`, which are thebe's run/stop/restart controls, and they
+  appear only once a reader makes a notebook live. Deleting it would have left blank
+  squares in the one feature that needs legible buttons. Vendored instead, and the path
+  was then tested directly rather than by reasoning: an element with `class="fa fa-play"`
+  injected into a built page loads the face from `/vendor/...woff2?v=4.7.0`, 200, and the
+  glyph renders.
+* **The URLs are in the client bundles as well as the HTML** — `root-*.js` and two shared
+  chunks. Rewriting only the server-rendered markup would have the page load correctly and
+  then, on hydration, re-add the CDN links, fetching both copies: worse than before, and
+  invisible outside a network panel. The same trap as the title in §9, and found the same
+  way — by loading the rewritten page instead of grepping it. The rewrite covers `.js`.
+* **The vendored CSS is byte-exact, and provably so.** MyST emits the KaTeX link with an
+  SRI hash; the vendored copy's `sha384` matches it exactly, so the file is demonstrably
+  the bytes the site was already serving. The `integrity` and `crossorigin` attributes are
+  dropped on rewrite anyway: a hash pinned to a file that now lives in this repository is
+  a tripwire for whoever next updates it, since a mismatch does not fail loudly, it just
+  blocks the stylesheet and loses the mathematics with nothing in the build log.
+* **What this does not do, stated narrowly.** The two CDN hostnames still appear in
+  `thebe-lite.min.js`, `thebe-core.min.js` and one shared chunk: Pyodide, MathJax 2.7.5
+  and require.js, fetched only when a reader starts a live kernel. Pyodide alone is tens of
+  megabytes before any package and is not vendorable. So: **reading the book now contacts
+  no third party; running the code in it still does.** The deploy guard greps for the three
+  stylesheet URLs and not for the hostnames, because a guard written against the hostnames
+  could only ever be satisfied by deleting thebe.
+
+Measured on the built artifact before committing: on `expectation-variance` — 502 maths
+nodes, the heaviest in the book — **zero third-party requests**, all nine KaTeX faces
+served from `/vendor/katex/fonts/`, no failed requests, and the formulae set in
+`KaTeX_Math` rather than a fallback.
+
+`tools/vendor_assets.py` fails rather than falling back if the theme ever asks for a
+different version, and names both versions when it does. The tempting behaviour — leave an
+unknown version pointing at the CDN so the build keeps working — would silently restore
+exactly what this removed.
