@@ -48,7 +48,23 @@ def load() -> dict:
         import yaml
     except ImportError:
         sys.exit("PyYAML is missing. Run: uv run --with pyyaml python tools/alt_texts.py …")
-    return yaml.safe_load(TEXTS.read_text(encoding="utf-8")) or {}
+    text = TEXTS.read_text(encoding="utf-8")
+    # Refuse an unquoted all-digit key outright. Normalising below rescues a plain integer,
+    # but a leading zero makes YAML read the id as *octal* -- "05273301" becomes 1406657 --
+    # and after parsing the original digits are gone, so no amount of cleverness here can
+    # get them back. Caught once, on the first batch of descriptions.
+    import re as _re
+    bare = _re.findall(r"(?m)^  ([0-9]+):\s*$", text)
+    if bare:
+        sys.exit(f"alt-texts.yml: cell id(s) {', '.join(bare)} must be quoted -- YAML reads "
+                 "an unquoted all-digit key as a number, and a leading zero as octal.")
+    raw = yaml.safe_load(text) or {}
+    # Cell ids are strings, but an unquoted all-digit id is read as a number -- and one
+    # with a leading zero as *octal*, so "05273301" silently becomes 1406657 and the entry
+    # addresses a cell that does not exist. Normalising here means the file can be written
+    # either way; quoting in the file keeps it honest to read.
+    return {nb: {str(cid): texts for cid, texts in (by or {}).items()}
+            for nb, by in raw.items()}
 
 
 def image_outputs(cell: dict) -> list:

@@ -30,3 +30,359 @@ iris.ipynb:
       reaching 2.5 cm. Below, a histogram of petal length alone in the same colours: the
       yellow species a narrow peak at 1.5 cm reaching fifteen plants per bin, the other two
       broad and overlapping between 3 and 7 cm, with no gap to separate them."
+
+data-cleaning.ipynb:
+  0c564220:
+    - "Two plots side by side. On the left, the daily mean temperature over a year, titled
+      'Daily mean temperature, with errors': the curve swings between about -10 and 30
+      degrees, but spikes to 231 at day 150 and down to -45 at day 300 — the two typing
+      errors planted in the data. On the right, the histogram of the same series: almost
+      every value sits in a narrow block between -10 and 30, and the two errors appear as
+      single, barely visible lines far to the left and far to the right."
+
+titanic-eda-numpy.ipynb:
+  1d815c04-9e83-4d80-b66d-d5363d49e332:
+    - "Bar chart of the survival rate on the Titanic by sex, titled 'Survival rate by sex'.
+      The bar for female passengers reaches about 0.74, the one for male passengers only
+      about 0.19."
+
+normal-distribution.ipynb:
+  0ae9357f-96be-4180-8fbb-e5b4269abad5:
+    - "Histogram of a sample drawn from a binomial distribution, with values from about 20
+      to 60. The bars form a symmetric bell shape peaking at 40."
+  3465b513-ac20-44a5-8c02-906058b2e6af:
+    - "The same histogram, overlaid with the red density curve of the matching normal
+      distribution, titled 'Normal density (red) and binomial histogram (blue)'. The curve
+      follows the bars closely across the whole range."
+  1ef8a15c:
+    - "Two plots side by side showing when the normal approximation to the binomial holds.
+      On the left N = 30 and p = 0.01, so Np = 0.3: the distribution has barely three bars,
+      at 0, 1 and 2, and the black normal curve runs far into negative values — visibly it
+      does not fit. On the right N = 1000 and p = 0.01, so Np = 10: the bars form a bell
+      between 0 and 20 and the normal curve lies neatly over them."
+
+kernel-methods.ipynb:
+  0c6b638d-c5aa-4820-9ab6-750e31463938:
+    - "Scatter plot of the exercise data: a dense round cloud of points in the middle,
+      surrounded by a broad ring of points at a distance of roughly 8 to 10 units. Every
+      point has the same colour — no straight line separates the two groups."
+  dd3329bf-67b3-4f89-a8db-c6a6d514fa24:
+    - "Three three-dimensional views of the same cloud of points from different angles,
+      after the feature map has lifted the data into the height — the height is the squared
+      distance from the origin. The inner clump lies blue and flat on the floor at a height
+      near zero, the ring forms a green shell floating far above it, between 70 and 110. In
+      the third view, almost straight down from above, the two appear as concentric circles
+      again. At this height the two groups can be separated by a horizontal plane, in the
+      plane below they cannot."
+  8ed447f8-e321-4e9a-a7ad-58d1bd193cee:
+    - "The same data as before, now coloured by the labels k-means assigned: the inner clump
+      green, the outer ring blue. After the lift into the third dimension k-means separates
+      the two groups cleanly, even though in the plane they are nested within one another."
+  145f626b-a860-4509-80f7-c0d881974647:
+    - "The same arrangement of ring and clump, coloured by the prediction of a kernel ridge
+      regression. The ring is uniformly dark, the inner clump light, and at the edge of the
+      clump a few points take an intermediate colour — there the prediction is undecided."
+  57e1e137-dda9-451c-9d18-1aecf3bac6e0:
+    - "Two scatter plots side by side. On the left, an ordinary principal component analysis
+      of the data: ring and clump still lie within one another, the PCA has separated
+      nothing. On the right, the same sample after a kernel PCA: the inner class has
+      collapsed into a narrow line at the far left, the outer one spreads to the right as a
+      crescent — in this representation the two classes can be separated by a vertical line."
+
+model-selection.ipynb:
+  673732af:
+    - "Confusion matrix for the three Iris species as a colour table, rows the true class,
+      columns the predicted one. Setosa is recognised correctly 50 times and never
+      confused; versicolor 48 times correctly and read twice as virginica; virginica only
+      36 times correctly, but 14 times as versicolor. The errors therefore sit exclusively
+      between the two similar species."
+  ad9d2d0a-11b2-485c-bcfd-defa9477cc55:
+    - "Scatter plot of measured against predicted petal width for the kernel ridge
+      regression tuned by grid search. The points follow the diagonal closely; what stands
+      out is the gap between about 0.6 and 1.0, where the Iris data set has no measurements."
+  f0a6b8fe-5532-468c-8fde-3256fd615eb5:
+    - "The same scatter plot for the model from the random search rather than the grid
+      search. The picture is practically indistinguishable from the previous one — forty
+      random attempts reach the same quality here as the full grid."
+  85186c1c-f90a-4ea4-9213-de6142c03fff:
+    - "Two scatter plots of the Fashion-MNIST test data in their first two principal
+      components, the ten clothing classes told apart by colour. On the left 'Correct
+      labels' with the true classes, on the right 'SVM result' with the prediction of the
+      support vector machine. The large regions agree; the differences lie at the edges,
+      where the classes run into one another."
+  eed3cd48-be5b-461c-9cc8-62bdbaf9b4bf:
+    - "The same plane of principal components, but instead of coloured points each position
+      carries the actual garment as a small greyscale image. That makes visible what the
+      first two components sort by: towards the bottom left lie light, narrow items such as
+      trousers, towards the top right dark, broad ones such as pullovers and coats."
+  72c1fad4-0110-4fc5-89bb-44492f0ded46:
+    - "Scatter plot titled 'Wrong class': only the test images the SVM classified wrongly,
+      at their place in the same plane and coloured by their true class. They are not spread
+      evenly but cluster in the middle, where the class regions meet."
+
+multivariate-normal.ipynb:
+  4b260d05:
+    - "Three density images side by side, each a colour gradient over the plane. On the left
+      'Normal × uniform': the density is striped vertically, bell-shaped in one direction
+      and constant across the whole range in the other. In the middle 'Normal ×
+      exponential': the mass clings to the bottom edge and tails off upwards. On the right
+      'Normal × normal': concentric circles around the origin — only here is the density the
+      same in both directions."
+  e85e46f8:
+    - "Two scatter plots side by side. On the left 'z: standard normal distribution', a
+      round cloud of points about the origin. On the right 'x = A z + µ', the same points
+      after a linear map: a narrow cloud tilted from bottom left to top right, with two
+      black lines drawn in as its principal axes — the long one along the cloud, the short
+      one across it."
+  a05c46b8-2ccf-45e5-bc3b-95d2ad098230:
+    - "Two-dimensional normal distribution with positive correlation as a density image,
+      flanked by its two marginals: at the side the marginal density of one coordinate, at
+      the foot that of the other, both bell-shaped. The joint density forms an ellipse
+      tilted from bottom left to top right."
+  35f24430-de82-4d7c-b2b0-3a0bba222cb9:
+    - "The same arrangement for a negatively correlated normal distribution: the joint
+      density is an ellipse tilted from top left to bottom right, while the two marginals at
+      the side and the foot look bell-shaped exactly as before — the correlation cannot be
+      seen in the margins."
+  36c3dc1c-52c1-48cb-bcdd-f77d810d6b77:
+    - "Two contour plots side by side. On the left 'Level sets of the density of the
+      bivariate normal distribution with covariance Σ', on the right 'Level sets of the
+      quadratic form belonging to Σ inverse'. Both show the same family of concentric,
+      equally tilted ellipses; they differ only in how closely the lines are spaced towards
+      the outside."
+  4c884907-df3d-4f0a-94cb-dac923118e87:
+    - "The density of a two-dimensional normal distribution as a surface in space: a single
+      smooth peak above the plane falling away on all sides, coloured from yellow at the rim
+      to dark blue at the top."
+  561690ed-8ff6-4242-ace8-9f80194891ea:
+    - "Four small spatial views of the same two-dimensional normal density from four angles,
+      from almost straight down to nearly side-on. From above it appears as a round colour
+      gradient, from the side as a bell curve — it is the same surface each time."
+  d5df7e66-cdd9-4c02-baa3-bc678c029e7f:
+    - "A joint distribution whose mass lies on a saltire: two narrow diagonals meeting at the
+      origin, the rest of the plane nearly empty. Beside it and below it the two marginals,
+      both bell-shaped as for an ordinary normal distribution. The marginals therefore do not
+      determine the joint distribution."
+
+important-discrete-distributions.ipynb:
+  bcc5de61:
+    - "Two plots side by side for the discrete uniform distribution on 1 to 6. On the left
+      the probability mass function: six bars of equal height, about 0.167. On the right the
+      distribution function: a staircase climbing from 0 to 1 in six equal steps."
+  311967c1:
+    - "The same pairing for a categorical distribution with probabilities 0.1, 0.5, 0.3 and
+      0.1. On the left four bars of differing height, the second by far the tallest. On the
+      right the corresponding staircase with steps of matching heights."
+  baafd42c:
+    - "Two plots about the entropy of a coin. On the left the entropy over the success
+      probability p, titled 'Entropy of a coin with success probability p': a symmetric dome
+      reaching its maximum of 1 bit at p = 0.5, marked with a red dot, and falling to zero at
+      both ends. On the right its derivative, the negative of the logit: a descending
+      S-curve crossing zero at p = 0.5 and running to plus and minus infinity at the two
+      ends."
+  7898ad7b:
+    - "Binomial distribution with n = 10 and p = 0.3. On the left the probability mass
+      function: bars over k = 0 to 10 with the tallest at k = 3 and a skewed tail to the
+      right. On the right the distribution function as a staircase that has almost reached 1
+      by k = 6."
+  af7b1fff:
+    - "Curve of the probability of observing exactly k = 3 successes out of n = 10, plotted
+      over the unknown success probability p. It rises from zero, reaches its maximum of
+      about 0.27 exactly at the value p = k/n = 0.3 marked by the red dashed line, and falls
+      away again. Two grey dots at p = 0.2 and p = 0.5 show how much less likely the
+      observation would be there."
+  dff92e25:
+    - "Probability mass function of a Poisson binomial distribution from five trials with
+      the differing success probabilities 0.9, 0.5, 0.4, 0.1 and 0.05. The bars over k = 0
+      to 5 are asymmetric: the tallest is at k = 2, and to the right the distribution falls
+      away quickly."
+  "05273301":
+    - "Plot titled 'Approaching the Poisson distribution, λ = 2.0'. Four curves over k = 0 to
+      10: three dashed binomial distributions with n = 5, 10 and 50, each with λ/n as its
+      success probability, together with the solid black Poisson distribution. As n grows
+      the binomial curves lie ever closer to the Poisson one; at n = 50 they practically
+      coincide, while at n = 5 they still differ visibly at k = 0 and k = 2."
+  4ab63b7a:
+    - "Poisson distribution with λ = 2.5. On the left the probability mass function: bars
+      over k = 0 to 11 with the tallest at k = 2 and a long tail to the right. On the right
+      the distribution function as a staircase that has nearly reached 1 by k = 7."
+  d9e04649:
+    - "Geometric distribution with p = 1/6. On the left the probability mass function: from
+      the tallest bar at k = 1 the bars fall away evenly and keep shrinking out to k = 25
+      without ever quite vanishing. On the right the distribution function, a staircase with
+      ever flatter steps approaching 1 slowly."
+
+kmeans.ipynb:
+  "81036951":
+    - "Scatter plot of petal length against petal width for the Iris data, coloured by the
+      actual species, titled 'Random choice of the centroids': one group at the bottom left,
+      two more running diagonally up to the right. Three black crosses mark the randomly
+      chosen starting centroids — one lies in the lower left group, two in the upper right
+      half."
+  6a50b1bd:
+    - "The same scatter plot after one run of 3-means, titled 'Centroids and clusters after
+      one run of 3-means', now coloured by the assigned clusters. The lower left group is
+      captured cleanly; in the upper right half the other two clusters are interlocked. The
+      black crosses show the old centroids, the grey ones the newly computed."
+  e213554c:
+    - "Result of the vectorised version of 3-means on the same data, petal length against
+      petal width, with three centroids as crosses. The picture matches the previous one —
+      the compact formulation computes the same thing."
+  1b07566b:
+    - "The same Iris data, this time clustered with k = 5 and drawn in the petal length and
+      petal width columns. Five crosses mark the centroids; the upper right cloud is now cut
+      into several pieces, while the lower left group remains a cluster of its own."
+  df880201:
+    - "3-means run to convergence, again in petal length and width. The three clusters and
+      their centroids now lie stable; the division between the two upper groups runs as a
+      clean cut rather than interlocked as after the first pass."
+  2f37b7d5:
+    - "Elbow plot: the mean within-cluster variance over k from 2 to 20. The value falls
+      steeply from about 0.54 at k = 2, bends at around k = 5 and then sinks only slowly to
+      roughly 0.06."
+  232fa374:
+    - "Elbow plot headed 'elbow plot', produced by the robust variant that tries twenty runs
+      per k and keeps the best. The shape is the same as before: a steep fall from about
+      0.54 at k = 2 to around k = 5, then a flat tail to roughly 0.06 at k = 20."
+  8eced400:
+    - "The exercise data for the case where k-means fails: a broad ring of 10000 points
+      around the origin, in blue, and inside it a compact round cloud of another 10000
+      points, in orange. The colours show how the data were generated — ring and clump are
+      the two true classes."
+  bcef95e9:
+    - "The same data after 3-means. Instead of separating ring from clump, the method cuts
+      the ring into three arcs — top left, right and bottom — and assigns the inner clump to
+      the same cluster as the right-hand arc. The class structure of the data is not
+      recovered."
+  369da669:
+    - "The ring alone, cut into three arcs by 3-means with a k-means++ start. The large
+      crosses mark the computed centroids, the smaller ones the starting points. Every
+      centroid lies in the empty interior of the ring — in places, that is, where there is
+      no data point at all."
+  7092a359:
+    - "Two plots side by side. On the left 'How the data were generated': three clumps of
+      points of differing size and spread, the largest and broadest at the bottom left, two
+      small and tight ones at the top right. On the right '3-means: the Voronoi cells of the
+      centroids': the same plane divided into three coloured regions with straight borders,
+      the red crosses being the centroids. The large, broad clump is cut in two by a border —
+      k-means divides by distance, not by spread."
+
+dimensionality-reduction.ipynb:
+  81104d90-8155-41e6-8c3e-bb40095b6e3c:
+    - "Three scatter plots side by side. On the left 'Standard normal distribution', a
+      circular cloud of points from a two-dimensional standard normal; in the middle
+      'Transformed sample', the same sample after an arbitrary linear transformation,
+      stretched into a narrow cigar tilted from bottom left to top right; on the right
+      'Back-transformed', the cloud carried back through the singular value decomposition,
+      circular again."
+  c4e48e26-0348-4db5-90fb-a9d892731660:
+    - "Scatter plot of the first two principal components of the Iris data set, coloured by
+      species. One group forms a compact column on the right, clearly set apart from the
+      rest; the other two form a shared, diagonally running cloud on the left and overlap in
+      the middle."
+    - "The same data as a spatial scatter plot of the first three principal components. The
+      separated group stays clearly on its own, the other two lie side by side and touch;
+      the third component does not separate them any further."
+  19601f2e-24a8-497d-a373-c5169def4ad4:
+    - "The same spatial scatter plot of the first three principal components, this time
+      computed by scikit-learn's PCA. The groups lie identically, only the picture is
+      mirrored along the first component — the sign of a principal component is not fixed."
+  7a603b55-2bb2-466b-96aa-cfdfe45b2e63:
+    - "Ten handwritten digits from 0 to 9 side by side, each a coarse 8 by 8 pixel greyscale
+      image from the digits data set."
+  f30b6015:
+    - "Curve of the cumulated explained variance over the number of principal components,
+      from 1 to a little over 60. It rises steeply at first, reaches the dashed 90 per cent
+      mark at around 20 components and then approaches 1 flatly."
+  990d8241-0bf6-4fbc-adcc-e57ce0dc87c2:
+    - "Curve of the clustering quality over the number of principal components kept. The
+      x axis is reversed, running from 33 components on the left to 0 on the right. The
+      quality wobbles only slightly around 0.73 down to about 10 components, then falls
+      slowly, and collapses steeply to zero below 5 components."
+  d86b8004-054c-4b08-b14b-762f04f7000c:
+    - "Two scatter plots one above the other, both showing the same data in four clearly
+      separated vertical bands. Above, 'Top: original data', whose horizontal axis reaches
+      45 while the vertical one runs only from about -8 to 11; below, 'Bottom:
+      standard-scaled', the same data after standard scaling, now about equally extended in
+      both directions. The mean is drawn in each case as a small cross."
+  126eb081-e6cc-4687-ac4a-0b7fbac34743:
+    - "Four scatter plots in a two by two grid, four colour groups. Top row: PCA of the
+      unscaled data, the groups standing side by side as vertical bands. Bottom row: PCA
+      after standard scaling, the picture rotated and the groups running diagonally. The
+      left column is coloured by the labels from k-means, the right column by the actual
+      classes."
+  4b5c5b45-4b1b-4169-8dc9-bea69d6d02ad:
+    - "The same two by two grid for a real data set with three classes. Above, the PCA
+      without scaling, whose first component runs from -400 to 1000 and in which the colours
+      lie thoroughly mixed; below, the PCA after standard scaling, in which three groups
+      stand out clearly and the k-means labels on the left show almost the same division as
+      the actual classes on the right."
+
+linear-regression.ipynb:
+  5895c3dd:
+    - "Scatter plot of petal length against petal width for the Iris data, with an orange
+      line drawn in as the rule of thumb 'width equals half the length minus one'. It runs
+      passably through the large upper cloud of points, but misses the separated little
+      group at the bottom left entirely."
+  224c63d4-4a13-4aaa-a591-a78c387aa60e:
+    - "Scatter plot of an artificial sample, predictor against target, with the orange line
+      of minimal distance. The points lie in a narrow band about the line but deviate
+      systematically at the ends: at the bottom left they lie above it, at the top right
+      below."
+  b7ca6601-0ce0-4987-889b-dd16f8c3d441:
+    - "The same cloud of points with the same line, with the residuals additionally drawn in
+      as vertical green segments from each point to the line. Their length grows towards
+      both ends."
+  c9a19d1b:
+    - "Scatter plot of petal area against sepal length with the orange regression line. The
+      points scatter noticeably more widely about the line than in the previous example; at
+      the left edge sits a dense, vertically stretched group at very small petal area."
+  58a5aa14-5823-4ed0-9aa8-b96e67683d3a:
+    - "The same data as before, with two fits laid over one another: the solid line from
+      scikit-learn and the green points of the fit from scipy.stats. The two lie exactly on
+      top of each other — the libraries compute the same thing."
+  e37b3f78-2e40-40f8-83c9-a3140ca9d8af:
+    - "'Polynomial regression of degree 1': the same cloud of points, the same line, the
+      residuals again as vertical segments. A first-degree polynomial is nothing other than
+      ordinary linear regression, and the picture matches the one above."
+  bab4cae6-0c19-4d8d-995a-39a73680749c:
+    - "'Polynomial regression of degree 2': the same cloud of points, now fitted with a
+      curved orange line. It follows the data across the whole range, and the green
+      residuals are uniformly short and change direction without pattern."
+  fcd81914-f333-4fe8-955d-6418319129a4:
+    - "'Polynomial regression of degree 30' on the same data — an example of a fit gone
+      wrong. The orange curve runs across the whole left-hand region as a horizontal line
+      far from the points, then shoots steeply upwards from about x = 6 and snakes up and
+      down at the right edge. The green residuals on the left are very long and all point
+      the same way."
+  "423d456b":
+    - "Residual plot for the Melbourne model: residuals against predicted values, with a
+      dashed zero line. The points are not scattered evenly about zero but form a dense
+      cloud on the left and fan out to the right; well above the line there are far more
+      large outliers than below it — a sign that the model systematically underestimates the
+      expensive properties."
+  c766b9a5-949a-4443-a723-d93cceca6e88:
+    - "Scatter plot of distance from the centre against price for the Melbourne property
+      data, with a red regression line. The points form a dense block on the left with
+      single outliers up to nine million; the line falls gently from about 1.4 million at
+      distance zero to roughly 0.3 million at distance 45."
+  c4cf99ca-f64d-49ec-8772-d7006fb255d9:
+    - "Spatial view of the model with two predictors: distance from the centre and age on
+      the floor, price as the height. The fitted regression plane lies flat in the space as
+      a red grid, with the data points scattered around it as pale dots."
+  a52eb6ed-0312-4176-b31b-e2f8af8f3ae2:
+    - "The same Melbourne data, distance against price, this time with a red regression
+      curve instead of a line. It falls markedly at first, flattens from about distance 20
+      and then stays nearly horizontal — the fall in price with distance is not linear."
+  5ccb35a2-1b24-49a7-bbc5-a72382b32d08:
+    - "Three plots one below the other for the same curved data set, each with only two
+      training points (in red) and the line fitted from them. Depending on which two points
+      are drawn, the line comes out completely differently: at the top it misses the left
+      half by up to 50 units, in the middle it lies too high throughout, at the bottom it
+      fits the data passably. The green residuals show the difference in their length."
+  b337f071-284a-4170-a4ae-416baa8bad75:
+    - "Five plots of the same kind one below the other, this time with ridge regression and
+      different values of the regularisation parameter alpha on the same small training
+      sets. As alpha grows the lines become flatter and more alike — the fit reacts less
+      sensitively to which two points were drawn, but no longer lies as close to the data in
+      the middle of the range."
