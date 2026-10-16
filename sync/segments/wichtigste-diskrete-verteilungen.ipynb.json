@@ -1,7 +1,7 @@
 {
  "source": "wichtigste-diskrete-verteilungen.ipynb",
  "target": "important-discrete-distributions.ipynb",
- "upstream": "28944e7bcb989ae518b99d9b71a8d5564d7498bd",
+ "upstream": "2784f10c110c43ffe47df4943a8d3ccfc52a7b67",
  "blocks": [
   {
    "de": "c0.0",
@@ -546,7 +546,7 @@
   {
    "de": "c19",
    "kind": "code",
-   "digest": "c45ecef1aace140c",
+   "digest": "141034ed253bf552",
    "en": "c19",
    "preview": "def poisson_binomial_pmf(ps): \"\"\"pmf einer Poisson-Binomialverteilung, i…"
   },

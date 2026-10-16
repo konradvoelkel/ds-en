@@ -6,6 +6,13 @@ on:
   pull_request:
   workflow_dispatch:
 
+# Least privilege, and the only workflow here that lacked it -- GitHub's code scanning
+# flagged it (actions/missing-workflow-permissions). Without the block a job inherits
+# whatever the repository's default is, which is a write token in many setups. This one
+# reads the checkout and uploads an artifact; neither needs more than read.
+permissions:
+  contents: read
+
 jobs:
   book:
     runs-on: ubuntu-latest

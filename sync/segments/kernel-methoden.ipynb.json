@@ -1,7 +1,7 @@
 {
  "source": "kernel-methoden.ipynb",
  "target": "kernel-methods.ipynb",
- "upstream": "28944e7bcb989ae518b99d9b71a8d5564d7498bd",
+ "upstream": "2784f10c110c43ffe47df4943a8d3ccfc52a7b67",
  "blocks": [
   {
    "de": "c0.0",
@@ -105,7 +105,7 @@
   {
    "de": "c10",
    "kind": "code",
-   "digest": "f576f1672c2044b8",
+   "digest": "8721ae20c45c3d01",
    "en": "c10",
    "preview": "from mpl_toolkits.mplot3d import Axes3D fig = plt.figure(figsize=(10,10)…"
   },
