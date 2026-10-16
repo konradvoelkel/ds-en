@@ -934,3 +934,78 @@ the checkout, and refuses to `rm -rf` anything whose path does not end in its ow
 name. That is the fix for the script. The rule for whoever tests one next: a stub that
 forces a branch is not a sandbox, and a dry run is only dry if every destructive command in
 the reachable path has been read first.
+
+## 14. `--stamp-source`, and two guards learned from upstream (2026-10-16)
+
+ds-skript worked the whole handover in ten commits — formulae, Google Fonts, logo raster,
+`og:url`, lazy figures, PNG re-encoding, the three CDN stylesheets. Three of those commits
+are new findings rather than ports, and two of them land here.
+
+### The visible date, ported the other way
+
+§10 recorded that a visible date was "not included" because the theme re-renders the page
+header from the hydration payload, so markup written after the build is lost. True, and the
+wrong conclusion: ds-skript's `--stamp-source` writes `date:` into the landing page's
+frontmatter *before* MyST runs, so it travels in the payload and survives. Their solution
+is better than this edition's reason for not having one, and that is the first thing to
+travel in that direction on its own merits rather than as a correction.
+
+Verified in a browser on the built artifact: `October 16, 2026` renders under the byline as
+`<time class="myst-fm-date-string">` and is still there after hydration.
+
+Three things kept from their design, one cost that does not apply here:
+
+* **The landing page only.** A project-level `date` in `myst.yml` prints the same day on
+  all 30 pages, and most would then assert a date their source does not support. On a title
+  page "as of" is true of the edition as a whole.
+* **The day, not the second.** A timestamp on a title page is noise.
+* **It reads `myst.yml`, not `config.json`**, unlike everything else in `freshness.py` —
+  forced, because it runs before the build and `config.json` is an output of the build.
+* The cost they paid knowingly — the theme formats the date in hard-coded English,
+  `language: de` does not change it, a German string is silently dropped — is simply the
+  right format for an English edition.
+
+The stamp is **not committed**: CI writes it, the repository does not carry it, exactly as
+ds-skript does. A committed date would be stale the moment it was written.
+
+### The pipefail trap, avoided rather than repeated
+
+`081a7a9`: their formula guard went red precisely when it should have passed. GitLab runs
+scripts under `set -eo pipefail`; `find -exec grep +` exits 1 when grep matches nothing,
+and *nothing* is the good case here. The assignment aborted before any message.
+
+GitHub's default shell is `bash -e` **without** pipefail, so the naive form survives here —
+checked both ways rather than assumed:
+
+```
+set -eo pipefail   naive form, zero broken formulae  -> exit 1, no output
+set -eo pipefail   { ... || true; } | wc -l          -> n=0, exit 0
+set -e             naive form                        -> n=0, exit 0
+```
+
+The formula guard is now in this deploy too, written with `|| true` so it does not depend
+on that default: one `shell: bash` anywhere in the file would arm it.
+
+### The CSS asset guard, including the mistake it taught
+
+`09cf4de`: ds-skript lost its webfonts to a relative `url()` that resolved against the
+wrong one of two copies of the same stylesheet. This edition was never exposed — `__BASE__`
+is substituted rather than a relative path used — but the *vendored* stylesheets were
+unguarded, and KaTeX naming its fonts `fonts/X.woff2` couples the vendor layout to the CSS.
+
+The first version written here made exactly the mistake their commit message describes:
+requiring every `url()` to resolve flagged **45 references on a correct build**, because
+only the woff2 is vendored and the `.woff`/`.ttf`/`.eot`/`.svg` lines are deliberately left
+in the upstream CSS. A guard nobody can satisfy is a guard everybody learns to ignore. The
+rule is one resolvable source per `@font-face`, and each `url()` outside a face resolving on
+its own.
+
+Scoped to what this repository owns. Sweeping all built CSS turns up
+`/myst_assets_folder/_assets/plotly-*.svg` in four of MyST's own theme bundles — an
+unrewritten placeholder, upstream's and not ours to fix, and flagging it would be the
+unsatisfiable guard all over again. **Worth passing to ds-skript, whose version sweeps more
+broadly and will meet it.**
+
+Both directions tested: a `@font-face` whose sources all vanish fails; the healthy build
+passes. The existing count guard catches a missing file, this one catches a CSS-to-layout
+mismatch — different failures, both real.

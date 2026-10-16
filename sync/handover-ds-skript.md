@@ -192,7 +192,18 @@ recorded as such in that file's own comment.
 
 ---
 
-## 7. Deliberately not suggested
+## 7. One thing back from this round
+
+`tools/check_css_assets.py` sweeps the built CSS more broadly than ds-en's equivalent. When
+it runs over MyST's own theme bundles it will meet
+`/myst_assets_folder/_assets/plotly-*.svg` — in four files here
+(`plotly-renderer-*.css`, `root-*.css`, `routes/$-*.css`, `routes/_index-*.css`), an
+unrewritten build placeholder of MyST's that resolves to nothing. It is upstream's and not
+yours to fix, and flagging it is the unsatisfiable-guard problem your own commit message
+warns about. ds-en scopes its check to the vendored stylesheets plus its own
+`myst-theme.css`; worth doing the same, or allow-listing that one path.
+
+## 8. Deliberately not suggested
 
 * **Nothing about `robots.txt`.** That finding is yours alone and ds-en has no equivalent;
   it needs no input from here.

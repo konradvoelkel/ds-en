@@ -101,6 +101,27 @@ jobs:
             texlive-latex-extra texlive-fonts-recommended texlive-bibtex-extra \
             texlive-lang-german
 
+      - name: Date the edition, in the source
+        # Writes `date:` into landing-page.md's frontmatter from the newest `git log` date
+        # in the book -- before MyST runs, which is the whole point. Everything else in
+        # freshness.py writes into the built HTML; a date a *reader* can see cannot be done
+        # that way, because the theme re-renders the page header from the hydration payload
+        # and markup written after the build is gone. Through the frontmatter it travels in
+        # the payload and survives. Ported from ds-skript dedfd0b.
+        #
+        # Before the PDF step, so the printed title page carries the same date as the web
+        # one; here a single call covers both, since the PDF is built first in this job.
+        #
+        # Only the landing page: a project-level `date` in myst.yml would print the same
+        # day on all 30 pages and most would then claim a date their source does not
+        # support. Needs the full history, like everything else in that file.
+        #
+        # PyYAML because the toc has to be read before the build exists -- config.json,
+        # which freshness.py uses everywhere else, is an output of the build.
+        run: |
+          python3 -c "import yaml" 2>/dev/null || python3 -m pip install --quiet pyyaml
+          python3 tools/freshness.py --stamp-source
+
       - name: Build the PDF edition
         # Before the HTML build, not after: MyST attaches the finished export to the site
         # and renders the download button from it. Built after, the PDF would be published
@@ -410,7 +431,97 @@ jobs:
             test -s "_build/html/$l" || fail "_build/html/$l is missing"
           done
 
-          # og:url and og:site_name on every page, and no chapter still carrying the
+          # No formula may have failed to render. Adopted from ds-skript ddf3ddb after
+          # Konrad found six on the live site that four structural audits had missed: a
+          # failed formula is structurally perfect -- a span with text in it, no error
+          # status, nothing absent -- and `myst build` prints nothing. The marker is
+          # KaTeX's error in a title attribute.
+          #
+          # Counted on `title=` and not on the class, because the same class styles the
+          # author's own {warning} admonitions, which carry no title.
+          #
+          # The `|| true` is ds-skript 081a7a9's bug, avoided rather than repeated:
+          # `find -exec grep +` exits 1 when grep matches nothing, and here that is the
+          # GOOD case. Under `set -eo pipefail` the assignment then aborts before any
+          # message -- the guard going red precisely when it should pass. GitHub's default
+          # shell is `bash -e` without pipefail, so this would survive today; it is written
+          # not to depend on that, since one `shell: bash` anywhere would arm it.
+          broken=$( { find _build/html -name index.html -exec grep -oh 'text-myst-warning-text" title="' {} + || true; } | wc -l )
+          if [ "$broken" != "0" ]; then
+            find _build/html -name index.html -exec grep -ho 'text-myst-warning-text" title="[^"]*"' {} + | sort -u | head -5
+            fail "$broken formula(e) failed to render; see the KaTeX errors above"
+          fi
+          echo "no failed formulae on any page"
+
+          # Every stylesheet's url() must point at something that exists, resolved the
+          # way a browser resolves it. KaTeX writes `fonts/X.woff2` and Font Awesome
+          # `../fonts/X.woff2`, so vendor layout and CSS are coupled; a rearrangement
+          # would show up only as mathematics set in a fallback font.
+          #
+          # ds-skript 09cf4de lost its webfonts exactly this way and wrote
+          # tools/check_css_assets.py for it. This edition was never exposed -- __BASE__ is
+          # substituted rather than a relative path used -- but the vendored stylesheets
+          # were unguarded all the same.
+          #
+          # Two refinements taken from that commit, the first after making its mistake
+          # here too: **one resolvable source per @font-face is enough.** Only the woff2 is
+          # vendored and the .woff/.ttf/.eot/.svg lines are deliberately left in the
+          # upstream CSS (see _site/vendor/PROVENANCE.txt), so demanding all of them
+          # flagged intent as breakage -- 45 "failures" on a build that was correct, i.e.
+          # a guard nobody could satisfy and everybody would learn to ignore. The second:
+          # a root-relative url() resolves against the *site* root, not one level above the
+          # stylesheet, which is a different file entirely.
+          python3 - "$BASE_URL" <<'EOF'
+          import pathlib, re, sys
+          base = (sys.argv[1] or "").strip("/")
+          root = pathlib.Path("_build/html")
+
+          def resolve(css: pathlib.Path, url: str) -> pathlib.Path | None:
+              url = url.split("?")[0].split("#")[0]
+              if not url or url.startswith(("http:", "https:", "data:", "//")):
+                  return None
+              if url.startswith("/"):
+                  rel = url.lstrip("/")
+                  if base and rel.startswith(base + "/"):
+                      rel = rel[len(base) + 1:]
+                  return root / rel
+              return css.parent / url
+
+          # Scoped to what this repository owns: the vendored stylesheets and our own
+          # myst-theme.css. MyST's theme bundles under build/ carry an unrewritten
+          # placeholder of its own -- /myst_assets_folder/_assets/plotly-*.svg, in four
+          # files -- which is upstream's and which we would not fix. Flagging it would be
+          # the unsatisfiable guard all over again. Noted for ds-skript, whose version
+          # sweeps more broadly and will meet it.
+          ours = sorted((root / "vendor").rglob("*.css")) + [root / "myst-theme.css"]
+          bad = []
+          for css in ours:
+              if not css.is_file():
+                  sys.exit(f"::error::{css} is missing")
+              text = css.read_text(encoding="utf-8")
+              faces = list(re.finditer(r"@font-face\s*\{(.*?)\}", text, re.S))
+              for face in faces:
+                  urls = re.findall(r"url\(\s*['\"]?([^'\")]+)", face.group(1))
+                  targets = [t for t in (resolve(css, u) for u in urls) if t is not None]
+                  if targets and not any(t.is_file() for t in targets):
+                      bad.append(f"{css.relative_to(root)}: @font-face with no resolvable source ({urls[:2]})")
+              # url()s outside any @font-face -- background images and the like -- have no
+              # fallback list, so each one has to resolve on its own.
+              outside = text
+              for face in reversed(faces):
+                  outside = outside[:face.start()] + outside[face.end():]
+              for u in re.findall(r"url\(\s*['\"]?([^'\")]+)", outside):
+                  t = resolve(css, u)
+                  if t is not None and not t.is_file():
+                      bad.append(f"{css.relative_to(root)} -> {u}")
+          if bad:
+              for b in bad[:8]:
+                  print(f"::error::{b}")
+              sys.exit(f"::error::{len(bad)} unresolvable CSS asset reference(s)")
+          print(f"every @font-face in our {len(ours)} stylesheets has a source that exists")
+          EOF
+
+          # og:url and og:site_name on every page          # og:url and og:site_name on every page, and no chapter still carrying the
           # 48-character title suffix that SERPs truncated away on 29 of 30 pages.
           ogurl=$(find _build/html -name index.html -exec grep -l 'property="og:url"' {} + | wc -l)
           [ "$pages" = "$ogurl" ] || fail "$pages pages but $ogurl og:url tags"

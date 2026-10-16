@@ -79,14 +79,38 @@ artifact shows up as the mismatch it is, and this step needs no dependency at al
 also the same toc, so the two editions stay comparable.
 
 
-Not included: a visible date on the page
-----------------------------------------
+--stamp-source: the visible date, on the landing page only
+----------------------------------------------------------
 
-The theme re-renders the page header from the embedded JSON payload, so a line written
+    python3 tools/freshness.py --stamp-source      # before the build, not after
+
+Everything above writes into the *built* HTML. A date a reader can see cannot be done that
+way: the theme re-renders the page header from the hydration payload, so a line written
 into the markup is gone after hydration -- the trap documented at length in
-`tools/head_meta.py`. The clean route is `date:` in each chapter's frontmatter, which is a
-source change across 30 files and block-aligned with the German original, so it waits to
-be asked for.
+`tools/head_meta.py`. This edition recorded that as a reason to have no visible date at
+all; ds-skript found the way round it in `dedfd0b` and this is the port, which is the
+first thing to travel in that direction on its own merits rather than as a correction.
+
+The route is the *source*: write `date:` into the landing page's frontmatter before MyST
+runs, and the theme renders it like any other frontmatter field -- through the payload,
+so hydration keeps it.
+
+**The landing page only**, which is the decision worth preserving. A project-level `date`
+in `myst.yml` would print the same day on all 30 pages, and most of them would then
+assert a date their source does not support. On the title page "as of" is a true statement
+about the edition as a whole, so that page gets the newest date in the book and no other
+page gets one.
+
+Run before `myst build`, and before the PDF export too -- here that is automatic, since
+the PDF is built first in the same job, so one call covers both.
+
+One cost ds-skript paid consciously and this edition does not pay at all: the theme
+formats the date in hard-coded English ("October 16, 2026"), `language: de` does not change
+it, and a German string is silently discarded. For an English edition that is simply the
+right format.
+
+It edits a tracked file, so a local run leaves `landing-page.md` dirty. In CI that is the
+point; locally, `git checkout landing-page.md` afterwards.
 """
 
 from __future__ import annotations
@@ -258,7 +282,38 @@ def stamp_sitemap(html: Path, entries) -> int:
     return hits
 
 
+def stamp_source() -> int:
+    """Write the edition's date into the landing page's frontmatter, before the build."""
+    import yaml  # only this path needs it, and only before the build exists
+
+    refuse_shallow()
+    cfg = yaml.safe_load((ROOT / "myst.yml").read_text(encoding="utf-8"))
+    files = toc_files(cfg["project"]["toc"])
+    # The day, not the second: a timestamp on a title page is noise, and the figure a
+    # reader cares about is "which week is this".
+    date = max(git_date(f) for f in files)[:10]
+
+    landing = ROOT / files[0]
+    text = landing.read_text(encoding="utf-8")
+    if not text.startswith("---\n"):
+        raise SystemExit(f"::error::{landing.name} has no frontmatter to put a date in")
+    end = text.find("\n---", 4)
+    if end < 0:
+        raise SystemExit(f"::error::{landing.name}: frontmatter is not closed")
+
+    head, rest = text[:end], text[end:]
+    if re.search(r"(?m)^date:", head):
+        head = re.sub(r"(?m)^date:.*$", f"date: {date}", head)
+    else:
+        head = head.rstrip("\n") + f"\ndate: {date}"
+    landing.write_text(head + rest, encoding="utf-8")
+    print(f"✓ {landing.name}: edition dated {date}")
+    return 0
+
+
 def main() -> int:
+    if "--stamp-source" in sys.argv:
+        return stamp_source()
     args = [a for a in sys.argv[1:] if not a.startswith("--")]
     if len(args) != 1:
         print(__doc__)
