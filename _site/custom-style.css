@@ -172,3 +172,17 @@ p:has(> .katex),
 li:has(.katex) {
   overflow-x: auto;
 }
+
+/* --- Long headings pushed the page a few pixels sideways ---------------------------
+   Same cause as in ds-skript (772d001), milder here because English headings are
+   shorter: expectation-variance measured 381 px at a 375 px viewport. Not the text --
+   that fits -- but the empty permalink anchor the theme puts after every heading,
+   which starts just past the heading's own right edge and drags the page with it.
+
+   Only below 480 px, deliberately: on the desktop the heading has room, and clipping
+   there would cut off the permalink, which appears on hover. Phones have no hover. */
+@media (max-width: 480px) {
+  h1, h2, h3, h4, h5, h6 {
+    overflow-x: clip;
+  }
+}
