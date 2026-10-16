@@ -79,6 +79,82 @@ paragraph. Silent, so a non-forced build would not have caught it either.
   re-execution. The repo's stated convention is that seeds are left as they are, which
   reads as a decision about existing seeds rather than about these.
 
+## Six formulae that do not render, in both editions
+
+`deskriptive-statistik.md` / `descriptive-statistics.md`: six occurrences of
+`$20\,^\circ\text{C}$` and its siblings render on the **live site** as raw LaTeX behind
+a warning triangle, in the interval-scale bullet and in the geometric-mean paragraph.
+KaTeX reports *"Got group of unknown type: 'internal'"*: `\,` is a spacing node, so the
+`^` after it has no base to attach to. LaTeX proper accepts this, KaTeX does not, and MyST
+renders the failure as the source text.
+
+Measured on the German page on 2026-10-16: **6 failed spans, same error**. It is not a
+translation artefact.
+
+Reproduced against katex 0.15.2, the version both editions load:
+
+    20\,^\circ\text{C}        FAIL  Got group of unknown type: 'internal'
+    20\,^{\circ}\text{C}      FAIL  braces on the \circ do not give ^ a base
+    20\,{}^\circ\text{C}      OK    20 °C
+    20^\circ\,\text{C}        OK    20° C, wrong spacing
+
+*Fixed in this edition* as `\,{}^\circ` — the form that keeps the SI spelling, a thin
+space between number and unit with `°C` as one unit. The other form that parses moves the
+space inside the unit. Six occurrences, two lines, and nothing else changes.
+
+Fixed here rather than only reported because it is a rendering defect that makes the
+sentence unreadable, the same class as the `alpha=0.02` figures rather than a content
+change.
+
+## A note the other way round: `dateModified` dates the book by one page
+
+Not a bug in the German book, a remark on `tools/freshness.py` and `tools/inject_jsonld.py`
+as of ds-skript `e229a9d` — the direction of this file is usually the other way, hence the
+heading.
+
+`freshness.py` computes `book_date()`, the newest page date, and then uses it only in its
+own log line. `inject_jsonld.py` sets `dateModified` from the landing page's own
+`article:modified_time` instead. But the entity that block describes is the work as a whole
+(`@type: Book`, `@id: …/#work`), so a chapter revised today leaves the *book* dated to
+whenever the landing page was last touched.
+
+Here that was visible immediately on the first run: the landing page last changed
+2026-10-15, nineteen chapters changed on the 16th, and the book's structured data said the
+15th. *Changed in this edition*: `inject_jsonld.py` imports `freshness.book_date()` and
+dates the book by the newest change in it. The per-page `article:modified_time` is
+untouched and still each page's own date — that one is a per-document claim and correct as
+it stands.
+
+`book_date()` being computed and then used only for a log line reads as the same
+intention, arrived at and not wired up.
+
+## And another: a shallow clone does not abort, it fabricates one date for everything
+
+`tools/freshness.py` guards the shallow-clone case by treating an empty `git log` as the
+signal, and its error message says so. That is correct for GitLab: under the default
+`GIT_DEPTH: 20`, a file untouched for twenty commits genuinely has no entry in the
+truncated history, the script stops, and the message points at `GIT_DEPTH: "0"`.
+
+**It does not hold for a depth-1 clone**, which is what `actions/checkout` does by default.
+Tested in a real `git clone --depth 1` of the English repository: against a commit with no
+parent, git reports *every* file as modified by it, so `git log -1 -- <file>` answers for
+all thirty — with HEAD's timestamp. The script then reports
+
+    ✓ 30 pages dated, 30 sitemap entries with <lastmod>; newest change 2026-10-16
+
+with all thirty pages carrying the deploy commit's own second, where the real dates span
+three days. The build-time date the file exists to refuse, arrived at silently, by the one
+route the guard does not cover.
+
+*Added in this edition*: `refuse_shallow()` asserts
+`git rev-parse --is-shallow-repository` before reading any date, and names the
+`fetch-depth: 0` fix. Both directions are tested.
+
+ds-skript is not exposed to this today — GitLab's depth-20 does produce the missing-entry
+case the guard expects. It would be exposed the moment that job moved to GitHub Actions, or
+if GitLab's default depth ever became 1. Asserting the depth is cheap and does not depend
+on which shape the shallowness takes, so it is worth having in both.
+
 ## Things that are not errors but surprised a translator
 
 * `Die Gausssche Normalverteilung` is the H1 of `normalverteilung.ipynb`, but three

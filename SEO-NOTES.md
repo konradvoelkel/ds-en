@@ -642,3 +642,146 @@ served from `/vendor/katex/fonts/`, no failed requests, and the formulae set in
 different version, and names both versions when it does. The tempting behaviour — leave an
 unknown version pointing at the CDN so the build keeps working — would silently restore
 exactly what this removed.
+
+## 10. Freshness, ported from the original (2026-10-16)
+
+The first thing to travel **from** ds-skript rather than to it. The German edition landed
+`e229a9d` after a GEO assessment of both live editions, and the measurement in it was that
+ds-en lacked two things that existed nowhere yet — not forgotten, just built there first.
+
+Re-measured here against the live site before porting anything, as this file requires:
+
+```
+article:modified_time         0 of 30 pages
+<lastmod> in sitemap.xml      0 of 30 entries
+dateModified in the JSON-LD   absent (and no datePublished either)
+```
+
+All three confirmed. Recency is one of the strongest selection signals for AI answer
+systems, the book is maintained continuously, and not one page said so. It weighs more
+here than in the original: this is the edition that is supposed to travel, and the domain
+has only served since 2026-10-15, so there is no crawl history for anything to infer a
+cadence from.
+
+`tools/freshness.py` is ported essentially as it stands: the date per page from
+`git log -1 --format=%cI -- <source>`, **not** from the build clock, and therefore with no
+fallback to the clock — if git has nothing, it stops rather than invent. It writes
+`article:modified_time` into each `<head>` and `<lastmod>` into each sitemap entry, keyed
+on the last path segment of the `<loc>` so that it does not care whether the origin rewrite
+runs before or after it.
+
+### The trap applied, but not in the way the original describes — and that mattered
+
+`fetch-depth: 0` is now on the pages checkout, with the reasoning written beside it,
+because the whole point of the original's `GIT_DEPTH: "0"` note is that someone will
+otherwise trim it back in a year.
+
+But the handover said a shallow clone makes the script abort, and **it does not, on this
+platform.** Tested rather than assumed, in a real `git clone --depth 1` of this
+repository: `actions/checkout` fetches exactly one commit, and against a commit with no
+parent git reports *every* file as modified by it. So `git log -1 -- <file>` answers for
+all thirty files — with HEAD's timestamp — and the script reports success:
+
+```
+30 pages dated, 30 sitemap entries with <lastmod>; newest change 2026-10-16
+    -> all 30 dated 2026-10-16T10:18:10+02:00, the deploy commit's own second
+       (the real dates span 2026-10-14 to 2026-10-16)
+```
+
+That is exactly the build-time date the whole design exists to refuse, reached by the one
+route the upstream guard does not cover, and silent — the output is indistinguishable from
+a correct run. Upstream's "git returns nothing" case is real but is GitLab's: under
+`GIT_DEPTH: 20` a file untouched for twenty commits genuinely has no entry.
+
+So `freshness.py` here gains a `refuse_shallow()` that asserts
+`git rev-parse --is-shallow-repository` up front, before reading a single date. Both
+directions tested: it aborts in the depth-1 clone with the `fetch-depth: 0` fix in the
+message, and passes in the full one. **This is the one thing that is not a port**, and it
+is in `UPSTREAM-NOTES.md` — ds-skript is not exposed to it today, but it would be the
+moment that job moved to GitHub Actions, and that is a one-line change away.
+
+### The decision this edition had to make
+
+**The date is the translation commit's, not the German original's.** The page at this URL
+changed on the day it was translated or revised; `<lastmod>` tells a crawler when to come
+back for *this* URL, and the German date would announce a change that did not happen here
+and would sometimes date a page to before it existed. The alternative — carrying the
+original's dates across `sync/filemap.json` — would also make these dates depend on a
+server CI already cannot reach reliably, which is why `checks.yml` stopped cloning it.
+
+The honest cost: a commit touching only this edition refreshes the date although the
+substance did not move. Today's KaTeX fix is exactly that case. It is still not a false
+claim — the page did change — and the opposite error, a page silently keeping a date from
+before it was rewritten, is the worse one.
+
+### One thing sent back the other way
+
+`inject_jsonld.py` here dates the book by `freshness.book_date()`, the newest change
+anywhere in it, not by the landing page's own stamp. The original takes the landing page's
+stamp, which dates a `@type: Book` entity by one of its thirty pages — visible on the first
+run here, where the landing page last changed on the 15th and nineteen chapters on the
+16th. `book_date()` exists upstream and is used only in a log line, which reads as the same
+intention, arrived at and not wired up. In `UPSTREAM-NOTES.md`.
+
+### Deliberately not done, because the assessment asked for none of it here
+
+* **Nothing to `robots.txt`.** The assessment's load-bearing finding is the German
+  edition's alone: its `robots.txt` sits under `/ds-skript/` and therefore does not apply
+  at all, the host root being a GitLab login redirect. Ours is at the domain root and
+  measured sound — `Allow: /`, correct `Sitemap:` line.
+* **No `llms.txt`.** Shipped here since 2026-10-15 (§7).
+* **No `FAQPage` markup.** Google switched the FAQ rich results off on 2026-05-07.
+* **No 150-word chunking of chapters.** Google's own AI guidance of 2026-05-15 says
+  explicitly that content need not be chunked for AI search.
+* **No visible date on the page.** The theme re-renders the page header from the hydration
+  payload, so a line written into the markup is gone after hydration — the trap in §9. The
+  clean route is `date:` in each chapter's frontmatter, which is a source change across 30
+  block-aligned files and waits to be asked for.
+
+### Also noted for the next sync
+
+`llms_txt.py` differs: ds-skript's reads the built `config.json`, ours reads `myst.yml`.
+Upstream's reason is that its CI container has no PyYAML; ours does, so the constraint is
+absent. `freshness.py` nevertheless reads `config.json` as the original does — it is the
+build's own account of what it built, so a drift between toc and artifact surfaces as the
+mismatch it is, and the step needs no dependency. Aligning `llms_txt.py` the same way is
+open and costs nothing but a commit.
+
+ds-skript has no counterpart to `head_meta.py`; that is known there and decided separately.
+
+### Measured on the artifact, in job order
+
+```
+30 of 30 pages with article:modified_time
+30 of 30 sitemap entries with <lastmod>
+JSON-LD dateModified 2026-10-16T07:50:15+02:00  (the book's newest change)
+dates genuinely per page: 7 on 10-14, 4 on 10-15, 19 on 10-16
+hreflang --verify  30/30 bidirectional, unchanged
+```
+
+The hreflang point was checked rather than assumed: `--verify` matches `hreflang=`
+immediately after `rel="alternate"`, and the Markdown alternate carries no `hreflang`, so
+the four `rel="alternate"` links per page do not collide. 90 tags, as before.
+
+## 11. Six formulae that never rendered (2026-10-16)
+
+Found by Konrad on the live page, not by any of the four audits. On
+`descriptive-statistics`, `$20\,^\circ\text{C}$` and five like it rendered as **raw LaTeX
+behind a warning triangle**: KaTeX fails with *"Got group of unknown type: 'internal'"*
+because `\,` is a spacing node and the `^` after it has no base. LaTeX proper accepts it.
+
+Worth recording how it was missed. Every audit here measured structure — titles,
+canonicals, alt attributes, payload sizes, request counts — and a failed formula is
+structurally perfect: a `<span>` with text in it, no error status, nothing absent. The
+build does not fail, and `myst build` prints nothing. The signal was there to be counted
+all along, in the markup: `class="text-myst-warning-text" title="…"` on the rendered page,
+six of them, on one page of thirty.
+
+Fixed as `\,{}^\circ`, reproduced against katex 0.15.2 first and verified in the rebuild:
+**0 math spans with a `title=` across all 30 pages.** The remaining six occurrences of that
+CSS class are the author's own `{warning}` admonitions on two other chapters, which share
+the class and carry no `title` — which is why the count has to be on `title=` and not on the
+class.
+
+The German original has the identical six failures; `UPSTREAM-NOTES.md`, and the divergence
+is tabulated in `sync/notes/descriptive-statistics.md.md`.

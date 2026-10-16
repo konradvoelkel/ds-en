@@ -40,6 +40,19 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          # The full history, and this job genuinely needs it: tools/freshness.py dates
+          # each page from `git log` of its source file, so that a chapter's date is when
+          # the chapter changed and not when the build ran. actions/checkout clones with
+          # fetch-depth 1 unless told otherwise -- one commit -- and `git log` would then
+          # come back empty for nearly every file, at which point freshness.py aborts by
+          # design rather than invent a date.
+          #
+          # Do not trim this back to save clone time. The failure it causes is not subtle
+          # (the deploy goes red with that explanation), but the fix is five seconds of
+          # clone and the alternative is a build-time date, which is a confident wrong
+          # claim of exactly the kind the localhost sitemap was.
+          fetch-depth: 0
 
       - uses: actions/setup-node@v4
         with:
@@ -185,6 +198,19 @@ jobs:
               "s|</head>|<link rel=\"canonical\" href=\"$url\"/><meta name=\"twitter:card\" content=\"summary_large_image\"/></head>|" "$f"
           done
 
+          # A date per page, from `git log` of the source file rather than from the build
+          # clock: a build on Tuesday does not make a chapter from 2024 fresh. Sets
+          # article:modified_time in every <head> and <lastmod> in every sitemap entry --
+          # before this there were zero of 30 of each, measured on the live site. Needs
+          # the full history, which is what fetch-depth: 0 on the checkout above is for;
+          # with a shallow clone the script aborts rather than guess.
+          #
+          # Must run before inject_jsonld.py, which reads the date back out of the page
+          # instead of computing it a second time. Ported from ds-skript e229a9d; the
+          # date here is this edition's own commit, which is a decision and is argued in
+          # the tool's docstring.
+          python3 tools/freshness.py _build/html
+
           # Structured data for the work as a whole, on the landing page only. MyST emits
           # none, and it cannot live in landing-page.md: a {raw} html directive there
           # would be an extra block and break alignment with the German original.
@@ -295,7 +321,10 @@ jobs:
               sys.exit(f"::error::JSON-LD url is {data.get('url')}, expected {want}")
           if not str(data.get("image", "")).startswith("http"):
               sys.exit("::error::JSON-LD image is not an absolute URL")
-          print(f"JSON-LD ok: {data['@type']} at {data['url']}")
+          if not str(data.get("dateModified", "")).startswith("20"):
+              sys.exit(f"::error::JSON-LD dateModified is {data.get('dateModified')!r}; "
+                       "freshness.py must run before inject_jsonld.py")
+          print(f"JSON-LD ok: {data['@type']} at {data['url']}, as of {data['dateModified'][:10]}")
           EOF
 
           # A missing or stale CNAME silently drops the site back onto the github.io
@@ -406,6 +435,12 @@ jobs:
           de_total=$(find _build/html -name index.html -exec grep -ho 'hreflang="de" href="[^"]*"' {} + | wc -l)
           de_uniq=$(find _build/html -name index.html -exec grep -ho 'hreflang="de" href="[^"]*"' {} + | sort -u | wc -l)
           [ "$de_total" = "$de_uniq" ] || fail "a German counterpart is claimed by more than one page"
+
+          # Counts the dates back off the built artifact: every page with an
+          # article:modified_time and every sitemap entry with a <lastmod>. A date that
+          # silently failed to land is the kind of thing only a measurement finds -- the
+          # page looks identical either way.
+          python3 tools/freshness.py _build/html --check
 
           echo "$pages pages, $canon canonicals, $locs sitemap entries, $mds Markdown, $hrefl hreflang, all absolute, CNAME $want_host"
 

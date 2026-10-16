@@ -358,3 +358,31 @@ block 42) is untouched.
   translator's note about `78 %` is stale.
 * **"cardinal scale"** stays, per the translator's *Decisions*; nothing in this pass changes
   the case for or against "metric".
+
+## A KaTeX fix that diverges from the original (2026-10-16)
+
+Six formulae on this page rendered as raw LaTeX behind a warning triangle on the live
+site: `$20\,^\circ\text{C}$` and five like it, in the interval-scale bullet and in the
+geometric-mean paragraph. KaTeX reports *"Got group of unknown type: 'internal'"* — `\,`
+is a spacing node, so the `^` that follows it has no base to attach to. LaTeX proper
+tolerates this; KaTeX does not, and MyST renders the failure as the literal source text.
+
+Reproduced against **katex 0.15.2**, the version the site loads, before touching anything:
+
+    20\,^\circ\text{C}        FAIL  Got group of unknown type: 'internal'
+    20\,^{\circ}\text{C}      FAIL  (braces on the \circ do not give ^ a base)
+    20\,{}^\circ\text{C}      OK    20 °C
+    20^\circ\,\text{C}        OK    20° C   -- wrong spacing
+
+Fixed as `\,{}^\circ`, six occurrences on two lines, which is the form that keeps the SI
+spelling: a thin space between the number and the unit, and `°C` as one unit. The
+alternative that also parses moves the space to between `°` and `C`, which is wrong.
+
+**The German original has the identical six failures with the identical error**, checked
+on its live page the same day — this is upstream's bug, inherited. Reported in
+`UPSTREAM-NOTES.md`. Fixed here rather than only reported because it is a rendering defect
+that makes the sentence unreadable, which is the same class as the `alpha=0.02` figures and
+the LaTeX template fixes, not a content change the original gets to keep.
+
+`sync.py align` still reports this file as aligned: the edit is inside a block, and the
+hashes are of the German side's structure.
