@@ -386,3 +386,320 @@ linear-regression.ipynb:
       sets. As alpha grows the lines become flatter and more alike — the fit reacts less
       sensitively to which two points were drawn, but no longer lies as close to the data in
       the middle of the range."
+
+important-continuous-distributions.ipynb:
+  76221be7-043b-41e2-93a8-ae908de80132:
+    - "Histogram of a sample between 5 and 8 with fine bars, the axis labelled 'frequency'.
+      The distribution falls away in three clear steps: from about 170 in the range 5 to 6,
+      to around 85 between 6 and 7, to about 45 between 7 and 8. Below the picture stand the
+      mean 6.077 against the expected 6.0714, and the standard deviation 0.6205."
+    - "The same histogram, but normalised to a density instead of frequencies: the shape is
+      unchanged, only the vertical axis now shows values around 0.6, 0.3 and 0.15, so that
+      the total area comes to 1."
+    - "The same sample with only three bars, one per unit interval. What remains is the
+      staircase shape: about 5700, 2850 and 1450 observations — each step roughly half the
+      height of the one before."
+  fd4df7ae-888f-4f8b-aad5-794ebdc870ac:
+    - "Red curve of a function over the range from -80 to 90, starting at about plus 500000,
+      falling to nearly zero towards the middle, running flat there across a wide stretch,
+      and then plunging steeply into the negative on the right, mirroring the left."
+  334bb8a6-1046-454b-ac1c-9b921d5136b4:
+    - "Density of the standard normal distribution over the range from -3 to 3: the
+      symmetric bell curve with its maximum of about 0.4 at zero."
+    - "Distribution function of the same standard normal: an S-shaped rising curve running
+      from nearly zero at -3 through 0.5 at zero to nearly 1 at plus 3."
+  4a044db8-d054-4673-a359-4f494274d1ce:
+    - "Histogram of 10000 samples from a normal distribution with expectation 3 and standard
+      deviation 2, in 200 bins. The bell shape is clearly recognisable, but the individual
+      bars jump up and down sharply — at so fine a division the random fluctuation of the
+      bin counts comes through."
+  9753d0fd-a039-4d72-8fd1-f80c58ba4c56:
+    - "Density of a mixture of two normal distributions, 0.6 times N(0,1) plus 0.4 times
+      N(2, 0.5 squared). The curve has two peaks: a broad, flatter one at zero of about
+      0.24 and a narrower, higher one at 2 of about 0.35, with a clearly visible valley
+      between them."
+  0da093d7-7476-4088-9ea8-ae9192e436fb:
+    - "Distribution function of the Dirac distribution at zero: a line constant at 0 to the
+      left of zero, jumping vertically to 1 at zero, and constant at 1 to the right."
+  94ab9253-19e3-4256-94b6-0132cdf2790f:
+    - "Density of the uniform distribution on the interval from -1 to 2: zero outside,
+      inside a horizontal plateau at a height of one third, with vertical jumps at both
+      edges."
+    - "Distribution function of the same uniform distribution: constant at zero up to -1,
+      then a straight line rising evenly to 1 at 2, and constant at 1 thereafter."
+  dc79a2c7-07ac-4dc7-8bed-859ad3a629bf:
+    - "Density of the exponential distribution with parameter 2: zero to the left of zero,
+      jumping at zero to its maximum of about 1.9 and then falling away quickly, until from
+      about 2.5 it barely lifts off the axis."
+    - "Distribution function of the exponential distribution with parameter 2: constant at
+      zero up to zero, then a steep rise that has practically reached 1 by about 2 and runs
+      on horizontally."
+  c6db802c-3fd7-4d8b-a4fb-fe13950dfc46:
+    - "Density of the log-normal distribution with parameters 1 and 2: a very narrow, tall
+      peak just to the right of zero at about 0.55, then a long, flatly tailing-off tail
+      that has not fallen to zero by 12."
+    - "Distribution function of the same log-normal distribution: a steep rise at first that
+      then slows markedly and has reached only about 0.77 at 12 — the heavy right-hand tail
+      shows up here as the missing remainder to 1."
+  859f3280-1451-48d6-8632-ab225a7d09cf:
+    - "Density of the Weibull distribution with parameters 1 and 1.3: a steep rise from zero
+      to its maximum of about 0.74 at 0.3, then an even, slow decline out to 2."
+    - "Distribution function of the same Weibull distribution: an even rise, flattening
+      slightly towards the right, from zero to about 0.9 at 2."
+  a01fd47d-0f25-47f9-9c3d-328be854fcfa:
+    - "Histogram of the first feature of the Iris data set, sepal length, normalised to a
+      density and overlaid with the orange density curve of the fitted normal distribution.
+      The bars fluctuate strongly and show several spikes while the curve smooths over them
+      — the normal distribution is a rough approximation here, not a good description."
+
+expectation-maximization.ipynb:
+  2fc62322-b991-4b28-8fec-061419c28b58:
+    - "Two scatter plots of the first two principal components of the Iris data set side by
+      side, both with the three species in colour and with orange contour lines of the
+      fitted densities. On the left 'kMeans fit': the contours are exact circles, ironing
+      straight over the obliquely lying clouds of points. On the right 'Gaussian Mixture
+      Model (GMM)': the contours are narrow ellipses tilted along each cloud and therefore
+      lie close to the data."
+  27a5fd4d-337a-4c69-91ac-a2083b5f56cb:
+    - "Histogram of the exercise data for the EM algorithm: in grey the weighted sum, and
+      below it in blue the first component, a narrow distribution around zero, and in yellow
+      the second, a broader one around 6. Between 0 and 4 the two overlap, so the
+      decomposition cannot be read off the combined histogram."
+  5da2c828-1efc-434e-9cf6-ce564ccb8bc6:
+    - "The same histogram as a density, with the estimated mixture density at the start of
+      the procedure drawn over it in blue, and four vertical lines: the two true
+      expectations and the two randomly chosen starting values. The starting curve has its
+      tall peak at 10, where the data are already thin, and misses the actual mass to its
+      left — this is what the starting point of the iteration looks like."
+  928a9666-38bc-4ec6-a296-317e0e04204d:
+    - "Scatter plot titled 'data to be clustered': recorded locations, latitude against
+      longitude. The points do not lie in clouds but along a line — evidently they follow
+      roads, with dense thickenings where someone stayed longer. A small cross marks the
+      mean, which lies in the middle of empty space."
+  13f1453d-af47-47e2-be96-825a96efeb6f:
+    - "The same locations after transformation to principal components, titled 'data to be
+      clustered, in principal components'. The picture is merely rotated and scaled
+      differently; the line structure is unchanged and nothing has been gained."
+  7713d7fb-b66c-4641-b206-71f5814d90d3:
+    - "The same map, overlaid in orange with a sample from the fitted mixture model. The
+      generated points gather in two compact patches at the densest places of the track,
+      while the long, thinly occupied line between them is not covered by the Gaussian
+      components at all."
+  ac35d6e6-5523-42c8-b20c-bd361a126861:
+    - "'mixed Gaussian model, sklearn EM-fit': the first two principal components of the
+      Iris data set with the orange contour lines of the three fitted normal distributions.
+      The ellipses follow the tilt of their cloud of points. Three red crosses mark the
+      misclassified points — all of them lie where the two right-hand components meet."
+  99cf6b08:
+    - "Curve of the Bayesian information criterion over the number of components k, for k =
+      1, 2, 5, 10, 20, 40, 60 and 100. The value falls from about 314000 to a minimum of
+      roughly 293000 at k = 10, then climbs to about 347000 by k = 60, and at k = 100 drops
+      back to the level of the minimum. The curve is therefore not single-peaked — anyone
+      looking only at the ends can easily choose wrongly."
+  dfde9366-bd91-4e71-82cc-c2123051913c:
+    - "A grid of a hundred handwritten digits from the digits data set, each 8 by 8 pixels
+      in greyscale, ten rows of ten images. The upper rows run in order from 0 to 9, below
+      them follow mixed digits in very different hands."
+  715c78f9-0cb6-4d80-8102-fed54dfd4b8d:
+    - "A row of ten digit images the mixture model with a hundred components produced
+      itself. They resemble handwritten digits — a 5, a 0, a 9 and a 4 are among those that
+      can be made out — but are blurrier than the real ones and in part not unambiguously
+      legible."
+  74e47f30-54f8-43fd-94f5-b280a76f9d07:
+    - "Ten samples from the first component of the mixture model, as a row of digit images.
+      All ten show the same digit, a 4, in slightly varying stroke width and slant — the
+      component stands for one particular hand, not for a digit in general."
+    - "Ten samples from the second component: a 9 throughout, all in the same squat hand."
+    - "Ten samples from the third component: a 3 throughout, with angularly drawn bows."
+    - "Ten samples from the fourth component: a narrow vertical stroke, so a 1, nearly
+      identical in all ten images."
+    - "Ten samples from the fifth component: a 6 throughout, very evenly formed."
+    - "Ten samples from the sixth component: a 0 throughout, round and strongly drawn."
+    - "Ten samples from the seventh component: a 3 again, but in a different hand from the
+      third component — tighter and more strongly slanted."
+    - "Ten samples from the eighth component: a narrow shape wavering between 1 and 2; here
+      the component has lumped two hands together."
+    - "Ten samples from the ninth component: a 3 throughout, in a third, broader variant."
+    - "Ten samples from the tenth component: a 4 throughout, written differently from the
+      first component — with an open rather than a closed apex."
+  c0193b85-cba9-469a-9f5d-9b439fb41ff0:
+    - "A row of ten digits drawn from the mixture model as a whole rather than from a single
+      component. The result is correspondingly mixed: 3, 9, 1, 5, 6 and 7 are among those
+      that can be made out, in very differing quality."
+  e6e441f7-6d6b-40da-9fbd-f68e3297f459:
+    - "Ten samples from a further component: a 7 throughout, each with the same horizontal
+      bar across the top."
+  7a5855eb-e2ea-481a-8f3f-4c618d155b38:
+    - "A row of ten images produced by a mixture of 90 normal distributions trained on the
+      Fashion-MNIST class 'trousers'. All ten show trousers of slightly differing leg width
+      and brightness; they are softer and blurrier at the edges than real photographs."
+  3ab8baba:
+    - "Ten trousers generated by the model, from a mixture with 90 components trained on the
+      class 'trousers' at high resolution. The silhouettes are clear, the fabric patterns
+      blurred."
+    - "Four generated images from a mixture trained on T-shirts: short-sleeved tops with a
+      straight shoulder line, some with a hint of a print."
+    - "Four generated images from a model trained on trousers: narrow, two-legged
+      silhouettes against a light ground."
+    - "Four generated images from a model trained on pullovers: long-sleeved tops with a
+      broad hem, dark throughout."
+    - "Four generated images from a model trained on dresses: narrow shapes growing longer
+      towards the bottom, some with a hint of a checked pattern."
+    - "Four generated images from a model trained on coats: long-sleeved tops, heavier and
+      broader than the pullovers, with a recognisable light hem."
+    - "Four generated images from a model trained on sandals: flat shapes lying across the
+      bottom edge of the picture, the only class here without an upright silhouette."
+    - "Four generated images from a model trained on shirts: long-sleeved tops with a
+      vertical button placket and a checked or striped pattern."
+
+eda-examples.ipynb:
+  7de0685f-a2b1-46ec-8386-aeadcbd518f7:
+    - "Histogram of the alcohol content in the wine data set, values between 11 and 15 per
+      cent in coarse bins. The bars rise to a maximum of 30 observations at about 13.5 per
+      cent and fall away on both sides; the shape is approximately, but not exactly,
+      symmetric."
+  a4d0f2dc-f12a-4b44-a720-b93925d92cc2:
+    - "The same feature in a finer division and normalised to a density, overlaid with the
+      blue density curve of the fitted normal distribution. The curve lies markedly above
+      the bars at the peak and below them on the flanks — the normal distribution describes
+      the data only roughly."
+  285fb565-ee4b-4b60-b948-49fa74d9b712:
+    - "Three histograms of the alcohol content laid over one another, one per wine class, in
+      orange, green and blue and without transparency. The three distributions are shifted
+      against each other: orange at low values around 12, green in the middle, blue at high
+      ones around 13.5 to 14. Because the bars hide one another, the overlap cannot be
+      seen."
+  aa946239-6bd6-424a-b411-360ef02f3b3f:
+    - "The same three class histograms, with the three fitted normal densities added as
+      curves in violet, brown and red. Each curve sits over its class; the three peaks lie
+      at about 12.2, 13.0 and 13.8 per cent and their flanks overlap considerably."
+  45dcd526-dfd8-428d-a9d4-36df00a23b07:
+    - "The combined histogram of the alcohol content with the blue curve of the weighted
+      mixture of the three class densities. This mixture curve follows the bars noticeably
+      better than the single normal distribution before: it has a shoulder at the top
+      instead of one sharp peak."
+  dde5c59f-3780-499e-b570-991cce2a9331:
+    - "The three class histograms of the alcohol content again, this time drawn
+      semi-transparently. That makes visible where the classes cover one another —
+      especially between 12.5 and 14 per cent, where all three have a share."
+    - "The same triple view for the second feature, malic acid. Two classes crowd narrowly
+      between 1 and 2, the third is spread widely over the range from 2 to 6 — here the
+      classes differ above all in spread, not in position."
+    - "The same for the ash content between 1.5 and 3.25. All three classes lie almost on
+      top of one another around 2.2 to 2.6; only one has an additional small share at low
+      values around 1.9. This feature barely separates the classes at all."
+    - "The same for the alcalinity of ash between 10 and 30. One class lies clearly to the
+      left with its peak at about 17, the other two further right between 19 and 25 and
+      overlap strongly."
+    - "The same for the magnesium content between 70 and 160. All three classes bunch
+      between 85 and 110; one of them has a long tail to the right out to 160. The feature
+      is of little use for separation."
+    - "The same for the total phenols between 1 and 4. Here the classes are clearly
+      staggered: one peaking at about 1.5, one at about 2.4 and one at about 3.0. This
+      feature separates the classes well."
+    - "The same for the flavanoids between 0 and 5. The staggering is even clearer than for
+      the total phenols: one class crowds narrowly at 0.5 to 1, the second lies around 2,
+      the third around 3. This is one of the most discriminating features of the data set."
+    - "The same for the nonflavanoid phenols between 0.1 and 0.65. One class bunches at low
+      values around 0.28, another is spread broadly over 0.4 to 0.6; the third lies between
+      them. The overlap is large."
+    - "The same for the proanthocyanins between 0.5 and 3.5. One class lies to the left with
+      peaks around 0.9 to 1.1, the other two around 1.5 to 2.0; all three tail off flatly to
+      the right."
+    - "The same for the colour intensity between 1 and 13. One class crowds narrowly between
+      2 and 4, the second lies around 5, and the third stretches far to the right out to 13
+      — here the classes differ strongly both in position and in spread."
+    - "The same for the hue between 0.5 and 1.7. One class has its sharp peak at about 0.6,
+      the second at 1.05, the third lies broadly between 0.9 and 1.4. Low values belong
+      unambiguously to one class."
+    - "The same for the ratio OD280 to OD315 between 1.2 and 4. One class lies compactly
+      between 1.3 and 2.0, the other two overlap between 2.5 and 3.6 — the feature separates
+      one class cleanly, the other two not at all."
+    - "The same for the proline content between 300 and 1700. Two classes lie together below
+      900, the third reaches from 1000 to beyond 1600 and is alone there. Like the
+      flavanoids, this feature serves well for separation."
+  a7805d4d-e3f7-47f6-87ad-419bd0a55864:
+    - "Histogram of 'alcohol' by class, with the three fitted normal densities as curves
+      over it. The three peaks are staggered at about 12.2, 13.2 and 13.8 per cent; the
+      curves overlap considerably on their flanks."
+    - "The same for 'malic acid'. The curve of one class is narrow and tall at 1.8, those of
+      the other two flat and drawn far to the right — the normal distribution fits poorly
+      here, because the data are skewed to the right."
+    - "The same for 'protein'. One class lies with a narrow, tall curve at about 1.7, the
+      other two flatter at 2.8 and 3.2. The left-hand class is cleanly separated."
+    - "The same for 'proline'. Two classes lie with their curves to the left below 900, the
+      third far to the right with its peak at about 1100 and a long tail out to 1600."
+  a4526e62-19f3-412e-b024-cee5c6473223:
+    - "Scatter plot 'Alcohol content vs. malic acid', all points in one colour. The cloud
+      fills the area with no recognisable direction; at the bottom a dense band forms at low
+      malic acid, above it the points scatter widely. No relationship between the two
+      features can be seen."
+    - "Scatter plot 'Protein vs. proline', likewise in a single colour. Here the cloud
+      visibly falls into two regions: at the bottom left a group with low protein and low
+      proline, at the top right one with high values in both, and a more thinly occupied
+      zone between them."
+  bf5ef1b3-60b2-436d-a2bb-7edfd4cb94b8:
+    - "The same scatter plot of protein against proline, now coloured by the three wine
+      classes. The two-part split seen before dissolves: at the top right lies a class with
+      high proline, on the left one with low protein, and the third fills the lower middle
+      region — only the colour makes the structure legible."
+  f1dec412-68c4-4de9-8512-d2190f9d1325:
+    - "Bar chart 'Share of the month in all heavy rainfall events, in per cent' across the
+      twelve months. The distribution is heavily concentrated on the summer: June and July
+      stand at about 26 and 28 per cent, each winter month below one per cent."
+  017a45c7-50b1-4ea5-9100-c3a550f4f02a:
+    - "The same bar chart for Düsseldorf alone. Two bars remain, two events in June and five
+      in July — at numbers that small the monthly distribution of a single city carries no
+      statement any more."
+  df545ae8-9be9-41bc-b94b-b039d88f9701:
+    - "Scatter plot of the grid coordinates of all heavy rainfall events, drawn without
+      transparency. The outline of Germany can be guessed at, but the points cover one
+      another completely into a single blue area in which no differences in density can be
+      made out. The vertical axis has also not yet been converted to the grid."
+  2235820a-0217-415a-8e91-4fe9d75d06bd:
+    - "The same scatter plot with transparent points. Now the outline of Germany is clearly
+      recognisable, and within it differences in density become visible: in the south and
+      south-west the points lie noticeably denser than in the north."
+  02ebf79f-9a50-4ad0-8da5-cf35644bb1b4:
+    - "Scatter plot of event duration against the north-south coordinate, with very
+      transparent points. Because the duration takes only whole-number values, the picture
+      falls into vertical stripes; the first stripes up to a duration of about 10 are
+      densely occupied, after which it thins out quickly, with isolated stripes out to 72."
+  98c20f74-6a72-439a-8a3f-074c0c261566:
+    - "Map of the heavy rainfall events over Germany, the points coloured by event duration.
+      The area is almost uniformly green, that is short duration; only isolated blue and
+      light points mark the rare long events. The colour scale runs to 72 but is hardly
+      used."
+  0124881a-adda-47e8-816a-f5a56238394c:
+    - "The same map, coloured by mean precipitation. Here too almost everything is green,
+      because the few extreme events stretch the scale to 145 and all the other values
+      collapse into the lowest band of colour."
+  976b3f72-44dc-4fea-a5d8-a5e474f272e1:
+    - "The same map after the events with mean precipitation above 60 have been removed. Now
+      the scale uses only the range up to about 57, and differences become visible across
+      the whole area: the points range from green through dark blue to light blue."
+  683fd84b-7a8f-4adf-8862-e52349d5ace2:
+    - "All events again, but with a colour scale put together by hand: green and blue for
+      the lower range of values, orange for the upper. The effect matches that of dropping
+      the extreme values — the mass of the points is distinguishable again, and the few
+      outliers stay visible as orange points instead of disappearing."
+  c2d60305-c8c0-4a60-ba29-0ad034d5f921:
+    - "Two age histograms of the Titanic passengers laid over one another, survivors and
+      non-survivors, in steps of one year from 0 to 99. Both distributions have their centre
+      of gravity between 18 and 36 years; among the very small children one group lies
+      noticeably above the other. The individual bars jag strongly, because every year of
+      life is its own bin."
+  3c590cd0-2a30-48b2-90f6-6e648c778b98:
+    - "The same view, this time split by the three passenger classes. Third class provides
+      the youngest passengers and peaks around 20 years; first class is markedly older on
+      average and is the only one to extend appreciably beyond 60 years."
+  3c3991d7-817c-45ca-b46c-22941d9fd844:
+    - "Scatter plot of passenger class against survived-yes-or-no, with very transparent
+      points. Because both variables take only a few values, exactly six points remain;
+      their differing darkness shows how many passengers stand behind each. The darkest is
+      the point at the bottom right: non-surviving passengers of third class."
+  c547a6a5-4e2b-4282-951b-f41f9d79b925:
+    - "Scatter plot 'Siblings and spouses on board, by age'. Both quantities are whole
+      numbers, so the points lie on a grid. The value 0 runs as a dense line across the
+      whole age range out to 80, the value 1 to about 65; values from 3 upwards occur almost
+      only among children under 20, and the maximum of 8 only among infants."

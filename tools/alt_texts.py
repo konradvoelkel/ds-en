@@ -72,8 +72,21 @@ def image_outputs(cell: dict) -> list:
             if "image/png" in o.get("data", {}) or "image/svg+xml" in o.get("data", {})]
 
 
+# Animation cells: their image output carries an empty text/plain and MyST does not render
+# it as an <img> at all (checked across all 30 built pages: 226 images, none without alt).
+# Listed rather than passed over silently, so that "nothing to do here" is a statement
+# someone made and not an accident of how the check happens to be written.
+ANIMATIONS = {
+    "expectation-maximization.ipynb": {"6538d8da-3ff3-4bbb-898e-49eb3d4b6511"},
+    "kernel-methods.ipynb": {"120790b1-e2d3-4ebb-953b-2b7ad3dc1441",
+                             "933ae3d3-c9fd-4b59-bbc3-3f953a5987ca"},
+    "kmeans.ipynb": {"6e903f15"},
+}
+
+
 def is_placeholder(out: dict) -> bool:
-    return "".join(out["data"].get("text/plain", [])).strip().startswith(REPR_PREFIX)
+    text = "".join(out["data"].get("text/plain", [])).strip()
+    return text.startswith(REPR_PREFIX) or not text
 
 
 def skeleton(name: str) -> int:
@@ -112,9 +125,13 @@ def run(mode: str) -> int:
             outs = image_outputs(cell)
             if not outs:
                 continue
+            if cell.get("id") in ANIMATIONS.get(name, ()):
+                continue
             wanted = by_cell.get(cell.get("id"))
             if wanted is None:
-                todo[name] = todo.get(name, 0) + sum(1 for o in outs if is_placeholder(o))
+                n = sum(1 for o in outs if is_placeholder(o))
+                if n:  # a cell whose images already carry text needs no entry and no mention
+                    todo[name] = todo.get(name, 0) + n
                 continue
             if len(wanted) != len(outs):
                 notes.append(f"✗ {name}: cell {cell['id']} has {len(outs)} figures "

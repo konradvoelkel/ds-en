@@ -362,17 +362,25 @@ this version of MyST ignores all of them. So the truth lives in `alt-texts.yml` 
 `tools/alt_texts.py --apply` writes it into the notebooks. Re-executing a notebook undoes
 it, which is why CI checks.
 
-Set up here on 2026-10-16, with the mechanism proved end to end on one figure: the
-description reaches the rendered `alt` in the built page. 155 remain.
+Set up and finished here on 2026-10-16. All 156 are written, and the result was measured
+rather than assumed: across the 30 built pages there are 226 images, **none without an
+`alt` and none still carrying the matplotlib placeholder**.
+
+They are translations of the original's, which describe the same plots. That is defensible
+because the random seeds are fixed: a figure pair was extracted from both editions and
+differs only in the language of its title, the axes already being labelled in English on
+both sides. The pairing is by cell id, and all 116 cells resolve.
 
 Three differences from the original's version, all deliberate:
 
-* **`--check` is a regression gate, not a completeness gate.** Upstream wrote all 156 in
-  one sitting, so its check fails on any figure without a text. Here they will arrive
-  chapter by chapter, and a check that stays red until the last one lands is a check
-  nobody reads. `--check` fails on drift — a description overwritten by a re-execution, or
-  orphaned by a deleted cell — and reports the rest. `--complete` is the stricter gate, to
-  be wired in on the day the last chapter is done.
+* **Two gates rather than one.** `--check` fails only on drift, which is what a
+  part-finished chapter needs; `--complete` also fails on a figure without a description.
+  CI runs `--complete` now that the work is done. The distinction earned its keep the same
+  day: it let the descriptions land in six batches without a red build between them.
+* **Empty counts as missing.** Upstream looks for the matplotlib repr; an output with no
+  `text/plain` at all slips through that. Four animation cells are exactly that case —
+  MyST does not render them as images, which is why the built pages come out clean — and
+  they are listed in the tool by name and reason rather than passed over silently.
 * **`--skeleton` emits stubs** for one notebook with the drawing code as context, because
   the writing is the work and finding the cells should not be.
 * **The descriptions are written, not translated.** The plots are labelled in English and
