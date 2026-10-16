@@ -145,3 +145,30 @@ aside.myst-admonition-danger, aside.myst-admonition-error {
 aside.myst-admonition-danger > header {
   color: var(--hhu-red) !important;
 }
+
+/* --- Long formulas pushed the whole page sideways ---------------------------------
+   Measured at 375 px: descriptive-statistics came out 613 px wide, two thirds wider
+   than the device, and the whole page could be swiped away. Not the table -- that sits
+   in a div.overflow-auto and scrolls inside its own box -- but two long formulas
+   *inline in a list item*. span.katex is inline, takes whatever width the formula
+   needs, and inline elements honour neither max-width nor overflow.
+
+   Found and fixed in ds-skript first (19b3543); the German edition measured exactly the
+   same 613 px on the same chapter, so this is upstream content, not a translation
+   artefact. Six variants were measured against a faithful rebuild of the pages job --
+   a bare `myst build` leaves out the KaTeX fonts that the job copies in and reports
+   379 px instead of 613, so it would have hidden the bug entirely.
+
+   The obvious fix would have been `.katex { display:inline-block; max-width:100%;
+   overflow-x:auto }`. It fixes the width but makes *every* inline formula 2 px taller:
+   on a formula-heavy chapter (512 of them) that is +2482 px of page height, i.e. uneven
+   leading everywhere maths appears in running text. This version lets the *surrounding*
+   element scroll instead and leaves inline metrics alone -- +48 px on the same chapter.
+
+   Checked at 375 and 1200 px: exactly one element gains a horizontal scrollbar (the
+   over-wide formula, on phones only), nothing is clipped vertically, desktop unchanged.
+   Browsers without :has() behave as before -- the rule simply does not apply. */
+p:has(> .katex),
+li:has(.katex) {
+  overflow-x: auto;
+}
