@@ -152,7 +152,11 @@ project:
         - file: expectation-maximization.ipynb
 site:
   options:
-    logo: images/logo-wide.svg
+    # The raster, not the SVG. logo-wide.svg is 437 kB -- one of its paths is 117 kB of
+    # coordinates -- and it loaded on all thirty pages to fill a 72x36 box. It is now the
+    # source, rendered to images/logo-wide.png at 216x108 (3x) by tools/logo_raster.py,
+    # which is 18 kB and pixel-exact over both navbar colours. 96% off every page.
+    logo: images/logo-wide.png
     logo_alt: "Data Science: lecture notes"
     favicon: images/favicon.ico
     folders: true

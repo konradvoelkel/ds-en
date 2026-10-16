@@ -171,6 +171,24 @@ The first is the one to fix regardless of anything else.
   identity for a shared link, so two spellings of one URL become two cards with two
   comment threads. *Added in this edition*, same tool.
 
+* **`logo-wide.svg` is 437 kB and renders at 72 × 36.** Both editions serve the
+  byte-identical file — 437,307 bytes, one of its seventeen paths being 117 kB of
+  coordinates on its own — on every page, to fill a thumbnail. The book theme pins
+  `height: 36px`, so it is 72 × 36 at every viewport width and with the mobile menu open;
+  there is no size at which the vector detail is reachable.
+
+  *Fixed in this edition* (2026-10-16): the SVG stays as the source, `tools/logo_raster.py`
+  renders it to a 216 × 108 PNG (3×, so a 3×-DPR phone is pixel-exact), and `myst.yml`
+  points `site.options.logo` at that. **437,307 → 18,150 bytes, on every page.** Two
+  cautions for whoever ports it. The raster must keep the *SVG's* 2:1 viewBox and not the
+  framing of the stale `logo-wide.png` that sits in both repositories unreferenced — that
+  one is 609 × 417, the same drawing cropped tighter, and since the height is what is
+  pinned it would have narrowed the rendered logo from 72 px to 53. And the transparency
+  is load-bearing: the navbar is transparent over a background that changes with the
+  reader's light/dark setting, so a logo flattened onto white is a white block in dark
+  mode. A palette PNG is a third the size but shifts colours by up to 36/255, which the
+  globe's three radial gradients show as banding; plain RGBA is exact.
+
 One thing that is **not** in the German edition: its title suffix is
 `- Data Science Vorlesungsskript`, 31 characters against this edition's 48, so the
 truncation finding behind `head_meta.py`'s title trimming is much milder there. Worth

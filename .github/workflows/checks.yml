@@ -71,9 +71,16 @@ jobs:
         # that actually matters and needs no dependency -- that the card is present and
         # still 1200x630, an undersized card being the bug the file exists to prevent.
         # The byte-exact comparison stays available locally as --check.
+        #
+        # The logo is the third case and sits with the card: it is rendered from its SVG
+        # by librsvg or Inkscape, against whatever cairo and system fonts a machine has,
+        # so --verify asserts the properties no renderer can disagree about -- a 216x108
+        # PNG whose alpha channel is in use, still matching the source's aspect ratio.
+        # Undersized, opaque or reshaped are the three ways it can go wrong.
         run: |
           python3 tools/social_card.py --verify
           python3 tools/course_diagram.py --check
+          python3 tools/logo_raster.py --verify
 
       - name: Committed figures are still optimised
         # The repository's own images, not the build's -- pages.yml re-encodes the

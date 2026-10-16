@@ -494,14 +494,8 @@ landing page's entire title, and those want different lengths.
   server-rendered page is fine while the hydrated one 404s every figure: invisible to a
   crawler, obvious to a reader. The half of the win that needs no reference rewriting
   went first.
-* **The logo.** `images/logo-wide.svg` is 437 kB — one path alone is 117 kB of
-  coordinates — and it loads on all 30 pages, which now makes it a quarter of
-  `descriptive-statistics`'s on-load image payload. `svgo --precision 2` takes it to
-  162 kB and looks identical to the eye, but 7% of pixels differ by a visible amount even
-  at display size and svgo rewrites the `<text>` elements, so it is not a change to make
-  silently to the book's logo. Precision 3 is clean (671 pixels of 180,000) at 32% off and
-  still leaves 297 kB. **This wants a redraw or a raster export, not a squeeze**, and that
-  is Konrad's call.
+* **The logo** — at the time of writing. It was left for Konrad to decide and he decided
+  the same day: see §9c.
 * **Blocking the PDF from the index.** See §9b.
 * **The third-party CSS.** font-awesome 4.7, KaTeX and `mpl_widget` still come from cdnjs
   and jsdelivr on every page, render-blocking, with no `preconnect`. That is MyST's
@@ -534,3 +528,54 @@ download students actually use, and Google has handled PDF-beside-HTML for twent
 If it ever does start outranking the chapters, the lever is two lines appended to the
 `robots.txt` rewrite in `pages.yml` — the file is already post-processed there — and it
 can be added the day there is evidence for it.
+
+### 9c. The logo, rastered (2026-10-16, same day)
+
+The figure work left `images/logo-wide.svg` as the largest single asset on the site:
+**437 kB**, one of its seventeen paths being 117 kB of coordinates on its own, loaded on
+all thirty pages, and about a quarter of what `descriptive-statistics` fetches before the
+load event.
+
+**It renders at 72 × 36 CSS pixels.** The theme pins `height: 36px`, and that was measured
+at desktop and mobile widths and with the mobile menu open — it is 72 × 36 everywhere. So
+the squeeze was never the right move: `svgo --precision 2` reaches 162 kB but shifts 7% of
+pixels visibly even at display size and rewrites the `<text>` elements; precision 3 is
+clean and still leaves 297 kB. Both are a lot of Bezier curves for a thumbnail.
+
+Konrad's decision: keep the SVG as the source, serve a raster. `tools/logo_raster.py`
+renders it to `images/logo-wide.png` at **216 × 108** — 3× the display box, so a 3×-DPR
+phone maps one image pixel to one device pixel — and `myst.yml` points `site.options.logo`
+at the PNG. **437,307 bytes → 18,150. 96% off every page on the site.**
+
+Three things worth recording:
+
+* **The aspect ratio had to be the SVG's, not the old PNG's.** `images/logo-wide.png`
+  already existed — 609 × 417, the same drawing cropped tighter, unreferenced in the whole
+  of the repository's history. Handing the theme that framing would have changed the
+  logo's rendered *width* from 72 px to 53, because the height is what is pinned: a layout
+  change wearing an optimisation's clothes. The generator asserts the SVG's viewBox still
+  matches the raster's shape, and fails rather than squashing the drawing. The old crop is
+  overwritten; it is in git history, and it was never served.
+* **Exact, not smallest.** Four encodings were measured by compositing each over white
+  *and* over the dark navbar colour and diffing against the same composite of the SVG:
+  RGBA PNG 18,150 (exact), palette PNG 5,868 (up to 36/255 off), lossless WebP 13,890
+  (exact). The palette version keeps a working alpha channel and is a third of the size,
+  but this drawing has gradients — the globe is three radial gradients — and that is where
+  36 levels show as banding. For the book's mark, on every page, exactness is worth twelve
+  kilobytes. Checked afterwards in a browser in both colour schemes: transparency intact,
+  no white block in dark mode.
+* **`--verify`, not `--check`, and stdlib only.** Same distinction `social_card.py` draws,
+  and for the same reason: the file is *rendered*, through librsvg or Inkscape against
+  whatever cairo and system fonts a machine has, so a byte comparison in CI would fail for
+  reasons that are not the logo. CI asserts what no renderer can disagree about — present,
+  216 × 108, a PNG colour type that can hold transparency, aspect still matching the
+  source — by reading the IHDR with the standard library, because `checks.yml` runs that
+  step before anything installs Pillow. Both failure modes were tested by breaking the
+  file on purpose: a flattened logo and an undersized one each fail with the reason.
+
+`tools/optimize_images.py` needs no exception for it. The alpha channel is genuinely in
+use, so the file never reaches that tool's palette branch, and plain recompression gains
+less than its floor — checked rather than assumed.
+
+**The German edition serves the byte-identical 437 kB SVG** (same sha, same path hash
+under its own build). Passed upstream.
