@@ -185,7 +185,14 @@ def strip_payload_title(doc: str, name: str) -> tuple[str, bool]:
         return doc, False
     start = i + len(key)
     try:
-        payload, length = json.JSONDecoder().raw_decode(doc, start)
+        # raw_decode returns the index in `doc` where the JSON *ends*, not how many
+        # characters it consumed. Treating it as a length and slicing doc[start + end:]
+        # overshoots by `start` -- past the end of the document, so the tail silently
+        # becomes "". That shipped: every page of this edition ended mid-payload, 85 kB
+        # short, with no </script>, no </body> and no </html>, and without the module
+        # script that boots the client. Browsers paper over unclosed tags, so nothing
+        # looked wrong; what was missing was the whole client runtime.
+        payload, end = json.JSONDecoder().raw_decode(doc, start)
     except ValueError:
         return doc, False
 
@@ -207,7 +214,7 @@ def strip_payload_title(doc: str, name: str) -> tuple[str, bool]:
     # are written as \u escapes, which JSON reads back as the same characters.
     out = json.dumps(payload, separators=(",", ":"), ensure_ascii=False)
     out = out.replace("<", "\\u003c").replace("\u2028", "\\u2028").replace("\u2029", "\\u2029")
-    return doc[:start] + out + doc[start + length :], True
+    return doc[:start] + out + doc[end:], True
 
 
 def head_tags(
@@ -378,6 +385,21 @@ def main() -> None:
     for f in pages:
         doc = f.read_text(encoding="utf-8")
         rel = f.parent.relative_to(root)
+        # Completeness first. The payload edit once cut everything after the JSON:
+        # 85 kB per page, including </script>, </body>, </html> and the module script
+        # that boots the client. Browsers paper over unclosed tags, so nothing looked
+        # wrong -- it surfaced only when the two editions were compared and this one
+        # turned out to load half as many stylesheets, because it never hydrated at all.
+        if not doc.rstrip().endswith("</html>"):
+            sys.exit(f"::error::{f} does not end with </html> -- truncated?")
+        for tag in ("</body>", "</html>"):
+            if doc.count(tag) != 1:
+                sys.exit(f"::error::{f} has {doc.count(tag)}x {tag}, expected exactly one")
+        if doc.count("<script") != doc.count("</script>"):
+            sys.exit(
+                f"::error::{f} has {doc.count('<script')} <script> but "
+                f"{doc.count('</script>')} </script>"
+            )
         for marker in CARD_MARKERS:
             if marker not in doc:
                 sys.exit(f"::error::{f} still has no {marker}")
