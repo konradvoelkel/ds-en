@@ -893,3 +893,44 @@ Left at `2784f10c`. With zero stale regions there is nothing to re-translate, an
 means regenerating `sync/segments/` as its own `_comment` requires; that is a deliberate
 operation and not a side effect of reading the log. The empty reports
 `sync/reports/e229a9d.md` and `bee8ac45.md` record that the check was run and found nothing.
+
+## 13. The handover rewritten, and what cost it (2026-10-16)
+
+`sync/handover-ds-skript.md` was rewritten four hours after it was written, because four of
+its items were already wrong: ds-skript had landed `alt` texts, the mermaid diagram, the
+social card and — adopted from here — `refuse_shallow()` and the `_git()` helper. The
+instruction in the file to re-measure before acting is the only reason that was caught, and
+it is the reason it stays at the top.
+
+Two things came back the other way in `dedfd0b`, both worth having here eventually:
+
+* **`--stamp-source` puts a visible date on the landing page** by writing the frontmatter
+  before the build. §10 recorded that a visible date was "not included" here because the
+  theme re-renders the page header from the hydration payload and markup is lost — true,
+  and the frontmatter route sidesteps it entirely. The German solution is better than this
+  edition's reason for not having one.
+* **Their landing page's `article:modified_time` is the newest of all pages**, not its own,
+  and `inject_jsonld.py` reads the work's date back from there. This edition keeps that tag
+  per-document and imports `book_date()` for the JSON-LD alone. Both reach the same
+  `dateModified`; the divergence is whether a title page's meta tag may speak for the book.
+  Defensible either way, recorded so it is not mistaken for drift.
+
+### 13b. A destructive mistake made from this repository
+
+While testing the authentication branch of `upstream.yml` (§12b), the clone step was
+extracted to a script and run with a stubbed `git` that always failed, in order to exercise
+the failure path. That path ends in `rm -rf ../ds-skript`. The working directory was
+`ds-en`, so it resolved to the real German repository, and deleted it. The tracked content
+came back from the remote; four weeks of gitignored working notes under `todo/` did not,
+and were reconstructed from transcripts. `todo/` is now a symlink to `~/notizen/`.
+
+The stub covered `git`. It did not cover `rm`. The specific error was running a failure
+path on purpose without first reading it for destructive commands — the target of an
+`rm -rf` has to be looked at *before* it is made reachable, and a relative path in a script
+means the target depends on where it is run from.
+
+`upstream.yml` now constructs its clone directory under `RUNNER_TEMP`, never a sibling of
+the checkout, and refuses to `rm -rf` anything whose path does not end in its own directory
+name. That is the fix for the script. The rule for whoever tests one next: a stub that
+forces a branch is not a sandbox, and a dry run is only dry if every destructive command in
+the reachable path has been read first.
