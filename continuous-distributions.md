@@ -1,7 +1,7 @@
 ---
 title: "Continuous distributions and density functions"
 short_title: "Continuous distributions"
-description: "From the probability mass function to the density: why single points are null sets, what a density function does, and how it relates to the cumulative distribution function."
+description: "From the probability mass function to the density: why single points are null sets, what a density does, and how it relates to the distribution function."
 ---
 
 :::{admonition} Definition

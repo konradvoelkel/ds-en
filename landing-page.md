@@ -1,7 +1,7 @@
 ---
 title: "Data Science: from stochastics to machine learning with Python"
 short_title: "Lecture notes"
-description: "A complete set of lecture notes on data science: probability spaces, distributions, estimators and tests, together with Numpy, Pandas and Scikit-learn – and the learning algorithms implemented rather than called."
+description: "Lecture notes on data science: probability spaces, distributions, estimators and tests, with Numpy, Pandas and Scikit-learn, and the algorithms implemented."
 thumbnail: images/social-card.png
 ---
 

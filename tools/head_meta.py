@@ -210,17 +210,63 @@ def strip_payload_title(doc: str, name: str) -> tuple[str, bool]:
     return doc[:start] + out + doc[start + length :], True
 
 
-def head_tags(url: str, site_name: str, base: str) -> str:
+def head_tags(
+    url: str, site_name: str, base: str, lang: str, is_landing: bool
+) -> list[tuple[str, str]]:
+    """The tags as (marker, tag): the marker says whether the page already has it.
+
+    Checked **per tag**, not once for all of them. A single gate on og:url -- which is
+    what stood here until 2026-10-16 -- means that the moment a new tag is added, every
+    artifact an earlier version already processed silently misses it, and the
+    postcondition then fails with no further run able to heal it. ds-skript hit exactly
+    that adding these card tags (7f0bac4) and fixed it the same way; this is the port,
+    made before adding the tags rather than after.
+    """
+    # de -> de_DE: OpenGraph wants the underscore locale code, not the language subtag.
+    locale = {"de": "de_DE", "en": "en_US"}.get(lang, lang)
+    alternate = "de_DE" if locale == "en_US" else "en_US"
     tags = [
-        f'<meta property="og:url" content="{html.escape(url, quote=True)}"/>',
-        f'<meta property="og:site_name" content="{html.escape(site_name, quote=True)}"/>',
+        (
+            'property="og:url"',
+            f'<meta property="og:url" content="{html.escape(url, quote=True)}"/>',
+        ),
+        (
+            'property="og:site_name"',
+            f'<meta property="og:site_name" content="{html.escape(site_name, quote=True)}"/>',
+        ),
+        # "book" on the title page, "article" on the chapters. With no og:type at all a
+        # platform assumes "website", which is what a shop's front page would be.
+        (
+            'property="og:type"',
+            f'<meta property="og:type" content="{"book" if is_landing else "article"}"/>',
+        ),
+        ('property="og:locale"', f'<meta property="og:locale" content="{locale}"/>'),
+        # The card's counterpart to the hreflang pair: it tells a platform the same thing
+        # exists in German, as tools/hreflang.py tells search engines.
+        (
+            'property="og:locale:alternate"',
+            f'<meta property="og:locale:alternate" content="{alternate}"/>',
+        ),
     ]
     tags += [
-        f'<link rel="preload" href="{base}/fonts/{f}" as="font" '
-        f'type="font/woff2" crossorigin/>'
+        (
+            f'href="{base}/fonts/{f}"',
+            f'<link rel="preload" href="{base}/fonts/{f}" as="font" '
+            f'type="font/woff2" crossorigin/>',
+        )
         for f in FONTS
     ]
-    return "".join(tags)
+    return tags
+
+
+# The card tags every page must end up with, for the postcondition below.
+CARD_MARKERS = (
+    'property="og:url"',
+    'property="og:site_name"',
+    'property="og:type"',
+    'property="og:locale"',
+    'property="og:locale:alternate"',
+)
 
 
 def lazy_load_figures(doc: str) -> tuple[str, set[str]]:
@@ -280,6 +326,7 @@ def main() -> None:
     ap.add_argument("site")
     ap.add_argument("html_dir")
     ap.add_argument("--base", default="", help="BASE_URL, the path the site is served from")
+    ap.add_argument("--lang", default="en", help="the edition's language, for og:locale")
     args = ap.parse_args()
 
     site = args.site.rstrip("/")
@@ -292,7 +339,7 @@ def main() -> None:
     suffix = f" - {name}"
 
     pages = sorted(root.rglob("index.html"))
-    trimmed = n_lazy = n_preload = 0
+    trimmed = n_lazy = n_preload = n_tags = 0
     chapters = 0
 
     for f in pages:
@@ -308,10 +355,16 @@ def main() -> None:
             trimmed += changed
             doc, _ = strip_payload_title(doc, name)
 
-        if 'property="og:url"' not in doc:
+        missing = [
+            tag
+            for marker, tag in head_tags(url, name, args.base, args.lang, str(rel) == ".")
+            if marker not in doc
+        ]
+        if missing:
             if "</head>" not in doc:
                 sys.exit(f"::error::{f} has no </head>")
-            doc = doc.replace("</head>", head_tags(url, name, args.base) + "</head>", 1)
+            doc = doc.replace("</head>", "".join(missing) + "</head>", 1)
+            n_tags += len(missing)
 
         doc, lazied = lazy_load_figures(doc)
         doc, dropped = drop_image_preloads(doc, lazied)
@@ -325,8 +378,9 @@ def main() -> None:
     for f in pages:
         doc = f.read_text(encoding="utf-8")
         rel = f.parent.relative_to(root)
-        if 'property="og:url"' not in doc:
-            sys.exit(f"::error::{f} still has no og:url")
+        for marker in CARD_MARKERS:
+            if marker not in doc:
+                sys.exit(f"::error::{f} still has no {marker}")
         title = re.search(r"<title[^>]*>(.*?)</title>", doc, re.S | re.I)
         if str(rel) != "." and title and title.group(1).strip().endswith(suffix):
             sys.exit(f"::error::{f} still carries the title suffix")
@@ -340,7 +394,7 @@ def main() -> None:
 
     print(
         f"head_meta: {len(pages)} pages, {trimmed}/{chapters} titles trimmed "
-        f'(suffix "{suffix.strip()}"), og:url and og:site_name on all, '
+        f'(suffix "{suffix.strip()}"), {n_tags} card tags added, '
         f"{n_lazy} figures lazy-loaded, {n_preload} image preloads dropped"
     )
 

@@ -88,3 +88,21 @@ old rule.
 
 What deliberately stays: the `:::{note}` at the foot, which says where the book comes
 from. Provenance is not courseware.
+
+## Description shortened for the search result (2026-10-16)
+
+`myst.yml`'s `project.description` was 182 characters; Google truncates a meta description
+at roughly 160, and the cut fell on the part that distinguishes this book from any other
+set of notes. Now 150, with "the algorithms implemented, not called" inside the visible
+range. Sixteen chapter descriptions were shortened the same day for the same reason.
+
+**The frontmatter `description:` in this file is not what the page serves.** Verified
+against the live HTML: the landing page's meta description is `project.description` from
+`myst.yml`, not the one here. ds-skript found the mechanism (`0f2b615`) — a local build
+without `BASE_URL` renders the landing page from one and a CI build from the other — and
+it cost them four rebuilds that looked like a broken change and were a broken measurement.
+Both are shortened here so the two cannot disagree, but the one that reaches a reader is
+in `myst.yml`.
+
+A deliberate divergence from the German: these are tightened English sentences, not
+translations of shortened German ones. ds-skript shortened only its landing page.

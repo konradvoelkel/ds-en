@@ -293,7 +293,7 @@ jobs:
           # <link rel=preload as=image> MyST writes for every figure, because a preloaded
           # image is fetched whatever loading="lazy" says. Runs after the canonical step:
           # og:url is given the same URL the canonical has.
-          python3 tools/head_meta.py "$SITE" _build/html --base "$BASE_URL"
+          python3 tools/head_meta.py "$SITE" _build/html --base "$BASE_URL" --lang en
 
       - name: Refuse to publish a site that would load nothing, or that crawlers cannot use
         run: |
@@ -523,10 +523,19 @@ jobs:
 
           # og:url and og:site_name on every page          # og:url and og:site_name on every page, and no chapter still carrying the
           # 48-character title suffix that SERPs truncated away on 29 of 30 pages.
-          ogurl=$(find _build/html -name index.html -exec grep -l 'property="og:url"' {} + | wc -l)
-          [ "$pages" = "$ogurl" ] || fail "$pages pages but $ogurl og:url tags"
-          sitename=$(find _build/html -name index.html -exec grep -l 'property="og:site_name"' {} + | wc -l)
-          [ "$pages" = "$sitename" ] || fail "$pages pages but $sitename og:site_name tags"
+          # The five card tags MyST does not write. og:type is "book" on the title page
+          # and "article" on the chapters -- without it a platform assumes "website".
+          # og:locale:alternate is the card's counterpart to the hreflang pair.
+          for t in og:url og:site_name og:type og:locale og:locale:alternate; do
+            n=$(find _build/html -name index.html -exec grep -l "property=\"$t\"" {} + | wc -l)
+            [ "$pages" = "$n" ] || fail "$pages pages but $n $t tags"
+          done
+          # og:type must differ between the two kinds of page, which a count cannot see.
+          grep -q 'property="og:type" content="book"' _build/html/index.html \
+            || fail "the landing page is not og:type=book"
+          if find _build/html -mindepth 2 -name index.html -exec grep -l 'og:type" content="book"' {} + | grep -q .; then
+            fail "a chapter claims og:type=book"
+          fi
 
           # The document title is the *first* <title> in the file; the pages also carry
           # SVG <title> elements, so a greedy match would read the wrong one.

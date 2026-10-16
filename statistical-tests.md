@@ -1,7 +1,7 @@
 ---
 title: "Statistical tests: the z-test, the t-test and the p-value"
 short_title: "Statistical tests"
-description: "Prediction and confidence intervals, the inference from the sample to the population, how tests are built, the z-test and Student's t-test, with digressions as far as ANOVA."
+description: "Prediction and confidence intervals, the inference from sample to population, how tests are built, the z-test and Student's t-test, with a look at ANOVA."
 ---
 
 Exploratory data analysis leaves us with hypotheses about which relationships are hidden in the data. When we build systems with machine learning we have a great many decisions to make: whether we may treat a variable as normally distributed, say, or whether two groups or clusters have roughly the same distribution or very different ones.

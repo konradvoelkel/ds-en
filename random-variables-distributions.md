@@ -1,6 +1,6 @@
 ---
 title: "Random variables and distributions"
-description: "Random variables as the interface to distributions: the induced probability measure, the probability mass function, the probability vector, and the road from data to models."
+description: "Random variables as the interface to distributions: the induced probability measure, the mass function, the probability vector, and from data to models."
 thumbnail: images/social-card.png
 ---
 
