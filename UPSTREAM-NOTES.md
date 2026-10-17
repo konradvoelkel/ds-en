@@ -363,3 +363,88 @@ the card), and a stylesheet the theme itself loads (what `head_meta.py` now does
 figure dimensions, in a cascade layer so the theme's own rules still win).
 
 Full measurements in `SEO-NOTES.md` §18.
+
+### Corrected 2026-10-18: it is not upstream, and this section should not have said so
+
+Diagnosed. React #418 on this site is **ours**, in two of this repository's own
+post-processing tools, and the theme hydrates correctly on a build that is only the theme.
+The full diagnosis, with the probe that got the fiber out of the minified bundle, is
+`SEO-NOTES.md` §20. In short:
+
+* `tools/vendor_assets.py` rewrote the KaTeX stylesheet URL in the HTML and in the client
+  bundle, and stripped `integrity`/`crossorigin` from the HTML `<link>` but not from the
+  bundle's `links()` object. React 19.2.7 compares `rel`, `href`, `crossorigin` and `title`
+  when it hydrates a `<link>`; `crossorigin` absent versus `"anonymous"` is the mismatch.
+  All thirty pages.
+* `tools/head_meta.py` section 5 dropped two stylesheets that Remix's `<Links>` still
+  renders. The twelve Markdown pages, the landing page among them.
+
+**Both were fixed on 2026-10-18**, and 30 of 30 pages now hydrate: every injected tag —
+canonical, hreflang, `og:url`, `article:modified_time`, the font preloads,
+`loading="lazy"`, the figure dimensions — is in the rendered DOM, and the six stylesheet
+links appear once each instead of twice. Nothing in that fix is upstream's to do. The claim above that **a build with no
+post-processing throws the same #418 does not reproduce**; that measurement was taken on a
+build that had been post-processed.
+
+**What does belong here, and is smaller.** Remix's `links()` is one static array for every
+page, with no access to loader data, so a theme that loads `thebe-core-<hash>.css` and the
+ipympl widget CSS loads them on the twelve pages that have no cell to style, and there is
+no per-page way to decline them. That is the upstream limitation behind `head_meta.py`
+section 5 — it is a performance question, not a correctness one, and it is the same
+observation `tools/thebe_gate.py` makes about the loader effect.
+
+**For ds-skript.** The paragraphs above said this edition's hydration failure applied to
+the German original unchanged, because it is the same theme and the same bundle. That no
+longer follows: the cause is in the post-processing, so the question there is whether
+ds-skript runs the same two steps. Unverified from here, and worth half an hour in that
+repository — the cheap check is whether a chapter's hydrated `<head>` still carries its
+canonical, and whether its stylesheet links appear once or twice.
+
+## The in-article table of contents is server-rendered empty, and fills 340 px after mount
+
+Measured 2026-10-18 on this edition, at 375×812, and it is the theme's own — it reproduces
+on a build that is only `mystmd` 1.11.0's `book-theme` with no post-processing of any kind,
+and it is independent of the hydration error diagnosed in `SEO-NOTES.md` §20. It is the
+one genuinely upstream finding of that round.
+
+Every page ships the in-article outline container with an empty `<nav>`:
+
+```html
+<div class="block my-10 lg:sticky lg:z-10 lg:h-0 … lg:col-margin-right" style="top:60px">
+  <nav></nav>
+</div>
+```
+
+`myst-outline` and `CollapsibleContent` appear nowhere in the served markup. React's SSR
+renders nothing there either, so this is not a hydration mismatch — the theme fills the
+container from an effect after mount.
+
+What that costs, caught with a `MutationObserver` registered before hydration, sampling the
+first article paragraph's document-relative top on every `childList` record and keeping only
+the records where it moved:
+
+| | t | added | `nav.myst-outline` | first `<p>` top |
+|---|---|---|---|---|
+| theme only, no post-processing | 42 ms | *(parse complete)* | absent | 444 px |
+| | **1064 ms** | `DIV.myst-outline-section` | 312 px | **784 px** |
+
+**One move per load, +340 px**, and nothing else in the entire load moves that paragraph.
+340 px in an 812 px viewport is a distance fraction of 0.4187; with the measured layout-shift
+value of 0.168428 that is an impact fraction of 0.402, and the product is the score. It is
+the paragraph Lighthouse names as the shifting node on the live site.
+
+Why it shows up as an all-or-nothing CLS rather than a constant one: the insertion always
+happens, but whether it *shifts* anything depends on whether first paint lands before it.
+Unthrottled it does not shift at all; under PageSpeed's 4× CPU throttling it does. Measured
+on `/data-protection/`, two runs minutes apart on the same build: 0.266 and 0.
+
+**The upstream fix** is for the theme to render the outline on the server, or failing that to
+reserve its height. Downstream, the container *is* server-rendered and the build knows each
+page's heading structure, so the space can be reserved from post-processing — which is this
+edition's own next step, not something ds-skript inherits only if it wants it. Both editions
+have the shift, because both have the theme.
+
+A second, smaller thing in the same family, and the reason `tools/head_meta.py` section 5
+exists at all: Remix's `links()` is one static array for every page with no access to loader
+data, so the theme loads `thebe-core-<hash>.css` and the ipympl widget CSS on the twelve
+pages that have no cell to style, and there is no per-page way to decline them.

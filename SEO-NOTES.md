@@ -1431,12 +1431,22 @@ but a re-render of the whole document:
   `rel=canonical`, **no** `hreflang`, **no** `article:modified_time` and **no** font
   preloads. Every one of them is in the file that was served. The stylesheet links are
   there twice, because the client adds its own copy of each.
-* It is not ours. A build with no post-processing at all throws the same #418 and ends up
-  with the same duplicated stylesheets, so this is the theme, not our injections.
+* ~~It is not ours. A build with no post-processing at all throws the same #418 and ends
+  up with the same duplicated stylesheets, so this is the theme, not our injections.~~
+  **Wrong, and corrected in §20 (2026-10-18): it is ours, in `vendor_assets.py` and in
+  section 5 of `head_meta.py`, and the theme hydrates fine without them.** The build this
+  was measured on had been post-processed — `rm -rf _build/html` leaves the patched client
+  chunks in the template cache, and the console was read across navigations in one tab, so
+  errors from the previous page were counted as this one's. The test that settles it is
+  `git archive HEAD` into its own tree, which is what §20 did. The three measured bullets
+  above stand; only the attribution was wrong, and it was the one claim here that nobody
+  had checked properly.
 
 §15 of this file recorded that the edition *never hydrated* and fixed it; §17 recorded that
 the theme re-renders the *head* from the payload. The honest version is stronger than
-both: **nothing written into the markup after the build survives in the rendered DOM.** The
+both: **nothing written into the markup after the build survives in the rendered DOM** —
+true of the site as deployed, and §20 found out why and how to end it, which makes this a
+defect of ours rather than the fact of life this section took it for. The
 tags still reach every consumer that reads HTML without running it — which is every
 platform that draws a preview card, and Google's first pass — and `tools/freshness.py`
 already drew the same conclusion for the visible date, which is why that one travels
@@ -1577,3 +1587,341 @@ landing page moved by so much as a tenth of a pixel.
 
 This is completeness, not a CLS fix. After the measurement above, nobody should expect it
 to move the number.
+
+## 20. React #418, diagnosed: it is ours, in two tools, and the theme is fine (2026-10-18)
+
+§18 recorded that this theme "does not hydrate, it re-renders", that every page logs React
+error #418, and that **a build with no post-processing throws the same #418**. The last of
+those does not reproduce. The error is this repository's, it is two independent bugs in
+two of our own tools, and with both corrected every one of the thirty pages hydrates and
+every tag the deploy job injects survives in the rendered DOM.
+
+### The theme hydrates. Measured on a build that is only the theme
+
+`git archive HEAD` into a tree of its own, `.venv/bin/myst build --html` (mystmd 1.11.0,
+the pinned version), nothing else run against it, served on its own port:
+
+* **no #418 in the console**, on ten pages covering the landing page, four of the twelve
+  Markdown chapters and five of the eighteen notebook chapters;
+* **six stylesheet links, none duplicated** — the signature §18 named, and the one check
+  here that does not depend on the probe below;
+* `/covariance/` served with 41 tags in its `<head>`; the hydrated `document.head` has
+  **41 children**. Nothing was discarded and nothing was added.
+
+So the earlier "a build with no post-processing at all throws the same #418" was measured
+on something that had been post-processed. Everything else §18 observed is real; the
+attribution was not.
+
+### Getting the two arguments out of a production build
+
+React's #418 page names two arguments and the minified URL shows
+`?args[]=HTML&args[]=` — the first says "HTML" rather than "text", the second is empty
+because production computes the diff string as the literal `""`. There is no non-minified
+build to switch to and no amount of reading the URL will say more.
+
+What does say more is the fiber. In the bundle, `throwOnHydrationMismatch` minifies to
+
+```js
+function rt(l){var t=Error(b(418,1<arguments.length&&arguments[1]!==void 0&&arguments[1]?"text":"HTML",""));throw La(Zl(t,l)),tc}
+```
+
+and three module-scope variables in the same closure are declared together right above it
+(`var vl=null,J=null,q=!1,Xt=null,Vl=!1,tc=Error(b(519))` — React's
+`hydrationParentFiber, nextHydratableInstance, isHydrating, hydrationErrors,
+rootOrSingletonContext, HydrationMismatchException`). 745 bytes inserted before the throw
+dump the fiber chain, `nextHydratableInstance` and `hydrationParentFiber` to
+`window.__h418`. Anchored on the structure, not on the names, and asserted to be the only
+change to the chunk — the same pattern as `tools/thebe_gate.py`, for the same reason. It
+is a scratch probe on a gitignored artifact, not a tool, and nothing in `tools/` changed.
+
+DOM fibers carry their tag name as a plain string even minified, so that is enough. On the
+deployed pipeline it says:
+
+```
+wanted: fiber tag 5 (HostComponent), type "link", rendered by Remix's <Links>
+into:   fiber tag 27 (HostSingleton), <head>
+found:  <link rel="stylesheet" href="/vendor/katex/katex.min.css">
+```
+
+### Cause 1, on all thirty pages: `vendor_assets.py` leaves the JS disagreeing with the HTML
+
+React 19.2.7's `canHydrateInstance` — minified `Lh` — compares, for a `<link>` it does not
+manage itself, **exactly four attributes**:
+
+```js
+case"link": if(e=l.getAttribute("rel"),e==="stylesheet"&&l.hasAttribute("data-precedence"))break;
+  if(e!==n.rel||l.getAttribute("href")!==(…n.href…)||l.getAttribute("crossorigin")!==(…n.crossOrigin…)
+    ||l.getAttribute("title")!==(…n.title…))break;
+  return l;
+```
+
+The theme declares KaTeX in `build/_shared/chunk-WGW5MSUV.js` as
+
+```js
+{rel:"stylesheet",href:"…/katex.min.css",integrity:"sha384-MlJdn/…",crossOrigin:"anonymous"}
+```
+
+`vendor_assets.py` rewrites the href in the HTML **and** in the JS, and strips `integrity`
+and `crossorigin` from the HTML `<link>` — deliberately, and the argument in its docstring
+is a good one. It does not strip them from the JS. So the document says `crossorigin` is
+absent and the props say `"anonymous"`, the link does not match, and because `<head>` is a
+HostSingleton React scans forward through the remaining children rather than failing at
+once, finds no other `<link>` that matches, and throws.
+
+Why a stylesheet link is matched by position and attributes at all, rather than hoisted:
+`isHostHoistableType` (minified `u2`) treats `rel="stylesheet"` as hoistable only when
+`precedence` is a string, and Remix's `<Links>` passes none; and the hoistable lookup map
+(`T1`) explicitly excludes `link[rel=stylesheet]` from the nodes it will claim. Hence
+fiber tag 5, which is what the probe reported.
+
+### Cause 2, on the twelve Markdown pages: `head_meta.py` section 5
+
+Section 5 drops `thebe-core-<hash>.css` and `/vendor/jupyter-matplotlib/mpl_widget.css`
+from the pages with no `myst-jp` marker. Its docstring already knew the client re-adds
+both, because Remix's `links()` is one static array for all thirty pages. What it did not
+know is the price: the client does not *re-add* them, it fails to find them. React wants
+its second stylesheet link, the document's second stylesheet link is font-awesome, and
+that is the second `found` the probe reports.
+
+**Isolated.** With cause 1 fixed and nothing else: the eighteen notebook pages hydrate
+(six stylesheets, no duplicates, canonical and `og:url` present), and the twelve Markdown
+pages still throw — `continuous-distributions`, `covariance`, `data-protection`,
+`descriptive-statistics`, `expectation-variance`, `intro-stochastics`,
+`random-variables-distributions`, `relative-entropy`, `statistical-models`,
+`statistical-tests`, `what-is-data-science` **and the landing page**. Exactly the partition
+section 5 acts on. With both fixed, 30 of 30.
+
+### Why the symptom list looked like a theme that re-renders on purpose
+
+When hydration of the document fails, React clears it with `clearContainerSparingly`
+(minified `Uc`), which walks `<html>`, `<head>` and `<body>` and removes every child
+**except** `SCRIPT`, `STYLE` and `LINK` whose `rel` is `stylesheet`. That one function is
+the whole of §18's list: `<main>` goes, every injected `<meta>` and every `<link>` that is
+not a stylesheet goes, the stylesheets stay and the fresh client render appends its own
+copy of each — the duplication — and the JSON-LD block survives because it is a `SCRIPT`.
+Measured in the broken state: `script[type=application/ld+json]` is 1, stylesheets are 10
+with 4 duplicated, canonical and `og:url` and the font preloads are 0.
+
+### What hydration buys back, measured on all thirty pages
+
+Full pipeline, both causes fixed, every page loaded with its HTML cache-busted:
+
+| in the hydrated DOM | before | after |
+|---|---|---|
+| React #418 | 30 of 30 pages | **0** |
+| duplicated stylesheet links | 4 or 6 per page | **0** |
+| `rel=canonical` | 0 of 30 | **30 of 30** |
+| `og:url`, `og:site_name` | 0 | **30** |
+| `link[hreflang]` | 0 | **3 per page** |
+| `article:modified_time` | 0 | **30** |
+| font preloads | 0 | **2 per page** |
+| `loading="lazy"` on figures | 0 | **171**, e.g. 37 of 39 on `eda-examples` |
+| `width`/`height` on figures in `<main>` | 0 | **193** |
+
+Which is to say: §18's "nothing written into the markup after the build survives in the
+rendered DOM" was true of the site as deployed, and is not true of the theme. Three of the
+workarounds built on it — the frontmatter route, the payload edit, the stylesheet — were
+each more code than the markup fix they replaced. The payload edit for the title is still
+needed (`<title>` *is* hoistable, so React renders its own from the payload, and the
+served trim does not survive on its own), and the figure-dimension block in
+`myst-theme.css` becomes belt-and-braces rather than the only thing that works. Nothing is
+removed here: §15c is the standing warning about removals in this area.
+
+**And it should stay, which is a judgement and not a measurement.** 5.6 kB gzipped on the
+critical path is the price; what it buys is three things the attributes cannot. It is the
+only reservation the three height-capped figures of §19 can have at all, since a `width`
+next to a fixed height is the one way these attributes distort a picture. It is the half of
+the sizing that a future hydration regression cannot undo — and this section is the
+evidence that such a regression is a thing that happens here quietly. And it costs nothing
+to keep correct: `head_meta.py` already checks it against the files on disk over all thirty
+pages on every run.
+
+### The two fixes, both applied the same day
+
+**Cause 1 — `vendor_assets.py`, no trade-off.** `strip_integrity()` already removes
+`integrity=` and `crossorigin=` from the HTML tag; the JS form of the same two keys
+(`integrity:"…"`, `crossOrigin:"anonymous"` inside the object literal next to the href it
+already rewrites) has to go with them. That makes the bundle say what the docstring says
+it decided, and it is the whole of the error on the eighteen notebook pages.
+
+**Cause 2 — `head_meta.py` section 5, and it need not be given up.** The four attributes
+`canHydrateInstance` compares do not include `media`. So instead of deleting the two
+`<link>`s, set `media="not all"` on them: the tag is still there for React to match, the
+stylesheet is still fetched off the critical path, and it never applies. Measured on
+`/statistical-tests/` and `/covariance/` in the fixed build — no #418, the attribute
+survives hydration (React does not patch it back), `document.styleSheets` lists both with
+`media: not all`, and four stylesheets remain render-blocking instead of six. `media="print"`
+behaves identically and was measured too; `not all` is the honest one, because there is
+nothing on these pages for the rules to style in print either.
+
+That fix leans on an attribute React's matcher happens not to compare, which is a thing to
+write down rather than discover later: if upstream widens the comparison, these twelve
+pages break the way they are broken today, and the fallback is to stop dropping the two
+stylesheets at all. A guard belongs with it — section 5's own postcondition should assert
+that the tags are present and inert, rather than absent.
+
+Three notes for whoever writes it, two of them from the session that wrote section 5. The
+partition stays as it is: `JUPYTER_MARKER = "myst-jp"`, zero on exactly the twelve Markdown
+pages, and the docstring's argument for that marker over `jp-CodeCell` is unaffected by any
+of this. The postcondition `no page with no jupyter output may still link a jupyter
+stylesheet` is the line that fails first, and it should **change with the behaviour rather
+than be deleted** — inverted to assert the tag is there and carries `media="not all"`, on
+all thirty pages, checked against the file rather than against the run's own edits. And
+section 5's prose has to be rewritten rather than trimmed: its claim was that the two
+stylesheets leave the critical path and the client re-adds them, and the second half of that
+was never true. If the fallback is taken instead and they are not dropped at all, the 87 kB
+was never bought in the first place, and the docstring should say so plainly.
+
+### Applied, and what the whole pipeline then measures
+
+Konrad approved both on 2026-10-18 and both are in. `vendor_assets.py` now strips the two
+keys from the props object as well as from the tag, and its postcondition reads the whole
+artifact back off disk and refuses on any vendored href still carrying either — the right
+shape, because what it catches is not a missed edit but a *disagreement between two files*,
+which no count of a run's own edits can see. `head_meta.py` section 5 sets
+`media="not all"` instead of deleting, its postcondition is inverted to "present and
+inert", and it additionally insists on finding exactly two jupyter stylesheets per page,
+which is what catches the ordering trap: `JUPYTER_CSS` only matches the ipympl URL once
+`vendor_assets.py` has rewritten it, so running the two in the wrong order would have
+inerted half of what it reported.
+
+Verified on a fresh build of `HEAD` in a tree of its own, with all twelve post-processing
+steps of `pages.yml` run in order:
+
+* `vendor_assets: … 93 CDN references rewritten across 1156 html/js files; 0 still pinned
+  by integrity or crossOrigin`
+* `head_meta: … 24 jupyter stylesheets made inert` — twelve pages × two
+* **30 of 30 pages: no #418**, six stylesheet links with **zero duplicates**, and
+  `rel=canonical`, `og:url`, three `hreflang`, two font preloads, the lazy attributes and
+  the JSON-LD block all present in the hydrated DOM.
+* The partition is exactly section 5's: `media="not all"` on two links and four
+  render-blocking stylesheets on the twelve Markdown pages; untouched, six render-blocking,
+  on the eighteen notebook pages.
+* **A second run changes nothing.** Re-running steps 9 to 12 over the finished artifact
+  reports `0` new edits on every counter while the postconditions still pass over all
+  thirty pages, and `md5sum` over every `.html`, `.js` and `.css` in the build is
+  byte-identical: **0 files changed.**
+* **One thing a second run is not.** "Running twice is a no-op" means twice with *this*
+  code. An artifact that the delete-the-tag version produced — `_build/html` as it stands
+  in this checkout, from `fd06fad` — fails the present-and-inert postcondition when the new
+  `head_meta.py` is run over it, and fails it correctly: the tags it wants to make inert are
+  not there to find. A local rebuild after this change is `rm -rf _build/html &&
+  .venv/bin/myst build --html`, not a re-run of the post-processing steps. CI never meets
+  this, because `pages.yml` always builds first.
+* The refusals were made to fire, and each exits 1: a bundle re-pinned with
+  `crossOrigin:"anonymous"`, a page whose jupyter stylesheet is not inert, and a page
+  carrying a foreign `media=` — the last with the message that matters, *"the theme now
+  sets it itself … two of us writing it is how that breaks quietly."* A page left with
+  only one of the two links is repaired rather than refused, which is the idempotence
+  working; the refusal is the guard behind it.
+* `checks.yml` passes (`sync.py align` 30/30 and 98 blocks, `check_english` 0 findings,
+  the notebook round-trip), and so does the `pages.yml` publish guard — 30 pages, 30
+  canonicals, 30 sitemap entries, 30 Markdown, 90 hreflang, all absolute, JSON-LD parsing
+  and naming this origin, every `@font-face` source present, hreflang clusters consistent.
+  `freshness.py --check` passes run from the repository, which is where it can see `git`.
+
+### What was not done
+
+* **Nothing here is verified on the deployed site.** Every number in this section comes
+  from a fresh local build with the twelve post-processing steps run by hand. "30 of 30
+  pages hydrate" is a claim about that build, and becomes a claim about production only
+  once `pages.yml` has run. The first thing to check afterwards is the hydrated DOM of one
+  Markdown chapter and one notebook page: no #418, six stylesheet links with no
+  duplicates, and `rel=canonical`, `og:url` and the three `hreflang` present — which is the
+  cheap version of the whole table above, and needs the browser rather than `curl`, since
+  everything this section is about happens after the document is parsed. PageSpeed is the
+  other half and should wait for the edge to settle, for the reason §19's round 5 ends on.
+* **No paint timing was re-measured.** That `media="not all"` keeps the stylesheet off the
+  critical path is the definition of a non-matching media query and was checked structurally
+  (the sheet is parsed, listed and not applied), not as an FCP number. After §19, nobody
+  should expect a CLS or FCP figure to move from this either — what it buys is every row of
+  the table above.
+* **The German edition was not checked.** UPSTREAM-NOTES.md said this hit ds-skript
+  identically because it is the same theme and the same bundle. It is not the theme, so the
+  question there is whether ds-skript runs the same two steps. That has to be measured in
+  that repository.
+* **A trap worth recording.** Two sweeps of the thirty pages came back clean and were
+  wrong: iframes served a cached chunk or a cached document from an earlier state of the
+  same port. Every number above was taken with the HTML cache-busted per page, and the
+  duplicate-stylesheet count — which needs no probe — was used as the cross-check.
+
+### Addendum, same day: fixing #418 does not fix the CLS, and that is now measured
+
+Two sibling sessions arrived at the in-article table-of-contents `<nav>` as the CLS cause
+while this was being written, and asked whether the probe contradicted it. It does not —
+it separates the two, which is worth having in writing because §19 had left the re-render
+as the leading suspect for the shift itself.
+
+The `<nav>` is served **empty** — `<nav></nav>`, with `myst-outline` appearing nowhere in
+the served markup — on the theme-only build *and* on the fully post-processed one. So it
+is not a hydration mismatch: the theme renders nothing there on the server and fills it
+after mount, which is why the clean build hydrates without complaint and still ends up
+with a 312 px block where the document had none.
+
+Measured at 375×812 with a buffered `layout-shift` observer, landing page:
+
+| build | #418 | shift | at | shifted nodes |
+|---|---|---|---|---|
+| theme only, no post-processing | none | **0.168428** | 630 ms | `P`, `H2` |
+| full pipeline, both fixes of §20 | none | **0.167966** | 2215 ms | `P`, `H2` |
+
+One shift per load, no second entry, `hadRecentInput` false. The same magnitude on a build
+that never re-renders as on one that does not either — and the same family as PSI's
+0.1527. The shifted node is the intro paragraph, which is what Lighthouse names; the
+`<nav>` above it is 312 px with two children in both builds.
+
+**So three things follow.** The shift is the theme's, it is not #418, and **the §20 fixes
+will not move CLS** — their return is the table above them, not this number. The timestamps
+say the same thing from the other side: 630 ms and 2215 ms, both long after the 186 ms at
+which the broken build discards the document. (Absolute timings here are from a
+backgrounded browser pane and are not comparable between the two rows; what is comparable
+is that both are post-hydration, and that the shift exists at all on the clean build.)
+
+That also explains the null result from an unthrottled live load: slow the main thread —
+a hidden pane here, 4× CPU throttling at PSI — and first paint lands before the fill, so
+the fill becomes a shift. Fast, and it does not. A paint-ordering race, not a network one,
+which is consistent with a score that is bit-identical across three builds.
+
+Reserving the space is therefore a separate fix from this section's two, it is needed
+whether or not they land, and it is the siblings' to make. The one number from here that
+may help: 312 px on the landing page at 375×812, in its initial collapsed state.
+
+#### And the insertion caught in the act: +340 px, one mutation, no timestamp needed
+
+The sibling session asked for the one thing black-box measurement cannot reach — whether
+the shift coincides with the `<nav>` being populated. A `PerformanceObserver` is the wrong
+instrument for it here, because a backgrounded browser pane composites at about 1 Hz and
+stamps the shift at the next frame it gets round to, a second or so late. The geometry does
+not care about frames.
+
+So: an inline `<script>` at the top of `<head>` — before the module scripts, therefore
+before hydration — registering a `MutationObserver` over the whole document that samples
+`main article > p`'s document-relative top on every `childList` record and keeps only the
+records where it **moved**, with whatever was added that time. At 375×812, landing page:
+
+| build | t | added | `nav.myst-outline` | first `<p>` top | Δ |
+|---|---|---|---|---|---|
+| theme only, no #418 | 42 ms | *(parse complete)* | absent | 444 px | — |
+| | **1064 ms** | `DIV.myst-outline-section` | **312 px** | **784 px** | **+340** |
+| full pipeline, both fixes | 51 ms | *(parse complete)* | absent | 444 px | — |
+| | **274 ms** | `DIV.myst-outline-section` | **312 px** | **784 px** | **+340** |
+
+**One move per load, in both builds, and it is that one.** Nothing else in the whole load
+shifts that paragraph — not the fonts, not a figure, not the re-render. A single
+`DIV.myst-outline-section` goes into the server-rendered empty container and everything
+below it drops 340 px.
+
+That closes it arithmetically too. 340 px in an 812 px viewport is a distance fraction of
+0.4187; against the measured 0.168428 that puts the impact fraction at 0.402, and
+0.4187 × 0.402 = 0.1684. The sibling session predicted 0.419 from production geometry
+without having seen this. The 340 px is also their number to the pixel.
+
+The layout-shift entries landed at 2089 ms and 682 ms against insertions at 1064 ms and
+274 ms — in both cases the next composite of a throttled pane, which is why the timestamp
+was never going to be the discriminator and the geometry was.
+
+So the mechanism is settled and it is not this section's: the container is server-rendered
+and its contents are not, the theme fills it after mount, and under any throttling that
+puts first paint before the fill it is a shift. Reserving its height at build time is
+reachable from `tools/` — a `min-height` on that container below the `lg` breakpoint,
+computed per page — and that is the siblings' fix, not this one's.

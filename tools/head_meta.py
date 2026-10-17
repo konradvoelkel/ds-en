@@ -110,8 +110,38 @@ The honest fix is upstream; the measurement is in section 7.
 Twelve of the thirty pages are Markdown chapters with no executed cell on them, and all
 thirty load `thebe-core-<hash>.css` -- 87 kB of render-blocking stylesheet for cell
 output, run buttons and kernel status that those twelve pages do not contain -- plus
-`vendor/jupyter-matplotlib/mpl_widget.css`, which styles the ipympl widget. Both are
-dropped where there is nothing for them to style.
+`vendor/jupyter-matplotlib/mpl_widget.css`, which styles the ipympl widget. Where there is
+nothing for them to style, both are made **inert** rather than removed: the `<link>` stays
+exactly where the theme put it and gains `media="not all"`.
+
+**They used to be deleted, and that broke the page.** Until 2026-10-18 this section
+removed the two tags, on the reasoning in "what this does and does not buy" below -- that
+the client re-adds them anyway, so the only effect is to take them off the critical path.
+The second half of that was wrong. The client does not re-add them; it *fails to find*
+them. Remix's `<Links>` renders both on every page, React hydrates a
+`<link rel="stylesheet">` with no `precedence` as an ordinary element and matches it on
+`rel`, `href`, `crossorigin` and `title`, and a tag that is not in the document matches
+nothing. React then threw **#418** on each of these twelve pages -- the landing page among
+them -- discarded the entire server-rendered document and rendered it again, taking with
+it every head tag this file and the workflow insert and every attribute section 4 writes.
+Eighty-seven kilobytes off the critical path, paid for with all of it. `SEO-NOTES.md` §20
+has the diagnosis and the measurements.
+
+`media="not all"` keeps both sides of the bargain, and it is worth being explicit about
+why it is allowed to: `media` is **not one of the four attributes React compares**, so the
+tag still matches and hydration completes, while a media query that matches nothing takes
+the stylesheet off the critical path and never applies it. Measured on the fixed build at
+375x812: no #418, the attribute survives hydration -- React does not patch it back --
+`document.styleSheets` lists both with `media: not all`, and four stylesheets remain
+render-blocking instead of six.
+
+That does lean on an attribute React's hydration matcher happens not to look at, which is
+a thing to write down rather than rediscover. If a future React widens the comparison,
+these twelve pages break the way they were broken before this change, and the symptom is
+the one §20 describes: a document that renders and is then thrown away. The fallback is to
+stop touching these two stylesheets at all and accept the 87 kB, which was never really
+bought. The postcondition at the bottom of this file is what would notice: it asserts the
+tags are **present and inert** on all twelve pages, not absent.
 
 The marker is MyST's own `myst-jp` class prefix, which the theme puts on every notebook
 block and every output. It is 0 on exactly the twelve Markdown chapters and non-zero on
@@ -123,15 +153,18 @@ adds that class when it attaches to a cell, and this site configures no kernel s
 nothing ever attaches. Measured: zero occurrences in all thirty built pages, and zero in
 the hydrated DOM of a notebook page as well.
 
-**What this does and does not buy.** The two stylesheets leave the *critical path*: they
-are no longer in the document the browser parses before its first paint. They are not
-gone from the page. The theme's root route declares them in a Remix `links()` export,
-which is a static array with no access to the page's data -- Remix's `links()` cannot see
-loader data at all -- so after hydration the client re-adds both tags and fetches them.
-Measured on the built site: on a Markdown chapter they are now the last two requests of
-the load, after every script, instead of being render-blocking in the head. The
-re-insertion is also why this cannot be done for the eighteen notebook pages in reverse,
-and why the honest fix is upstream; it is recorded in UPSTREAM-NOTES.md.
+**What this does and does not buy.** The two stylesheets leave the *critical path*: the
+browser no longer waits for them before its first paint. They are not gone from the page
+and they are still fetched, at the low priority a non-matching media query gets. What is
+gone is only their render-blocking cost, which was always the whole of the claim worth
+making here.
+
+Why it has to be the same tag rather than no tag is the theme's doing: its root route
+declares both in a Remix `links()` export, a static array with no access to the page's
+data -- `links()` cannot see loader data at all -- so there is no per-page way to tell the
+client not to render them. Hence `media`, which is ours to set, on a tag whose identity is
+the theme's to decide. That is also why this cannot be done for the eighteen notebook
+pages in reverse, and why the honest fix is upstream; it is recorded in UPSTREAM-NOTES.md.
 
 This is the half of the audit's item 1.2 that can be done from the markup at all. The
 other half -- `thebe-core.min.js`, 359 kB transfer and 1278 kB decoded, which the audit
@@ -223,13 +256,22 @@ other way -- the browser takes the height it already has and computes the width 
 ratio -- so the box is reserved and nothing is stretched.
 
 **And the attributes alone would have been theatre.** Measured in the browser against the
-built site on 2026-10-17: React throws a hydration error (#418) on every page of this
-theme, discards the server-rendered DOM and renders the document again from the payload.
-`<main>` is replaced about 190 ms into the load. The lazy attributes section 4 writes --
-37 of 38 in the file on `eda-examples` -- are gone from the DOM 300 ms in, and so is every
-head tag this file and the workflow insert: no og:url, no canonical, no hreflang, no font
-preload in the hydrated document. Whatever is written into the markup holds for a fifth of
-a second, and the images of this site are still loading long after that (LCP 10.7-11.1 s).
+built site on 2026-10-17: React threw a hydration error (#418) on every page as this
+repository deployed it, discarded the server-rendered DOM and rendered the document again
+from the payload. (The cause was found on 2026-10-18 and was ours, not the theme's --
+`tools/vendor_assets.py` and section 5 below, diagnosed in SEO-NOTES.md §20 and **both
+fixed the same day**, so the paragraph that follows is now history rather than the
+operative fact: the attributes survive hydration, and the stylesheet below has stopped
+being the only route that works and become the one that cannot break again. It is kept
+deliberately; §20 argues why, and the three ratio-only figures above are the first of the
+reasons.)
+`<main>` was replaced about 190 ms into the load. The lazy attributes section 4 writes --
+37 of 38 in the file on `eda-examples` -- were gone from the DOM 300 ms in, and so was
+every head tag this file and the workflow insert: no og:url, no canonical, no hreflang, no
+font preload in the hydrated document. Whatever was written into the markup held for a
+fifth of a second, while the images of this site are still loading long after that
+(LCP 10.7-11.1 s). That is what the second copy below was written for, and it is why the
+second copy is still here now that the first one works again.
 
 So the same dimensions are written a second time into `myst-theme.css`, which is this
 project's own stylesheet from `myst.yml`'s `style:` -- the one file of ours the theme
@@ -333,6 +375,13 @@ EMPTY_KEYWORDS = re.compile(r'<meta\b[^>]*\bname="keywords"[^>]*\bcontent=""[^>]
 # The jupyter stylesheets, and the class prefix whose absence says the page has no
 # jupyter output for them to style. See section 5.
 JUPYTER_MARKER = "myst-jp"
+# What makes one inert without making it unmatchable: a media query that is never true.
+# `media` is not one of the four attributes React compares when it hydrates a <link>, so
+# the tag still matches the one the client renders. Section 5 argues the whole of this.
+JUPYTER_INERT = 'media="not all"'
+# Both of them, on every page, once `vendor_assets.py` has rewritten the second one's URL
+# -- which is why this step runs after it, and why the postcondition insists on two.
+JUPYTER_CSS_PER_PAGE = 2
 JUPYTER_CSS = re.compile(
     r'<link\b[^>]*href="[^"]*(?:thebe-core[^"]*\.css|jupyter-matplotlib/mpl_widget\.css)"'
     r"[^>]*/?>",
@@ -902,15 +951,42 @@ def drop_keywords(doc: str) -> tuple[str, int]:
     return EMPTY_KEYWORDS.subn("", doc)
 
 
-def drop_jupyter_css(doc: str) -> tuple[str, int]:
-    """Drop the jupyter stylesheets from a page with no jupyter output.
+def inert_jupyter_css(doc: str, where: str) -> tuple[str, int]:
+    """Make the jupyter stylesheets inert on a page with no jupyter output.
+
+    `media="not all"` on the tag the theme wrote, not the tag's removal: the client
+    renders both links on every page and hydration matches them by `rel`, `href`,
+    `crossorigin` and `title`, so a missing tag costs the whole document. Section 5.
 
     The page is left exactly as it is when there *is* output on it: this is 87 kB of
-    stylesheet that the eighteen notebook pages genuinely need.
+    stylesheet that the eighteen notebook pages genuinely need. A second run finds the
+    attribute already there and changes nothing. A tag that already carries some other
+    `media` is the theme having taken this over, which is a thing to stop for.
     """
     if JUPYTER_MARKER in doc:
         return doc, 0
-    return JUPYTER_CSS.subn("", doc)
+
+    n = 0
+
+    def fix(m: re.Match) -> str:
+        nonlocal n
+        tag = m.group(0)
+        if JUPYTER_INERT in tag:
+            return tag
+        other = re.search(r'\bmedia="([^"]*)"', tag, re.I)
+        if other:
+            sys.exit(
+                f'::error::{where}: a jupyter stylesheet already carries media='
+                f'"{other.group(1)}", so the theme now sets it itself. Read section 5 '
+                f"before overwriting it: this attribute is load-bearing for hydration, "
+                f"and two of us writing it is how that breaks quietly."
+            )
+        n += 1
+        # Inside the angle brackets, without whatever trailing slash was there, so the
+        # tag comes back out in the one form MyST writes.
+        return f"<{tag[1:-1].rstrip('/').rstrip()} {JUPYTER_INERT}/>"
+
+    return JUPYTER_CSS.sub(fix, doc), n
 
 
 def social_card(root: pathlib.Path, index_html: str) -> str:
@@ -1055,8 +1131,8 @@ def main() -> None:
         ratios.update(page_ratios)
         unsized += [(str(rel), src, why) for src, why in page_unsized]
 
-        doc, dropped_css = drop_jupyter_css(doc)
-        n_css += dropped_css
+        doc, inerted_css = inert_jupyter_css(doc, str(f))
+        n_css += inerted_css
 
         doc, dropped_keywords = drop_keywords(doc)
         n_keywords += dropped_keywords
@@ -1109,8 +1185,27 @@ def main() -> None:
             r'"(?:project|config)":\{[^{}]*"title":"' + re.escape(name), doc
         ):
             sys.exit(f"::error::{f} would get its title suffix back on hydration")
-        if JUPYTER_MARKER not in doc and JUPYTER_CSS.search(doc):
-            sys.exit(f"::error::{f} has no jupyter output but still links a jupyter stylesheet")
+        # Present *and* inert, which is the opposite of what this asserted before
+        # 2026-10-18. A missing tag is the failure now: see section 5. Both counts are
+        # checked, because a page carrying one of the two means `vendor_assets.py` has
+        # not run yet -- JUPYTER_CSS only matches the ipympl URL after it is rewritten --
+        # and this step would then be inerting half of what it reports.
+        jupyter_tags = JUPYTER_CSS.findall(doc)
+        if len(jupyter_tags) != JUPYTER_CSS_PER_PAGE:
+            sys.exit(
+                f"::error::{f} links {len(jupyter_tags)} jupyter stylesheets, expected "
+                f"{JUPYTER_CSS_PER_PAGE}. Either this ran before vendor_assets.py, or the "
+                f"theme's links() changed and section 5 needs re-reading."
+            )
+        if JUPYTER_MARKER not in doc:
+            for tag in jupyter_tags:
+                if JUPYTER_INERT not in tag:
+                    sys.exit(
+                        f"::error::{f} has no jupyter output but its jupyter stylesheet is "
+                        f"not inert: {tag}. It must stay in the document and carry "
+                        f"{JUPYTER_INERT} -- removing it costs the whole page on hydration "
+                        f"(section 5, SEO-NOTES.md §20)."
+                    )
         if EMPTY_KEYWORDS.search(doc):
             sys.exit(f"::error::{f} still carries an empty keywords meta")
         # Every figure, against the file on disk rather than against what this run
@@ -1193,7 +1288,7 @@ def main() -> None:
         f"{len(sizes)} figures sized, {len(ratios)} given the ratio alone "
         f"({len(unsized)} not measurable), "
         f"{n_lazy} figures lazy-loaded, {n_preload} image preloads dropped, "
-        f"{n_css} jupyter stylesheets dropped, {n_keywords} empty keywords metas dropped, "
+        f"{n_css} jupyter stylesheets made inert, {n_keywords} empty keywords metas dropped, "
         f"{n_cards} og:image replaced with {card}"
     )
 

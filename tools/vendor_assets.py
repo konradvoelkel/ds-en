@@ -79,6 +79,28 @@ repository is a tripwire for whoever next updates it: the stylesheet would not f
 loudly, it would simply be blocked, and the site would lose its mathematics typesetting
 with nothing in the build log. Same-origin assets here are covered by the repository, not
 by SRI.
+
+**From both places, which is the correction of 2026-10-18.** This section described the
+decision and the code applied it to the `.html` only, leaving
+`integrity:"sha384-…",crossOrigin:"anonymous"` in the props object in
+`build/_shared/chunk-*.js` beside the href this tool had just rewritten. That is not a
+cosmetic inconsistency, because of the very thing the section above this one is about: the
+bundle is what the browser's `<link>` ends up being compared against. React 19 hydrates a
+`<link rel="stylesheet">` carrying no `precedence` as an ordinary element and matches it on
+**exactly four attributes -- `rel`, `href`, `crossorigin` and `title`**. `crossorigin`
+absent in the document against `"anonymous"` in the props is a mismatch; `<head>` is a
+host singleton, so React scans the rest of it for a `<link>` that does match, finds none,
+and throws **React error #418**. Its answer to that is not to patch the DOM but to discard
+the whole server-rendered document and render it again -- which cost this site every
+markup-level fix in `SEO-NOTES.md` for a week, on all thirty pages, while looking exactly
+like a bug in the theme. The diagnosis is §20 of that file.
+
+So the two keys are stripped from the HTML tag and from the props object, and the
+postcondition is the artifact: after this runs, no `.html` tag and no `.js` props object
+that names a vendored file may carry either key. `integrity` alone would not break
+hydration -- React does not compare it -- but it is removed for the reason in the
+paragraph above, and a guard that only covered the attribute that happens to break today
+would be the same mistake in a smaller size.
 """
 
 from __future__ import annotations
@@ -112,6 +134,20 @@ ASSETS = [
 VENDOR_SRC = pathlib.Path("_site/vendor")
 
 
+# The same two keys as they appear in the client bundle's props object, where they are
+# property names React reads rather than identifiers a minifier may rename.
+JS_SRI = re.compile(r'\b(?:integrity|crossOrigin):"[^"]*"')
+
+# And in the markup. Spelled lower-case there, because HTML attributes are.
+HTML_SRI = re.compile(r'\s+(?:integrity|crossorigin)="[^"]*"', re.I)
+
+# How long a props object holding one of these links is allowed to be before this stops
+# believing it has found one. The real one is about 150 characters; the bound exists so
+# that an href appearing somewhere unexpected cannot make the scan below treat a whole
+# function body as an object literal and strip two keys out of the middle of it.
+JS_OBJECT_MAX = 400
+
+
 def strip_integrity(doc: str, local: str) -> str:
     """Drop integrity= and crossorigin= from a <link> now pointing at a local file."""
 
@@ -119,11 +155,78 @@ def strip_integrity(doc: str, local: str) -> str:
         tag = m.group(0)
         if local not in tag:
             return tag
-        tag = re.sub(r'\s+integrity="[^"]*"', "", tag)
-        tag = re.sub(r'\s+crossorigin="[^"]*"', "", tag)
-        return tag
+        return HTML_SRI.sub("", tag)
 
     return re.sub(r"<link\b[^>]*>", fix, doc)
+
+
+def strip_integrity_js(doc: str, href: str) -> str:
+    """Drop integrity: and crossOrigin: from each props object that now names `href`.
+
+    Scans outwards from the href to the braces of the object literal holding it. These
+    are minified props objects whose values are string literals, so there is nothing to
+    balance and the nearest `{` behind and `}` ahead are the right ones; an occurrence
+    that does not have that shape is left exactly as it is rather than guessed at, and
+    the postcondition in `main` is what reports it. Separators are normalised afterwards
+    instead of being matched, so that a key in any position -- first, last or between two
+    others -- leaves a well-formed object.
+    """
+    needle = f'href:"{href}"'
+    out: list[str] = []
+    pos = 0
+    while True:
+        i = doc.find(needle, pos)
+        if i < 0:
+            out.append(doc[pos:])
+            return "".join(out)
+        open_b = doc.rfind("{", pos, i)
+        close_b = doc.find("}", i)
+        if (
+            open_b < 0
+            or close_b < 0
+            or "{" in doc[i:close_b]
+            or close_b + 1 - open_b > JS_OBJECT_MAX
+        ):
+            out.append(doc[pos : i + len(needle)])
+            pos = i + len(needle)
+            continue
+        obj, n = JS_SRI.subn("", doc[open_b : close_b + 1])
+        if n:
+            obj = re.sub(r",{2,}", ",", obj).replace("{,", "{").replace(",}", "}")
+        out.append(doc[pos:open_b])
+        out.append(obj)
+        pos = close_b + 1
+
+
+def sri_survivors(doc: str, suffix: str, local: str, href: str) -> list[str]:
+    """Every place in one file that still pins a vendored stylesheet. The postcondition.
+
+    Read back from the written file rather than counted while editing, so that a second
+    run is a legitimate no-op that still has to pass, and so that a shape this tool's
+    patterns do not reach is reported rather than silently left behind.
+    """
+    if suffix == ".html":
+        return [
+            t
+            for t in re.findall(r"<link\b[^>]*>", doc)
+            if local in t and HTML_SRI.search(t)
+        ]
+    found = []
+    needle = f'href:"{href}"'
+    i = doc.find(needle)
+    while i >= 0:
+        close_b = doc.find("}", i)
+        open_b = doc.rfind("{", 0, i)
+        # Same bound as the rewrite, so that this looks at the same text the rewrite
+        # looked at: a window the size of a props object, around the href.
+        if 0 <= open_b and 0 <= close_b and close_b + 1 - open_b <= JS_OBJECT_MAX:
+            obj = doc[open_b : close_b + 1]
+        else:
+            obj = doc[i : i + JS_OBJECT_MAX]
+        if JS_SRI.search(obj):
+            found.append(obj[:JS_OBJECT_MAX])
+        i = doc.find(needle, i + len(needle))
+    return found
 
 
 def main() -> None:
@@ -165,9 +268,13 @@ def main() -> None:
             if f"{args.base}/{local}" in doc:
                 referenced[local] = True
         if doc != before:
-            if f.suffix == ".html":
-                for _, _, local in ASSETS:
+            # Both halves, every run: the markup's attributes and the bundle's props.
+            # They have to agree, or React discards the document -- see the docstring.
+            for _, _, local in ASSETS:
+                if f.suffix == ".html":
                     doc = strip_integrity(doc, local)
+                else:
+                    doc = strip_integrity_js(doc, f"{args.base}/{local}")
             f.write_text(doc, encoding="utf-8")
 
     # Postconditions, not a tally of this run's edits: running twice is a legitimate
@@ -187,10 +294,35 @@ def main() -> None:
         if not (root / local).is_file():
             sys.exit(f"::error::rewrote references to /{local}, which is not in the artifact")
 
+    # No vendored stylesheet may still be pinned, in the markup or in the bundle. Read
+    # back off disk over the whole artifact, because the failure this catches is not a
+    # missed edit but a *disagreement* between two files -- which no count of edits sees.
+    pinned = 0
+    for f in files:
+        try:
+            doc = f.read_text(encoding="utf-8")
+        except UnicodeDecodeError:
+            continue
+        for _, _, local in ASSETS:
+            for snippet in sri_survivors(doc, f.suffix, local, f"{args.base}/{local}"):
+                print(f"::error::{f} still pins /{local}: {snippet}")
+                pinned += 1
+    if pinned:
+        sys.exit(
+            f"::error::{pinned} vendored stylesheet reference(s) still carry integrity or "
+            "crossOrigin. If this is the markup, the <link> pattern in strip_integrity no "
+            "longer matches the theme's tag. If it is a bundle, the props object has a "
+            "shape strip_integrity_js does not reach -- a nested object, or the two keys "
+            "spelled some other way by a newer esbuild. Fix it rather than relaxing this: "
+            "an HTML tag and a props object that disagree on crossorigin make React "
+            "discard the whole server-rendered document (SEO-NOTES.md §20)."
+        )
+
     breakdown = ", ".join(f"{local.split('/')[1]}={counts[local]}" for _, _, local in ASSETS)
     print(
         f"vendor_assets: {vendored} files copied to /vendor, {sum(counts.values())} CDN "
-        f"references rewritten across {len(files)} html/js files ({breakdown})"
+        f"references rewritten across {len(files)} html/js files ({breakdown}); "
+        f"0 still pinned by integrity or crossOrigin"
     )
 
 
