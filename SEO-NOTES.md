@@ -1224,6 +1224,18 @@ Two things about the shape of it:
   check exists to catch. So it refuses to judge at all if the mirror's newest commit is
   more than two days old, and says which pipeline to look at.
 
+**It works.** The mirror job landed in ds-skript on 2026-10-17 and the check ran through
+for the first time in its existence: mirror HEAD 0 days old, `772d0017 → 1ed35d57`,
+0 stale regions. Verified from here rather than taken on report — the mirror's HEAD equals
+ds-skript's, 210 commits on both sides, and the mirror carries exactly `refs/heads/main`.
+
+Two things the upstream agent got right that this side's skeleton had wrong, both worth
+keeping in mind the next time a mirror is written: the token belongs in a credential store
+rather than the push URL, because masking only catches exact matches and a remote URL
+shows up in git errors and traces; and the dispatch that triggers this check must declare
+`needs` on the mirror job, or the two deploy jobs race and the check judges the state
+*before* the push — reporting "up to date" exactly when something has moved.
+
 The seeding was deliberately not done from here. Mirroring means taking source that is
 currently obtainable only with Konrad's credentials and publishing it anonymously; the
 sandbox refused the push, and it was right to. Konrad authorised the mirror, and the first

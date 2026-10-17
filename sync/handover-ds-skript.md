@@ -85,6 +85,28 @@ Four things to get right, each of which has a way of going wrong quietly:
   CC BY-SA, and `todo/`, `transcripts` and `slides25` are gitignored and so are not in git
   at all.
 
+### Four traps, three of them found by building it
+
+The job exists since 2026-10-17 (`55a5d37`, `c85281c`, `1ed35d5`) and the check has run
+through for the first time. What the skeleton above got wrong, recorded because the
+pattern will be wanted again:
+
+* **`alpine/git` sets `git` as its ENTRYPOINT.** The runner appends its shell invocation,
+  so the first run died after eleven seconds with `git: 'sh' is not a git command`. It
+  needs `image: {name: alpine/git:latest, entrypoint: [""]}`.
+* **`--mirror` sent GitLab's internal `refs/pipelines/<id>`**, one per run, which would
+  have accumulated in the mirror without limit. A local dry run did not show it because it
+  cloned over SSH, where only `refs/heads/main` is visible; `CI_REPOSITORY_URL` exposes
+  more. Replaced by explicit refspecs `+refs/heads/*:refs/heads/*` and
+  `+refs/tags/*:refs/tags/*` with `--prune`.
+* **The token belongs in a credential store, not in the push URL.** Masking catches exact
+  matches only, and a remote URL surfaces in git errors and traces.
+* **`notify-ds-en` needs `needs: ["mirror-to-github"]`.** Without it both deploy jobs start
+  together, ds-en may clone the mirror before the push lands, and the check then judges the
+  previous state and reports "up to date" while something has in fact moved — the silent
+  success this whole arrangement exists to prevent. If the mirror fails, the dispatch is
+  skipped.
+
 ### How to know it worked
 
 Not "the job went green". From ds-en's side the test is:
