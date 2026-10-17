@@ -369,6 +369,44 @@ CSS_BEGIN = "/* head_meta.py: intrinsic figure dimensions -- begin, generated */
 CSS_END = "/* head_meta.py: intrinsic figure dimensions -- end */"
 CSS_BLOCK = re.compile(re.escape(CSS_BEGIN) + r".*?" + re.escape(CSS_END), re.S)
 
+# The outline reservation. Section 9 argues the whole of this; the numbers are measured,
+# at 375x812 on the built site, and recorded in the audit's nav-reservation-measurements.
+#
+# The theme ships the in-article outline's container with an empty <nav> and fills it
+# after mount, on every build, healthy hydration or not. On a throttled connection first
+# paint lands before the fill, and everything below the container drops by its height:
+# 0.153 on the landing page and 0.278 on a chapter, which is the whole of this site's CLS.
+OUTLINE_BEGIN = "/* head_meta.py: outline reservation -- begin, generated */"
+OUTLINE_END = "/* head_meta.py: outline reservation -- end */"
+OUTLINE_BLOCK = re.compile(re.escape(OUTLINE_BEGIN) + r".*?" + re.escape(OUTLINE_END), re.S)
+# The container, as served: the only <div> in <main> whose sole child is an empty <nav>.
+# Matched on that shape rather than on `class="block my-10 ..."`, which is a pile of
+# utilities that a theme upgrade may reshuffle without telling anyone.
+OUTLINE_CONTAINER = re.compile(r'(<div\b[^>]*?)(\sstyle="([^"]*)")?(>\s*<nav></nav>\s*</div>)', re.I)
+# What the class is for: the stylesheet needs something to select, and the value itself
+# travels as a custom property because it differs per page and a stylesheet is one file.
+OUTLINE_CLASS = "outline-reserve"
+OUTLINE_VAR = "--outline-reserve"
+# One entry is 32px tall; the header, the nav's padding and the container's own box are
+# 84px between them. Measured exact on five pages that have no wrapped entry: 2 -> 148,
+# 8 -> 340, 12 -> 468, 13 -> 500, 15 -> 564.
+OUTLINE_ROW_PX = 32
+OUTLINE_CHROME_PX = 84
+# Under two entries the theme renders no outline at all -- continuous-distributions has
+# one h2 and a container 0px tall -- so reserving anything there would be dead space.
+OUTLINE_MIN_ENTRIES = 2
+# The nav's own `max-height: calc(100vh - 100px)`, plus the container's 28px, is the
+# ceiling the content can ever reach. Expressed in the rule rather than computed here,
+# because it depends on the viewport and this runs at build time.
+OUTLINE_VIEWPORT_CAP = "calc(100vh - 72px)"
+# `lg` is 1024px in this theme (17 rules at that breakpoint in the built CSS). At and
+# above it the container is `lg:h-0` and sits in the margin, where it displaces nothing
+# and a min-height would break the layout rather than protect it.
+OUTLINE_BREAKPOINT = "1023.98px"
+# Which headings become entries: h2, h3 and h4. Confirmed on expectation-maximization,
+# 7 + 13 + 4, against 24 entries measured in the browser.
+OUTLINE_HEADINGS = re.compile(r"<h[234]\b", re.I)
+
 # MyST writes this on every page whether or not a page has keywords. See section 8.
 EMPTY_KEYWORDS = re.compile(r'<meta\b[^>]*\bname="keywords"[^>]*\bcontent=""[^>]*/?>', re.I)
 
@@ -941,6 +979,103 @@ def read_figure_css(
     return sized, ratios
 
 
+def outline_entries(doc: str) -> int:
+    """How many entries the client will put in the outline: the h2, h3 and h4 in <main>.
+
+    Counted on the <main> slice for the same reason section 4 gives: the rest of the
+    document is the hydration payload, where the same headings appear again as JSON.
+    """
+    m = re.search(r"<main\b[^>]*>.*?</main>", doc, re.S | re.I)
+    return len(OUTLINE_HEADINGS.findall(m.group(0))) if m else 0
+
+
+def reserve_outline(doc: str, entries: int) -> tuple[str, int]:
+    """Reserve the height the outline will take, on the container that holds it.
+
+    Returns the document and the reserved height in px, 0 when nothing was reserved.
+
+    The height goes in as a **custom property on the element**, not as a `min-height`:
+    a custom property has no effect of its own, so the one thing this cannot do is break
+    a layout. The stylesheet decides what to do with it, under a media query this cannot
+    express inline, and its `var(..., 0px)` fallback means a page that somehow misses the
+    property reserves nothing and behaves exactly as the site did before this existed.
+
+    Reserving is safe in one direction only, which is why an approximation is allowed
+    here at all. `min-height` is a floor: reserve too much and the box keeps its floor,
+    costing dead space and shifting nothing; reserve too little and the content outgrows
+    the box, which shifts. The error that matters is one-sided, and the formula's error
+    is bounded -- it under-reserves 24px per entry whose text wraps to a second line.
+    Three of the ten pages measured have a wrapped entry; on one of them the viewport cap
+    below swallows the difference, so two end up short, the worse by 48px of 812. That
+    leaves a residual CLS near 0.02 where there was 0.15 and 0.28.
+
+    **Why the exact number is not computable here.** Whether an entry wraps depends on
+    the rendered width of proportional text at a given viewport width. The build has the
+    heading text but no font metrics and no layout engine, so the only exact route is to
+    render all thirty pages in a headless browser -- a browser dependency in the build
+    and in CI, for 24px. Measured and rejected; the audit records both sides.
+    """
+    if entries < OUTLINE_MIN_ENTRIES:
+        return doc, 0
+    reserve = OUTLINE_ROW_PX * entries + OUTLINE_CHROME_PX
+    hit = OUTLINE_CONTAINER.search(doc)
+    if not hit:
+        sys.exit(
+            "::error::no outline container found. It is the one <div> in <main> whose "
+            "only child is an empty <nav>, and the reservation has nowhere to go without "
+            "it. If the theme now fills the nav server-side, this whole section is "
+            "obsolete and should go, not be made to match again."
+        )
+    open_tag, _, style, tail = hit.groups()
+    if OUTLINE_VAR in (style or ""):
+        return doc, reserve  # already run over this page
+    declaration = f"{OUTLINE_VAR}:{reserve}px"
+    merged = f"{style.rstrip(';')};{declaration}" if style else declaration
+    classed = re.sub(r'(\sclass=")', rf'\1{OUTLINE_CLASS} ', open_tag, count=1)
+    if classed == open_tag:
+        classed = f'{open_tag} class="{OUTLINE_CLASS}"'
+    return doc[: hit.start()] + f'{classed} style="{merged}"{tail}' + doc[hit.end() :], reserve
+
+
+def outline_css() -> str:
+    """The one rule that turns the per-page custom property into reserved space.
+
+    Not in a cascade layer, unlike the figure block: that one is deliberately beatable
+    by the theme, because the theme has its own opinions about image widths. Nothing in
+    the theme sets a min-height on this container, so there is nothing to defer to, and a
+    layer would only make the reservation lose to the next utility that happens to match.
+
+    `min()` against the viewport because the nav caps itself at `calc(100vh - 100px)` and
+    then scrolls: past that the content stops growing, and a floor above it would be dead
+    space on short viewports rather than protection on tall ones.
+    """
+    return "\n".join(
+        [
+            OUTLINE_BEGIN,
+            "/* Reserves the space the client-filled outline will occupy, so that filling "
+            "it moves nothing. Per page, via the custom property the markup carries. "
+            "Do not edit: tools/head_meta.py section 9 writes this. */",
+            f"@media (max-width:{OUTLINE_BREAKPOINT}){{",
+            f"main .{OUTLINE_CLASS}{{min-height:min(var({OUTLINE_VAR},0px),"
+            f"{OUTLINE_VIEWPORT_CAP})}}",
+            "}",
+            OUTLINE_END,
+        ]
+    )
+
+
+def write_outline_css(root: pathlib.Path) -> None:
+    """Into the same stylesheet, for the same reason: it is the one the theme reloads."""
+    stylesheet = root / "myst-theme.css"
+    css = stylesheet.read_text(encoding="utf-8")
+    block = outline_css()
+    if OUTLINE_BLOCK.search(css):
+        css = OUTLINE_BLOCK.sub(lambda _: block, css, count=1)
+    else:
+        css = css.rstrip("\n") + "\n\n" + block + "\n"
+    stylesheet.write_text(css, encoding="utf-8")
+
+
 def drop_keywords(doc: str) -> tuple[str, int]:
     """Drop `<meta name="keywords" content="">`, which all thirty pages carry.
 
@@ -1093,8 +1228,9 @@ def main() -> None:
 
     pages = sorted(root.rglob("index.html"))
     card = social_card(root, index.read_text(encoding="utf-8"))
-    trimmed = n_lazy = n_preload = n_tags = n_css = n_cards = n_keywords = 0
+    trimmed = n_lazy = n_preload = n_tags = n_css = n_cards = n_keywords = n_outline = 0
     chapters = 0
+    outlines: dict[str, tuple[int, int]] = {}
     sizes: dict[str, tuple[int, int]] = {}
     ratios: dict[str, tuple[int, int]] = {}
     unsized: list[tuple[str, str, str]] = []
@@ -1134,6 +1270,12 @@ def main() -> None:
         doc, inerted_css = inert_jupyter_css(doc, str(f))
         n_css += inerted_css
 
+        entries = outline_entries(doc)
+        doc, reserved = reserve_outline(doc, entries)
+        outlines[str(rel)] = (entries, reserved)
+        if reserved:
+            n_outline += 1
+
         doc, dropped_keywords = drop_keywords(doc)
         n_keywords += dropped_keywords
 
@@ -1150,6 +1292,7 @@ def main() -> None:
     # figure appears on more than one page, and a rule has to exist for every page that
     # shows it. See section 7.
     write_figure_css(root, sizes, ratios)
+    write_outline_css(root)
 
     # Postconditions, not a tally of this run's edits: a second run is a legitimate
     # no-op, while markup that has moved under us must still fail.
@@ -1208,6 +1351,29 @@ def main() -> None:
                     )
         if EMPTY_KEYWORDS.search(doc):
             sys.exit(f"::error::{f} still carries an empty keywords meta")
+        # The outline reservation, recomputed from the page rather than from what the
+        # loop above recorded, so a page the loop skipped still fails here. What is
+        # asserted is the *input*: the entry count the markup now states, against the
+        # headings that are in it. The rendered pixel height cannot be asserted at build
+        # time, and section 9 says why -- so this guards the thing that would actually
+        # drift, which is a container that stopped matching or a page that grew headings
+        # without the property following.
+        entries = outline_entries(doc)
+        want = OUTLINE_ROW_PX * entries + OUTLINE_CHROME_PX if entries >= OUTLINE_MIN_ENTRIES else 0
+        stated = re.search(re.escape(OUTLINE_VAR) + r":(\d+)px", doc)
+        if want and not stated:
+            sys.exit(
+                f"::error::{f} has {entries} outline entries but reserves nothing. "
+                f"Either the container stopped matching OUTLINE_CONTAINER, or this ran "
+                f"before the page was written."
+            )
+        if stated and int(stated.group(1)) != want:
+            sys.exit(
+                f"::error::{f} reserves {stated.group(1)}px for {entries} outline "
+                f"entries, expected {want}px"
+            )
+        if want and f'class="{OUTLINE_CLASS} ' not in doc and f'class="{OUTLINE_CLASS}"' not in doc:
+            sys.exit(f"::error::{f} carries the reservation but not .{OUTLINE_CLASS} to select it")
         # Every figure, against the file on disk rather than against what this run
         # computed: the attributes and the stylesheet both have to say what the image
         # actually is, and on a second run neither of them is written at all.
@@ -1282,6 +1448,8 @@ def main() -> None:
     for rel, src, why in unsized:
         print(f"  unsized: /{rel} {src.rsplit('/', 1)[-1]} -- {why}")
 
+    heights = sorted(r for _, r in outlines.values() if r)
+    span = f" ({heights[0]}-{heights[-1]}px)" if heights else ""
     print(
         f"head_meta: {len(pages)} pages, {trimmed}/{chapters} titles trimmed "
         f'(suffix "{suffix.strip()}"), {n_tags} card tags added, '
@@ -1289,7 +1457,8 @@ def main() -> None:
         f"({len(unsized)} not measurable), "
         f"{n_lazy} figures lazy-loaded, {n_preload} image preloads dropped, "
         f"{n_css} jupyter stylesheets made inert, {n_keywords} empty keywords metas dropped, "
-        f"{n_cards} og:image replaced with {card}"
+        f"{n_cards} og:image replaced with {card}, "
+        f"{n_outline} outlines reserved{span}"
     )
 
 
