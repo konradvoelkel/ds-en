@@ -276,6 +276,30 @@ CARD_MARKERS = (
 )
 
 
+def drop_client_bundle(doc: str) -> tuple[str, bool]:
+    """Remove the module script that boots the Remix client. Deliberately.
+
+    This edition has in fact been shipping without a client since the truncation bug
+    above: the module script fell off the end of every page and nobody noticed, because
+    a static copy of the book is all this site needs. Fixing the truncation would have
+    handed hydration back -- and with it thebe, whose runtime fetches Pyodide, MathJax
+    and require.js from CDNs on a book whose own data-protection chapter argues against
+    exactly that. Konrad's call on 2026-10-17: keep thebe off.
+
+    So the removal is now explicit rather than accidental, and the document stays
+    well-formed either way. What goes is the client router, thebe and in-browser code
+    execution; what stays is every page as served, which is what readers have had all
+    along.
+
+    Note for later: `window.__remixContext` is now dead weight -- 575 kB on
+    covariance.html, 59% of the page. Nothing reads it once this script is gone.
+    """
+    m = re.search(r'<script type="module"[^>]*>.*?</script>', doc, re.S)
+    if not m:
+        return doc, False
+    return doc[: m.start()] + doc[m.end() :], True
+
+
 def lazy_load_figures(doc: str) -> tuple[str, set[str]]:
     """Lazy-load every <img> inside <main> but the first.
 
@@ -346,7 +370,7 @@ def main() -> None:
     suffix = f" - {name}"
 
     pages = sorted(root.rglob("index.html"))
-    trimmed = n_lazy = n_preload = n_tags = 0
+    trimmed = n_lazy = n_preload = n_tags = n_bundle = 0
     chapters = 0
 
     for f in pages:
@@ -373,6 +397,10 @@ def main() -> None:
             doc = doc.replace("</head>", "".join(missing) + "</head>", 1)
             n_tags += len(missing)
 
+        doc, dropped_bundle = drop_client_bundle(doc)
+        if dropped_bundle:
+            n_bundle += 1
+
         doc, lazied = lazy_load_figures(doc)
         doc, dropped = drop_image_preloads(doc, lazied)
         n_lazy += len(lazied)
@@ -390,6 +418,8 @@ def main() -> None:
         # that boots the client. Browsers paper over unclosed tags, so nothing looked
         # wrong -- it surfaced only when the two editions were compared and this one
         # turned out to load half as many stylesheets, because it never hydrated at all.
+        if '<script type="module"' in doc:
+            sys.exit(f"::error::{f} still boots the client bundle; thebe is meant to stay off")
         if not doc.rstrip().endswith("</html>"):
             sys.exit(f"::error::{f} does not end with </html> -- truncated?")
         for tag in ("</body>", "</html>"):
@@ -417,7 +447,8 @@ def main() -> None:
     print(
         f"head_meta: {len(pages)} pages, {trimmed}/{chapters} titles trimmed "
         f'(suffix "{suffix.strip()}"), {n_tags} card tags added, '
-        f"{n_lazy} figures lazy-loaded, {n_preload} image preloads dropped"
+        f"{n_lazy} figures lazy-loaded, {n_preload} image preloads dropped, "
+        f"{n_bundle} client bundles removed"
     )
 
 
