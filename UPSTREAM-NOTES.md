@@ -243,6 +243,35 @@ anything else.
 
   *Fixed in this edition* in `tools/head_meta.py`.
 
+* **The theme loads thebe on every page, including pages with nothing to compute.**
+  `thebe-core.min.js` is 359 kB on the wire and 1,278 kB decoded, and both editions fetch
+  it on every page. Checked against the live German site on 2026-10-17, not inferred:
+  `ds-skript/erwartungswert/` has no executed cell on it, and loads
+  `/ds-skript/thebe-core.min.js` and `thebe-core-VKVHG5VY.css` anyway — the same hash as
+  this edition's, i.e. the same bundle. It is not in the markup: `myst-theme`'s
+  execute-scope provider renders a component whose only effect is
+
+      useEffect(() => { core || loading || load() }, [core, load, loading])
+
+  and `load()` appends the script to `document.head`. The gate it is missing is one the
+  theme already computes for itself three lines earlier —
+  `state.pages[slug].computable`, i.e. `computables.length > 0 || kind === Notebook`.
+  Twelve of the thirty pages here are Markdown chapters where it is false, and the
+  landing page, the commonest search entry point, is one of them.
+
+  The theme's root `links()` has the same shape of problem one size down: it declares
+  `thebe-core.css` (87 kB) and `mpl_widget.css` unconditionally, and because Remix's
+  `links()` cannot see loader data, a page that needs neither cannot say so. Removing the
+  tags from the built HTML only defers them — the client re-adds both after hydration.
+
+  *Worked around in this edition* (2026-10-17): `tools/thebe_gate.py` patches that one
+  expression in the built client chunk, and `tools/head_meta.py` drops the two
+  stylesheets from pages with no jupyter output, which at least takes them off the
+  critical path. Both are post-processing on a vendored bundle, which is the wrong place
+  for it; the right place is a `start` prop or a `canCompute` check in `myst-theme`, and
+  it would be a two-line change there. **This is the best candidate yet for an upstream
+  issue**, since it costs every mystmd book-theme site on the web the same 359 kB.
+
 * **No `og:url` and no `og:site_name`** on either edition. MyST writes `og:title`,
   `og:description` and `og:image` and stops. Without `og:url` a platform has no canonical
   identity for a shared link, so two spellings of one URL become two cards with two

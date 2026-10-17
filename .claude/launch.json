@@ -1,6 +1,7 @@
 {
   "version": "0.0.1",
   "configurations": [
-    { "name": "book", "runtimeExecutable": "myst", "runtimeArgs": ["start"], "port": 3000 }
+    { "name": "book", "runtimeExecutable": "myst", "runtimeArgs": ["start"], "port": 3000 },
+    { "name": "built", "runtimeExecutable": "python3", "runtimeArgs": ["-m", "http.server", "4173", "--directory", "_build/html"], "port": 4173 }
   ]
 }

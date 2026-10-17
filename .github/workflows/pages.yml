@@ -226,17 +226,14 @@ jobs:
           # the full history, which is what fetch-depth: 0 on the checkout above is for;
           # with a shallow clone the script aborts rather than guess.
           #
-          # Must run before inject_jsonld.py, which reads the date back out of the page
-          # instead of computing it a second time. Ported from ds-skript e229a9d; the
+          # Must run before head_meta.py and inject_jsonld.py, both of which read the
+          # date back out of the page instead of computing it a second time, and before
+          # the first of them for a reason of its own: inject_jsonld.py reports a missing
+          # article:modified_time as "did freshness.py run first?". Ported from
+          # ds-skript e229a9d; the
           # date here is this edition's own commit, which is a decision and is argued in
           # the tool's docstring.
           python3 tools/freshness.py _build/html
-
-          # Structured data for the work as a whole, on the landing page only. MyST emits
-          # none, and it cannot live in landing-page.md: a {raw} html directive there
-          # would be an extra block and break alignment with the German original.
-          # python3 is preinstalled on ubuntu-latest.
-          python3 tools/inject_jsonld.py "$SITE" _build/html/index.html
 
           # GitHub Pages reads the custom domain from this file. Derived from SITE_ORIGIN
           # so it cannot drift from the origin everything else was built with.
@@ -295,6 +292,34 @@ jobs:
           # og:url is given the same URL the canonical has.
           python3 tools/head_meta.py "$SITE" _build/html --base "$BASE_URL" --lang en
 
+          # Structured data: the book on the landing page, and a Chapter +
+          # LearningResource with a BreadcrumbList on each of the 29 chapter pages, every
+          # one of them pointing at the single book node (.../#work) and the single author
+          # node (.../#author). MyST emits none, and it cannot live in landing-page.md: a
+          # {raw} html directive there would be an extra block and break alignment with
+          # the German original. python3 is preinstalled on ubuntu-latest.
+          #
+          # After head_meta.py, where it used to run before it: a chapter's name and
+          # description are read out of the og:title and og:description that step leaves
+          # behind -- the title with the project suffix already trimmed off, which is the
+          # form that was written to stand alone -- and the landing page's card out of the
+          # og:image that step has vetted. Running it first would have put the suffix into
+          # all 29 names and could have named a card head_meta.py then replaced. It
+          # refuses to run if it finds either of those untouched, so the order cannot
+          # silently drift back.
+          python3 tools/inject_jsonld.py "$SITE" _build/html
+
+          # thebe-core.min.js -- 359 kB on the wire, 1278 kB decoded -- is loaded by the
+          # theme on every page, including the twelve Markdown chapters that have no
+          # executed cell on them and the landing page. It is not a tag in the HTML (that
+          # is only its stylesheet, which head_meta.py drops on those same twelve pages):
+          # the theme appends the script at runtime from an effect with no gate on whether
+          # the page has anything computable. This gates it on MyST's own `computable`
+          # flag, in the one client chunk that contains that effect, and fails the build if
+          # the minified shape it is anchored on has moved -- which is the way round it has
+          # to fail, because nothing else here would notice the 359 kB coming back.
+          python3 tools/thebe_gate.py _build/html
+
       - name: Refuse to publish a site that would load nothing, or that crawlers cannot use
         run: |
           SITE="$SITE_ORIGIN$BASE_URL"
@@ -329,14 +354,19 @@ jobs:
           fi
 
           # The structured data must parse and must name this build's own origin --
-          # stale structured data after a move is worse than none.
+          # stale structured data after a move is worse than none. Checked here as well
+          # as in inject_jsonld.py because this is the gate on the artifact that is about
+          # to be published, whatever produced it; the tool's own postconditions are the
+          # gate on the tool.
           python3 - "$SITE" <<'EOF'
-          import json, re, sys
-          html = open("_build/html/index.html", encoding="utf-8").read()
-          blocks = re.findall(r'<script type="application/ld\+json">(.*?)</script>', html, re.S)
-          if len(blocks) != 1:
-              sys.exit(f"::error::expected one JSON-LD block on the landing page, found {len(blocks)}")
-          data = json.loads(blocks[0])
+          import glob, json, pathlib, re, sys
+          BLOCK = re.compile(r'<script type="application/ld\+json">(.*?)</script>', re.S)
+          def blocks(path):
+              found = BLOCK.findall(pathlib.Path(path).read_text(encoding="utf-8"))
+              if len(found) != 1:
+                  sys.exit(f"::error::expected one JSON-LD block in {path}, found {len(found)}")
+              return json.loads(found[0])
+          data = blocks("_build/html/index.html")
           want = sys.argv[1].rstrip("/") + "/"
           if data.get("url") != want:
               sys.exit(f"::error::JSON-LD url is {data.get('url')}, expected {want}")
@@ -345,7 +375,24 @@ jobs:
           if not str(data.get("dateModified", "")).startswith("20"):
               sys.exit(f"::error::JSON-LD dateModified is {data.get('dateModified')!r}; "
                        "freshness.py must run before inject_jsonld.py")
-          print(f"JSON-LD ok: {data['@type']} at {data['url']}, as of {data['dateModified'][:10]}")
+          # One book, and every chapter a part of that one book: the whole point of the
+          # per-chapter blocks is that they resolve to this node and not to 29 more books.
+          work, author = data["@id"], data["author"]["@id"]
+          chapters = 0
+          for page in sorted(glob.glob("_build/html/*/index.html")):
+              graph = blocks(page).get("@graph", [])
+              chapter = next((n for n in graph if "Chapter" in n.get("@type", [])), None)
+              if chapter is None:
+                  sys.exit(f"::error::{page} carries a JSON-LD block with no Chapter node")
+              if chapter["isPartOf"]["@id"] != work:
+                  sys.exit(f"::error::{page} is part of {chapter['isPartOf']['@id']}, not {work}")
+              if chapter["author"]["@id"] != author:
+                  sys.exit(f"::error::{page} credits {chapter['author']['@id']}, not {author}")
+              if not any(n.get("@type") == "BreadcrumbList" for n in graph):
+                  sys.exit(f"::error::{page} has no BreadcrumbList")
+              chapters += 1
+          print(f"JSON-LD ok: {data['@type']} at {data['url']}, as of "
+                f"{data['dateModified'][:10]}, with {chapters} chapters of {work} by {author}")
           EOF
 
           # A missing or stale CNAME silently drops the site back onto the github.io

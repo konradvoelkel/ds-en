@@ -1264,3 +1264,122 @@ The seeding was deliberately not done from here. Mirroring means taking source t
 currently obtainable only with Konrad's credentials and publishing it anonymously; the
 sandbox refused the push, and it was right to. Konrad authorised the mirror, and the first
 push comes from his CI job, under his token, which is where that decision belongs.
+
+## 17. Phase 1 of the audit of 2026-10-17, and the two things it got wrong
+
+`datascience.konradvoelkel.com-audit/` scored the site 79/100 and put three items in
+Phase 1: per-chapter structured data, stop shipping Thebe to pages with no code, and fix
+the per-page `og:image`. Its `BreadcrumbList` item from Phase 2 was folded in, since it
+is the same pass over the same file. All four are done. Two of them do not say what the
+audit said they would, and both are measurements rather than opinions.
+
+### Structured data: one book, 29 chapters, one author
+
+`tools/inject_jsonld.py` now walks the whole build instead of the landing page alone.
+Each chapter gets a `@graph` of two nodes: a `["Chapter","LearningResource"]` with its own
+`@id` of `.../<slug>/#chapter`, `isPartOf` the single book node `.../#work`, its
+`position` in the toc and `author` by reference; and a `BreadcrumbList`. The author object
+on the landing page gained `"@id": ".../#author"`, so the person is one node in the graph
+rather than thirty copies of a name with six `sameAs` links.
+
+The old docstring's objection — *"repeating it per chapter would assert 30 books"* — was
+right, and the audit's reply is the one that was missing: a chapter is not a book, it is a
+`Chapter` of one. 1 of 30 pages carried structured data; now 30 do.
+
+**Nothing in the node is computed twice.** The name and description are read back out of
+`og:title`/`og:description`, the date out of `article:modified_time`, the licence and
+language out of the book node. That is why the tool moved **after** `head_meta.py` in
+`pages.yml`, where it used to run before it: the title it reads is the one with the
+project suffix already trimmed, and the card it reads for the book is the one that step
+has vetted. Running it first would have put " - Data Science Lecture Notes from Konrad
+Völkel" into all 29 chapter names. It refuses to run if it finds either untouched, so
+the order cannot drift back silently.
+
+### The breadcrumb has two items, not three, and Google is the reason
+
+The audit asked for book → part → chapter, and the seven part names are in the toc. There
+is no page for a part, so the middle item would have had a `name` and no `item`. Measured,
+rather than assumed:
+
+* **Schema Markup Validator:** the three-item version passes. 0 errors, 0 warnings.
+* **Google Rich Results Test:** *"1 invalid item detected"* on Breadcrumbs, and "invalid
+  items are not eligible for Google Search's rich results". Google's documentation says
+  `item` is required on every element but the last.
+
+So the three-item trail renders no breadcrumb at all, which is the whole point of the
+type. Minting `.../#part-multivariate-stochastics` to satisfy the validator would be a
+fragment that is not an anchor on any page — the sitemap-pointing-at-localhost mistake in
+a smaller hat. Two items it is, and the part name still reaches a reader through the
+sidebar and an engine through `isPartOf` + `position`. If a part ever gets a page, the
+middle item has a URL and goes back in; `chapter_graph()` still takes the part for that
+reason.
+
+### Thebe: the audit's fix was impossible, and the real one is in the client bundle
+
+The audit said to strip a `<script>` tag for `thebe-core.min.js` from pages with no
+`jp-CodeCell`. Three findings, all measured on the built pages and in the browser:
+
+* **There is no script tag.** The only thebe reference in the markup is a stylesheet.
+  `thebe-core.min.js` is appended to `document.head` at runtime by thebe-react's loader.
+* **`jp-CodeCell` is not in the markup either** — thebe adds it when it attaches to a
+  cell, and this site has no kernel server, so nothing ever attaches. Zero occurrences in
+  all thirty built pages and in the hydrated DOM. The marker that *is* there is MyST's
+  `myst-jp` class prefix: zero on exactly twelve Markdown chapters (the ten the audit
+  named, plus `descriptive-statistics` and `statistical-tests`, whose code blocks are
+  static), non-zero on all eighteen notebook pages.
+* **It really does load everywhere**, which the audit had right. The theme's execute-scope
+  provider calls `load()` from an effect with no gate on whether the page has anything
+  computable. A first measurement here said otherwise and was wrong: the load fires about
+  300 ms after hydration, and the network panel had been read before it.
+
+So the 359 kB is bought back in `tools/thebe_gate.py`, which gates that one effect on
+MyST's own `computable` flag in the one client chunk that has it, and fails the build if
+the minified shape it is anchored on moves. Verified by loading the built site:
+`thebe-core.min.js` is requested on notebook pages and on none of the twelve Markdown
+chapters.
+
+`head_meta.py` drops the two jupyter stylesheets (87 kB + 1 kB) from those twelve pages,
+and that one is **honestly smaller than it looks**: the theme's root route declares them
+in a Remix `links()` export, which cannot see page data, so the client re-adds both after
+hydration. What the removal buys is the critical path — they are now the last two requests
+of the load instead of render-blocking tags in the head. Recorded in UPSTREAM-NOTES.md.
+
+**§15c's rule was applied, because this removes code that runs.** Not a diff of the
+markup: on a Markdown chapter, with the gate in place, the mobile menu opens (20 links /
+175,821 px² → 28 / 264,516), the collapsed "Machine learning" part expands (97 → 105
+links, 448,577 → 542,657 px²) and ctrl+K search returns live results for "entropy". The
+notebook pages still load thebe and still render their figures, 11 of 11 on `kmeans`.
+
+### og:image: eleven pages were shipping something that is not a card
+
+Every page declares `twitter:card=summary_large_image`, which wants 1200×630, and MyST
+fills `og:image` with the page's first figure. `head_meta.py` now keeps a figure only if
+it is at least 1200×630 **and** landscape, and replaces it with the generic card
+otherwise: 8 of 30 pages replaced, among them `statistical-tests` (400×528, portrait),
+`expectation-variance` (555×329), `intro-python` (518×588) and
+`important-continuous-distributions` (1226×1648). Three pages keep a figure that is
+genuinely a card: `dimensionality-reduction`, `model-selection`, `relative-entropy`.
+
+One condition is on bytes rather than pixels, and it is a judgement: over 500 kB the
+figure loses. That catches `descriptive-statistics`, whose card the audit measured at
+1.2 MB — thirty times the generic card for an image that renders at the same size — and
+nothing else, the next largest being 461 kB. The honest fix for both is WebP
+(ACTION-PLAN 3.2), after which the threshold can rise.
+
+The card's filename is read off the landing page rather than globbed: MyST emits the
+project thumbnail **twice**, under two fingerprints of identical bytes, so "the one
+social-card file" does not exist. The URL written into each page is built from the prefix
+that page's own image tag already carries, so the same code is correct before and after
+the step that makes those URLs absolute.
+
+**And the markup was half the job, exactly as §1 of `head_meta.py` warns.** The first
+version of this fixed only the tags; loaded in a browser, `statistical-tests` served the
+card and then hydrated back to the 400×528 figure, because the theme's `meta()` builds
+og:image from `page.frontmatter.thumbnailOptimized || page.frontmatter.thumbnail` in the
+hydration payload. For the platforms that draw cards this changed nothing — none of them
+runs the script — but Google renders before it indexes, and the trap is the one this file
+has already been caught by once. The payload is now edited alongside the tags, and only
+`page.frontmatter`: the `pages[]` entries in the payload carry a thumbnail each for the
+hover preview of an internal link, where a portrait figure is a perfectly good picture
+and thirty copies of the generic card would be a worse book. A postcondition fails the
+build if the two ever disagree again.

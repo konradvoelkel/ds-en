@@ -48,6 +48,7 @@
  ],
  "author": {
   "@type": "Person",
+  "@id": "__SITE__/#author",
   "name": "Konrad Völkel",
   "url": "https://konradvoelkel.com",
   "sameAs": [
