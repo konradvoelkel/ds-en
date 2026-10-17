@@ -1009,3 +1009,128 @@ broadly and will meet it.**
 Both directions tested: a `@font-face` whose sources all vanish fails; the healthy build
 passes. The existing count guard catches a missing file, this one catches a CSS-to-layout
 mismatch — different failures, both real.
+
+## 15. The edition never hydrated, and that invalidates several entries above (2026-10-17)
+
+Not found by an audit. Konrad asked why the German edition scaled worse on phones than this
+one; measuring both at 375 px turned up a 613 px page in *both* editions (§15b), and, in
+passing, that this edition loads 6 stylesheets where ds-skript loads 12. That difference is
+the entry point to everything below. **The edition that looked healthier was the broken one.**
+
+### The bug
+
+`strip_payload_title` ended with:
+
+```python
+payload, length = json.JSONDecoder().raw_decode(doc, start)
+...
+return doc[:start] + out + doc[start + length:]
+```
+
+`raw_decode` returns the index in `doc` where the JSON ends, not how many characters it
+consumed. `start + length` therefore points past the end of the document and the tail slice
+evaluates to `""`. Everything after the hydration payload was dropped, on every page, from
+the moment this function landed.
+
+That moment is precise and it matters: `9e655a6`, 2026-10-16 09:28 — the fourth-audit commit
+that introduced the function. Before it the edition hydrated normally. It was broken for
+15 hours and 16 commits, until `b2dd473` the following night.
+
+**What that cost, exactly: 315 characters per page.** Measured by running the committed
+version before and after the one-line fix against the same input: 971,062 against 971,377
+bytes. Those 315 characters are `;</script>`, the whole `<script type="module">` that boots
+the client, and `</body></html>`.
+
+The commit that fixed it (`b2dd473`) says "about 85 kB" and that is wrong — a figure worth
+correcting here because this file is only useful if its numbers are. The 84,747-character
+difference from the raw build is `strip_payload_title`'s compact re-serialisation of the
+payload, which happened in the broken and the fixed version alike. The damage was never
+about size. It was about *which* 315 characters.
+
+Nothing looked wrong, which is why sixteen commits passed over it: browsers close
+unterminated tags and render the page exactly as intended. There was no console error, no
+layout shift, no missing content. The only visible trace was a stylesheet count nobody had
+reason to compare.
+
+### What it invalidates above
+
+From 09:28 on 2026-10-16 this edition did not hydrate, so every argument written after that
+which turns on what hydration does was reasoning about something that had already stopped
+happening. Checked against the commit times rather than assumed:
+
+* **§9, the title suffix** (`9e655a6`, 09:28). The one case that was *correct when written*:
+  hydration did re-render the title from the payload, right up to this commit. Then the fix
+  broke hydration as a side effect and so removed its own reason to exist, within the same
+  commit. The markup edit was doing the work from then on.
+* **§9d** (10:18), **§10** (10:32), **§13** (13:53) and **§14** (16:20) were all written
+  after 09:28, so their hydration reasoning was already untrue when it was written.
+* **§9, WebP declined.** Rejected partly because a renamed file "appears twice per page — in
+  the `<img>` and inside the hydration payload", and a half-done rename would 404 after
+  hydration. That risk never existed, and with §15a the payload is gone outright. **The WebP
+  decision is reopened on its merits** — measured at 89% off a representative figure.
+* **§9d, the CDN stylesheets.** "Then, on hydration, re-add the CDN links" could not happen.
+  Vendoring them was still right, because the links are in the server-rendered HTML too.
+* **§10, §13, §14, the visible date.** §10 gave hydration as the reason not to have one; §14
+  ported `--stamp-source` and reported it "verified in a browser ... still there after
+  hydration". That verification ran at 16:20, seven hours after hydration stopped, so it
+  could not have tested what it claims. The date does render, for a simpler reason: nothing
+  ever replaces it. The port stands; the evidence given for it was vacuous.
+
+None of these conclusions flip. Several were right for the wrong reason, which is its own
+kind of finding — and the sharpest version of it is §9: a fix that invalidated its own
+premise in the act of being applied, and then went on being cited as the reason for things.
+
+### 15a. Thebe stays off, and the payload goes with it
+
+Fixing the truncation would have handed hydration back, and with it thebe, whose runtime
+fetches Pyodide, MathJax and require.js from CDNs — on a book whose own data-protection
+chapter argues against exactly that. Konrad's call: keep thebe off. So `drop_client_runtime`
+now removes the module script *deliberately* (`054edaf`) rather than losing it to a slice
+error, and the document stays well-formed either way.
+
+With the client gone, `window.__remixContext` is the whole document serialised a second time
+for a reader that no longer exists. Checked before removing it: no inline script on the page
+touches it, and no tool in this repository reads it. It went too (`1d04134`):
+
+```
+covariance.html   973,748 -> 397,108 bytes   (-59%)
+all 30 pages       22.2 MB ->     8.5 MB     (-62%)
+```
+
+Rendered against the previous live site, cache disabled, at 1200 px: body text identical
+character for character, same `<title>`, same number of images, links and headings, and the
+same scroll height to the pixel — covariance 11453, descriptive-statistics 18161, numpy
+12930. The only difference is the weight.
+
+`strip_payload_title` went with it. It existed solely to fix a hydrated title; with no
+payload and no hydration the markup is the only copy there is.
+
+Three postconditions now, each verified by reintroducing the fault: a page that does not end
+in `</html>` or whose `<script>`/`</script>` counts disagree, a page that still boots the
+client bundle, and a page that still carries the payload.
+
+### 15b. The 613 px page, which was never a German problem
+
+`descriptive-statistics` measured 613 px at a 375 px viewport in both editions. Not the table
+— that sits in a `div.overflow-auto` and scrolls inside its own box — but two long formulas
+*inline in a list item*: `span.katex` is inline, and inline elements honour neither
+`max-width` nor `overflow`, which is why selectors on `.katex-display` or a `max-width` on
+the ancestors do nothing. Fixed in both editions (`16eeb49` here) by letting the surrounding
+element scroll.
+
+The obvious `.katex { display:inline-block }` was measured and rejected: it fixes the width
+but makes every inline formula 2 px taller, which on a formula-heavy chapter is +2482 px of
+page height — uneven leading everywhere maths appears in running text. The chosen rule costs
++48 px.
+
+**A measurement trap worth keeping.** A bare `myst build` leaves out the KaTeX fonts that the
+workflow copies in, and reports 379 px instead of 613. Measuring the local build alone would
+have shown no bug at all. Layout questions in this repository have to be measured against a
+faithful rerun of the pages job.
+
+### The lesson
+
+A difference between the two editions is not automatically a defect in the one that stands
+out. Here the quieter number was the symptom: 6 stylesheets instead of 12 because the client
+never started, because a slice overshot by `start`. Compare the editions when they disagree,
+but establish which one is right before fixing the other.
