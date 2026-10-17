@@ -1189,3 +1189,42 @@ to come down some other way; `.gz` beside every text file, which ds-skript added
 
 The WebP decision stays reopened: §15's argument against it was the payload rename risk,
 and that risk is back. Reopened on measurement, not reinstated.
+
+## 16. The upstream check never worked, and why the fix is a mirror (2026-10-17)
+
+The staleness check has run on every dispatch since it was built and has **never once
+succeeded**. The failures were read as flakiness, then as a network block, and the retry
+loop was stretched from eight minutes of TCP timeouts to a real seventeen-minute window to
+accommodate it. That was the right fix for the wrong diagnosis.
+
+Measured today, which settles it:
+
+    GET /voelkel/ds-skript                            -> 200
+    GET /voelkel/ds-skript.git/info/refs?service=...  -> 401
+    API visibility                                    -> "public"
+
+The HHU GitLab serves the project page to a stranger and refuses the git endpoint to
+anyone not logged in. The project is public to read and closed to clone. No retry strategy
+survives a 401, and the clones that succeed from Konrad's machine succeed only because
+`git-credential-libsecret` supplies stored credentials — which is why this took so long to
+see from here.
+
+**The fix is a public mirror on GitHub**, `konradvoelkel/ds-skript-mirror`, pushed after
+every commit by a job in ds-skript's own GitLab CI. The check now clones that.
+
+Two things about the shape of it:
+
+* **The credential sits on the GitLab side.** ds-en could have held a GitLab token instead,
+  and that was the first instinct. Pushing from upstream needs exactly one credential,
+  stored where Konrad already administers CI variables, and leaves this repository with no
+  secrets at all — the property §3 describes, which is what lets the whole pipeline be
+  read and audited by a stranger. Keeping it was worth the extra hop.
+* **A mirror that stops is worse than no mirror**, because the check would compare against
+  a frozen copy and report "up to date" forever — the exact silent-success failure this
+  check exists to catch. So it refuses to judge at all if the mirror's newest commit is
+  more than two days old, and says which pipeline to look at.
+
+The seeding was deliberately not done from here. Mirroring means taking source that is
+currently obtainable only with Konrad's credentials and publishing it anonymously; the
+sandbox refused the push, and it was right to. Konrad authorised the mirror, and the first
+push comes from his CI job, under his token, which is where that decision belongs.

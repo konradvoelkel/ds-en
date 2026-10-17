@@ -1,220 +1,113 @@
 # Prompt for the ds-skript agent
 
-Rewritten 2026-10-16 from ds-en (`492e6ac`), against ds-skript `825aef2` and its live
-site. The previous version of this file was four hours old and already wrong in four
-places — ds-skript had fixed them in the meantime. **Re-measure before you act on any
-line below.** Every number here was taken from the live German site today, and this file
-has no more authority than a critique does.
+Rewritten 2026-10-17 from ds-en, against ds-skript `772d001` and its live site. The
+previous version listed six items; **all of them are done on your side**, verified today by
+measuring the live page `deskriptive-statistik/` rather than by reading your commit log:
+Google Fonts 0, CDN stylesheets 0, `og:url` 1, `og:site_name` 1, broken `\,^\circ` 0,
+`lang="de"` present, 6 lazy images. Nothing from that list is repeated below.
 
-Commands assume you are in the ds-skript working tree.
-
----
-
-## Already done, so that nobody redoes it
-
-Checked live today and confirmed finished on your side: `article:modified_time` and
-`<lastmod>` 32/32 · `alt` on the navbar logo and the licence badge · the mermaid diagram
-(no empty `<figure>` left) · the social card, so `og:image` is no longer the CC BY-SA
-button · `refuse_shallow()` and the `_git()` helper, adopted from ds-en in `dedfd0b`.
-
-Two notes on `dedfd0b`, neither a defect:
-
-* **`--stamp-source` is now ported to ds-en** (2026-10-16, same day). ds-en had recorded
-  a visible date as "not included" because the theme re-renders the page header from the
-  hydration payload and markup written after the build is lost — true, and the wrong
-  conclusion. Your route through the frontmatter *before* the build survives, and it is
-  the first thing to travel in that direction on its own merits rather than as a
-  correction. Verified in a browser there: the date is still in the DOM after hydration.
-  The one cost you paid knowingly — the theme formatting the date in hard-coded English —
-  is simply the right format for an English edition.
-* **Your landing page's `article:modified_time` is the newest of all pages, not its own.**
-  ds-en kept that tag per-document and imports `book_date()` only for the JSON-LD. Yours
-  is defensible — the landing page is the title page, and "Stand der Ausgabe" is the right
-  claim there — but it is a divergence, and `article:modified_time` is normally a
-  per-document claim. Flagged, not objected to.
+**Re-measure before acting on anything here.** This file has no more authority than a
+critique does, and it has been wrong before — four of its items were already fixed upstream
+the last time it was rewritten.
 
 ---
 
-## 1. Six formulae do not render, still (measured live today: 6)
+## The one item: push a mirror to GitHub after every commit
 
-`deskriptive-statistik.md` lines 65 and 84, six occurrences of `\,^\circ`:
+### Why you are being asked
 
-```
-20\,^\circ\text{C}        FAIL  Got group of unknown type: 'internal'
-20\,^{\circ}\text{C}      FAIL  braces on \circ do not give ^ a base
-20\,{}^\circ\text{C}      OK    20 °C          <- the fix
-20^\circ\,\text{C}        OK    20° C          <- wrong: space moves inside the unit
-```
+The HHU GitLab refuses git over HTTP to anyone who is not logged in. Measured today:
 
-`\,` is a spacing node, so the `^` after it has no base. LaTeX accepts it, KaTeX does not,
-and MyST renders the failure as the literal source behind a warning triangle. Reproduced
-against katex 0.15.2, the version you load. Fix: `sed -i 's/\\,\^\\circ/\\,{}^\\circ/g'`
-on that one file, six occurrences, two lines.
+    GET /voelkel/ds-skript                             -> 200
+    GET /voelkel/ds-skript.git/info/refs?service=...   -> 401
+    API visibility                                     -> "public"
 
-**The more valuable half is the count, not the fix.** Add it to CI:
+So the project is public to a browser and closed to a clone. A GitHub runner therefore
+cannot read ds-skript at all, and ds-en's staleness check — the thing that tells this
+edition when a German block has moved — has **never once succeeded**. Every dispatch since
+it was built failed: first on reachability, then, once that was diagnosed, on credentials.
+No retry strategy fixes a 401.
 
-```bash
-find public -name index.html -exec grep -oh 'text-myst-warning-text" title="' {} + | wc -l
-```
+Konrad's decision: mirror to GitHub. A second reason he gave for it, which is worth knowing
+because it shapes what the mirror is for — **issues are much easier to file on GitHub**, so
+the mirror is also where problems with the German edition can be reported.
 
-On `title=`, not on the class — the same class styles your own `{warning}` admonitions,
-which carry no `title`. ds-en went 6 → 0 and now guards it. Four separate audits of ds-en
-missed these because they all measured structure, and a failed formula is structurally
-perfect: a span with text in it, no error status, nothing absent, and `myst build` prints
-nothing. A human found them by reading the page.
+The repository already exists and is empty:
 
-## 2. Google Fonts, which is a GDPR problem in the GDPR book (measured live: still there)
+    https://github.com/konradvoelkel/ds-skript-mirror   (public)
 
-`myst-theme.css` line 3 still carries
-`@import url('https://fonts.googleapis.com/css2?family=Inter…&family=JetBrains+Mono…')`.
+### Why the job belongs to you and not to ds-en
 
-Three costs: a render-blocking chain three deep (an `@import` nested in a stylesheet is
-discovered only after that stylesheet is fetched and parsed, and cannot be preloaded); a
-third party on every page view; and the exact arrangement LG München I awarded damages
-over on 20 January 2022 (3 O 17493/20) — in a book whose GDPR chapter cites noyb and the
-2022 Google Analytics findings.
+ds-en has no secrets, deliberately, and that property is worth keeping — it is the reason
+its whole pipeline can be read by anyone and audited without trust. If ds-en pulled from
+GitLab it would need a GitLab token; if it pushed to the mirror it would need a GitHub
+token as well. Pushing from your side needs exactly one credential, stored where Konrad
+already administers CI variables.
 
-ds-en's fix is ~20 lines and needs no translation; see `_site/fonts/PROVENANCE.txt` there.
-Two things to get right:
+**GitLab stays the source of truth.** The mirror is downstream of you and nothing writes to
+it except this job. ds-en only ever reads it.
 
-* **One file per family covers all four weights** — Inter and JetBrains Mono are variable
-  fonts, and Google was already serving both requested weights of each from one URL.
-* **Guard with the scheme** (`https://fonts.googleapis.com`), and only over files a
-  browser loads. Without the scheme it matches the comment explaining the removal;
-  recursively it matches the fingerprinted copies of earlier builds MyST leaves in
-  `build/`. Either makes the guard fail for a reason that is not the bug.
+### What to build
 
-## 3. The figure payload: three causes, one of which cancels another
+A job in `.gitlab-ci.yml` that runs on pushes to the default branch and mirrors to GitHub.
+The shape, not necessarily the wording:
 
-### 3a. Preloads, which make `loading="lazy"` a no-op (measured live: 12 preloads, 0 lazy)
-
-MyST emits `<link rel="preload" as="image">` for **every** figure. That, not the missing
-attribute, is why a chapter fetches its whole figure set before the load event. A
-preloaded image is fetched whatever `loading` says. **Adding the attribute alone changes
-nothing** — the two must move together, and the first figure in `<main>` keeps both, being
-the LCP candidate. Pair the removal to the set of URLs you made lazy rather than dropping
-all preloads, which is what keeps the logo's.
-
-### 3b. Matplotlib writes RGBA the plots do not use
-
-`savefig` writes an opaque white background plus an alpha channel nobody needs, and PNG
-compresses four channels far worse than one. Sampled from your site: `5a741bbf…png`,
-602×582, **245,739 → 102,382 bytes (58%)** as a 256-colour palette PNG. Across ds-en this
-was 9.0 MB of 23.2 MB.
-
-Two refusals worth copying from `tools/optimize_images.py`:
-
-* **Leave figures whose alpha is genuinely in use.** Flattening one onto white looks right
-  in the build and wrong in dark mode. Test the alpha channel's minimum, not the mode.
-* **Give the re-encode a floor** (2 kB and 2%). Without it, re-running the palette
-  conversion over an already-palette image shaves a few bytes forever, every run rewrites
-  every file, and a `--check` gate can never go green — a guard that cannot be satisfied
-  teaches people to ignore it.
-
-### 3c. The logo is 437 kB and renders at 72×36 (measured live: still the SVG)
-
-`logo-wide.svg`, 437,307 bytes, byte-identical to ds-en's; one of its seventeen paths is
-117 kB of coordinates. The theme pins `height: 36px`, so it is 72×36 at every viewport
-width and with the mobile menu open — there is no size at which the vector detail is
-reachable. ds-en keeps the SVG as source and serves a 216×108 PNG (3×).
-
-* **Keep the SVG's own 2:1 viewBox**, not the framing of the stale `logo-wide.png` sitting
-  unreferenced in both repositories (609×417, same drawing cropped tighter). Since the
-  *height* is pinned, that framing would narrow the rendered logo from 72 px to 53.
-* **Transparency is load-bearing** — the navbar is transparent over a background that
-  follows light/dark, so a logo flattened onto white is a white block in dark mode. A
-  palette PNG is a third the size but shifts colours up to 36/255, which the globe's three
-  radial gradients show as banding. Plain RGBA is exact.
-* **Quote the compressed figure.** 437,307 → 18,150 on disk, but an SVG is served gzipped:
-  on the wire it is 122,702 → 18,150, about **105 kB and 85% off every page**, not 96%.
-
-## 4. `og:url` and `og:site_name` absent (measured live: 0 and 0)
-
-MyST writes `og:title`, `og:description`, `og:image` and stops. Without `og:url` a platform
-has no canonical identity for a shared link, so two spellings of one URL become two cards
-with two comment threads. Two lines in the loop that already writes the canonical, and
-`og:url` gets the same URL the canonical has — the one with the trailing slash that
-answers 200.
-
-## 5. Three CDN stylesheets, plus the KaTeX fonts behind them (measured live: 3)
-
-```
-cdn.jsdelivr.net/npm/katex@0.15.2/dist/katex.min.css
-cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css
-cdn.jsdelivr.net/npm/jupyter-matplotlib@0.11.3/css/mpl_widget.css
+```yaml
+mirror-to-github:
+  stage: deploy          # or its own; it must not gate pages
+  image: alpine/git:latest
+  variables:
+    GIT_STRATEGY: none   # this job makes its own mirror clone
+  script:
+    - git clone --mirror "$CI_REPOSITORY_URL" repo.git
+    - cd repo.git
+    - git push --mirror "https://x-access-token:${GITHUB_MIRROR_TOKEN}@github.com/konradvoelkel/ds-skript-mirror.git"
+  rules:
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
 ```
 
-All render-blocking, none preloadable, and on any page with mathematics up to twenty KaTeX
-font files behind them — pulled relative to that stylesheet's own URL, so invisible in the
-HTML. Same argument as §2, one step out. Three traps, each of which cost something:
+Four things to get right, each of which has a way of going wrong quietly:
 
-* **Font Awesome looks unused and is not.** No built page has an `fa-` class and the
-  browser reports the face as `unloaded` — the stylesheet is fetched, its font never is.
-  The obvious move is to delete the link, and it is wrong: the client bundle applies
-  `fa-play`, `fa-stop`, `fa-pause`, `fa-check`, `fa-times`, `fa-caret`, `fa-retweet` to
-  **thebe's notebook controls**, which exist only once a reader makes a notebook live.
-  Test by injecting `class="fa fa-play"` into a built page, not by reasoning.
-* **The URLs are in the client bundles too.** Rewriting only the server-rendered markup
-  means hydration re-adds the CDN links and the page fetches both copies — worse than
-  before, invisible outside a network panel.
-* **KaTeX names its fonts relative to itself**, so vendoring the stylesheet without the
-  twenty woff2 files beside it silently sets the mathematics in a fallback font.
+* **`--mirror` on both sides.** A plain `git push` sends one branch and leaves the mirror's
+  history diverging from yours. ds-en resolves arbitrary commits in it (`git show
+  <sha>:<file>` for any commit between two pins), so it needs the real history, not a tip.
+* **The token never reaches the log.** Put it in a masked, protected CI variable
+  (`GITHUB_MIRROR_TOKEN`) and keep it out of `echo`. A fine-grained GitHub PAT scoped to
+  that one repository with Contents: write is enough — nothing broader.
+* **`allow_failure: false`.** A silently failing mirror is worse than no mirror: ds-en would
+  go on comparing against a frozen copy and reporting "up to date" forever. ds-en now
+  refuses to judge staleness if the mirror's newest commit is more than two days old, so a
+  stopped job surfaces there within two days — but it should surface in your pipeline the
+  same minute.
+* **Do not mirror what you do not want published.** `git push --mirror` sends every ref and
+  every tag. Check that no branch carries anything you would not put on a public GitHub
+  repository; the repository contents themselves are the book, which is already public and
+  CC BY-SA, and `todo/`, `transcripts` and `slides25` are gitignored and so are not in git
+  at all.
 
-What this cannot fix, and must not claim to: thebe's runtime still fetches Pyodide,
-MathJax and require.js from those hosts when a reader starts a kernel. Pyodide alone is
-tens of megabytes. **Reading the book contacts no third party; running the code in it
-does.** So match the three stylesheet URLs, never the hostnames — a hostname guard can
-only ever be satisfied by deleting thebe.
+### How to know it worked
+
+Not "the job went green". From ds-en's side the test is:
+
+    git clone --filter=blob:none https://github.com/konradvoelkel/ds-skript-mirror.git
+    git -C ds-skript-mirror rev-parse HEAD      # must equal ds-skript's own HEAD
+
+and then, the real one: push a trivial commit to ds-skript and watch ds-en's "upstream
+check" workflow run to completion for the first time in its existence.
+
+### The seeding is Konrad's, not yours
+
+The mirror is empty right now. The first push can come from your job once it exists — no
+separate seeding step is needed, because `--mirror` sends the whole history whether the
+target is empty or not.
 
 ---
 
-## 6. One decision that is partly yours
+## Deliberately not suggested
 
-ds-en's `upstream check` workflow cannot clone ds-skript and never could: an anonymous
-HTTPS clone gets `fatal: could not read Username` in under a second, because the
-repository is private. For a day this was misread as an outage — the workflow retried
-sixteen minutes and blamed the network while printing "reachable but the clone failed" six
-times. ds-en now tells the two apart and fails fast with the real reason, but that only
-improves the message; the staleness check still cannot run in CI.
-
-Three ways out, and the second is work on your side:
-
-1. A read-only deploy token in ds-en's GitHub secrets. Effective, and against a standing
-   decision: that repository has no secrets at all today.
-2. **Have the dispatch carry the per-chapter block digests of the German text** — the
-   thing `sync.py check` actually diffs against. Then no clone is needed. The most honest
-   shape, since ds-skript is what knows its own content, and the data is small.
-3. Reduce the workflow to opening an issue saying "upstream moved to `<sha>`, run
-   `tools/sync.py check` locally", which is what effectively happens now, minus the
-   sixteen minutes and the wrong diagnosis.
-
-Konrad's call. Also note that `sync/filemap.json` in ds-en is now a **published
-interface**: `6f193c7` fetches it from raw.githubusercontent.com, so that path and the
-shape of its `map` cannot move without changing `FILEMAP_URL` in the same breath. It is
-recorded as such in that file's own comment.
-
----
-
-## 7. One thing back from this round
-
-`tools/check_css_assets.py` sweeps the built CSS more broadly than ds-en's equivalent. When
-it runs over MyST's own theme bundles it will meet
-`/myst_assets_folder/_assets/plotly-*.svg` — in four files here
-(`plotly-renderer-*.css`, `root-*.css`, `routes/$-*.css`, `routes/_index-*.css`), an
-unrewritten build placeholder of MyST's that resolves to nothing. It is upstream's and not
-yours to fix, and flagging it is the unsatisfiable-guard problem your own commit message
-warns about. ds-en scopes its check to the vendored stylesheets plus its own
-`myst-theme.css`; worth doing the same, or allow-listing that one path.
-
-## 8. Deliberately not suggested
-
-* **Nothing about `robots.txt`.** That finding is yours alone and ds-en has no equivalent;
-  it needs no input from here.
-* **No `FAQPage` markup** — Google switched the FAQ rich results off on 2026-05-07.
-* **No chunking into 150-word blocks** — Google's AI guidance of 2026-05-15 says
-  explicitly that content need not be chunked for AI search.
-* **No title-suffix trimming.** ds-skript's suffix is `- Data Science Vorlesungsskript`,
-  31 characters against ds-en's 48, so the measurement that justified it there is much
-  milder here, and `site.title` is unset so the lever exists if it is ever wanted. If it
-  is done: the theme re-renders the title from the hydration payload, so editing `<title>`
-  in the markup alone is undone in the browser — and Google renders before it indexes.
+* **Mirroring in the other direction.** GitHub → GitLab would make GitHub the place people
+  push to, and the book's home is the university. One direction only.
+* **Switching ds-en to read from the mirror permanently as a substitute for talking to
+  you.** It already does read the mirror, but the dispatch that triggers the check still
+  comes from your pipeline, and the handover of findings still goes through files like this
+  one. The mirror is plumbing, not a channel.
