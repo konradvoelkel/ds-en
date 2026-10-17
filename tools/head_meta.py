@@ -1,11 +1,12 @@
 #!/usr/bin/env python3
-"""Trim the title tags, add the OpenGraph tags MyST omits, preload the fonts, lazy-load
-the figures below the fold, drop the jupyter stylesheets from pages with no jupyter
-output, and refuse a preview card too small to be one.
+"""Trim the title tags, add the OpenGraph tags MyST omits, preload the fonts, give every
+figure its intrinsic size, lazy-load the figures below the fold, drop the jupyter
+stylesheets from pages with no jupyter output, drop the empty keywords meta, and refuse a
+preview card too small to be one.
 
     python3 tools/head_meta.py <site-url> <html-dir> [--base BASE_URL]
 
-Six things, all of them post-processing on the built HTML, because none of them can
+Eight things, all of them post-processing on the built HTML, because none of them can
 be said in myst.yml or in a chapter's frontmatter.
 
 
@@ -95,6 +96,13 @@ Only the <main> slice is rewritten. The rest of the document holds MyST's hydrat
 payload -- the whole page again as JSON inside a <script> -- and a regex let loose on
 that would edit strings the browser parses as data.
 
+Section 7 shares this pass, and it measured something that belongs here too: these
+attributes last about 190 ms, because the client re-renders the document and the server's
+`<main>` goes with it. The browser's parser has already acted on `loading="lazy"` by
+then -- that is the point of the attribute, and the preload removal below is what makes it
+bite -- but a figure still below the fold when the page hydrates is fetched after all.
+The honest fix is upstream; the measurement is in section 7.
+
 
 5. The jupyter stylesheets on pages that have no jupyter output
 --------------------------------------------------------------
@@ -181,14 +189,97 @@ runs the script, so this half changes nothing for them; it is Google, which rend
 before it indexes, that would have seen the contradiction.
 
 
+7. The intrinsic size of every figure, in two places
+----------------------------------------------------
+
+226 `<img>` across the thirty pages and not one of them declared a width or a height.
+The browser therefore cannot reserve a box before the picture arrives, and the text under
+it is pushed down when it does: PageSpeed Insights measured `/expectation-variance/` at
+**CLS 0.278** on 2026-10-17, past Google's 0.25 "poor" boundary, and Lighthouse flagged
+`unsized-images` on both pages it tested. It is the one Core Web Vital on this site that
+can go from poor to good outright rather than merely improving.
+
+196 of those images are inside `<main>`; the other thirty are the navigation logo, one per
+page, which is outside it and is not touched. 193 of the 196 are given `width` and
+`height` read from the file in `_build/html/build/` -- the file's own pixels, never the
+size it renders at. The distinction matters here because 28 of the figures carry an
+inline `style="width:360px"` from the chapter source: the attributes say 555x329 and the
+style still puts it on the page at 360 px wide, which is exactly how it works. Pillow
+reads the PNGs, the JPEG and the GIF; the five SVGs are read from their root element, with
+the viewBox as the fallback for a size given in anything but pixels (the book's own logo is
+`30mm` by `15mm`, which is the case that proves the fallback is needed).
+
+**Three images are deliberately left unsized**, and both reasons are the same one: their
+height is already fixed by something else, and an attribute width next to a fixed height is
+the one way these attributes can distort a picture -- the aspect ratio is consulted only
+while one of the two dimensions is still auto. Two are the inline thumbnails in
+`descriptive-statistics` that sit inside a `<p>`, where the theme's
+`.article p>img{max-height:1.2em}` caps them to the text size; one is the licence badge on
+the landing page, whose own style says `height:20px`. They are named in the run's output,
+so a fourth one arriving is read rather than assumed.
+
+**And the attributes alone would have been theatre.** Measured in the browser against the
+built site on 2026-10-17: React throws a hydration error (#418) on every page of this
+theme, discards the server-rendered DOM and renders the document again from the payload.
+`<main>` is replaced about 190 ms into the load. The lazy attributes section 4 writes --
+37 of 38 in the file on `eda-examples` -- are gone from the DOM 300 ms in, and so is every
+head tag this file and the workflow insert: no og:url, no canonical, no hreflang, no font
+preload in the hydrated document. Whatever is written into the markup holds for a fifth of
+a second, and the images of this site are still loading long after that (LCP 10.7-11.1 s).
+
+So the same dimensions are written a second time into `myst-theme.css`, which is this
+project's own stylesheet from `myst.yml`'s `style:` -- the one file of ours the theme
+loads itself, through its `links()` export, so the client re-adds exactly that tag. A
+rule per distinct size, `width` plus `aspect-ratio`, keyed on the fingerprinted filename.
+That is what the two attributes do between them, and a stylesheet is not markup, so the
+re-render cannot take it away. Measured on a hydrated page with an image that never
+loads: with its rule it reserves 284x274, without one it reserves 722x28, and that second
+number is the layout shift the site has today.
+
+The block sits in a **cascade layer**, which is what keeps it from winning arguments it
+should lose: an unlayered declaration beats a layered one whatever the specificity, so
+every rule the theme writes still takes precedence -- including `[&_img]:w-full img`, the
+utility that sizes the preview popping up when a reader hovers an internal link, which
+renders these same files. Verified: inside that wrapper the image is 500 px wide and not
+284. The layer leaves this block doing only what it is for, which is giving a width to the
+images nothing else gives a width to.
+
+It costs 15.3 kB on a 7.6 kB stylesheet, 5.6 kB of it after gzip, on the critical path of
+every page. That is the price of the fix and it is worth paying once per visit for a
+metric measured in tenths; the honest way to make it smaller is fewer and better figures,
+not shorter selectors.
+
+The rendered size of every figure was compared before and after, in the browser, over
+twelve pages and 148 images: not one box changed.
+
+
+8. The empty keywords meta
+---------------------------
+
+All thirty pages carried `<meta name="keywords" content="">`. Google has ignored the
+keywords meta since 2009, and an empty one does not even make a claim; MyST writes it
+whether or not a page has keywords, and none of these does. Only the empty form is
+removed -- a page that one day says something there is making a statement, and deleting it
+would not be this file's business.
+
+Markup only, and honestly so: like everything in section 7's second half, the tag is back
+in the rendered DOM a fifth of a second later, because the theme's `meta()` builds it from
+the payload. What this buys is the document that is served, which is what a crawler reads
+first and what the audit measured. The fix that would also hold after hydration is in the
+theme.
+
+
 Running it twice
 ----------------
 
 It is idempotent, and it checks postconditions rather than its own edits: every page must
 end up with an og:url, no chapter title may still carry the suffix, no page with no
-jupyter output may still link a jupyter stylesheet, and every og:image must be a card
-that passes the rule above. A second run is a no-op that still passes, while markup MyST
-has moved under us fails -- which is the case the check is actually for.
+jupyter output may still link a jupyter stylesheet, no page may still carry an empty
+keywords meta, every figure that may be sized must carry the size of the file on disk --
+in its attributes *and* in the stylesheet, each checked against the file rather than
+against what this run computed -- and every og:image must be a card that passes the rule
+above. A second run is a no-op that still passes, while markup MyST has moved under us
+fails -- which is the case the check is actually for.
 """
 
 from __future__ import annotations
@@ -203,6 +294,36 @@ import sys
 from PIL import Image
 
 FONTS = ("inter-latin.woff2", "jetbrains-mono-latin.woff2")
+
+# The tag scanner for the <main> slice. Quoted attribute values are consumed as a unit, so
+# a ">" inside an alt text -- there are several, in the figure descriptions -- cannot end a
+# tag early. The void set is what must not be pushed on the stack; everything else that
+# opens is, which is how an inline image in a <p> is told from a figure. See section 7.
+TAG = re.compile(r"<(/?)([a-zA-Z][a-zA-Z0-9]*)((?:\"[^\"]*\"|'[^']*'|[^>])*?)(/?)>", re.S)
+VOID = frozenset(
+    "area base br col embed hr img input link meta param source track wbr".split()
+)
+
+# An image inside a <p> or a <dd> is an inline image, and the theme caps those at 1.2em:
+# `.article p>img, .article p>a img, .article dd>img, .article dd>a img
+#  {display:inline-block;max-height:1.2em}`. Giving one an intrinsic width would stretch
+# it, because the cap fixes the height while the width would come from the attribute. Three
+# images on the site are of this kind; see section 7.
+INLINE_HOSTS = frozenset(("p", "dd"))
+HEIGHT_PINNED = re.compile(r"(?:^|;)\s*(?:max-)?height\s*:", re.I)
+
+# A length an <img> can be sized by: a bare number or px. Anything else (mm, %, em) is not
+# a pixel size, and then the viewBox is the honest answer. See `svg_size`.
+SVG_PX = re.compile(r"^\s*(\d+(?:\.\d+)?)\s*(?:px)?\s*$", re.I)
+
+# The generated block in myst-theme.css, between markers so a second run replaces it
+# rather than appending a second copy. Section 7 argues why it is a stylesheet at all.
+CSS_BEGIN = "/* head_meta.py: intrinsic figure dimensions -- begin, generated */"
+CSS_END = "/* head_meta.py: intrinsic figure dimensions -- end */"
+CSS_BLOCK = re.compile(re.escape(CSS_BEGIN) + r".*?" + re.escape(CSS_END), re.S)
+
+# MyST writes this on every page whether or not a page has keywords. See section 8.
+EMPTY_KEYWORDS = re.compile(r'<meta\b[^>]*\bname="keywords"[^>]*\bcontent=""[^>]*/?>', re.I)
 
 # The jupyter stylesheets, and the class prefix whose absence says the page has no
 # jupyter output for them to style. See section 5.
@@ -457,35 +578,176 @@ CARD_MARKERS = (
 )
 
 
-def lazy_load_figures(doc: str) -> tuple[str, set[str]]:
-    """Lazy-load every <img> inside <main> but the first.
+def with_attrs(tag: str, extra: str) -> str:
+    """Add attributes to a start tag, in front of the solidus if it has one.
 
-    Returns the document and the set of src URLs that were made lazy, so the caller can
-    drop the matching preloads -- without which the attribute has no effect at all.
+    `<img src="x"/>` + `width="1"` has to become `<img src="x" width="1"/>` and not
+    `<img src="x"/ width="1">`, which is what appending before the ">" produces. The
+    second spelling does parse -- an HTML5 tokeniser treats the stray solidus as a parse
+    error and carries on reading attributes -- and it is what this file wrote until
+    2026-10-17, which is how it was noticed. It is still not markup to generate on purpose.
+    """
+    inner = tag[1:-1].rstrip()
+    if inner.endswith("/"):
+        return f"<{inner[:-1].rstrip()} {extra}/>"
+    return f"<{inner} {extra}>"
+
+
+def inline_image(tag: str, stack: list[str]) -> str | None:
+    """Why this image must not be given a width, or None if it may have one.
+
+    Both cases are an image whose *height* is fixed by something else, and a fixed height
+    plus an attribute width is the one way these attributes can distort a picture: the
+    aspect ratio is only consulted while one of the two dimensions is still auto.
+    """
+    style = re.search(r'\bstyle="([^"]*)"', tag, re.I)
+    if style and HEIGHT_PINNED.search(style.group(1)):
+        return "its own style fixes the height"
+    for element in stack:
+        if element in INLINE_HOSTS:
+            return f"inline in a <{element}>, which the theme caps at 1.2em"
+    return None
+
+
+def svg_size(path: pathlib.Path) -> tuple[int, int]:
+    """The intrinsic pixel size of an SVG, which Pillow cannot read.
+
+    `width`/`height` on the root element first, since that is what the browser uses, but
+    only when they are pixels: the book's logo is `30mm` by `15mm`, and 30 is not its
+    width in anything. The viewBox is the fallback, because its third and fourth numbers
+    are the units the browser scales -- so they carry the aspect ratio even when the
+    declared size is in millimetres, and the aspect ratio is what reserves the box.
+    """
+    text = path.read_text(encoding="utf-8", errors="replace")
+    root = re.search(r"<svg\b[^>]*>", text, re.S | re.I)
+    if not root:
+        sys.exit(f"::error::{path} has no <svg> element; cannot read its size")
+    tag = root.group(0)
+
+    def attr(name: str) -> str | None:
+        m = re.search(rf'\b{name}\s*=\s*"([^"]*)"', tag, re.I)
+        return m.group(1) if m else None
+
+    w, h = SVG_PX.match(attr("width") or ""), SVG_PX.match(attr("height") or "")
+    if w and h:
+        return round(float(w.group(1))), round(float(h.group(1)))
+    box = (attr("viewBox") or "").replace(",", " ").split()
+    if len(box) == 4:
+        try:
+            return round(float(box[2])), round(float(box[3]))
+        except ValueError:
+            pass
+    sys.exit(f"::error::{path} declares neither a pixel size nor a usable viewBox")
+
+
+def intrinsic_size(path: pathlib.Path) -> tuple[int, int]:
+    """The size of the file on disk, which is the only size these attributes may state."""
+    if path.suffix.lower() == ".svg":
+        return svg_size(path)
+    with Image.open(path) as im:
+        return im.size
+
+
+def built_asset(root: pathlib.Path, src: str) -> pathlib.Path | None:
+    """The file an <img src> points at, or None when it is not this build's own asset.
+
+    A missing built asset is an error rather than a skip: the page would be showing a
+    broken image, and a tool that reads the pixel sizes of the figures is the one that
+    should say so.
+    """
+    if "/build/" not in src:
+        return None
+    path = root / "build" / src.rsplit("/build/", 1)[1]
+    if not path.is_file():
+        sys.exit(f"::error::{src} is not in the build; {path} does not exist")
+    return path
+
+
+def rewrite_figures(
+    doc: str, root: pathlib.Path
+) -> tuple[str, set[str], dict[str, tuple[int, int]], list[tuple[str, str]]]:
+    """Size every <img> inside <main>, and lazy-load every one but the first.
+
+    Returns
+      * the document,
+      * the set of src URLs made lazy, so the caller can drop the matching preloads --
+        without which the attribute has no effect at all (section 4),
+      * src -> (width, height) for every image that may be sized, whether this run added
+        the attributes or found them already there, because the caller writes those
+        dimensions into a stylesheet as well and that has to be complete on a second run
+        (section 7),
+      * the images that may not be sized, with the reason, for the log.
+
+    One scan, because both jobs want the same thing: the <img> tags inside <main>, in
+    order, with their ancestors known. Only the <main> slice, for the reason section 4
+    gives -- the rest of the document is the hydration payload, and a regex let loose on
+    that would edit strings the browser parses as data.
     """
     m = re.search(r"<main\b[^>]*>.*?</main>", doc, re.S | re.I)
     if not m:
-        return doc, set()
+        return doc, set(), {}, []
 
     main = m.group(0)
     lazied: set[str] = set()
+    sized: dict[str, tuple[int, int]] = {}
+    skipped: list[tuple[str, str]] = []
+    stack: list[str] = []
+    out: list[str] = []
+    cut = 0
     seen = 0
 
-    def img_sub(tag: re.Match) -> str:
-        nonlocal seen
-        seen += 1
-        t = tag.group(0)
-        if seen == 1:  # the LCP candidate stays eager, and keeps its preload
-            return t
-        src = re.search(r'\bsrc="([^"]*)"', t, re.I)
-        if src:
-            lazied.add(src.group(1))
-        if re.search(r"\bloading=", t, re.I):
-            return t
-        return t[:-1].rstrip() + ' loading="lazy" decoding="async"' + t[-1]
+    for token in TAG.finditer(main):
+        closing, name, attrs, solidus = (
+            token.group(1),
+            token.group(2).lower(),
+            token.group(3),
+            token.group(4),
+        )
 
-    main_new = re.sub(r"<img\b[^>]*?/?>", img_sub, main, flags=re.I)
-    return doc[: m.start()] + main_new + doc[m.end() :], lazied
+        if name != "img":
+            # The stack only has to be right about <p> and <dd>, so a stray close tag is
+            # popped tolerantly rather than trusted blindly.
+            if closing:
+                if name in stack:
+                    while stack and stack.pop() != name:
+                        pass
+            elif name not in VOID and not solidus:
+                stack.append(name)
+            continue
+
+        seen += 1
+        tag = token.group(0)
+        src_match = re.search(r'\bsrc="([^"]*)"', attrs, re.I)
+        src = src_match.group(1) if src_match else None
+
+        if src is None:
+            skipped.append(("<img> with no src", "no src to size it by"))
+        else:
+            why = inline_image(tag, stack)
+            path = None if why else built_asset(root, src)
+            if why:
+                skipped.append((src, why))
+            elif path is None:
+                skipped.append((src, "not an asset of this build"))
+            else:
+                size = intrinsic_size(path)
+                sized[src] = size
+                if not re.search(r"\b(?:width|height)\s*=", attrs, re.I):
+                    tag = with_attrs(tag, f'width="{size[0]}" height="{size[1]}"')
+
+        if seen > 1:  # the first image is the LCP candidate: eager, and it keeps its preload
+            if src:
+                lazied.add(src)
+            if not re.search(r"\bloading\s*=", attrs, re.I):
+                tag = with_attrs(tag, 'loading="lazy" decoding="async"')
+
+        if tag != token.group(0):
+            out.append(main[cut : token.start()])
+            out.append(tag)
+            cut = token.end()
+
+    main_new = "".join(out) + main[cut:]
+    return doc[: m.start()] + main_new + doc[m.end() :], lazied, sized, skipped
 
 
 def drop_image_preloads(doc: str, srcs: set[str]) -> tuple[str, int]:
@@ -507,6 +769,98 @@ def drop_image_preloads(doc: str, srcs: set[str]) -> tuple[str, int]:
 
     doc = re.sub(r'<link\b[^>]*rel="preload"[^>]*/?>', link_sub, doc, flags=re.I)
     return doc, n
+
+
+def figure_css(sizes: dict[str, tuple[int, int]]) -> str:
+    """The generated block: one rule per distinct size, in a cascade layer.
+
+    `width` *and* `aspect-ratio`, which is what the two attributes do between them: the
+    width is what an unloaded image reserves, and the ratio is what turns that width into
+    a height. `max-width:100%` and `height:auto` are not repeated here -- the theme's own
+    preflight (`img,video{max-width:100%;height:auto}`) sets both, and that is also what
+    keeps a figure wider than its column from overflowing it.
+
+    **In a cascade layer, so that every rule the theme writes wins over this one.** An
+    unlayered declaration beats a layered one whatever the specificity, and these
+    selectors are specific enough (an attribute selector and two elements) to have beaten
+    the theme's own utilities otherwise -- `[&_img]:w-full img`, which sizes the preview
+    that pops up when a reader hovers an internal link, is one class and one element, and
+    those previews are the same files. The layer makes this block what it should be: a
+    width for the images nothing else gives a width to.
+
+    Keyed on the fingerprinted filename with its leading slash, so the block is the same
+    whatever BASE_URL the site is built for, and so a shorter name cannot match the tail
+    of a longer one.
+    """
+    groups: dict[tuple[int, int], list[str]] = {}
+    for src, size in sizes.items():
+        groups.setdefault(size, []).append(src.rsplit("/", 1)[-1])
+    rules = []
+    for (w, h), names in sorted(groups.items()):
+        selector = ",".join(f'main img[src$="/{n}"]' for n in sorted(names))
+        rules.append(f"{selector}{{width:{w}px;aspect-ratio:{w}/{h}}}")
+    return "\n".join(
+        [
+            CSS_BEGIN,
+            f"/* {len(sizes)} figures, {len(groups)} distinct sizes. "
+            f"Do not edit: tools/head_meta.py section 7 writes this. */",
+            "@layer figure-dimensions{",
+            *rules,
+            "}",
+            CSS_END,
+        ]
+    )
+
+
+def write_figure_css(root: pathlib.Path, sizes: dict[str, tuple[int, int]]) -> int:
+    """Put the block into the one stylesheet of ours that the theme itself loads.
+
+    Not a <style> in the head and not a <link>: both are markup, and the client throws
+    the server's markup away (section 7). `myst-theme.css` is in the theme's own
+    `links()`, so the client re-adds exactly that tag -- the stylesheet is loaded by the
+    page either way, which is the property this needs and the markup does not have.
+    """
+    stylesheet = root / "myst-theme.css"
+    if not stylesheet.is_file():
+        sys.exit(
+            f"::error::{stylesheet} does not exist. It is the stylesheet the theme loads "
+            f"from myst.yml's `style:`, and the only place these rules can go that "
+            f"survives hydration."
+        )
+    css = stylesheet.read_text(encoding="utf-8")
+    block = figure_css(sizes)
+    if CSS_BLOCK.search(css):
+        css = CSS_BLOCK.sub(lambda _: block, css, count=1)
+    else:
+        css = css.rstrip("\n") + "\n\n" + block + "\n"
+    stylesheet.write_text(css, encoding="utf-8")
+    return len(sizes)
+
+
+def read_figure_css(root: pathlib.Path) -> dict[str, tuple[int, int]]:
+    """The dimensions the stylesheet states, read back for the postcondition."""
+    css = (root / "myst-theme.css").read_text(encoding="utf-8")
+    block = CSS_BLOCK.search(css)
+    if not block:
+        sys.exit("::error::myst-theme.css has no generated figure-dimensions block")
+    out: dict[str, tuple[int, int]] = {}
+    for rule in re.finditer(r"([^{}]+)\{width:(\d+)px;aspect-ratio:(\d+)/(\d+)\}", block.group(0)):
+        selector, w, ratio_w, ratio_h = rule.groups()
+        if w != ratio_w:
+            sys.exit(f"::error::{selector[:60]} states width {w} but ratio {ratio_w}/{ratio_h}")
+        for name in re.findall(r'img\[src\$="/([^"]+)"\]', selector):
+            out[name] = (int(ratio_w), int(ratio_h))
+    return out
+
+
+def drop_keywords(doc: str) -> tuple[str, int]:
+    """Drop `<meta name="keywords" content="">`, which all thirty pages carry.
+
+    Only the empty one. A keywords list Google ignores is a statement about the page and
+    not ours to delete; an empty one is forty bytes saying nothing, and MyST writes it
+    whether or not a page has keywords -- none of the thirty does.
+    """
+    return EMPTY_KEYWORDS.subn("", doc)
 
 
 def drop_jupyter_css(doc: str) -> tuple[str, int]:
@@ -624,8 +978,10 @@ def main() -> None:
 
     pages = sorted(root.rglob("index.html"))
     card = social_card(root, index.read_text(encoding="utf-8"))
-    trimmed = n_lazy = n_preload = n_tags = n_css = n_cards = 0
+    trimmed = n_lazy = n_preload = n_tags = n_css = n_cards = n_keywords = 0
     chapters = 0
+    sizes: dict[str, tuple[int, int]] = {}
+    unsized: list[tuple[str, str, str]] = []
 
     for f in pages:
         rel = f.parent.relative_to(root)
@@ -651,13 +1007,18 @@ def main() -> None:
             doc = doc.replace("</head>", "".join(missing) + "</head>", 1)
             n_tags += len(missing)
 
-        doc, lazied = lazy_load_figures(doc)
+        doc, lazied, page_sizes, page_unsized = rewrite_figures(doc, root)
         doc, dropped = drop_image_preloads(doc, lazied)
         n_lazy += len(lazied)
         n_preload += dropped
+        sizes.update(page_sizes)
+        unsized += [(str(rel), src, why) for src, why in page_unsized]
 
         doc, dropped_css = drop_jupyter_css(doc)
         n_css += dropped_css
+
+        doc, dropped_keywords = drop_keywords(doc)
+        n_keywords += dropped_keywords
 
         doc, why = vet_card(doc, root, card)
         if why.startswith("replaced"):
@@ -668,8 +1029,14 @@ def main() -> None:
 
         f.write_text(doc, encoding="utf-8")
 
+    # One stylesheet for the whole book, written once the pages have been read: the same
+    # figure appears on more than one page, and a rule has to exist for every page that
+    # shows it. See section 7.
+    write_figure_css(root, sizes)
+
     # Postconditions, not a tally of this run's edits: a second run is a legitimate
     # no-op, while markup that has moved under us must still fail.
+    declared = read_figure_css(root)
     for f in pages:
         doc = f.read_text(encoding="utf-8")
         rel = f.parent.relative_to(root)
@@ -703,6 +1070,45 @@ def main() -> None:
             sys.exit(f"::error::{f} would get its title suffix back on hydration")
         if JUPYTER_MARKER not in doc and JUPYTER_CSS.search(doc):
             sys.exit(f"::error::{f} has no jupyter output but still links a jupyter stylesheet")
+        if EMPTY_KEYWORDS.search(doc):
+            sys.exit(f"::error::{f} still carries an empty keywords meta")
+        # Every figure, against the file on disk rather than against what this run
+        # computed: the attributes and the stylesheet both have to say what the image
+        # actually is, and on a second run neither of them is written at all.
+        main = re.search(r"<main\b[^>]*>.*?</main>", doc, re.S | re.I)
+        stack: list[str] = []
+        for token in TAG.finditer(main.group(0) if main else ""):
+            name, attrs = token.group(2).lower(), token.group(3)
+            if name != "img":
+                if token.group(1):
+                    if name in stack:
+                        while stack and stack.pop() != name:
+                            pass
+                elif name not in VOID and not token.group(4):
+                    stack.append(name)
+                continue
+            src = re.search(r'\bsrc="([^"]*)"', attrs, re.I)
+            if not src or inline_image(token.group(0), stack):
+                continue
+            path = built_asset(root, src.group(1))
+            if path is None:
+                continue
+            w, h = intrinsic_size(path)
+            got = re.search(r'\bwidth="(\d+)"[^>]*\bheight="(\d+)"', token.group(0), re.I)
+            if not got:
+                sys.exit(f"::error::{f}: {src.group(1)} has no width/height")
+            if (int(got.group(1)), int(got.group(2))) != (w, h):
+                sys.exit(
+                    f"::error::{f}: {src.group(1)} says "
+                    f"{got.group(1)}x{got.group(2)} but the file is {w}x{h}"
+                )
+            # ...and the stylesheet, which is the half that survives hydration.
+            name_on_disk = src.group(1).rsplit("/", 1)[-1]
+            if declared.get(name_on_disk) != (w, h):
+                sys.exit(
+                    f"::error::{f}: myst-theme.css says {declared.get(name_on_disk)} for "
+                    f"{name_on_disk}, the file is {w}x{h}"
+                )
         img = re.search(r'<meta property="og:image" content="([^"]+)"', doc)
         if not img:
             sys.exit(f"::error::{f} has no og:image")
@@ -720,11 +1126,17 @@ def main() -> None:
                     f"hydration payload; it would get the rejected figure back"
                 )
 
+    # The images that were deliberately left unsized, named: three of them, and if that
+    # number grows the reason should be read rather than assumed.
+    for rel, src, why in unsized:
+        print(f"  unsized: /{rel} {src.rsplit('/', 1)[-1]} -- {why}")
+
     print(
         f"head_meta: {len(pages)} pages, {trimmed}/{chapters} titles trimmed "
         f'(suffix "{suffix.strip()}"), {n_tags} card tags added, '
+        f"{len(sizes)} figures sized ({len(unsized)} left unsized), "
         f"{n_lazy} figures lazy-loaded, {n_preload} image preloads dropped, "
-        f"{n_css} jupyter stylesheets dropped, "
+        f"{n_css} jupyter stylesheets dropped, {n_keywords} empty keywords metas dropped, "
         f"{n_cards} og:image replaced with {card}"
     )
 

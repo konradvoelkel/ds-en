@@ -1383,3 +1383,140 @@ has already been caught by once. The payload is now edited alongside the tags, a
 hover preview of an internal link, where a portrait figure is a perfectly good picture
 and thirty copies of the generic card would be a worse book. A postcondition fails the
 build if the two ever disagree again.
+
+## 18. Phase 2 of the audit (2026-10-17), and the half of it the browser throws away
+
+ACTION-PLAN items 2.1 (`width`/`height` on every figure), 2.3 (the empty `keywords` meta)
+and 2.4 (the one over-long title). All three are done, and the first one turned out to be
+two jobs rather than one, for a reason that is bigger than the item: **this theme does not
+hydrate, it re-renders, and about 190 ms into every page load the entire server-rendered
+document is thrown away.** That is measured below, and it invalidates a sentence or two
+above.
+
+### The figures now say how big they are, in the markup and in a stylesheet
+
+226 `<img>` across the thirty pages and not one of them declared a size, which is why
+`/expectation-variance/` measured CLS 0.278 — past Google's 0.25 "poor" line — and why
+Lighthouse flagged `unsized-images` on both pages PageSpeed tested. 196 of the 226 are
+inside `<main>`; the rest are the navigation logo, one per page, and are not touched.
+
+193 of the 196 now carry `width` and `height` read from the built file itself. Pillow
+reads the PNGs, the JPEG and the GIF; the five SVGs are read from their root element, with
+the `viewBox` as the fallback — the book's own logo is `30mm` by `15mm`, which is the case
+that makes the fallback necessary rather than decorative. The numbers are the file's own
+pixels and not the size the page renders: 28 figures carry an inline `style="width:360px"`
+from the chapter source, so the attributes say 555×329 and the picture still appears at
+360 px wide, which is exactly how the two are meant to interact.
+
+**Three figures are deliberately left unsized**, for one reason wearing two hats: their
+height is already fixed by something else, and a width next to a fixed height is the only
+way these attributes can distort a picture — the aspect ratio is consulted only while one
+of the two dimensions is still `auto`. Two are the inline thumbnails in
+`descriptive-statistics` that sit inside a `<p>`, where the theme's
+`.article p>img{max-height:1.2em}` caps them to the height of the text; the third is the
+licence badge on the landing page, whose own style says `height:20px`. `head_meta.py`
+names them on every run, so a fourth one is read rather than assumed.
+
+### The 190 ms, which is the finding
+
+The attributes on their own would have been theatre, and the measurement that says so is
+worth more than the item that prompted it. On every page of the built site the console
+carries **React error #418** — a hydration failure — and what follows is not a patch-up
+but a re-render of the whole document:
+
+* A `MutationObserver` installed before hydration sees `<main>` **removed** at 186 ms.
+* `eda-examples` is served with `loading="lazy"` on 37 of its 38 figures. 300 ms after
+  load the hydrated DOM has **0**.
+* The hydrated `<head>` of `/covariance/` has **no** `og:url`, **no** `og:site_name`, **no**
+  `rel=canonical`, **no** `hreflang`, **no** `article:modified_time` and **no** font
+  preloads. Every one of them is in the file that was served. The stylesheet links are
+  there twice, because the client adds its own copy of each.
+* It is not ours. A build with no post-processing at all throws the same #418 and ends up
+  with the same duplicated stylesheets, so this is the theme, not our injections.
+
+§15 of this file recorded that the edition *never hydrated* and fixed it; §17 recorded that
+the theme re-renders the *head* from the payload. The honest version is stronger than
+both: **nothing written into the markup after the build survives in the rendered DOM.** The
+tags still reach every consumer that reads HTML without running it — which is every
+platform that draws a preview card, and Google's first pass — and `tools/freshness.py`
+already drew the same conclusion for the visible date, which is why that one travels
+through the frontmatter instead. But a claim of the form "the browser ends up with X" needs
+checking against this, and several above were written before anyone looked.
+
+### So the sizes are in `myst-theme.css` as well, in a cascade layer
+
+The second copy goes where a re-render cannot reach: `myst-theme.css`, this project's own
+stylesheet from `myst.yml`'s `style:`, which the theme loads through its own `links()`
+export and therefore re-adds itself. One rule per distinct size — 109 of them for 193
+figures — keyed on the fingerprinted filename, saying `width` and `aspect-ratio`, which is
+what the two attributes do between them.
+
+Measured on a hydrated page, with an image that never loads: **with its rule it reserves
+284×274, without one it reserves 722×28.** The second number is the layout shift this site
+has today, and the first is the fix.
+
+The block sits in `@layer figure-dimensions`, which is what keeps it from winning arguments
+it should lose. An unlayered declaration beats a layered one whatever the specificity, so
+every rule the theme writes still takes precedence — including `[&_img]:w-full img`, the
+utility that sizes the preview that pops up when a reader hovers an internal link, and
+which renders these very files. Verified inside that wrapper: the image is 500 px wide, not
+284. Without the layer these selectors would have won, because an attribute selector plus
+two elements outranks a class plus an element.
+
+It costs 15.3 kB on a 7.6 kB stylesheet, 5.6 kB of it after gzip, on the critical path of
+every page. That is the price, and it buys the one Core Web Vital here that can reach
+"good" outright.
+
+**Nothing moved.** The rendered box of every figure was measured in the browser before and
+after the change, over twelve pages and 148 images, at 1280×900: not one of them changed by
+more than a tenth of a pixel. At 375 px there is no horizontal overflow and no figure is
+wider than the viewport.
+
+### The empty `keywords` meta is gone from the file, and back in the DOM
+
+All thirty pages carried `<meta name="keywords" content="">`. Removed — but only the empty
+form: a page that one day says something there is making a statement, and deleting that
+would not be a post-processor's business. And measured, in the spirit of the section above:
+`document.querySelectorAll('meta[name=keywords]').length` is **1** after hydration, because
+the theme's `meta()` builds the tag from the payload whether there are keywords or not.
+What the removal buys is the document that is served, which is what the audit measured and
+what a crawler reads first. The fix that would also hold in the DOM is in the theme.
+
+### The longest title, which was Konrad's and is his to confirm
+
+`important-discrete-distributions` was 71 characters —
+*The most important discrete distributions: binomial, Poisson, geometric* — and Google
+renders about sixty, so the three distribution names were the part being cut off: they were
+paying nothing in a result and spending the line to do it.
+
+It is now **The most important discrete distributions in SciPy**, 50 characters. That is
+the sibling chapter's title with one word changed, and the sibling is the argument: the
+German original calls that one *Wichtigste stetige Verteilungen in SciPy* and this one
+*Wichtigste diskrete Verteilungen*, while both chapters present every distribution with its
+`scipy.stats` name. So the divergence from the original is now one word instead of a
+clause, `short_title` is a prefix of the title again, and the constraint that shaped the
+long version still holds — it reads as a printed heading rather than as a search phrase.
+
+**This reverses part of `0b5376a`, which is Konrad's own commit of 2026-10-16**, written
+deliberately and checked in the PDF at the time. §4 of this file records the older decision
+to leave these titles alone. Restoring the longer title is one line in
+`important-discrete-distributions.ipynb`; the reasoning on both sides is in
+`sync/notes/important-discrete-distributions.ipynb.md`, which was updated rather than
+rewritten. The three remaining 62-character titles were left alone, as the audit itself
+recommends.
+
+`sync.py align` still passes with 98 blocks: the frontmatter is one block and its text
+changed inside it, which is what alignment does not look at.
+
+### What was not done, and what this leaves open
+
+* **The hydration failure itself.** React #418 on every page is upstream's, it costs this
+  site every markup-level fix in this file, and nobody has diagnosed which element
+  mismatches. It belongs in `UPSTREAM-NOTES.md` and is the single largest open item the
+  audit did not find.
+* **CLS was not re-measured.** It cannot be, locally: the figures come off disk before the
+  first paint, so every local measurement is 0 whatever the markup says. The claim here is
+  the mechanism, measured directly — a box reserved for an image that has not arrived — not
+  a new Lighthouse number. The number has to come from PageSpeed Insights after the deploy.
+* **ACTION-PLAN 2.2 (`BreadcrumbList`) was already shipped** in `167f610`, so Phase 2 is
+  complete except for that re-measurement.

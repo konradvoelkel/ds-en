@@ -331,3 +331,35 @@ One thing that is **not** in the German edition: its title suffix is
 truncation finding behind `head_meta.py`'s title trimming is much milder there. Worth
 knowing before someone ports that part across — the mechanism is identical, the
 measurement is not.
+
+## The theme does not hydrate, it re-renders — and that costs both editions every markup fix
+
+Measured on this edition's built site on 2026-10-17, in a browser, and it applies to
+ds-skript unchanged because it is the same `mystmd` `book-theme` and the same bundle.
+
+Every page logs **React error #418** — a hydration mismatch — and React's answer to it is
+not to patch the DOM but to render the whole document again from `window.__remixContext`.
+A `MutationObserver` installed before hydration sees `<main>` removed at **186 ms**. What
+goes with it:
+
+* `loading="lazy"`, on 37 of 38 figures in the served `eda-examples`: **0** in the DOM
+  300 ms later.
+* Everything the deploy job injects into `<head>`: `og:url`, `og:site_name`,
+  `rel=canonical`, `hreflang`, `article:modified_time`, the font preloads. All present in
+  the file that was served, none in the hydrated document.
+* The stylesheet links appear **twice**, because the client adds its own copy of each.
+
+It is not caused by the post-processing: a build with no post-processing at all throws the
+same #418 and ends with the same duplicated stylesheets. Which element mismatches has not
+been diagnosed; the minified bundle makes #418 say nothing about where.
+
+Why it matters beyond tidiness: **nothing written into the markup after the build survives
+in the rendered DOM.** Everything an engine reads without executing scripts still gets it —
+every preview-card scraper, and Google's first pass — but a claim of the form "the browser
+ends up with X" has to be checked against this. The routes that do survive are three:
+the frontmatter (so it travels in the payload, which is what `tools/freshness.py` uses for
+the visible date), the payload edited directly (what `head_meta.py` does for the title and
+the card), and a stylesheet the theme itself loads (what `head_meta.py` now does for the
+figure dimensions, in a cascade layer so the theme's own rules still win).
+
+Full measurements in `SEO-NOTES.md` §18.

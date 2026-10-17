@@ -292,3 +292,27 @@ The constraint that shaped the wording is that a chapter title is also the print
 heading in the PDF, so it had to read as a heading and not as a search phrase -- the same
 call the original made for its own twelve titles (`todo/seo-kritik-bewertung.md`,
 [SEO-8], Variante 2). `short_title` keeps the sidebar short.
+
+### Title shortened again (2026-10-17)
+
+`The most important discrete distributions: binomial, Poisson, geometric` was 71
+characters, the longest title in the book, and the SEO audit of 2026-10-17 (item 2.4)
+asked for it because Google renders about sixty: the three distribution names were the
+part being cut off, so they were paying nothing in a result and spending the line to do
+it.
+
+It is now **The most important discrete distributions in SciPy**, 50 characters, which is
+the sibling chapter's title with one word changed -- `wichtigste-stetige-verteilungen`
+carries *in SciPy* in the German too, and this chapter presents every distribution with
+its `scipy.stats` name exactly as that one does. So the divergence from the German title
+recorded above is now one word rather than a clause, the constraint that shaped the
+longer version still holds (it reads as a printed heading, not as a search phrase), and
+`short_title` is a prefix of it again, which it was before and is what the sidebar shows.
+
+`sync.py align` (98 blocks), `nbtext.py check` and `check_english.py` all pass; the
+frontmatter is still one block and the block count is unchanged. The three distribution
+names stay in the `description`, which is what a search result actually prints under the
+title, and in the chapter's own headings.
+
+This reverses part of `0b5376a`, which is Konrad's, so it is his to confirm: restoring the
+longer title is this one line.
