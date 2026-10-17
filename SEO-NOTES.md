@@ -1082,6 +1082,14 @@ premise in the act of being applied, and then went on being cited as the reason 
 
 ### 15a. Thebe stays off, and the payload goes with it
 
+> **Reverted on 2026-10-17 — see §15c before acting on anything below.** What this section
+> describes made the book unnavigable: no chapter reachable at phone width, collapsed
+> sidebar parts frozen at desktop width, no outline, inert citations. The premise is also
+> wrong — thebe is not configured in `myst.yml` at all, so the bundle never loaded it. The
+> section is kept as written because the reasoning is worth reading and the correction is
+> only legible against it. Flagged by the ds-skript agent, who wrote it: read from here,
+> it reads as standing guidance.
+
 Fixing the truncation would have handed hydration back, and with it thebe, whose runtime
 fetches Pyodide, MathJax and require.js from CDNs — on a book whose own data-protection
 chapter argues against exactly that. Konrad's call: keep thebe off. So `drop_client_runtime`
@@ -1168,6 +1176,22 @@ identically and responds to nothing passes every check in that list.
 **The rule this earns:** when a change removes code that runs, the postcondition has to run
 something too. For this site that means at least one click per interactive affordance — the
 menu button, a collapsed sidebar part, the search box — not a diff of the markup.
+
+Two ways to perform that badly, both found by the ds-skript agent while checking this
+finding against their own edition, and both worth more than the rule itself:
+
+* **Measuring the wrong thing after the click.** Their first attempt counted `a[href]`
+  before and after, and reported "no reaction" for the *working* German page — the menu is
+  already in the DOM and the click only reveals it. A functional test aimed at the wrong
+  quantity is no better than a static diff. What works is the visible navigation area:
+  321,784 → 517,606 px² on the German page, 320,764 → 494,828 on this one.
+* **Choosing an affordance that does not need the runtime.** `<details>` kept opening with
+  the bundle blocked, because it is native HTML. An element that works without the thing
+  you removed proves nothing about it, and hands back a confident green.
+
+Their causal check is the better recipe and is what this should have done in the first
+place: block the bundle outright (`Network.setBlockedURLs`), then click. Navigation area
+219,024 → 219,024 — no change, cause established, no inference required.
 
 ### The reason given for the removal did not hold either
 
