@@ -1820,17 +1820,57 @@ steps of `pages.yml` run in order:
   and naming this origin, every `@font-face` source present, hreflang clusters consistent.
   `freshness.py --check` passes run from the repository, which is where it can see `git`.
 
+### Verified on the deployed site, and the cache trap that said otherwise twice
+
+`286cdde` deployed in 3m04s, and both sides of the section 5 partition were read in the
+browser out of the **hydrated** DOM, each in a tab of its own:
+
+| | console | stylesheets | inert | canonical / `og:url` / hreflang / preloads | figures |
+|---|---|---|---|---|---|
+| `/covariance/` (Markdown) | **silent** | 6, 0 duplicated | 2 | yes / yes / 3 / 2 | 1 of 1 sized |
+| `/eda-examples/` (notebook) | **silent** | 6, 0 duplicated | 0 | yes / yes / 3 / 2 | 38 of 38 sized, 37 lazy |
+
+The attributes §18 timed dying at 190 ms are in the rendered document in production, which
+is the proof that was missing. `meta[name=keywords]` is still 1 after hydration, as §18 and
+section 8 of `head_meta.py` both say in advance: the theme rebuilds it from the payload and
+nothing here touches that.
+
+**Both of the first two readings of production were wrong, in opposite directions**, and
+the reason is worth more than the result. This post-processing edits the *contents* of
+`build/_shared/chunk-*.js` without changing the content-addressed filename MyST gave it. So
+the fingerprint stops describing the file, and a browser still holding the pre-deploy chunk
+goes on hydrating with the old `crossOrigin` and goes on throwing #418 against a document
+that is now correct. Measured on the deployed asset: `cache-control: max-age=600`, so the
+window is ten minutes, and the `ETag` does change with the contents (`"6ad3ffa3-21600e"`),
+so it heals itself at the first revalidation rather than needing the name to change. A
+returning reader inside those ten minutes gets the old behaviour. Not worth acting on;
+worth knowing, and worth remembering the next time a tool here rewrites a fingerprinted
+file.
+
+The two ways that misled us, both now on the record:
+
+* **Busting the cache from the DOM is not enough, and fails exactly when it matters.**
+  Enumerating `script[src], link[href]` and refetching each with `cache:'reload'` reached 30
+  subresources and still produced a broken page -- because a failed hydration has *already*
+  removed the `modulepreload` links, which is where the chunk URLs are. The enumeration
+  misses the file whose staleness is the problem, and only ever misses it when the page is
+  broken. Fetch the served HTML with `cache:'reload'`, pull the `/build/...` URLs out of the
+  text, and refetch those: 23 of 23, after which the page was correct.
+* **Read the console in a fresh tab.** After the bust the DOM was right and the console
+  still showed two `#418`s -- stale entries from the earlier navigations in the same tab,
+  which the reader returns as the tab's history. They cannot have been from that load: a
+  #418 discards the document, and the document had its canonical. In a new tab both pages
+  log nothing at all.
+
+Which makes three cache-and-console traps from this one piece of work, the third being the
+sibling session's: `rm -rf _build/html` does not give a clean build, because the patched
+client chunks survive in the template cache. All three turned a correct measurement into a
+wrong claim, and two of them did it in the direction of "the fix failed" rather than "the
+fix worked", which is the less dangerous direction only if somebody checks twice.
+
+
 ### What was not done
 
-* **Nothing here is verified on the deployed site.** Every number in this section comes
-  from a fresh local build with the twelve post-processing steps run by hand. "30 of 30
-  pages hydrate" is a claim about that build, and becomes a claim about production only
-  once `pages.yml` has run. The first thing to check afterwards is the hydrated DOM of one
-  Markdown chapter and one notebook page: no #418, six stylesheet links with no
-  duplicates, and `rel=canonical`, `og:url` and the three `hreflang` present — which is the
-  cheap version of the whole table above, and needs the browser rather than `curl`, since
-  everything this section is about happens after the document is parsed. PageSpeed is the
-  other half and should wait for the edge to settle, for the reason §19's round 5 ends on.
 * **No paint timing was re-measured.** That `media="not all"` keeps the stylesheet off the
   critical path is the definition of a non-matching media query and was checked structurally
   (the sheet is parsed, listed and not applied), not as an FCP number. After §19, nobody
