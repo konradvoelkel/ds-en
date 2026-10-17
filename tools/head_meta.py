@@ -37,9 +37,10 @@ the project title on its own, so renaming the book in myst.yml keeps this workin
 cannot leave a stale string behind. Same reasoning as the CNAME being derived from
 SITE_ORIGIN in pages.yml.
 
-Editing the markup is only half of it, because the theme re-renders the title from the
-hydration payload -- see `strip_payload_title` below, which is the half that makes the
-change survive in a browser, and so in Google.
+Editing the markup used to be only half of it: the theme re-rendered the title from the
+hydration payload, so a second pass had to blank it there too. That pass is gone --
+`drop_client_runtime` now removes the payload along with the client that read it, so the
+markup is the only copy there is.
 
 `site.title` in myst.yml is a real alternative for the suffix and was tested: it sets
 the HTML title independently of `project.title`, so it would not touch the PDF. It is
@@ -163,59 +164,6 @@ def trim_titles(doc: str, suffix: str) -> tuple[str, bool]:
     return doc, changed
 
 
-def strip_payload_title(doc: str, name: str) -> tuple[str, bool]:
-    """Blank the project title inside the hydration payload, for chapter pages.
-
-    Editing <title> in the markup is only half the job. The page is a Remix app: the
-    whole document is also serialised into `window.__remixContext`, and on hydration the
-    theme re-renders the title from *that*, putting the suffix straight back. The
-    server-rendered head and the hydrated head then disagree, and since Google renders
-    the page before indexing it, the one that loses is the one we edited.
-
-    Measured here first: with `project.title` blanked in the payload the hydrated title
-    is the chapter title alone, and the logo, the sidebar, the part names and the
-    previous/next labels in the footer all still render -- those come from their own
-    fields (`short_title`, `footer.navigation.*`), not from this one.
-
-    Only the chapters. The landing page's title *is* the book's title.
-    """
-    key = "window.__remixContext = "
-    i = doc.find(key)
-    if i < 0:
-        return doc, False
-    start = i + len(key)
-    try:
-        # raw_decode returns the index in `doc` where the JSON *ends*, not how many
-        # characters it consumed. Treating it as a length and slicing doc[start + end:]
-        # overshoots by `start` -- past the end of the document, so the tail silently
-        # becomes "". That shipped: every page of this edition ended mid-payload, 85 kB
-        # short, with no </script>, no </body> and no </html>, and without the module
-        # script that boots the client. Browsers paper over unclosed tags, so nothing
-        # looked wrong; what was missing was the whole client runtime.
-        payload, end = json.JSONDecoder().raw_decode(doc, start)
-    except ValueError:
-        return doc, False
-
-    changed = False
-    for route in (payload.get("state", {}).get("loaderData") or {}).values():
-        if not isinstance(route, dict):
-            continue
-        for holder in ("project", "config"):
-            node = route.get(holder)
-            if isinstance(node, dict) and node.get("title") == name:
-                node["title"] = ""
-                changed = True
-    if not changed:
-        return doc, False
-
-    # Re-serialised compactly. The two replacements keep the JSON safe *as a JavaScript
-    # literal inside a <script>*: a literal "<" could close the tag early, and U+2028 /
-    # U+2029 are ordinary characters in JSON but line terminators in JavaScript. Both
-    # are written as \u escapes, which JSON reads back as the same characters.
-    out = json.dumps(payload, separators=(",", ":"), ensure_ascii=False)
-    out = out.replace("<", "\\u003c").replace("\u2028", "\\u2028").replace("\u2029", "\\u2029")
-    return doc[:start] + out + doc[end:], True
-
 
 def head_tags(
     url: str, site_name: str, base: str, lang: str, is_landing: bool
@@ -276,8 +224,14 @@ CARD_MARKERS = (
 )
 
 
-def drop_client_bundle(doc: str) -> tuple[str, bool]:
-    """Remove the module script that boots the Remix client. Deliberately.
+def drop_client_runtime(doc: str) -> tuple[str, bool]:
+    """Remove the Remix client: the module script that boots it and the state it reads.
+
+    Two scripts go. The module script starts hydration; `window.__remixContext` is the
+    whole document serialised a second time as JSON, which only the hydrating client
+    ever reads. With the first gone the second is dead weight -- 575 kB on
+    covariance.html, 59% of the page -- so both leave together. Checked before removing:
+    no inline script on the page touches it, and no tool in this repo reads it either.
 
     This edition has in fact been shipping without a client since the truncation bug
     above: the module script fell off the end of every page and nobody noticed, because
@@ -291,13 +245,20 @@ def drop_client_bundle(doc: str) -> tuple[str, bool]:
     execution; what stays is every page as served, which is what readers have had all
     along.
 
-    Note for later: `window.__remixContext` is now dead weight -- 575 kB on
-    covariance.html, 59% of the page. Nothing reads it once this script is gone.
     """
+    weg = False
     m = re.search(r'<script type="module"[^>]*>.*?</script>', doc, re.S)
-    if not m:
-        return doc, False
-    return doc[: m.start()] + doc[m.end() :], True
+    if m:
+        doc = doc[: m.start()] + doc[m.end() :]
+        weg = True
+    # The payload is matched from its opening tag to the first </script> after it. The
+    # JSON itself cannot contain that sequence: head_meta writes "<" as \u003c when it
+    # re-serialises, and MyST escapes it the same way for the same reason.
+    m = re.search(r'<script>\s*window\.__remixContext\s*=.*?</script>', doc, re.S)
+    if m:
+        doc = doc[: m.start()] + doc[m.end() :]
+        weg = True
+    return doc, weg
 
 
 def lazy_load_figures(doc: str) -> tuple[str, set[str]]:
@@ -384,7 +345,6 @@ def main() -> None:
             chapters += 1
             doc, changed = trim_titles(doc, suffix)
             trimmed += changed
-            doc, _ = strip_payload_title(doc, name)
 
         missing = [
             tag
@@ -397,7 +357,7 @@ def main() -> None:
             doc = doc.replace("</head>", "".join(missing) + "</head>", 1)
             n_tags += len(missing)
 
-        doc, dropped_bundle = drop_client_bundle(doc)
+        doc, dropped_bundle = drop_client_runtime(doc)
         if dropped_bundle:
             n_bundle += 1
 
@@ -420,6 +380,8 @@ def main() -> None:
         # turned out to load half as many stylesheets, because it never hydrated at all.
         if '<script type="module"' in doc:
             sys.exit(f"::error::{f} still boots the client bundle; thebe is meant to stay off")
+        if "__remixContext" in doc:
+            sys.exit(f"::error::{f} still carries the hydration payload; nothing reads it")
         if not doc.rstrip().endswith("</html>"):
             sys.exit(f"::error::{f} does not end with </html> -- truncated?")
         for tag in ("</body>", "</html>"):
@@ -436,13 +398,6 @@ def main() -> None:
         title = re.search(r"<title[^>]*>(.*?)</title>", doc, re.S | re.I)
         if str(rel) != "." and title and title.group(1).strip().endswith(suffix):
             sys.exit(f"::error::{f} still carries the title suffix")
-        # The markup being right is not enough: hydration re-renders the title from the
-        # payload, so a project title left in there would undo this in the browser --
-        # and in Google, which renders before it indexes.
-        if str(rel) != "." and re.search(
-            r'"(?:project|config)":\{[^{}]*"title":"' + re.escape(name), doc
-        ):
-            sys.exit(f"::error::{f} would get its title suffix back on hydration")
 
     print(
         f"head_meta: {len(pages)} pages, {trimmed}/{chapters} titles trimmed "
