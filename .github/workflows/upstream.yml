@@ -76,6 +76,16 @@ jobs:
         # which is the failure this whole check exists to prevent -- so it is named rather
         # than trusted. Two days allows for a weekend of no pushes on either side.
         run: |
+          # An empty repository clones *successfully* -- .git exists, there is just no
+          # commit -- so the check below has to ask before it counts, or it reports a shell
+          # arithmetic error instead of the one fact that matters.
+          if ! git -C "$UPSTREAM_DIR" rev-parse HEAD >/dev/null 2>&1; then
+            echo "::error::the mirror exists but is empty: nothing has pushed to it yet."
+            echo "::error::It is filled by a job in ds-skript's GitLab CI, which has to be"
+            echo "::error::added there (the prompt is in sync/handover-ds-skript.md). A"
+            echo "::error::token alone does not push; something has to run git push --mirror."
+            exit 1
+          fi
           AGE_DAYS=$(( ( $(date +%s) - $(git -C "$UPSTREAM_DIR" log -1 --format=%ct) ) / 86400 ))
           echo "mirror HEAD is $AGE_DAYS day(s) old: $(git -C "$UPSTREAM_DIR" log -1 --format='%h %s')"
           if [ "$AGE_DAYS" -gt 2 ]; then
