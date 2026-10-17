@@ -1,0 +1,51 @@
+{
+  "upload_type": "publication",
+  "publication_type": "book",
+  "title": "Data Science: from stochastics to machine learning with Python",
+  "version": "0.7.0",
+  "language": "eng",
+  "access_right": "open",
+  "license": "cc-by-sa-4.0",
+  "creators": [
+    {
+      "name": "Völkel, Konrad",
+      "affiliation": "Heinrich Heine University Düsseldorf",
+      "orcid": "0000-0002-4144-4199"
+    }
+  ],
+  "description": "<p>An undergraduate introduction to data science that begins with stochastics and ends with machine learning without leaving a gap in between. The estimators and learning algorithms &mdash; k-means, principal component analysis, regression, expectation maximization &mdash; are reimplemented rather than called.</p><p>Thirty chapters covering probability spaces, random variables and distributions; expected value, variance and the central limit theorem; vectorised computation with Numpy and Scipy; exploratory data analysis with Pandas and Matplotlib; multivariate statistics, covariance and relative entropy; statistical models, maximum likelihood, tests and model selection; and data protection under the GDPR.</p><p>The English edition of the lecture notes used in the computer science bachelor's programme at Heinrich Heine University D&uuml;sseldorf. Published as a website and as a 318-page PDF; sources, including every notebook, at <a href=\"https://github.com/konradvoelkel/ds-en\">github.com/konradvoelkel/ds-en</a>.</p>",
+  "keywords": [
+    "data science",
+    "statistics",
+    "probability theory",
+    "machine learning",
+    "Python",
+    "Numpy",
+    "Pandas",
+    "scikit-learn",
+    "open educational resources",
+    "lecture notes",
+    "undergraduate textbook"
+  ],
+  "related_identifiers": [
+    {
+      "identifier": "https://datascience.konradvoelkel.com/",
+      "relation": "isIdenticalTo",
+      "resource_type": "publication-book",
+      "scheme": "url"
+    },
+    {
+      "identifier": "https://github.com/konradvoelkel/ds-en",
+      "relation": "isSupplementedBy",
+      "resource_type": "software",
+      "scheme": "url"
+    },
+    {
+      "identifier": "https://voelkel.pages.cs.uni-duesseldorf.de/ds-skript/",
+      "relation": "isDerivedFrom",
+      "resource_type": "publication-book",
+      "scheme": "url"
+    }
+  ],
+  "notes": "Translated from the German original (ds-skript) and kept in step with it chapter by chapter; the mapping and the staleness tooling are in sync/ in the source repository."
+}
