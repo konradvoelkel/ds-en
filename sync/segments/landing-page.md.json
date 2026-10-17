@@ -1,12 +1,12 @@
 {
  "source": "landing-page.md",
  "target": "landing-page.md",
- "upstream": "2784f10c110c43ffe47df4943a8d3ccfc52a7b67",
+ "upstream": "772d00174ba05a1f8f46b55b24d418e74728d6c2",
  "blocks": [
   {
    "de": "0",
    "kind": "prose",
-   "digest": "12f5dd8c8d263696",
+   "digest": "aed46100339592b5",
    "en": "0",
    "preview": "--- title: \"Data Science: von der Stochastik zum Machine Learning mit Py…"
   },

@@ -1134,3 +1134,58 @@ A difference between the two editions is not automatically a defect in the one t
 out. Here the quieter number was the symptom: 6 stylesheets instead of 12 because the client
 never started, because a slice overshot by `start`. Compare the editions when they disagree,
 but establish which one is right before fixing the other.
+
+## 15c. The removal that followed broke the book, and was reverted (2026-10-17)
+
+§15 is right about the history and wrong about what to do with it. "This edition has never
+hydrated, so what goes away is something nobody here has had" reads the 15-hour window as
+the normal state. It was the accident. Before `9e655a6` at 09:28 the edition hydrated like
+any MyST site, and the readers of those weeks had what §15a then removed.
+
+Konrad found it the next morning: the live book was unusable. Confirmed in a browser
+against the live site, and it was not only the citations:
+
+* At phone width the hamburger is the only route to the table of contents, and it opened
+  nothing. **No chapter was reachable at all.**
+* At desktop width the sidebar showed only the part that happened to be open. "Machine
+  learning" and every other collapsed part refused to expand — two thirds of the book
+  unreachable.
+* The right-hand CONTENTS outline was absent from every page.
+* Citations rendered as `<cite><span class="hover-link">` with no `href`: styled like links,
+  inert.
+
+The theme's navigation is React. It needs the runtime, whatever the page looks like
+standing still.
+
+### Why the verification did not catch it
+
+`1d04134` checked body text character for character, the `<title>`, the counts of images,
+links and headings, and the scroll height to the pixel. Every one of those is a measure of
+a page *at rest*. The damage was entirely in what happens when you click, so the evidence
+was strong, carefully gathered, and aimed at the wrong thing. A page that renders
+identically and responds to nothing passes every check in that list.
+
+**The rule this earns:** when a change removes code that runs, the postcondition has to run
+something too. For this site that means at least one click per interactive affordance — the
+menu button, a collapsed sidebar part, the search box — not a diff of the markup.
+
+### The reason given for the removal did not hold either
+
+Restoring the bundle was supposed to hand back thebe, and with it Pyodide, MathJax and
+require.js from CDNs, in a book whose own data-protection chapter argues against that.
+But **thebe is not configured in `myst.yml` at all**, so the bundle never loaded it.
+Measured after the revert, with the deploy's own post-processing in order
+(`vendor_assets.py`, then `head_meta.py`): 51 requests on `descriptive-statistics`,
+**zero of them third-party**. The CDN exposure that removal was meant to prevent is already
+prevented by vendoring, which §9d put there.
+
+### What it costs
+
+The payload comes back with the bundle — hydration reads it, so they cannot be separated.
+That is the 59% per page returned, and it was a real gain. It is the price of a book that
+can be navigated, which is not a trade worth making. If the weight is to come down, it has
+to come down some other way; `.gz` beside every text file, which ds-skript added in
+`11a271f`, is the obvious candidate and does not touch behaviour.
+
+The WebP decision stays reopened: §15's argument against it was the payload rename risk,
+and that risk is back. Reopened on measurement, not reinstated.
