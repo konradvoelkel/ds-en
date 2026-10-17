@@ -209,14 +209,18 @@ reads the PNGs, the JPEG and the GIF; the five SVGs are read from their root ele
 the viewBox as the fallback for a size given in anything but pixels (the book's own logo is
 `30mm` by `15mm`, which is the case that proves the fallback is needed).
 
-**Three images are deliberately left unsized**, and both reasons are the same one: their
-height is already fixed by something else, and an attribute width next to a fixed height is
-the one way these attributes can distort a picture -- the aspect ratio is consulted only
-while one of the two dimensions is still auto. Two are the inline thumbnails in
+**Three images get no attributes**, for one reason wearing two hats: their height is
+already fixed by something else, and an attribute width next to a fixed height is the one
+way these attributes can distort a picture -- the aspect ratio is consulted only while one
+of the two dimensions is still auto. Two are the inline thumbnails in
 `descriptive-statistics` that sit inside a `<p>`, where the theme's
 `.article p>img{max-height:1.2em}` caps them to the text size; one is the licence badge on
-the landing page, whose own style says `height:20px`. They are named in the run's output,
-so a fourth one arriving is read rather than assumed.
+the landing page, whose own style says `height:20px`.
+
+They are not left to shift, though, which is what the first version of this did: they get
+a stylesheet rule carrying the **ratio alone**, no width. The constraint then travels the
+other way -- the browser takes the height it already has and computes the width from the
+ratio -- so the box is reserved and nothing is stretched.
 
 **And the attributes alone would have been theatre.** Measured in the browser against the
 built site on 2026-10-17: React throws a hydration error (#418) on every page of this
@@ -230,7 +234,8 @@ a second, and the images of this site are still loading long after that (LCP 10.
 So the same dimensions are written a second time into `myst-theme.css`, which is this
 project's own stylesheet from `myst.yml`'s `style:` -- the one file of ours the theme
 loads itself, through its `links()` export, so the client re-adds exactly that tag. A
-rule per distinct size, `width` plus `aspect-ratio`, keyed on the fingerprinted filename.
+rule per distinct size, `width` plus `aspect-ratio` -- or the ratio alone, for the three
+above -- keyed on the fingerprinted filename.
 That is what the two attributes do between them, and a stylesheet is not markup, so the
 re-render cannot take it away. Measured on a hydrated page with an image that never
 loads: with its rule it reserves 284x274, without one it reserves 722x28, and that second
@@ -665,7 +670,9 @@ def built_asset(root: pathlib.Path, src: str) -> pathlib.Path | None:
 
 def rewrite_figures(
     doc: str, root: pathlib.Path
-) -> tuple[str, set[str], dict[str, tuple[int, int]], list[tuple[str, str]]]:
+) -> tuple[
+    str, set[str], dict[str, tuple[int, int]], dict[str, tuple[int, int]], list[tuple[str, str]]
+]:
     """Size every <img> inside <main>, and lazy-load every one but the first.
 
     Returns
@@ -676,7 +683,9 @@ def rewrite_figures(
         the attributes or found them already there, because the caller writes those
         dimensions into a stylesheet as well and that has to be complete on a second run
         (section 7),
-      * the images that may not be sized, with the reason, for the log.
+      * src -> (width, height) for the images whose height is fixed elsewhere: no
+        attributes for these, and a stylesheet rule carrying the ratio alone,
+      * the images that could not be measured at all, with the reason, for the log.
 
     One scan, because both jobs want the same thing: the <img> tags inside <main>, in
     order, with their ancestors known. Only the <main> slice, for the reason section 4
@@ -685,11 +694,12 @@ def rewrite_figures(
     """
     m = re.search(r"<main\b[^>]*>.*?</main>", doc, re.S | re.I)
     if not m:
-        return doc, set(), {}, []
+        return doc, set(), {}, {}, []
 
     main = m.group(0)
     lazied: set[str] = set()
     sized: dict[str, tuple[int, int]] = {}
+    ratio_only: dict[str, tuple[int, int]] = {}
     skipped: list[tuple[str, str]] = []
     stack: list[str] = []
     out: list[str] = []
@@ -723,12 +733,13 @@ def rewrite_figures(
         if src is None:
             skipped.append(("<img> with no src", "no src to size it by"))
         else:
-            why = inline_image(tag, stack)
-            path = None if why else built_asset(root, src)
-            if why:
-                skipped.append((src, why))
-            elif path is None:
+            path = built_asset(root, src)
+            if path is None:
                 skipped.append((src, "not an asset of this build"))
+            elif inline_image(tag, stack):
+                # The ratio, never a width: see `figure_css`. The attributes are a width,
+                # so these get none -- the stylesheet carries the whole of it.
+                ratio_only[src] = intrinsic_size(path)
             else:
                 size = intrinsic_size(path)
                 sized[src] = size
@@ -747,7 +758,7 @@ def rewrite_figures(
             cut = token.end()
 
     main_new = "".join(out) + main[cut:]
-    return doc[: m.start()] + main_new + doc[m.end() :], lazied, sized, skipped
+    return doc[: m.start()] + main_new + doc[m.end() :], lazied, sized, ratio_only, skipped
 
 
 def drop_image_preloads(doc: str, srcs: set[str]) -> tuple[str, int]:
@@ -771,7 +782,7 @@ def drop_image_preloads(doc: str, srcs: set[str]) -> tuple[str, int]:
     return doc, n
 
 
-def figure_css(sizes: dict[str, tuple[int, int]]) -> str:
+def figure_css(sizes: dict[str, tuple[int, int]], ratios: dict[str, tuple[int, int]]) -> str:
     """The generated block: one rule per distinct size, in a cascade layer.
 
     `width` *and* `aspect-ratio`, which is what the two attributes do between them: the
@@ -779,6 +790,13 @@ def figure_css(sizes: dict[str, tuple[int, int]]) -> str:
     a height. `max-width:100%` and `height:auto` are not repeated here -- the theme's own
     preflight (`img,video{max-width:100%;height:auto}`) sets both, and that is also what
     keeps a figure wider than its column from overflowing it.
+
+    `ratios` is the other three: the images whose height is already fixed, which must not
+    be given a width (that is the one thing that would distort them) but which can have
+    the **ratio alone**. Then the constraint travels the other way -- the browser takes
+    the height it has and computes the width from the ratio -- and the box is reserved
+    just the same. Skipping them entirely, as the first version of this did, left the
+    only three images on the site that still shift.
 
     **In a cascade layer, so that every rule the theme writes wins over this one.** An
     unlayered declaration beats a layered one whatever the specificity, and these
@@ -792,27 +810,35 @@ def figure_css(sizes: dict[str, tuple[int, int]]) -> str:
     whatever BASE_URL the site is built for, and so a shorter name cannot match the tail
     of a longer one.
     """
-    groups: dict[tuple[int, int], list[str]] = {}
-    for src, size in sizes.items():
-        groups.setdefault(size, []).append(src.rsplit("/", 1)[-1])
-    rules = []
-    for (w, h), names in sorted(groups.items()):
-        selector = ",".join(f'main img[src$="/{n}"]' for n in sorted(names))
-        rules.append(f"{selector}{{width:{w}px;aspect-ratio:{w}/{h}}}")
+    def grouped(by_src: dict[str, tuple[int, int]]) -> list[tuple[tuple[int, int], str]]:
+        groups: dict[tuple[int, int], list[str]] = {}
+        for src, size in by_src.items():
+            groups.setdefault(size, []).append(src.rsplit("/", 1)[-1])
+        return [
+            (size, ",".join(f'main img[src$="/{n}"]' for n in sorted(names)))
+            for size, names in sorted(groups.items())
+        ]
+
+    full = [f"{sel}{{width:{w}px;aspect-ratio:{w}/{h}}}" for (w, h), sel in grouped(sizes)]
+    ratio_only = [f"{sel}{{aspect-ratio:{w}/{h}}}" for (w, h), sel in grouped(ratios)]
     return "\n".join(
         [
             CSS_BEGIN,
-            f"/* {len(sizes)} figures, {len(groups)} distinct sizes. "
+            f"/* {len(sizes)} figures in {len(full)} distinct sizes, and {len(ratios)} "
+            f"whose height is fixed elsewhere and which get the ratio only. "
             f"Do not edit: tools/head_meta.py section 7 writes this. */",
             "@layer figure-dimensions{",
-            *rules,
+            *full,
+            *ratio_only,
             "}",
             CSS_END,
         ]
     )
 
 
-def write_figure_css(root: pathlib.Path, sizes: dict[str, tuple[int, int]]) -> int:
+def write_figure_css(
+    root: pathlib.Path, sizes: dict[str, tuple[int, int]], ratios: dict[str, tuple[int, int]]
+) -> int:
     """Put the block into the one stylesheet of ours that the theme itself loads.
 
     Not a <style> in the head and not a <link>: both are markup, and the client throws
@@ -828,7 +854,7 @@ def write_figure_css(root: pathlib.Path, sizes: dict[str, tuple[int, int]]) -> i
             f"survives hydration."
         )
     css = stylesheet.read_text(encoding="utf-8")
-    block = figure_css(sizes)
+    block = figure_css(sizes, ratios)
     if CSS_BLOCK.search(css):
         css = CSS_BLOCK.sub(lambda _: block, css, count=1)
     else:
@@ -837,20 +863,33 @@ def write_figure_css(root: pathlib.Path, sizes: dict[str, tuple[int, int]]) -> i
     return len(sizes)
 
 
-def read_figure_css(root: pathlib.Path) -> dict[str, tuple[int, int]]:
-    """The dimensions the stylesheet states, read back for the postcondition."""
+def read_figure_css(
+    root: pathlib.Path,
+) -> tuple[dict[str, tuple[int, int]], dict[str, tuple[int, int]]]:
+    """What the stylesheet states, read back for the postcondition.
+
+    Two maps, because the two kinds of rule are checked against different images: the
+    ones that carry a width, and the height-fixed ones that carry the ratio alone.
+    """
     css = (root / "myst-theme.css").read_text(encoding="utf-8")
     block = CSS_BLOCK.search(css)
     if not block:
         sys.exit("::error::myst-theme.css has no generated figure-dimensions block")
-    out: dict[str, tuple[int, int]] = {}
-    for rule in re.finditer(r"([^{}]+)\{width:(\d+)px;aspect-ratio:(\d+)/(\d+)\}", block.group(0)):
-        selector, w, ratio_w, ratio_h = rule.groups()
-        if w != ratio_w:
-            sys.exit(f"::error::{selector[:60]} states width {w} but ratio {ratio_w}/{ratio_h}")
+    sized: dict[str, tuple[int, int]] = {}
+    ratios: dict[str, tuple[int, int]] = {}
+    for rule in re.finditer(r"([^{}]+)\{([^{}]+)\}", block.group(0)):
+        selector, body = rule.groups()
+        ratio = re.search(r"aspect-ratio:(\d+)/(\d+)", body)
+        if not ratio:
+            sys.exit(f"::error::generated rule without an aspect-ratio: {rule.group(0)[:80]}")
+        size = (int(ratio.group(1)), int(ratio.group(2)))
+        width = re.search(r"width:(\d+)px", body)
+        if width and int(width.group(1)) != size[0]:
+            sys.exit(f"::error::{selector[:60]} states width {width.group(1)} but ratio {size}")
+        into = sized if width else ratios
         for name in re.findall(r'img\[src\$="/([^"]+)"\]', selector):
-            out[name] = (int(ratio_w), int(ratio_h))
-    return out
+            into[name] = size
+    return sized, ratios
 
 
 def drop_keywords(doc: str) -> tuple[str, int]:
@@ -981,6 +1020,7 @@ def main() -> None:
     trimmed = n_lazy = n_preload = n_tags = n_css = n_cards = n_keywords = 0
     chapters = 0
     sizes: dict[str, tuple[int, int]] = {}
+    ratios: dict[str, tuple[int, int]] = {}
     unsized: list[tuple[str, str, str]] = []
 
     for f in pages:
@@ -1007,11 +1047,12 @@ def main() -> None:
             doc = doc.replace("</head>", "".join(missing) + "</head>", 1)
             n_tags += len(missing)
 
-        doc, lazied, page_sizes, page_unsized = rewrite_figures(doc, root)
+        doc, lazied, page_sizes, page_ratios, page_unsized = rewrite_figures(doc, root)
         doc, dropped = drop_image_preloads(doc, lazied)
         n_lazy += len(lazied)
         n_preload += dropped
         sizes.update(page_sizes)
+        ratios.update(page_ratios)
         unsized += [(str(rel), src, why) for src, why in page_unsized]
 
         doc, dropped_css = drop_jupyter_css(doc)
@@ -1032,11 +1073,11 @@ def main() -> None:
     # One stylesheet for the whole book, written once the pages have been read: the same
     # figure appears on more than one page, and a rule has to exist for every page that
     # shows it. See section 7.
-    write_figure_css(root, sizes)
+    write_figure_css(root, sizes, ratios)
 
     # Postconditions, not a tally of this run's edits: a second run is a legitimate
     # no-op, while markup that has moved under us must still fail.
-    declared = read_figure_css(root)
+    declared, declared_ratios = read_figure_css(root)
     for f in pages:
         doc = f.read_text(encoding="utf-8")
         rel = f.parent.relative_to(root)
@@ -1088,12 +1129,28 @@ def main() -> None:
                     stack.append(name)
                 continue
             src = re.search(r'\bsrc="([^"]*)"', attrs, re.I)
-            if not src or inline_image(token.group(0), stack):
+            if not src:
                 continue
             path = built_asset(root, src.group(1))
             if path is None:
                 continue
             w, h = intrinsic_size(path)
+            name_on_disk = src.group(1).rsplit("/", 1)[-1]
+            if inline_image(token.group(0), stack):
+                # Height fixed elsewhere: the ratio alone, in the stylesheet, and no
+                # width anywhere -- a width is what would distort these three.
+                if re.search(r"\b(?:width|height)\s*=", token.group(0), re.I):
+                    sys.exit(
+                        f"::error::{f}: {name_on_disk} has its height fixed by the page "
+                        f"and must not carry width/height attributes"
+                    )
+                if declared_ratios.get(name_on_disk) != (w, h):
+                    sys.exit(
+                        f"::error::{f}: myst-theme.css says "
+                        f"{declared_ratios.get(name_on_disk)} for {name_on_disk}, "
+                        f"the file is {w}x{h}"
+                    )
+                continue
             got = re.search(r'\bwidth="(\d+)"[^>]*\bheight="(\d+)"', token.group(0), re.I)
             if not got:
                 sys.exit(f"::error::{f}: {src.group(1)} has no width/height")
@@ -1103,7 +1160,6 @@ def main() -> None:
                     f"{got.group(1)}x{got.group(2)} but the file is {w}x{h}"
                 )
             # ...and the stylesheet, which is the half that survives hydration.
-            name_on_disk = src.group(1).rsplit("/", 1)[-1]
             if declared.get(name_on_disk) != (w, h):
                 sys.exit(
                     f"::error::{f}: myst-theme.css says {declared.get(name_on_disk)} for "
@@ -1126,15 +1182,16 @@ def main() -> None:
                     f"hydration payload; it would get the rejected figure back"
                 )
 
-    # The images that were deliberately left unsized, named: three of them, and if that
-    # number grows the reason should be read rather than assumed.
+    # Anything that could not be measured at all, named rather than counted: today there
+    # is nothing here, and something arriving in this list is something to read.
     for rel, src, why in unsized:
         print(f"  unsized: /{rel} {src.rsplit('/', 1)[-1]} -- {why}")
 
     print(
         f"head_meta: {len(pages)} pages, {trimmed}/{chapters} titles trimmed "
         f'(suffix "{suffix.strip()}"), {n_tags} card tags added, '
-        f"{len(sizes)} figures sized ({len(unsized)} left unsized), "
+        f"{len(sizes)} figures sized, {len(ratios)} given the ratio alone "
+        f"({len(unsized)} not measurable), "
         f"{n_lazy} figures lazy-loaded, {n_preload} image preloads dropped, "
         f"{n_css} jupyter stylesheets dropped, {n_keywords} empty keywords metas dropped, "
         f"{n_cards} og:image replaced with {card}"

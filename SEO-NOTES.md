@@ -1520,3 +1520,60 @@ changed inside it, which is what alignment does not look at.
   a new Lighthouse number. The number has to come from PageSpeed Insights after the deploy.
 * **ACTION-PLAN 2.2 (`BreadcrumbList`) was already shipped** in `167f610`, so Phase 2 is
   complete except for that re-measurement.
+
+## 19. The sizing landed, CLS did not move, and §18 named the wrong cause (2026-10-18)
+
+The audit session re-ran PageSpeed Insights against the live site after `a9237e8` was
+deployed, three runs per page, and recorded it in
+`datascience.konradvoelkel.com-audit/findings/measurement-2026-10-18.md`. The result has
+to be written down here, because §18 claimed more than it had measured.
+
+| | before Phase 1 | after Phase 1 | after Phase 2 |
+|---|---|---|---|
+| homepage CLS | 0 | 0.1527 | **0.1527** |
+| `/expectation-variance/` CLS | 0.2784 | 0.2784 | **0.2784** |
+
+Identical to four decimal places. Lighthouse agrees the fix landed — `unsized-images`
+dropped the course-structure diagram, going from three items to two on the homepage and
+from six to one on the chapter — and the shift it names is still the same one, on the
+`<p>` around that diagram.
+
+**So the audit's attribution was wrong, and §18 repeated it.** What §18 measured is true
+and still worth having: an image with no reserved box takes 722×28 instead of 284×274 on
+a hydrated page, and the stylesheet half of the fix does survive the re-render and does
+apply — `getComputedStyle` on the live diagram resolves `aspect-ratio` to `920 / 994`.
+What §18 implied, and should not have, is that this was the cause of the measured CLS. It
+was not. Unsized images were a real defect, they are fixed, and the number they were
+supposed to move did not move.
+
+The homepage's 0 before Phase 1 is also not what it looked like: the audit's reading, which
+fits the dates, is that the two render-blocking Jupyter stylesheets delayed first paint
+until after the diagram had arrived, so the shift had nowhere to show. Taking them off the
+critical path did not create the shift; it stopped hiding it.
+
+What remains is the re-render — the subject of §18's middle section, now the leading
+suspect for the shift itself rather than merely the reason the markup half is wasted. One
+observation against calling that settled: loaded here in an unthrottled browser, on the
+live site, the homepage reports **no layout shift at all**, and the re-render happens on
+every load regardless of connection speed. Either the measurement here is blind (the
+observer is registered after load, and buffered entries may already be gone) or the shift
+needs the slow-network timing PSI emulates, in which case something arriving late is still
+part of the cause. Not settled, and not settleable from this machine; `local_7df0b4f7` has
+the re-render.
+
+### And the three images that had no box at all now have one
+
+§18 left the licence badge and the two inline thumbnails in `descriptive-statistics`
+unsized, because their height is fixed by the page and an attribute width next to a fixed
+height is what would stretch them. That was half right: they must not have a *width*, but
+they can have the **ratio alone**, and then the constraint travels the other way — the
+browser takes the height it already has and computes the width from the ratio.
+
+Measured on the licence badge, 267×50 on disk and 20 px tall on the page: with the rule an
+instance that never loads reserves 102.5×19.2, which is exactly the box it occupies once
+loaded; without it, 25.2×19.2. Every one of the 196 images inside `<main>` now has a
+reserved box — 193 by width and ratio, three by ratio alone — and no rendered box on the
+landing page moved by so much as a tenth of a pixel.
+
+This is completeness, not a CLS fix. After the measurement above, nobody should expect it
+to move the number.
