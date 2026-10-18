@@ -2,19 +2,19 @@
   "file": "landing-page.md",
   "additions": [
     {
-      "block": "28",
+      "block": "30",
       "reason": "translator's note: opening of the :::{note} about this edition"
     },
     {
-      "block": "29",
+      "block": "31",
       "reason": "translator's note: what this edition is and where the German original lives"
     },
     {
-      "block": "30",
+      "block": "32",
       "reason": "translator's note: that the translation is machine-made"
     },
     {
-      "block": "31",
+      "block": "33",
       "reason": "translator's note: closing of the :::{note}"
     }
   ]

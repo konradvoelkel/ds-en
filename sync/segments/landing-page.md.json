@@ -1,7 +1,7 @@
 {
  "source": "landing-page.md",
  "target": "landing-page.md",
- "upstream": "885402cfb6f939fcee5bcddc91123d96fd5b8dac",
+ "upstream": "12a37a5137e141746bb46d918caac37b16e99a05",
  "blocks": [
   {
    "de": "0",
@@ -162,65 +162,79 @@
   {
    "de": "22",
    "kind": "prose",
-   "digest": "2eb0d2d0d77cec54",
-   "en": null,
-   "dropped": "pointer to orga.md, the course-organisation page this edition does not mirror",
-   "preview": "Zum Betrieb der Vorlesung an der HHU — Aufzeichnungen, Folien, Übungsbet…"
+   "digest": "05bfaf77b2a935a5",
+   "en": "20",
+   "preview": "[Konrad Völkel](https://www.konradvoelkel.com/) hat zwei weitere Vorlesu…"
   },
   {
    "de": "23",
    "kind": "prose",
-   "digest": "67f3f7053d669739",
-   "en": "20",
-   "preview": "Wir werden immer wieder auf zusätzliche Quellen stoßen, um einzelne Them…"
+   "digest": "2eb0d2d0d77cec54",
+   "en": null,
+   "dropped": "pointer to orga.md, the course-organisation page this edition does not mirror. Was block 22 until 12a37a51 inserted the sibling-notes paragraph above it.",
+   "preview": "Zum Betrieb der Vorlesung an der HHU — Aufzeichnungen, Folien, Übungsbet…"
   },
   {
    "de": "24",
-   "kind": "heading",
-   "digest": "4a7a0de77842dc8f",
+   "kind": "prose",
+   "digest": "67f3f7053d669739",
    "en": "21",
-   "preview": "## Inhaltsverzeichnis"
+   "preview": "Wir werden immer wieder auf zusätzliche Quellen stoßen, um einzelne Them…"
   },
   {
    "de": "25",
-   "kind": "directive",
-   "digest": "599c3f8c1a8fa099",
+   "kind": "heading",
+   "digest": "4a7a0de77842dc8f",
    "en": "22",
-   "preview": "```{tableofcontents} ```"
+   "preview": "## Inhaltsverzeichnis"
   },
   {
    "de": "26",
-   "kind": "heading",
-   "digest": "86f6ebaceddb8843",
+   "kind": "directive",
+   "digest": "599c3f8c1a8fa099",
    "en": "23",
-   "preview": "## Lizenz"
+   "preview": "```{tableofcontents} ```"
   },
   {
    "de": "27",
-   "kind": "prose",
-   "digest": "aba2c7d3e0f8e699",
+   "kind": "heading",
+   "digest": "86f6ebaceddb8843",
    "en": "24",
-   "preview": "Dieses Vorlesungsskript steht unter der [Creative Commons Lizenz Namensn…"
+   "preview": "## Lizenz"
   },
   {
    "de": "28",
    "kind": "prose",
-   "digest": "5da41b2ce11d8a7f",
+   "digest": "bd6c6ddd6a95841f",
    "en": "25",
-   "preview": "Davon ausgenommen sind gekennzeichnete Fremdinhalte, die unter ihrer jew…"
+   "preview": "Verfasst von [Dr. Konrad Völkel](https://www.konradvoelkel.com/), Heinri…"
   },
   {
    "de": "29",
-   "kind": "heading",
-   "digest": "465bdf090bc6cd1d",
+   "kind": "prose",
+   "digest": "aba2c7d3e0f8e699",
    "en": "26",
-   "preview": "## Quellen"
+   "preview": "Dieses Vorlesungsskript steht unter der [Creative Commons Lizenz Namensn…"
   },
   {
    "de": "30",
    "kind": "prose",
-   "digest": "920d86bd69a9a910",
+   "digest": "5da41b2ce11d8a7f",
    "en": "27",
+   "preview": "Davon ausgenommen sind gekennzeichnete Fremdinhalte, die unter ihrer jew…"
+  },
+  {
+   "de": "31",
+   "kind": "heading",
+   "digest": "465bdf090bc6cd1d",
+   "en": "28",
+   "preview": "## Quellen"
+  },
+  {
+   "de": "32",
+   "kind": "prose",
+   "digest": "920d86bd69a9a910",
+   "en": "29",
    "preview": "Nichts in diesem Buch ist neu, bis auf die Reihenfolge und sicherlich de…"
   }
  ]
