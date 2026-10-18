@@ -5,7 +5,7 @@ description: "Levels of measurement and the summary measures they permit, a work
 
 {cite}`dds`, p. 41 shows schematically how we go about 'data science':
 
-```{figure} images/ds-process-oneill.png
+```{figure} images/ds-process-oneill.webp
 :width: 480px
 :align: center
 :name: ds-process
@@ -343,7 +343,7 @@ The second reason to always plot is Simpson's paradox from above: a single summa
 
   * Combining the parts:
 
-    ![Separately](images/layers-einzeln.png) $\to$ ![Together](images/layers-zusammen.png)
+    ![The grammar of graphics layers drawn apart: data, aesthetics, geometry and statistics each on their own plane, stacked above one another](images/layers-einzeln.png) $\to$ ![The same layers collapsed onto one plane, composing into the finished plot](images/layers-zusammen.png)
 
   * A layer consists of
 
@@ -394,7 +394,7 @@ The second reason to always plot is Simpson's paradox from above: a single summa
 
 A colour palette that works well even with restricted colour perception is this one:
 
-![A good palette](images/gute-palette.png)
+![Eight swatches that stay distinguishable with restricted colour perception: black, amber, light blue, green, yellow, dark blue, orange and pink](images/gute-palette.png)
 
 That it works can be checked by calculation: a colour vision deficiency can be simulated as a linear map in colour space, and applied to the eight colours above, that looks like this.
 

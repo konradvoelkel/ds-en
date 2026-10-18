@@ -194,6 +194,23 @@ jobs:
           # crawlers to a machine that does not exist -- i.e. the site ships no sitemap.
           sed -i "s|http://localhost:3000|$SITE|g" _build/html/sitemap.xml _build/html/robots.txt
 
+          # The licence, where a crawler can read it. Every AI crawler is already allowed
+          # by the Allow: / above, and that is the right posture for a book whose point is
+          # to be read and cited -- but a blanket Allow says nothing about the terms, and
+          # CC BY-SA has terms: attribution, and share-alike. Content-Signal is Cloudflare's
+          # syntax for saying so in the one file every crawler already fetches. Adoption is
+          # early and no crawler is obliged to honour it; it costs three lines, and it makes
+          # the licence machine-readable where until now it was only in the HTML and the
+          # JSON-LD. Appended here rather than in a tool because robots.txt is MyST's file
+          # and this is the step that already owns rewriting it.
+          printf '%s\n' \
+            '' \
+            '# Licensed CC BY-SA 4.0: reuse, including as AI training and AI input, is' \
+            '# permitted with attribution and share-alike.' \
+            '# https://creativecommons.org/licenses/by-sa/4.0/' \
+            'Content-Signal: search=yes, ai-train=yes, ai-input=yes' \
+            >> _build/html/robots.txt
+
           # Point every <loc> at the URL that actually answers 200. GitHub Pages redirects
           # "/ds-en/kmeans" with a 301 to "/ds-en/kmeans/", but MyST writes the form
           # without the slash. A sitemap full of redirects -- and a canonical pointing at
