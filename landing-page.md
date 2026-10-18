@@ -66,6 +66,28 @@ The opening chapter gives an overview of what data science is and what we are go
 ```{tableofcontents}
 ```
 
+## How to cite
+
+These notes are archived at Zenodo. Please cite the DOI rather than the address: it
+outlives any move, and the one below always resolves to the newest version.
+
+> Völkel, Konrad (2026). *Data Science: from stochastics to machine learning with
+> Python.* Zenodo. ``doi:10.5281/zenodo.23444644``
+
+```bibtex
+@book{voelkel2026datascience,
+  author    = {Völkel, Konrad},
+  title     = {Data Science: from stochastics to machine learning with Python},
+  year      = {2026},
+  publisher = {Zenodo},
+  doi       = {10.5281/zenodo.23444644},
+  url       = {https://datascience.konradvoelkel.com/},
+}
+```
+
+To cite one particular version rather than the book as a whole, Zenodo mints a separate
+DOI for each; they are listed on the record.
+
 ## Licence
 
 Written by [Dr. Konrad Völkel](https://www.konradvoelkel.com/), Heinrich Heine University Düsseldorf.
