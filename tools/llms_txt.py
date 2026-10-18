@@ -46,6 +46,9 @@ An open textbook by {author} ({affiliation}), CC BY-SA 4.0. It begins with proba
 and statistics and ends with machine learning without leaving a gap in between: the
 estimators and learning algorithms are reimplemented in Python rather than called.
 
+Archived at https://doi.org/10.5281/zenodo.23444644 — the concept DOI, which always
+resolves to the newest version, and the one to cite.
+
 Each chapter below links to its Markdown source. The whole book in one file is at
 {site}/llms-full.txt
 

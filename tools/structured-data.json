@@ -8,6 +8,16 @@
  "url": "__SITE__/",
  "name": "Data Science: from stochastics to machine learning with Python",
  "description": "An introduction to data science that begins with stochastics and ends with machine learning without leaving a gap in between, reimplementing the estimators and learning algorithms -- k-means, principal component analysis, regression, expectation maximization -- rather than calling them.",
+ "identifier": {
+  "@type": "PropertyValue",
+  "propertyID": "DOI",
+  "value": "10.5281/zenodo.23444644",
+  "url": "https://doi.org/10.5281/zenodo.23444644"
+ },
+ "sameAs": [
+  "https://doi.org/10.5281/zenodo.23444644",
+  "https://zenodo.org/records/23444645"
+ ],
  "inLanguage": "en",
  "isAccessibleForFree": true,
  "license": "https://creativecommons.org/licenses/by-sa/4.0/",
