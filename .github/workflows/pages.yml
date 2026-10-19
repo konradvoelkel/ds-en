@@ -203,12 +203,30 @@ jobs:
           # the licence machine-readable where until now it was only in the HTML and the
           # JSON-LD. Appended here rather than in a tool because robots.txt is MyST's file
           # and this is the step that already owns rewriting it.
+          #
+          # The `Content-Signal:` line itself was removed on 2026-10-19 and only these
+          # comments remain. Two reasons, and the second is the one that decides it:
+          #
+          #   * Bing's robots.txt tester answers "Syntax not understood" for it, in both
+          #     the original placement and the corrected one inside the group. That is
+          #     expected -- it is a 2025 extension Bing does not implement -- but it also
+          #     means we cannot tell from outside whether Bing merely skips the line or
+          #     does something less kind to the group it sits in. RFC 9309 §2.2 says skip;
+          #     Bing's actual parser is not documented. An unverifiable line inside the
+          #     group that carries `Allow: /` is not worth the doubt.
+          #   * Content-Signal exists to express *refusal* -- Cloudflare's own default is
+          #     `ai-train=no`. Ours said yes three times, which is what a consumer assumes
+          #     from the absence of any signal at all. It restated, in a syntax nobody
+          #     implements, a permission that CC BY-SA already grants in the HTML, the
+          #     JSON-LD, llms.txt and the three comment lines directly below.
+          #
+          # Comments are safe where the directive was not: every parser strips them, and
+          # they carry the same sentence to the human or crawler that goes looking.
           printf '%s\n' \
             '' \
             '# Licensed CC BY-SA 4.0: reuse, including as AI training and AI input, is' \
             '# permitted with attribution and share-alike.' \
             '# https://creativecommons.org/licenses/by-sa/4.0/' \
-            'Content-Signal: search=yes, ai-train=yes, ai-input=yes' \
             >> _build/html/robots.txt
 
           # Point every <loc> at the URL that actually answers 200. GitHub Pages redirects
@@ -363,6 +381,30 @@ jobs:
           if grep '<loc>' _build/html/sitemap.xml | grep -qv '/</loc>'; then
             fail "a sitemap entry still points at a redirecting URL"
           fi
+
+          # robots.txt carries exactly two things that matter and one that must not come
+          # back. The licence comment is the deliberate part (§22); a directive Bing cannot
+          # parse is what was removed, and a stray non-standard line is the easiest thing
+          # for a later edit to reintroduce without anyone testing it against a crawler.
+          python3 - _build/html/robots.txt <<'EOF'
+          import pathlib, re, sys
+          lines = pathlib.Path(sys.argv[1]).read_text(encoding="utf-8").splitlines()
+          KNOWN = ("user-agent", "allow", "disallow", "sitemap", "crawl-delay")
+          for n, line in enumerate(lines, 1):
+              if not line.strip() or line.lstrip().startswith("#"):
+                  continue
+              field = line.split(":", 1)[0].strip().lower()
+              if field not in KNOWN:
+                  sys.exit(
+                      f"::error::robots.txt line {n} is a non-standard directive "
+                      f"({line.strip()!r}); see SEO-NOTES.md §22 before adding one back"
+                  )
+          if not any("creativecommons.org/licenses/by-sa" in l for l in lines):
+              sys.exit("::error::robots.txt has lost its licence comment")
+          if not any(l.lower().startswith("sitemap:") for l in lines):
+              sys.exit("::error::robots.txt names no sitemap")
+          print(f"robots.txt ok: {len(lines)} lines, no non-standard directive, licence named")
+          EOF
 
           # Every preview image must be absolute, or the card stays empty.
           if find _build/html -name index.html -exec grep -ho 'og:image" content="[^"]*"' {} + \

@@ -2101,3 +2101,75 @@ The cost is that the identifier is an opaque hostname, and that it is GitLab's t
 if the unique-domain switch is ever flipped, the suffix changes and every one of these
 files has to move with it. That is the trade, and it is written down here so the next
 person does not have to rediscover which of two plausible URLs the graph settled on.
+
+---
+
+## 22. `Content-Signal` is gone, and the line was in the wrong place anyway (2026-10-19)
+
+Bing's robots.txt tester answers **"Syntax not understood"** for the
+`Content-Signal: search=yes, ai-train=yes, ai-input=yes` added in §4.3 of the audit
+(`c8c48bc`). Konrad reported it, and chasing it produced one real finding, one failed fix
+and one decision.
+
+### The finding: it was outside the group it was meant to scope to
+
+`Content-Signal` is scoped to a user-agent group, exactly as `Allow` and `Disallow` are —
+that is how it is specified and how Cloudflare's own managed file writes it. Ours was
+appended to the end of the file, behind a blank line:
+
+```
+User-agent: *
+Allow: /
+Sitemap: https://datascience.konradvoelkel.com/sitemap.xml
+                       ← a blank line ends the group (RFC 9309)
+# Licensed CC BY-SA 4.0: …
+Content-Signal: search=yes, ai-train=yes, ai-input=yes
+```
+
+So from `c8c48bc` until today the line belonged to no user agent at all. Anything that
+*did* implement Content-Signal had nothing to attach it to.
+
+### The fix that did not fix it
+
+Moving it inside the group — directly after `User-agent: *`, before `Allow`, comments
+inside the group too, since comments are line-level and do not break a group while a blank
+line does — produced **the same Bing error**, tested by Konrad on the corrected file. Which
+is what should have been expected: the directive is a 2025 extension Bing does not
+implement, so a tester that reports unknown fields reports this one wherever it sits.
+
+### The decision: drop the directive, keep the comments
+
+Two reasons, and the second decides it.
+
+The first is that we cannot tell from outside what Bing actually does with the line.
+RFC 9309 §2.2 requires a parser to ignore what it does not recognise, and Bing's own
+parser is not documented on this point. An unverifiable line **inside** the group that
+carries `Allow: /` is a worse bargain than the same line outside it — so the correct
+placement, which is the one the spec asks for, is also the one that puts the doubt where
+it matters. That is an argument for not having the line at all rather than for putting it
+back where it was.
+
+The second is that the signal said nothing. `Content-Signal` exists to express *refusal* —
+Cloudflare's default is `ai-train=no`. Ours said yes three times, which is exactly what a
+consumer assumes in the absence of any signal. It restated, in a syntax nobody implements,
+a permission that CC BY-SA already grants, and that this site already states in the HTML,
+the JSON-LD, `llms.txt` and the three comment lines that remain directly below it.
+
+So `robots.txt` now ends with the licence comments and no directive. Comments are safe
+where the directive was not: every parser strips them, and they carry the same sentence to
+whoever goes looking.
+
+### The gate
+
+The artifact gate now rejects **any** non-standard directive in `robots.txt` — anything
+whose field is not `User-agent`, `Allow`, `Disallow`, `Sitemap` or `Crawl-delay` — and
+requires both the licence comment and a `Sitemap:` line to still be there. Checked red on
+a file with `Content-Signal` put back and on a file with the licence comment removed,
+before it was kept. The rule is not "never add a directive"; it is that adding one is a
+decision to be made against a crawler rather than in a text editor, and the error message
+says so.
+
+**What was given up:** a machine-readable *permission*, which for an open textbook is a
+thing worth stating. If a successor to Content-Signal is ever honoured by a crawler that
+matters — and the IETF AI Preferences work is where to look — this is the file to put it
+in, and the gate is the line to change.
