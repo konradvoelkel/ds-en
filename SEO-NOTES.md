@@ -2173,3 +2173,110 @@ says so.
 thing worth stating. If a successor to Content-Signal is ever honoured by a crawler that
 matters — and the IETF AI Preferences work is where to look — this is the file to put it
 in, and the gate is the line to change.
+
+---
+
+## 23. The first paint was queued behind 1.4 MB of JavaScript nobody was waiting for (2026-10-19)
+
+A PageSpeed run on the landing page, mobile, Lighthouse 13.5.0: **57**, FCP 8.4 s,
+LCP 8.9 s, TBT 0 ms, CLS 0. Nothing has regressed — that is the state §19 and §20 left,
+to the tenth of a second. But the score breakdown is the thing the earlier passes never
+looked at:
+
+```
+TBT +30   CLS +25   SI +2   FCP +0   LCP +0
+```
+
+The two metrics this repository has already fixed are earning **all 57 points**. The
+remaining 43 are entirely in FCP, LCP and Speed Index, and FCP and LCP are half a second
+apart — which says the LCP element paints as soon as *anything* paints. There is no slow
+image to find. Nothing paints for 8.4 seconds.
+
+### What is in front of the paint
+
+Measured on the live page:
+
+| in the `<head>` | gzipped |
+|---|---|
+| the document itself | 32 KB |
+| four render-blocking stylesheets | 44 KB |
+| **nineteen `<link rel="modulepreload">`** | **1,407 KB** |
+
+`modulepreload` is fetched at **High** priority, the same bucket as a render-blocking
+stylesheet. On PageSpeed's Slow 4G profile — about 200 KB/s — that is roughly seven
+seconds of JavaScript claiming the link in front of a paint that needs 76 KB.
+
+Two of the six stylesheets are already inert (`media="not all"`, §15a and `head_meta.py`
+section 5), which is why this says four and not six.
+
+### This corrects §17 and the audit's own table
+
+STATUS.md records the 1,043 KiB of unused JavaScript as "the theme's own client bundle",
+reachable from this repository: **No**. That is true of its *size* and false of the
+*priority it is fetched at*. The hints are `<link>` tags in a document this repository
+already rewrites — and section 4 of `head_meta.py` already drops MyST's image preloads on
+exactly this argument, that a preload is fetched whatever the element later says. The same
+reasoning was sitting in the same file and was not carried across to the scripts.
+
+**Dropping the hints does not drop the JavaScript.** The module graph still loads, from
+the `<script type="module">` at the end of the body. What changes is when it competes.
+
+### Measured, A/B, on the built artifact
+
+Same server, same Chrome, same Lighthouse, one variable:
+
+| | baseline | `--drop-modulepreload` |
+|---|---|---|
+| performance | 54 | **79** |
+| FCP | 28.8 s | **3.2 s** |
+| LCP | 29.6 s | **4.0 s** |
+| Speed Index | 28.8 s | **3.2 s** |
+| CLS | 0 | 0 |
+| TBT | 110 ms | 140 ms |
+| TTI | 35.9 s | 36.7 s |
+
+**The absolute numbers are not PageSpeed's and must not be quoted as if they were.** The
+local server is `python3 -m http.server`: single-threaded and without compression, so the
+JavaScript arrives as ~5 MB rather than 1.4 MB and every number is far worse than
+production. That exaggerates the gain. The run also skipped `thebe_gate.py`, the
+`__BASE__` substitution and the font copy, so both sides carry Thebe and 404 their
+webfonts. Both sides, identically — which is what makes the comparison usable and the
+absolute figures useless.
+
+### Hydration, which is the thing that had to be checked
+
+Verified on the built page rather than assumed, because this repository has been caught
+twice (§15, §20): no React error in the console, the outline container fills after mount,
+the theme toggle responds to a click, and all nineteen chunks are fetched exactly once.
+
+React re-inserts the `modulepreload` links into the DOM after hydration — Remix renders
+them client-side — so the served HTML and the hydrated DOM differ in the `<head>` and
+hydration survives it anyway. By the time they are re-added the modules are in cache, so
+they cost nothing.
+
+### What to watch
+
+**TBT.** It rose 110 → 140 ms here, and on the live site it is 0 and worth 30 of the 57
+points. Hydration now starts later by design. If the real TBT crosses 200 ms the trade
+gets worse than it looks, and that number can only be had from PageSpeed on the deployed
+page — which is the run to make after this ships, not before.
+
+### Three smaller things in the same pass
+
+* **The navbar logo had no dimensions at all.** The theme writes `height="2.25rem"`, the
+  computed value of its own `h-9` class, in CSS units; the HTML attribute takes pixels and
+  nothing else, so a browser discards it. That is how it survived a pass that counted 193
+  of 196 figures sized: a tag with `height=` in it reads as sized to anything that greps.
+  The first fix here was wrong and the measurement caught it — `width="216" height="108"`
+  makes the width attribute the used width and renders the logo **216x36**, squashed. It
+  gets the ratio alone instead, the same call section 7 makes for its three, through the
+  same stylesheet; and that rule had to be written *without* the `main ` scope those
+  carry, because the logo is in the navbar. A correct ratio on a selector matching nothing
+  was the second wrong version. It renders 72x36.
+* **Three controls had no accessible name**: the nav menu, the search bar and the
+  downloads menu, each containing one `aria-hidden` SVG and nothing else. They are
+  server-rendered, so `head_meta.py` can label them; the labels survive hydration, checked.
+* **The CC BY-SA badge is not a defect** and an earlier draft of this section said it was.
+  It is one of the three ratio-only images of §19, and Lighthouse naming it under "Image
+  elements do not have explicit width and height" is the accepted cost of that decision.
+  That diagnostic does not enter the score.

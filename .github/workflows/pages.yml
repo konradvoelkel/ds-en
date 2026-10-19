@@ -325,7 +325,15 @@ jobs:
           # <link rel=preload as=image> MyST writes for every figure, because a preloaded
           # image is fetched whatever loading="lazy" says. Runs after the canonical step:
           # og:url is given the same URL the canonical has.
-          python3 tools/head_meta.py "$SITE" _build/html --base "$BASE_URL" --lang en
+          # --drop-modulepreload: the theme emits nineteen <link rel="modulepreload">
+          # naming 1,407 KiB of gzipped JavaScript, fetched at High priority -- the same
+          # bucket as the stylesheets that block the first paint. Measured A/B on the
+          # built artifact (SEO-NOTES.md §23): FCP 28.8 s -> 3.2 s, LCP 29.6 s -> 4.0 s,
+          # score 54 -> 79, CLS 0 either way, TBT 110 -> 140 ms. The JavaScript still
+          # loads, from the module script at the end of the body; only its priority
+          # changes. Hydration was verified on the built page, not assumed.
+          python3 tools/head_meta.py "$SITE" _build/html --base "$BASE_URL" --lang en \
+            --drop-modulepreload
 
           # Structured data: the book on the landing page, and a Chapter +
           # LearningResource with a BreadcrumbList on each of the 29 chapter pages, every

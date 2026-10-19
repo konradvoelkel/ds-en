@@ -869,7 +869,159 @@ def drop_image_preloads(doc: str, srcs: set[str]) -> tuple[str, int]:
     return doc, n
 
 
-def figure_css(sizes: dict[str, tuple[int, int]], ratios: dict[str, tuple[int, int]]) -> str:
+def drop_modulepreloads(doc: str) -> tuple[str, int]:
+    """Remove the theme's `<link rel="modulepreload">` hints.
+
+    Measured on the live landing page, 2026-10-19: nineteen of them, naming 1,407 KiB of
+    gzipped JavaScript, against a 32 KiB document and 44 KiB of render-blocking CSS.
+    `modulepreload` is fetched at *High* priority -- the same bucket as the stylesheets
+    that block the first paint -- so on PageSpeed's Slow 4G profile (~200 KB/s) the four
+    stylesheets queue alongside roughly seven seconds of JavaScript. FCP 8.4 s and LCP
+    8.9 s are half a second apart, which says the LCP element paints as soon as anything
+    paints: nothing on this page is slow except the paint itself.
+
+    **This does not remove the JavaScript.** The module graph is still loaded, by the
+    `<script type="module">` the theme emits at the end of the body; a `modulepreload` is
+    a priority hint and nothing else. What changes is when it competes: after the paint
+    rather than in front of it. The cost is that hydration lands later, and this
+    repository has twice been caught by hydration (SEO-NOTES.md §15, §20), so the thing
+    to watch is TBT, which is 0 today, and CLS, which is 0 because section 8 reserves the
+    outline's height at build time rather than relying on an early hydration.
+
+    The same argument section 4 makes for image preloads -- a preloaded image is fetched
+    whatever `loading="lazy"` says -- and the same place to make it: these are link tags
+    in a document this tool already rewrites. The audit of 2026-10-17 recorded the unused
+    JavaScript as the theme's own bundle and out of reach, which is true of its *size* and
+    not of the *priority* it is fetched at.
+    """
+    n = 0
+
+    def sub(m: re.Match) -> str:
+        nonlocal n
+        n += 1
+        return ""
+
+    doc = re.sub(r'<link\b[^>]*\brel="modulepreload"[^>]*/?>', sub, doc, flags=re.I)
+    return doc, n
+
+
+CHROME_LABELS = {
+    "myst-top-nav-menu-button": "Open the navigation menu",
+    "myst-search-bar": "Search this book",
+    "myst-fm-downloads-button": "Download this book",
+}
+
+
+def name_controls(doc: str) -> tuple[str, int]:
+    """Give the theme's three unnamed buttons an `aria-label`.
+
+    Lighthouse reports "Buttons do not have an accessible name" against the landing page,
+    and the accessibility tree agrees: three of the thirteen server-rendered buttons have
+    no name at all. Each contains one `<svg aria-hidden="true">` and nothing else, so
+    there is no text for a screen reader -- or for an agent reading the tree -- to fall
+    back on. The other ten are fine; the theme labels its "Open Folder", "Author Details"
+    and theme-toggle buttons itself, which is why this is a gap rather than a policy.
+
+    They are keyed by the stable class the theme puts on each (`myst-`-prefixed, and the
+    same strings its stylesheet selects on) rather than by position, so a reordered navbar
+    does not silently relabel the wrong control. A button that already carries a name --
+    `aria-label`, `title` or `aria-labelledby` -- is left alone, so the day the theme adds
+    its own this does nothing instead of fighting it.
+
+    **The names are ours, not the theme's**, and that is the risk: if a later version
+    renames these classes the labels stop being applied, which the postcondition in
+    `main` catches, but if it renames the *controls* while keeping the classes, the labels
+    would be wrong and nothing would catch it. That is the trade for not waiting on
+    upstream, and it is cheap to re-check.
+
+    These are server-rendered, so this is markup the first paint already carries. React
+    leaves an attribute it did not render in place during hydration -- verified on the
+    built page rather than assumed, because this repository has twice been caught out by
+    hydration (SEO-NOTES.md §15, §20).
+    """
+    n = 0
+
+    def sub(m: re.Match) -> str:
+        nonlocal n
+        tag = m.group(0)
+        for cls, label in CHROME_LABELS.items():
+            if cls not in tag:
+                continue
+            if re.search(r'\b(aria-label|title|aria-labelledby)=', tag):
+                return tag
+            n += 1
+            return with_attrs(tag, f'aria-label="{label}"')
+        return tag
+
+    return re.sub(r"<button\b[^>]*>", sub, doc), n
+
+
+def unsized_chrome(
+    doc: str, root: pathlib.Path, skip: set[str]
+) -> list[tuple[str, str, int, int]]:
+    """The `<img>` outside the figure pass that have no usable dimensions: the navbar logo.
+
+    `rewrite_figures` walks the `<main>` slice, because that is where the figures are and
+    where the layout shift was. The navbar logo is outside it, and the theme writes
+    `height="2.25rem"` on it -- the computed value of its own `h-9` class, in CSS units.
+    The HTML `height` attribute takes a number of pixels and nothing else, so a browser
+    discards it, and the page carries an image with no dimensions at all while *looking*
+    as though it has one. That is how it survived a pass that counted 193 of 196 figures
+    sized: a tag with `height=` in it reads as sized to anything that greps for one.
+
+    **These get the ratio and not the attributes**, which is the same call section 7 makes
+    for its three: the logo's height is fixed by a class, so giving it `width` and
+    `height` makes the width attribute the used width and squashes it -- measured, 216x36
+    where it should be 72x36, before this was changed to match. With the ratio alone the
+    constraint travels the other way: the browser takes the height the class gives it and
+    computes the width, and the box is reserved just the same.
+
+    So Lighthouse's "Image elements do not have explicit width and height" still names the
+    logo, as it names those three. That diagnostic does not enter the score, and a
+    distorted logo would be a real defect traded for a cosmetic one. What *is* fixed is
+    the attribute that was lying: the invalid `height` is removed.
+
+    `skip` is the set of src URLs `rewrite_figures` has already ruled on, so a second pass
+    cannot reverse a decision taken with measurements.
+
+    The navbar logo is the interesting one. The theme writes `height="2.25rem"` -- the
+    computed value of its own `h-9` class, in CSS units. The HTML `height` attribute takes
+    a number of pixels and nothing else, so a browser discards it, and the page has an
+    image with no dimensions at all while *looking* as though it has one. That is why it
+    survived a pass that counted 193 of 196 figures sized: a tag with `height=` in it
+    reads as sized to anything that greps.
+
+    The other is the CC BY-SA badge in the licence section, which carries its height in an
+    inline style and no attributes.
+
+    This reports rather than rewrites, and `main` does the editing, so that the count in
+    the summary line is the number of images this changed and not the number of tags it
+    matched.
+    """
+    out: list[tuple[str, int, int]] = []
+    for m in re.finditer(r"<img\b[^>]*>", doc):
+        tag = m.group(0)
+        w = re.search(r'\swidth="(\d+)"', tag)
+        h = re.search(r'\sheight="(\d+)"', tag)
+        if w and h:
+            continue
+        src = re.search(r'\bsrc="([^"]*)"', tag)
+        if not src:
+            continue
+        if src.group(1) in skip:
+            continue
+        path = built_asset(root, src.group(1))
+        if path is None:
+            continue
+        out.append((tag, src.group(1), *intrinsic_size(path)))
+    return out
+
+
+def figure_css(
+    sizes: dict[str, tuple[int, int]],
+    ratios: dict[str, tuple[int, int]],
+    chrome: dict[str, tuple[int, int]] | None = None,
+) -> str:
     """The generated block: one rule per distinct size, in a cascade layer.
 
     `width` *and* `aspect-ratio`, which is what the two attributes do between them: the
@@ -897,22 +1049,33 @@ def figure_css(sizes: dict[str, tuple[int, int]], ratios: dict[str, tuple[int, i
     whatever BASE_URL the site is built for, and so a shorter name cannot match the tail
     of a longer one.
     """
-    def grouped(by_src: dict[str, tuple[int, int]]) -> list[tuple[tuple[int, int], str]]:
+    chrome = chrome or {}
+
+    def grouped(
+        by_src: dict[str, tuple[int, int]], scope: str = "main "
+    ) -> list[tuple[tuple[int, int], str]]:
         groups: dict[tuple[int, int], list[str]] = {}
         for src, size in by_src.items():
             groups.setdefault(size, []).append(src.rsplit("/", 1)[-1])
         return [
-            (size, ",".join(f'main img[src$="/{n}"]' for n in sorted(names)))
+            (size, ",".join(f'{scope}img[src$="/{n}"]' for n in sorted(names)))
             for size, names in sorted(groups.items())
         ]
 
+    # The chrome's one image is in the navbar, so its rule cannot carry the `main `
+    # scope the figures' rules do -- which is exactly the mistake the first version of
+    # section 9 made: a correct ratio on a selector that matched nothing.
     full = [f"{sel}{{width:{w}px;aspect-ratio:{w}/{h}}}" for (w, h), sel in grouped(sizes)]
     ratio_only = [f"{sel}{{aspect-ratio:{w}/{h}}}" for (w, h), sel in grouped(ratios)]
+    ratio_only += [
+        f"{sel}{{aspect-ratio:{w}/{h}}}" for (w, h), sel in grouped(chrome, scope="")
+    ]
     return "\n".join(
         [
             CSS_BEGIN,
             f"/* {len(sizes)} figures in {len(full)} distinct sizes, and {len(ratios)} "
-            f"whose height is fixed elsewhere and which get the ratio only. "
+            f"whose height is fixed elsewhere and which get the ratio only, plus "
+            f"{len(chrome)} outside <main>. "
             f"Do not edit: tools/head_meta.py section 7 writes this. */",
             "@layer figure-dimensions{",
             *full,
@@ -924,7 +1087,10 @@ def figure_css(sizes: dict[str, tuple[int, int]], ratios: dict[str, tuple[int, i
 
 
 def write_figure_css(
-    root: pathlib.Path, sizes: dict[str, tuple[int, int]], ratios: dict[str, tuple[int, int]]
+    root: pathlib.Path,
+    sizes: dict[str, tuple[int, int]],
+    ratios: dict[str, tuple[int, int]],
+    chrome: dict[str, tuple[int, int]] | None = None,
 ) -> int:
     """Put the block into the one stylesheet of ours that the theme itself loads.
 
@@ -941,7 +1107,7 @@ def write_figure_css(
             f"survives hydration."
         )
     css = stylesheet.read_text(encoding="utf-8")
-    block = figure_css(sizes, ratios)
+    block = figure_css(sizes, ratios, chrome)
     if CSS_BLOCK.search(css):
         css = CSS_BLOCK.sub(lambda _: block, css, count=1)
     else:
@@ -1215,6 +1381,11 @@ def main() -> None:
     ap.add_argument("html_dir")
     ap.add_argument("--base", default="", help="BASE_URL, the path the site is served from")
     ap.add_argument("--lang", default="en", help="the edition's language, for og:locale")
+    ap.add_argument(
+        "--drop-modulepreload",
+        action="store_true",
+        help="remove the theme's modulepreload hints; see drop_modulepreloads()",
+    )
     args = ap.parse_args()
 
     site = args.site.rstrip("/")
@@ -1229,6 +1400,9 @@ def main() -> None:
     pages = sorted(root.rglob("index.html"))
     card = social_card(root, index.read_text(encoding="utf-8"))
     trimmed = n_lazy = n_preload = n_tags = n_css = n_cards = n_keywords = n_outline = 0
+    n_chrome_sized = n_named = 0
+    chrome_ratios: dict[str, tuple[int, int]] = {}
+    n_modulepreload = 0
     chapters = 0
     outlines: dict[str, tuple[int, int]] = {}
     sizes: dict[str, tuple[int, int]] = {}
@@ -1267,6 +1441,21 @@ def main() -> None:
         ratios.update(page_ratios)
         unsized += [(str(rel), src, why) for src, why in page_unsized]
 
+        # Section 9: the chrome the figure pass never looked at, and the three controls
+        # the theme leaves unnamed.
+        ruled_on = set(page_sizes) | set(page_ratios)
+        for tag, src, w, h in unsized_chrome(doc, root, ruled_on):
+            # The invalid attribute goes; the ratio does the reserving, through the same
+            # stylesheet the three ratio-only figures use.
+            doc = doc.replace(tag, re.sub(r'\s(?:width|height)="[^"]*"', "", tag))
+            chrome_ratios[src] = (w, h)
+            n_chrome_sized += 1
+        doc, named = name_controls(doc)
+        n_named += named
+        if args.drop_modulepreload:
+            doc, dropped_mp = drop_modulepreloads(doc)
+            n_modulepreload += dropped_mp
+
         doc, inerted_css = inert_jupyter_css(doc, str(f))
         n_css += inerted_css
 
@@ -1291,7 +1480,7 @@ def main() -> None:
     # One stylesheet for the whole book, written once the pages have been read: the same
     # figure appears on more than one page, and a rule has to exist for every page that
     # shows it. See section 7.
-    write_figure_css(root, sizes, ratios)
+    write_figure_css(root, sizes, ratios, chrome_ratios)
     write_outline_css(root)
 
     # Postconditions, not a tally of this run's edits: a second run is a legitimate
@@ -1458,7 +1647,9 @@ def main() -> None:
         f"{n_lazy} figures lazy-loaded, {n_preload} image preloads dropped, "
         f"{n_css} jupyter stylesheets made inert, {n_keywords} empty keywords metas dropped, "
         f"{n_cards} og:image replaced with {card}, "
-        f"{n_outline} outlines reserved{span}"
+        f"{n_outline} outlines reserved{span}, "
+        f"{n_chrome_sized} chrome images given a ratio, {n_named} controls named"
+        + (f", {n_modulepreload} modulepreloads dropped" if n_modulepreload else "")
     )
 
 
