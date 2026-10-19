@@ -1,0 +1,40 @@
+[
+ {
+  "@type": [
+   "Book",
+   "LearningResource"
+  ],
+  "@id": "https://voelkel.pages.cs.uni-duesseldorf.de/eipy-skript/#work",
+  "url": "https://voelkel.pages.cs.uni-duesseldorf.de/eipy-skript/",
+  "name": "Einführung in Python",
+  "alternateName": "Introduction to Python",
+  "description": "Lecture notes that introduce Python as a second programming language to undergraduates who already know one: data types, control flow, objects, the tooling around a Python project, and application development.",
+  "inLanguage": "de",
+  "isAccessibleForFree": true,
+  "license": "https://creativecommons.org/licenses/by-sa/4.0/",
+  "learningResourceType": "Lecture notes",
+  "educationalLevel": "Undergraduate",
+  "author": {
+   "@id": "__SITE__/#author"
+  }
+ },
+ {
+  "@type": [
+   "Book",
+   "LearningResource"
+  ],
+  "@id": "https://voelkel.pages.cs.uni-duesseldorf.de/eidl-skript/#work",
+  "url": "https://voelkel.pages.cs.uni-duesseldorf.de/eidl-skript/",
+  "name": "Einführung in Deep Learning",
+  "alternateName": "Introduction to Deep Learning",
+  "description": "Lecture notes on deep learning, following on from the data science notes: the perceptron and backpropagation, architectures, representation learning, transformers and large language models, worked in PyTorch.",
+  "inLanguage": "de",
+  "isAccessibleForFree": true,
+  "license": "https://creativecommons.org/licenses/by-sa/4.0/",
+  "learningResourceType": "Lecture notes",
+  "educationalLevel": "Undergraduate",
+  "author": {
+   "@id": "__SITE__/#author"
+  }
+ }
+]

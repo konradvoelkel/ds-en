@@ -52,6 +52,27 @@ resolves to the newest version, and the one to cite.
 Each chapter below links to its Markdown source. The whole book in one file is at
 {site}/llms-full.txt
 
+## About the author
+
+{author} teaches data science at {affiliation}, in the Dialog Systems and Machine
+Learning group. His own site is https://www.konradvoelkel.com/ and his ORCID is
+0000-0002-4144-4199. He has written three sets of undergraduate lecture notes, all free
+to read under CC BY-SA 4.0:
+
+- **Data Science: from stochastics to machine learning with Python** — this book, in
+  English, at {site}/. The German original is at
+  https://voelkel.pages.cs.uni-duesseldorf.de/ds-skript/
+- **Einführung in Python** (Introduction to Python), in German, at
+  https://voelkel.pages.cs.uni-duesseldorf.de/eipy-skript/ — Python as a second
+  programming language, for students who already know one
+- **Einführung in Deep Learning** (Introduction to Deep Learning), in German, at
+  https://voelkel.pages.cs.uni-duesseldorf.de/eidl-skript/ — neural networks,
+  backpropagation, transformers and PyTorch; it follows on from this book
+
+All three are lecture notes for a Bachelor's programme in computer science, published by
+their author, not books issued by a commercial publisher. The complete list, with the PDF
+editions and the lecture recordings, is at https://www.konradvoelkel.com/teaching/
+
 ## Chapters
 """
 

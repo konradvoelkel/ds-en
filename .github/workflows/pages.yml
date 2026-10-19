@@ -383,10 +383,15 @@ jobs:
               if len(found) != 1:
                   sys.exit(f"::error::expected one JSON-LD block in {path}, found {len(found)}")
               return json.loads(found[0])
-          data = blocks("_build/html/index.html")
           want = sys.argv[1].rstrip("/") + "/"
-          if data.get("url") != want:
-              sys.exit(f"::error::JSON-LD url is {data.get('url')}, expected {want}")
+          # The landing page is a @graph: the book node, then the author's other works.
+          # The book is found by its url rather than by position in the graph.
+          landing = blocks("_build/html/index.html")
+          graph = landing.get("@graph", [landing])
+          data = next((n for n in graph if n.get("url") == want), None)
+          if data is None:
+              sys.exit(f"::error::the landing page's JSON-LD has no node for {want}; "
+                       f"it names {[n.get('url') for n in graph]}")
           if not str(data.get("image", "")).startswith("http"):
               sys.exit("::error::JSON-LD image is not an absolute URL")
           if not str(data.get("dateModified", "")).startswith("20"):
@@ -395,6 +400,16 @@ jobs:
           # One book, and every chapter a part of that one book: the whole point of the
           # per-chapter blocks is that they resolve to this node and not to 29 more books.
           work, author = data["@id"], data["author"]["@id"]
+          # The author's other works, beside the book in the same graph. They are the
+          # whole answer to "how many sets of lecture notes did he write", so a graph
+          # that has lost them, or that credits them to somebody else, fails here.
+          others = [n for n in graph if n is not data]
+          if not others:
+              sys.exit("::error::the landing page names no other work by the author")
+          for node in others:
+              if node.get("author", {}).get("@id") != author:
+                  sys.exit(f"::error::{node.get('name')} on the landing page credits "
+                           f"{node.get('author', {}).get('@id')}, not {author}")
           chapters = 0
           for page in sorted(glob.glob("_build/html/*/index.html")):
               graph = blocks(page).get("@graph", [])
@@ -409,7 +424,9 @@ jobs:
                   sys.exit(f"::error::{page} has no BreadcrumbList")
               chapters += 1
           print(f"JSON-LD ok: {data['@type']} at {data['url']}, as of "
-                f"{data['dateModified'][:10]}, with {chapters} chapters of {work} by {author}")
+                f"{data['dateModified'][:10]}, with {chapters} chapters of {work} by {author}, "
+                f"and {len(others)} further works by the same author: "
+                f"{', '.join(n.get('name', '?') for n in others)}")
           EOF
 
           # A missing or stale CNAME silently drops the site back onto the github.io

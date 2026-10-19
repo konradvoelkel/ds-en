@@ -43,6 +43,36 @@ the university -- it is a translated book. The author's affiliation is a differe
 and that one is true, so it stays.
 
 
+Three works, one author
+-----------------------
+
+Asked in October 2026 how many sets of lecture notes Konrad Völkel had written, ChatGPT
+answered that it "could not verify a reliable total" and, once pushed, produced the right
+three with a caveat attached. It had one source for the claim: the sibling-notes paragraph
+on this landing page, in prose, in one edition. The two German works it named carry no
+structured data at all, and nothing anywhere stated the set.
+
+So the landing page is now a `@graph` rather than the bare book node, and the two other
+works are in it: `tools/sibling-works.json`, each a `["Book","LearningResource"]` whose
+`author` is the same `{"@id": .../#author}` reference the chapters use. Nothing else about
+them is claimed here beyond what their own `myst.yml` already asserts -- title, language,
+CC BY-SA, undergraduate lecture notes -- because this site is not their publisher and a
+description it invents would be the kind of unverifiable claim the rest of this file
+avoids.
+
+Their `@id`s are `<their-url>/#work`, the pattern this site uses for its own book. When
+those two sites grow structured data of their own they will mint the same `@id`, and the
+two halves become one entity instead of two descriptions of a URL.
+
+The German edition of *this* book is not in that list: it is the same work in another
+language, and it is already named, correctly, by the book node's `translationOfWork`.
+
+A `Person` has no "works" property in schema.org, which is why this reads from the works'
+side rather than the author's. That is also why it is not an `ItemList`: a list of three
+is a claim about a page's contents, three nodes sharing an `author` is a claim about the
+world, and the second one is the one being made.
+
+
 BreadcrumbList
 --------------
 
@@ -132,6 +162,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 import freshness  # noqa: E402  (same directory; imported for book_date and project)
 
 TEMPLATE = Path(__file__).resolve().parent / "structured-data.json"
+SIBLINGS = Path(__file__).resolve().parent / "sibling-works.json"
 
 
 def meta(doc: str, kind: str, name: str) -> str | None:
@@ -171,6 +202,22 @@ def book_node(site: str) -> dict:
     return json.loads(TEMPLATE.read_text(encoding="utf-8").replace("__SITE__", site))
 
 
+def sibling_nodes(site: str, book: dict) -> list[dict]:
+    """The author's other two sets of lecture notes. See "Three works, one author"."""
+    nodes = json.loads(SIBLINGS.read_text(encoding="utf-8").replace("__SITE__", site))
+    for node in nodes:
+        # The reference has to resolve inside this same document, or the graph says
+        # "some author" three times instead of "this author" three times.
+        if node["author"]["@id"] != book["author"]["@id"]:
+            raise SystemExit(
+                f"✗ {SIBLINGS.name}: {node['name']} credits {node['author']['@id']}, "
+                f"which is not the book's author {book['author']['@id']}"
+            )
+        if node["@id"] == book["@id"]:
+            raise SystemExit(f"✗ {SIBLINGS.name}: {node['name']} reuses the book's @id")
+    return nodes
+
+
 def chapter_graph(
     site: str, slug: str, part: str | None, position: int, doc: str, book: dict
 ) -> dict:
@@ -205,7 +252,8 @@ def chapter_graph(
 
 
 def landing_graph(site: str, root: Path, doc: str, book: dict) -> dict | None:
-    """The book node, with the preview card and the date of the newest change in it."""
+    """The book node, with the preview card and the date of the newest change in it,
+    and beside it the author's other two works. See "Three works, one author"."""
     card = re.search(r'<meta property="og:image" content="([^"]+)"', doc)
     if not card:
         print(f"✗ {root / 'index.html'} has no og:image to point the structured data at")
@@ -216,7 +264,13 @@ def landing_graph(site: str, root: Path, doc: str, book: dict) -> dict | None:
     book["image"] = card.group(1)
     # ...but the date written here is the *book's*, not this page's. See the docstring.
     book["dateModified"] = freshness.book_date(root)
-    return book
+    # The context moves up to the graph, as it does on a chapter page; a node inside a
+    # @graph carrying its own is legal and is noise.
+    book.pop("@context", None)
+    return {
+        "@context": "https://schema.org",
+        "@graph": [book, *sibling_nodes(site, book)],
+    }
 
 
 def script(payload: dict) -> str:
@@ -229,7 +283,7 @@ def script(payload: dict) -> str:
     return f'<script type="application/ld+json">{text}</script>'
 
 
-def check(root: Path, pages: list[tuple[str, str | None]], book: dict) -> int:
+def check(site: str, root: Path, pages: list[tuple[str, str | None]], book: dict) -> int:
     """Postconditions on all thirty pages, not a tally of this run's edits.
 
     It also hands the book's `dateModified` back through `book`, because on a run that
@@ -252,10 +306,28 @@ def check(root: Path, pages: list[tuple[str, str | None]], book: dict) -> int:
             print(f"✗ {target} carries ld+json that does not parse: {exc}")
             return 1
         if not slug:
-            if payload.get("@id") != book["@id"]:
-                print(f"✗ the landing page's node is not {book['@id']}")
+            # A @graph since "Three works, one author": the book node first, then the
+            # author's other two works. The book is found by @id rather than by position,
+            # so the order of the graph is not load-bearing.
+            graph = payload.get("@graph", [payload])
+            found = next((n for n in graph if n.get("@id") == book["@id"]), None)
+            if not found:
+                print(f"✗ the landing page's graph has no node {book['@id']}")
                 return 1
-            book["dateModified"] = payload.get("dateModified", "?")
+            others = [n for n in graph if n is not found]
+            expected = sibling_nodes(site, book)
+            if len(others) != len(expected):
+                print(
+                    f"✗ the landing page names {len(others)} other works, "
+                    f"{SIBLINGS.name} lists {len(expected)}"
+                )
+                return 1
+            for node in others:
+                if node.get("author", {}).get("@id") != book["author"]["@id"]:
+                    print(f"✗ {node.get('name')} on the landing page is not credited to "
+                          f"{book['author']['@id']}")
+                    return 1
+            book["dateModified"] = found.get("dateModified", "?")
             continue
         nodes = {
             tuple(n["@type"]) if isinstance(n["@type"], list) else n["@type"]: n
@@ -356,11 +428,12 @@ def main() -> int:
         )
         written += 1
 
-    if rc := check(root, pages, book):
+    if rc := check(site, root, pages, book):
         return rc
     print(
         f"✓ structured data on {len(pages)} pages: {written} written, {skipped} already "
-        f"had a block; one Book ({book['@id']}), {len(pages) - 1} chapters, one author "
+        f"had a block; one Book ({book['@id']}), {len(pages) - 1} chapters, "
+        f"{len(sibling_nodes(site, book))} further works by the same author "
         f"({book['author']['@id']}), as of {book.get('dateModified', '?')[:10]}"
     )
     return 0

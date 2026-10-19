@@ -1965,3 +1965,112 @@ and its contents are not, the theme fills it after mount, and under any throttli
 puts first paint before the fill it is a shift. Reserving its height at build time is
 reachable from `tools/` — a `min-height` on that container below the `lg` breakpoint,
 computed per page — and that is the siblings' fix, not this one's.
+
+---
+
+## 21. "I could not verify a reliable total": the author, and the two sites that say nothing about him (2026-10-19)
+
+Asked *"How many books did Konrad Völkel, Düsseldorf, write and about which topic?"*,
+ChatGPT answered that it had found the right person — mathematics, data science, machine
+learning, Python, at HHU — and then that it "could not verify a reliable total of
+published books by him". Told "lecture notes, within the last 5 years", it produced the
+right three, and attached a caveat to them: *"These are university lecture scripts, not
+necessarily three commercially published books."*
+
+The caveat is correct and should stay correct. The hedge before it was not a model
+failure; it was an accurate report of what the web says. This section is about what the
+web said, and what in this repository was changed about it.
+
+### Where the answer came from, and why there was only one source
+
+Every one of the three titles it named is traceable to a single paragraph: "Reading these
+notes", on this landing page, which until today read *"Konrad Völkel has published two
+further sets of lecture notes, both in German"*. ChatGPT said as much — it cited the Data
+Science site as the thing that "explicitly describes the two other scripts". One
+paragraph, in one edition, in prose, in a sentence that requires the reader to add one to
+two.
+
+Nothing corroborated it. Measured on 2026-10-19:
+
+| | `og:image` | JSON-LD | author in `<head>` | sitemap | canonical |
+|---|---|---|---|---|---|
+| this edition | ✅ card | ✅ `Book` + 29 `Chapter` | ✅ in JSON-LD | ✅ | ✅ |
+| `ds-skript` (German) | ✅ card | ✅ one block | ✅ | ✅ | ✅ |
+| `eipy-skript` | ❌ none | ❌ none | ❌ none | ❌ every `<loc>` is `http://localhost:3000` | ❌ |
+| `eidl-skript` | ❌ none | ❌ none | ❌ none | ❌ same | ❌ |
+| `konradvoelkel.com` | ✅ | ✅ `Person`, no works | — | ✅ | ✅ |
+
+So of the three works, two carry no machine-readable claim of authorship at all, and the
+one page that is *about* the author — `konradvoelkel.com`, which does carry a `Person`
+node — lists no works in it. `/teaching/` has the courses in a table, but the script
+titles never appear there as text: the cells say "HTML · PDF". An engine reading that page
+cannot extract a title, let alone three.
+
+The two German sites also ship the `localhost:3000` sitemap this edition fixed in §2,
+fifteen months of builds ago, and `eipy-skript`'s public URL 308s to a second hostname
+(`eipy-skript-7dd28c.pages.cs.uni-duesseldorf.de`) that `konradvoelkel.com` links
+directly, so the one site is two URLs and neither declares which is canonical. Those are
+not this repository's to fix and are tracked in their own repositories.
+
+### The pictures
+
+The answer rendered three thumbnails. None of them is ours. The card at the top of this
+site — teal, "Data Science · from stochastics to machine learning with Python · Konrad
+Völkel" — is correct, absolute, 1200×630 and has been since §2; the German edition has
+its own. Neither was used, because the pages the answer cited were the two that have no
+`og:image` at all, and an answer engine with no image to attach finds one. What it found,
+beside a screenshot of some Python in a dark editor, were pictures that belong to other
+people's books on the same subjects.
+
+That is the part worth naming plainly: with no card of his own on a page, the slot does
+not stay empty — it gets filled with somebody else's work, under his name. Two cards, from
+`tools/social_card.py`, are the whole fix, and they are a half-hour each in the two
+sibling repositories.
+
+### What changed here
+
+Four things, all of them this repository's own half.
+
+**The paragraph is countable.** "Konrad Völkel has published two further sets" became
+"These are one of three sets of lecture notes by Konrad Völkel", with the other two named
+as before and a link to `konradvoelkel.com/teaching/`, which is where the complete list
+belongs. Still one block, so §1 of TRANSLATION.md holds; it is an English-side rewrite
+inside a block that was synced from ds-skript `12a37a51`, and it goes back the other way
+(UPSTREAM-NOTES.md).
+
+**The landing page's structured data is a `@graph`.** It was the bare book node. It is now
+the book node plus the two other works, `tools/sibling-works.json`, each a
+`["Book","LearningResource"]` whose `author` is the same `{"@id": .../#author}` the 29
+chapters already reference. A `Person` has no "works" property in schema.org, so the claim
+has to be made from the works' side — and three nodes sharing one author is a claim about
+the world, where an `ItemList` of three would only be a claim about this page's contents.
+Their `@id`s are `<their-url>/#work`, the pattern this site uses for its own book, so that
+when those two sites grow structured data the halves reconcile into one entity instead of
+two descriptions of a URL. Nothing is asserted about them beyond what their own `myst.yml`
+already says: title, German, CC BY-SA 4.0, undergraduate lecture notes.
+
+The German edition of *this* book is deliberately not in that list. It is the same work in
+another language, and `translationOfWork` already says so.
+
+**The `Person` node reconciles with the one on `konradvoelkel.com`.** Its `url` was
+`https://konradvoelkel.com` — no `www`, and that address 301s. The personal site's own
+node is `https://www.konradvoelkel.com/#person`, and its `WebPage` says `about:` that
+person. So the `url` is now the canonical form, `mainEntityOfPage` points at that page —
+the exact inverse of its `about`, which is the strongest pair the two sites can give each
+other — and `honorificPrefix`, `jobTitle`, `alternateName` and the arXiv author page were
+added to match what that node already claims. Entity reconciliation is cheap and it is
+two spellings of a hostname away from not happening.
+
+**`llms.txt` has an "About the author" section.** The three works with their URLs and
+languages, the ORCID, the hub, and the sentence the ChatGPT answer had to supply for
+itself: *lecture notes for a Bachelor's programme in computer science, published by their
+author, not books issued by a commercial publisher.* If a model is going to draw that
+distinction — and it should — the honest move is to draw it first, in the file written for
+models to read, rather than leave it to be inferred.
+
+### What this does not do
+
+It does not make the count true anywhere a reader of the German editions would see it, and
+it does not put a card on the two sites that need one. Both are in other repositories.
+The gate in `pages.yml` now fails a build whose landing page has lost the other works or
+credits them to somebody else, which is the only half of it this repository can enforce.

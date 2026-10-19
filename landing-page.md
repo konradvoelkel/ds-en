@@ -51,12 +51,13 @@ Every piece of mathematics you need for the exercises is in these notes, or amon
 
 ## Reading these notes
 
-[Konrad Völkel](https://www.konradvoelkel.com/) has published two further sets of lecture
-notes, both in German: [Einführung in
-Python](https://voelkel.pages.cs.uni-duesseldorf.de/eipy-skript/), which introduces Python
-as a second programming language, and [Einführung in Deep
+These are one of three sets of lecture notes by [Konrad
+Völkel](https://www.konradvoelkel.com/), all free to read. The other two are in German:
+[Einführung in Python](https://voelkel.pages.cs.uni-duesseldorf.de/eipy-skript/), which
+introduces Python as a second programming language, and [Einführung in Deep
 Learning](https://voelkel.pages.cs.uni-duesseldorf.de/eidl-skript/), which follows on from
-these notes.
+these notes. All three are listed, with their PDF editions and the lecture recordings, on
+his [teaching page](https://www.konradvoelkel.com/teaching/).
 
 Along the way we will keep meeting further sources that go deeper into individual topics or look at them from another angle.
 The opening chapter gives an overview of what data science is and what we are going to do.

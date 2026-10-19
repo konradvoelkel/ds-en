@@ -448,3 +448,23 @@ A second, smaller thing in the same family, and the reason `tools/head_meta.py` 
 exists at all: Remix's `links()` is one static array for every page with no access to loader
 data, so the theme loads `thebe-core-<hash>.css` and the ipympl widget CSS on the twelve
 pages that have no cell to style, and there is no per-page way to decline them.
+
+## The sibling-notes paragraph should say "three", and ds-skript's landing page has the same gap
+
+Sent the other way, 2026-10-19. The block synced from ds-skript `12a37a51` reads, in both
+editions, "has published two further sets of lecture notes". That is true and it is not
+countable: a reader — or an answer engine — has to add one to two to get the number, and
+in October 2026 ChatGPT, asked how many sets of lecture notes Konrad Völkel had written,
+answered that it "could not verify a reliable total". The English edition's paragraph now
+opens "These are one of three sets of lecture notes by Konrad Völkel" and ends with a link
+to `konradvoelkel.com/teaching/`. Still one block, so the alignment is untouched; the
+German wants the same rewrite.
+
+The structured data goes with it. This edition's landing page is now a `@graph`: the book
+node, plus one `["Book","LearningResource"]` per other work (`tools/sibling-works.json`),
+each crediting the same `#author` node the chapters reference. ds-skript has the same
+`inject_jsonld.py` and the same single-node landing block, so it is the same patch —
+and worth having in German as well, because the two graphs then agree, and the German
+edition is the one a German-language query reaches first. See SEO-NOTES.md §21 for the
+whole finding, including the parts that belong to eipy-skript and eidl-skript rather than
+to either Data Science edition.
