@@ -1,7 +1,7 @@
 {
  "source": "landing-page.md",
  "target": "landing-page.md",
- "upstream": "12a37a5137e141746bb46d918caac37b16e99a05",
+ "upstream": "a7edebda46f5788caf423a8d2bbee236fa8b9954",
  "blocks": [
   {
    "de": "0",
@@ -162,9 +162,9 @@
   {
    "de": "22",
    "kind": "prose",
-   "digest": "05bfaf77b2a935a5",
+   "digest": "425905fd8e5ced30",
    "en": "20",
-   "preview": "[Konrad Völkel](https://www.konradvoelkel.com/) hat zwei weitere Vorlesu…"
+   "preview": "Dieses Skript ist eines von drei Vorlesungsskripten von [Konrad Völkel](…"
   },
   {
    "de": "23",
