@@ -53,9 +53,9 @@ Every piece of mathematics you need for the exercises is in these notes, or amon
 
 These are one of three sets of lecture notes by [Konrad
 Völkel](https://www.konradvoelkel.com/), all free to read. The other two are in German:
-[Einführung in Python](https://voelkel.pages.cs.uni-duesseldorf.de/eipy-skript/), which
+[Einführung in Python](https://eipy-skript-7dd28c.pages.cs.uni-duesseldorf.de/), which
 introduces Python as a second programming language, and [Einführung in Deep
-Learning](https://voelkel.pages.cs.uni-duesseldorf.de/eidl-skript/), which follows on from
+Learning](https://eidl-skript-131e30.pages.cs.uni-duesseldorf.de/), which follows on from
 these notes. All three are listed, with their PDF editions and the lecture recordings, on
 his [teaching page](https://www.konradvoelkel.com/teaching/).
 

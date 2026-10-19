@@ -63,10 +63,10 @@ to read under CC BY-SA 4.0:
   English, at {site}/. The German original is at
   https://voelkel.pages.cs.uni-duesseldorf.de/ds-skript/
 - **Einführung in Python** (Introduction to Python), in German, at
-  https://voelkel.pages.cs.uni-duesseldorf.de/eipy-skript/ — Python as a second
+  https://eipy-skript-7dd28c.pages.cs.uni-duesseldorf.de/ — Python as a second
   programming language, for students who already know one
 - **Einführung in Deep Learning** (Introduction to Deep Learning), in German, at
-  https://voelkel.pages.cs.uni-duesseldorf.de/eidl-skript/ — neural networks,
+  https://eidl-skript-131e30.pages.cs.uni-duesseldorf.de/ — neural networks,
   backpropagation, transformers and PyTorch; it follows on from this book
 
 All three are lecture notes for a Bachelor's programme in computer science, published by

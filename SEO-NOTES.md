@@ -2074,3 +2074,30 @@ It does not make the count true anywhere a reader of the German editions would s
 it does not put a card on the two sites that need one. Both are in other repositories.
 The gate in `pages.yml` now fails a build whose landing page has lost the other works or
 credits them to somebody else, which is the only half of it this repository can enforce.
+
+### 21a. Which hostname the two German works are identified by (2026-10-19, same day)
+
+`eipy-skript` and `eidl-skript` both have GitLab's *unique domain* switched on, so the
+readable addresses — `voelkel.pages.cs.uni-duesseldorf.de/eipy-skript/` and `…/eidl-skript/`
+— answer **308** and the content is served from `eipy-skript-7dd28c.pages.cs.uni-duesseldorf.de`
+and `eidl-skript-131e30.pages.cs.uni-duesseldorf.de`. `ds-skript` does not have it on, which
+is why that one serves 200 at its readable path and never raised the question.
+
+This matters here because a `@id` is an identity, not a link: if this site identifies the
+Python notes by one URL and that site mints another, the graph has two descriptions of a
+work instead of one work. The first pass through the sibling repositories produced exactly
+that split — `eipy-skript` derived its own `@id` from the generated host it is served
+from, while `eidl-skript` hardcoded the readable one.
+
+Konrad settled it on 2026-10-19: **the generated hosts are canonical.** A canonical that
+answers 308 is not one, and these are the addresses the projects actually serve from —
+`konradvoelkel.com` already linked the Python notes that way. So `tools/sibling-works.json`,
+the sibling paragraph on the landing page and the "About the author" block in `llms.txt`
+all name the generated hosts, and the same switch was made in `ds-skript`, `eidl-skript`
+and on `konradvoelkel.com`. The readable addresses keep working; they redirect, which is
+what they were already doing.
+
+The cost is that the identifier is an opaque hostname, and that it is GitLab's to change:
+if the unique-domain switch is ever flipped, the suffix changes and every one of these
+files has to move with it. That is the trade, and it is written down here so the next
+person does not have to rediscover which of two plausible URLs the graph settled on.
