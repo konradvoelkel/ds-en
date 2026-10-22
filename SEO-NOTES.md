@@ -2280,3 +2280,74 @@ page — which is the run to make after this ships, not before.
   It is one of the three ratio-only images of §19, and Lighthouse naming it under "Image
   elements do not have explicit width and height" is the accepted cost of that decision.
   That diagnostic does not enter the score.
+
+---
+
+## 24. The post-deploy run §23 asked for: the paint moved, the score did not follow (2026-10-20)
+
+§23 ended by naming the run to make — PageSpeed on the deployed page, because TBT could
+only be had there and 30 of the 57 points depended on it. Made on 2026-10-20, mobile,
+Lighthouse 13.5.0, two independent runs per URL (`psi-lighthouse-r8-*.json`):
+
+| | r7, 17 Oct, before | r8, 20 Oct, after |
+|---|---|---|
+| **home** — perf / FCP / LCP / TBT | 57 / 8.4 s / 8.9 s / 0 ms | **59, 60 / 4.9 s / 8.9, 9.0 s / 110, 60 ms** |
+| **expectation-variance** | 56 / 10.0 s / 10.6 s / 0 ms | **50, 45 / 6.4, 6.5 s / 10.5, 10.6 s / 320, 490 ms** |
+| **statistical-tests** | 56 / 9.5 s / 10.1 s / 0 ms | **71, 44 / 2.4, 6.0 s / 2.9, 10.1 s / 730, 540 ms** |
+
+CLS is 0 on all six runs. Accessibility, best practices and SEO are 100 on all three
+pages, which is where §19's sizing work and §23's three missing accessible names landed.
+
+### What the change bought, and what it cost
+
+**The paint moved, reproducibly.** FCP fell 3.5 s on the landing page and 3.5 s on
+`expectation-variance`, on both runs of each. The 1,407 KB of `modulepreload` was in front
+of the paint, exactly as §23 argued, and removing it is the largest single improvement
+this repository has made to the time a reader waits for text.
+
+**TBT appeared, and §23's threshold was crossed.** §23 wrote: *"If the real TBT crosses
+200 ms the trade gets worse than it looks."* It crossed — 320–490 ms on
+`expectation-variance`, 540–730 ms on `statistical-tests`, against 0 ms in all seventeen
+runs taken before the change. Both numbers are real and they are the same fact: before,
+nothing executed inside the measurement window because the page was network-bound for
+eight seconds, and a TBT of 0 was a gift of slowness. The work did not grow. It moved
+into the window.
+
+**The score is a wash on the landing page and worse on chapters.** Home +2/+3. The
+chapter pages lose more in TBT than they gain in FCP and Speed Index, because Lighthouse
+weights TBT at 30 % and FCP at 10 %. That is 29 of the 30 URLs.
+
+### Two things this corrects in §23
+
+* **LCP is not FCP-bound.** §23 inferred from FCP and LCP being half a second apart that
+  *"the LCP element paints as soon as anything paints"* and so there was *"no slow image
+  to find"*. FCP then moved 3.5 s earlier and **LCP did not move at all** — 8.9 → 8.9/9.0
+  on home, 10.6 → 10.5/10.6 on `expectation-variance`. Whatever the LCP element is, it is
+  waiting on something that unblocking the paint did not touch. LCP is 25 % of the score
+  and still in the red; `lcp_subparts.py` on the deployed page is the next measurement
+  worth making, and it is the one the audit has never made.
+* **Earlier "a/b" pairs were not two runs.** `r4-home-a` and `-b` carry the same
+  `fetchTime` to the millisecond, as do `r4-ev`, `r5-ev-c/d` and `r6-ev-f/g` — one PSI
+  result written to two files. The pairs that *do* have distinct fetchTimes agreed to the
+  tenth of a second, which is why the error was invisible and harmless then. It is not
+  harmless now: `statistical-tests` returned 71 and 44 minutes apart, LCP 2.9 s and
+  10.1 s, on the same URL. **Single runs on this site cannot be quoted**, and the r8 files
+  are the first pairs that are genuinely independent.
+
+### The decision this leaves
+
+`--drop-modulepreload` is a single flag in `pages.yml`, applied to all thirty pages. The
+measurement says it is a win on the landing page, a loss on the chapter score, and a win
+for a reader on every page. Three ways to go:
+
+1. **Keep it.** 3.5 s of waiting is worth more to a reader than 6 points of a synthetic
+   score, and the score's own weighting is the only thing that disagrees.
+2. **Per page.** `head_meta.py` already decides per page (Thebe, §1.2; stylesheets, §5),
+   so dropping the hints only where the page has no code is a dozen lines. It would keep
+   the landing page's win and hand the chapters their TBT back.
+3. **Revert it.** Buys back 0 ms TBT and pays 3.5 s of FCP for it. Hard to defend as
+   anything but score-chasing.
+
+Not decided here. What is decided is that it ships measured: the flag stays as it is until
+the LCP subparts are read, because option 2 optimises a number whose largest component has
+never been attributed.
