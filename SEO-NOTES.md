@@ -2351,3 +2351,182 @@ for a reader on every page. Three ways to go:
 Not decided here. What is decided is that it ships measured: the flag stays as it is until
 the LCP subparts are read, because option 2 optimises a number whose largest component has
 never been attributed.
+
+---
+
+## 25. The LCP element is the `<h1>`, and the number is a model, not a paint (2026-10-23)
+
+§24 named the measurement: `lcp_subparts.py` on the deployed page. It was made on
+2026-10-23, and it does not run. `lcp_subparts.py` reads **CrUX**, and CrUX returns
+`404 chrome ux report data not found` for all three URLs — this site has no field data,
+because it has no traffic to speak of. The four subparts had to come from the lab run
+instead: PageSpeed, mobile, Lighthouse 13.5.0, two independent runs per URL
+(`psi-lcp-r9-*.json`), where Lighthouse 13 exposes them as the `lcp-breakdown-insight`
+audit. The `fetchTime` stamps read 2026-10-22T23:1x Z; that is the small hours of the
+23rd here, and the times quoted below are UTC. That audit also names the element, which is the half of the question §24 could not
+reach at all.
+
+### The element, six times out of six
+
+```
+<h1 class="myst-fm-block-title mb-0">
+main.article-grid > article.article-grid > div#skip-to-frontmatter > h1.myst-fm-block-title
+```
+
+The same node on all three pages and in all six runs: the page title, server-rendered
+text, in the initial HTML (`curl` confirms it), 144 px from the top. **There is no LCP
+image on this site.** That retires, permanently, every line of work that was waiting to
+find a slow hero: no `fetchpriority`, no `srcset`, no preload, no format change can touch
+this number, because the largest contentful element is a sentence.
+
+It also means two of the four subparts do not exist. Resource load delay and resource
+load duration are image terms; the breakdown table has two rows, not four.
+
+### The two that do exist
+
+Observed, from `lcp-breakdown-insight`:
+
+| page | run | fetchTime | TTFB | element render delay | render delay |
+|---|---|---|---|---|---|
+| home | a | 23:15:08 | 4 ms | 1,377 ms | **99.7 %** |
+| home | b | 23:16:16 | 3 ms | 224 ms | **98.7 %** |
+| expectation-variance | a | 23:15:19 | 27 ms | 2,443 ms | **98.9 %** |
+| expectation-variance | b | 23:16:28 | 30 ms | 2,329 ms | **98.7 %** |
+| statistical-tests | a | 23:15:45 | 19 ms | 2,369 ms | **99.2 %** |
+| statistical-tests | b | 23:16:55 | 16 ms | 1,319 ms | **98.8 %** |
+
+**Element render delay is the whole of LCP.** TTFB is 3–30 ms on every run; GitHub Pages
+serves the document in under a tenth of the time the audit's own "good" threshold allows,
+and nothing about hosting is in the way.
+
+And the identity that matters most:
+
+| | home a | home b | ev a | ev b | st a | st b |
+|---|---|---|---|---|---|---|
+| observed FCP | 1382 | 227 | 2470 | 2359 | 2389 | 1335 |
+| observed LCP | 1382 | 227 | 2470 | 2359 | 2389 | 1335 |
+
+**Observed LCP equals observed FCP to the millisecond, six times out of six.** In the
+browser Lighthouse actually drove, the title paints at the exact instant anything paints.
+
+### This corrects §24's correction of §23
+
+§23 inferred that *"the LCP element paints as soon as anything paints"* and that there was
+*"no slow image to find"*. §24 called that refuted, because FCP fell 3.5 s and LCP did not
+move. §24 was right about the metric and wrong about the page: **both of §23's claims are
+true of the paint**, confirmed directly rather than inferred — same instant, no image.
+What is not true is that the reported LCP measures that paint.
+
+PSI reports *simulated* numbers. Lighthouse records the trace on a fast link and then runs
+Lantern to estimate what Slow 4G would have done. The 8.9 s is Lantern's output. The
+observed paint behind it is 1.4 s. The two answer different questions, and the audit has
+been reading the second as if it were the first since §17.
+
+### Why the flag moved FCP and not LCP, in one line of the data
+
+Lighthouse publishes, per audit, what it estimates removing that thing would save. Across
+all five slow runs:
+
+| audit | LCP saving | FCP saving |
+|---|---|---|
+| `unused-javascript` (the theme's 1,040 KiB client bundle) | 5,100–5,250 ms | **0 ms** |
+| `cache-insight` (GitHub Pages' `max-age=600`) | 7,200–8,250 ms | 150–750 ms |
+| `render-blocking-insight` (four stylesheets, 47 KB) | 600 ms home, 1,400–1,550 ms chapters | **identical to LCP** |
+| `unused-css-rules` | 150–300 ms | 150 ms |
+
+`unused-javascript`: **5.1 s of LCP, zero of FCP.** The module bytes are absent from
+Lantern's FCP graph and dominate its LCP graph. That is the whole mechanism §24 went
+looking for. A `<link rel="modulepreload">` changes a resource's *priority*; Lantern's LCP
+estimate is driven by the *volume* on the path. So dropping nineteen hints could move FCP
+— and did, 3.5 s — and could not move LCP, and did not. Nothing about this was a surprise
+to the model; it was only unattributed.
+
+`render-blocking-insight` is the one row where the LCP and FCP savings are the same
+number, on every run. It is the only part of LCP that behaves like a paint.
+
+### What is reachable, and the answer is: almost none of it
+
+The dominant subpart is element render delay. Inside it, by Lighthouse's own
+what-if runs:
+
+* **5.1–5.25 s — the theme's client bundle.** `chunk-WGW5MSUV.js` (471 of 619 KiB
+  unused), `chunk-7FWBVTMU.js` (333 of 339), `chunk-LS4ALTVG.js` (217 of 265).
+  `mystmd`'s `book-theme` output. Not reachable: this repository can change when those
+  bytes are fetched, and §23 already did, but not that they exist.
+* **7.2–8.25 s — `cache-insight`.** GitHub Pages fixes `max-age=600` and offers no header
+  control. Not reachable, and it models a repeat visit in any case.
+* **600 ms (home) / 1,400–1,550 ms (chapters) — four render-blocking stylesheets.**
+  `app-XNK7MHNS.css` (24 KB), `myst-theme.css` (10 KB), `font-awesome.css` (8 KB),
+  `katex.min.css` (4 KB). All four are build output, none is a file in this repository.
+  Three are structural — deferring the theme's own Tailwind build or `myst-theme.css`
+  trades LCP for FOUC and for the CLS of 0 that `88c5664` bought. `katex.min.css` could be
+  gated per page the way §5 of `head_meta.py` already gates the Jupyter sheets, but it is
+  4 KB of four parallel downloads that all finish within 20 ms of each other
+  (247 → 415–434 ms on home-a), so it would save a fraction of the smallest row in the
+  table, on one page in thirty, in a file that has broken hydration twice.
+
+**Nothing was patched.** The dominant subpart is not reachable from here, the reachable
+slice of it is ~600 ms of a 8,900 ms model, and the honest move is to leave it. §17's
+"upstream, not a patch here" was right; this is the measurement that shows *why*, instead
+of assuming it.
+
+`unused-css-rules` is also not what STATUS.md claims. Coverage names `app-XNK7MHNS.css`
+(20.3 of 23.1 KiB unused) and `thebe-core.css` (14.7 of 14.7, already `media="not all"`
+and fetched at VeryLow). The first is the theme's Tailwind build, not ours to purge; the
+second is already inert. That row said "Possibly — Tailwind purge" and should say no.
+
+### What this says about `--drop-modulepreload`
+
+§24 deferred the keep / per-page / revert decision explicitly, *"because option 2
+optimises a number whose largest component has never been attributed"*. It is attributed
+now, and it removes option 2 from the table:
+
+**Option 2 (per page) is void as an LCP measure.** It was proposed to drop the hints only
+where a page has no code, keeping the landing page's win and handing the chapters their
+TBT back. But no page's LCP responds to a hint, on any page, because the hints change
+priority and the LCP model reads volume. There is no per-page LCP to win. What is left of
+option 2 is a pure TBT trade, which this round did not measure and which §24 already
+priced.
+
+**Option 1 (keep) is what the data supports.** The LCP element is server-rendered text
+that paints at the first contentful paint — measured, 6/6, exactly. So the 3.5 s §24
+measured off FCP is 3.5 s off the moment a reader sees the title, which is 3.5 s off the
+reader's LCP, whatever Lantern reports. The score does not register it because the score's
+LCP is a byte-volume model of a page that has no LCP image. Reverting would buy back a
+synthetic number by making every reader wait 3.5 s longer for the title. That is the
+clearest form the trade has taken yet, and it says keep.
+
+*(This is an inference, and marked as one: the observed LCP = FCP identity is from the r9
+runs, which are all post-flag. It holds structurally — the `<h1>` is in the served HTML,
+above the fold, with no resource of its own to wait for — but no observed pre-flag trace
+exists to confirm it, and none can be had now.)*
+
+**Decided, 2026-10-23: keep it.** Konrad took option 1 on the attribution above. The flag
+in `pages.yml` stays as `ef910d0` shipped it, on all thirty pages, and the question §24
+opened is closed. What the site now carries is a deliberate trade: 3.5 s earlier text for
+every reader on every page, against 320–730 ms of TBT on chapters and six points of a
+synthetic chapter score. The score is the thing being given up, knowingly, and this is the
+line to point at the next time the number invites someone to revert it.
+
+### Two things about measuring this site, for the next round
+
+**PSI caches, and that is where §24's duplicate pairs came from.** The first attempt at
+`statistical-tests-b` came back with `fetchTime` 23:15:45.324Z — the same millisecond as
+run a, forty seconds earlier. The same request at 23:16:55 returned a distinct one. §24
+found `r4-home-a/-b`, `r4-ev`, `r5-ev-c/d` and `r6-ev-f/g` carrying identical fetchTimes
+and read it as one result written to two files; it was not a scripting error, it is PSI
+serving its cache. **Check `fetchTime` and re-request until it differs** — which is what
+the r9 files did, and why there are six of them.
+
+**The spread is bimodal, not noisy.** `r8-home` (20 Oct) reported FCP 4,876 / LCP 8,926.
+`r9-home-a` (22 Oct UTC, two days later) reported FCP 4,876 / LCP 8,926 — the same values to
+the millisecond. `r8-ev-b`, `r9-ev-a` and `r9-ev-b` all report 6,451 / 10,576. Meanwhile
+`r9-home-b` reports 1,201 / 1,801 and scores 95. The runs fetched identical bytes in
+identical request counts (home: 32 requests, 1,627 KiB, both runs); what differs is which
+dependency graph Lantern builds from the observed trace, and it lands on one of two
+discrete answers. So a pair of runs that agrees has not necessarily converged — it may
+have landed in the same mode twice. **Quote the slow mode**, which is what Google's field
+data would see on the connection PSI is modelling, and say how many runs landed where.
+
+TBT in this round: 6 / 222 ms home, 550 / 44 ms expectation-variance, 373 / 92 ms
+statistical-tests. Same spread as §24's, same caution.
