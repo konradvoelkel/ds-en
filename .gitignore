@@ -50,6 +50,11 @@ todo/
 .sync-exclude.lst
 *.local-widgets.ipynb
 
+# the SEO audit of datascience.konradvoelkel.com: raw PageSpeed and GSC JSON,
+# screenshots and its own STATUS.md -- 21 MB of measurement, and SEO-NOTES.md
+# carries whatever of it mattered
+datascience.konradvoelkel.com-audit/
+
 # Rohtranskripte und Standbilder der Aufzeichnungen (erzeugt, nicht versioniert)
 transcripts/
 
