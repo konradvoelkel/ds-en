@@ -2766,3 +2766,73 @@ validator as evidence of a result that was never on offer.
 * The Rich Results Test was run on the live page, i.e. on the *old* markup. Re-running it after
   the deploy is worth five minutes, to confirm "No items detected" has not become an error —
   but on the documentation above, an error is not expected either.
+
+## 27. The report of 2026-10-26, and the two of its three points that stay undone (2026-10-26)
+
+An external SEO report on `www.konradvoelkel.com` arrived on 2026-10-26 and carried three
+demands addressed to *this* repository. It was triaged in the website's own repo —
+`~/files/work/personalwebsite/drafts/seo-bericht-2026-10-26.md`, section "Gehört nicht in
+dieses Repo" — where the rest of it was found to be already done or measured wrong:
+hreflang, `robots.txt`, `sitemap.xml` and the `Book` JSON-LD with the DOI and the licence
+are all correct on the live site (§7b, §22, §4b). The three that reached here were
+re-measured against the live site before anything was touched.
+
+One was real and is done. Two are not, and both are worth recording, because neither was
+wrong in intent and the next audit will raise them again — which is what §8 is about.
+
+### The author link: `http://` → `https://` (done, `02b3068`)
+
+`myst.yml` line 17 said `url: http://www.konradvoelkel.com`, and that was the last
+`http://` on an own domain anywhere in the repository. `tools/structured-data.json`,
+`tools/llms_txt.py` and `../ds-skript/myst.yml` line 18 had all spelled it
+`https://www.konradvoelkel.com/` for weeks, so this was an outlier and not a choice.
+
+**What it actually cost, measured rather than assumed — and `02b3068`'s own message
+overstates this.** That message says the field is the author link "in the page footer and
+on the PDF's title page", and it is neither. Grepping the built HTML for it: the three
+occurrences are all inside MyST's serialised `authors` array in the hydration payload, as
+`"url":"…","id":"contributors-myst-generated-uid-0"`. The three *visible*
+`href="https://www.konradvoelkel.com/"` on the landing page come from `landing-page.md`
+lines 55 and 95 and from the JSON-LD, which were already https; `templates/tex/ds-en/`
+never reads the field at all. So no reader was clicking a redirect, and the claim that one
+was is wrong. The message also calls it two redirects, 301 each; it is one, a **308** from
+`http://www.konradvoelkel.com` straight to `https://www.konradvoelkel.com/`, both halves
+in a single hop, and the https URL without the path answers 200 on its own.
+
+The change is still right, for the smaller and truer reason: this is published author
+metadata — it is the value MyST hands to any theme or export that renders an author link,
+it is in the payload every crawler and reader downloads, and it was the one string in the
+repository still naming an own domain over plain `http`. The six remaining `http://` hits
+in `myst.yml` and the Markdown are other people's URLs, plus the two
+`http://localhost:3000` quoted in `TRANSLATION.md` and §2 as the symptom of the sitemap
+bug, where rewriting the scheme would destroy the quotation.
+
+### `data-nosnippet` on the MyST fallback dialog: **declined**, the attribute would be inert
+
+The report claims Googlebot pulls the text of MyST's no-CSS diagnostic — *"Site not
+loading correctly? This may be due to an incorrect `BASE_URL` configuration."* — into the
+search snippet. Three measurements, 2026-10-26, and the second one is the one that decides it.
+
+* **`BASE_URL` is right, so the dialog is diagnostics and nothing else.** `pages.yml` sets
+  `BASE_URL: ""` for the domain root, the publish gate already refuses a build whose
+  `index.html` has no `$BASE_URL/build/` asset paths, and `/myst-theme.css` answers 200 on
+  the live site. The element is a closed `<dialog>` — `display:none` by the UA stylesheet —
+  which an inline script removes once it can read `--has-styling` off the loaded
+  stylesheet. It is MyST's alarm for a broken deploy and **must not be removed**.
+* **`data-nosnippet` does not work on a `<dialog>`.** Google documents it on `span`, `div`
+  and `section` only, and illustrates the point with an example commented `NOT VALID: not
+  a span, div, or section`. Adding the attribute to `<dialog id="myst-no-css"` costs one
+  `sed` and buys exactly nothing — and it is worse than nothing, because it *looks* like
+  the problem is handled. That is the §17 failure mode: valid markup making a claim
+  nothing checks.
+* **The text reaches no file written for a crawler.** It is absent from `llms.txt`,
+  `llms-full.txt` and all 30 Markdown twins; in the HTML it exists once, inside the closed
+  dialog, and does not appear a second time in a hydration payload.
+
+So the premise is unmeasured and the proposed fix is inert. **If** the text is ever
+actually seen in a live SERP snippet, the fix that would work is a `<div data-nosnippet>`
+wrapping the dialog's `<strong>` and `<p>` but *not* its `<script>` — the script resolves
+`document.currentScript.parentNode` and calls `showModal()` on it, so it has to stay a
+direct child. That is a rewrite anchored on the theme's markup, which by the standard
+`tools/thebe_gate.py` sets needs a guard that fails the build when the shape moves. Not a
+one-line insurance, and not worth it for a snippet nobody has seen.
