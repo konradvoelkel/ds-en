@@ -2836,3 +2836,31 @@ wrapping the dialog's `<strong>` and `<p>` but *not* its `<script>` — the scri
 direct child. That is a rewrite anchored on the theme's markup, which by the standard
 `tools/thebe_gate.py` sets needs a guard that fails the build when the shape moves. Not a
 one-line insurance, and not worth it for a snippet nobody has seen.
+
+### A title suffix on every chapter: **declined**, it is §9 asked again
+
+The report wants `… — Data Science with Python (Konrad Völkel)` appended to each chapter's
+`<title>`. That is not a new idea here: it is MyST's own default, `{page} - {project}`, and
+it was **measured and removed on 2026-10-16** (§9, `9e655a6`). The suffix is 48 of the ~60
+characters a SERP renders and **on 29 of 30 pages it was truncated away entirely** — paying
+nothing, spending two thirds of the line, and inviting Google to rewrite the title instead
+of showing it. `tools/head_meta.py` trims it, `pages.yml` fails the deploy if a page or a
+payload could get it back, and the audit folder records it as deliberate
+(`FULL-AUDIT-REPORT.md` line 237, `findings/onpage.md` line 13). The brand is not lost:
+`og:site_name` and the structured data both say it, which is the other reason §9 added
+`og:site_name`.
+
+Whether mystmd could do it from config, since that was the open question: **there is no
+title-suffix field.** The suffix is the theme's hardcoded `{page} - {project}`; the
+configuration and frontmatter references document `title`, `subtitle` and `short_title`
+and nothing that sets or extends the HTML `<title>`. `site.title` is the only lever, it was
+already tested in §9, and it is rejected there for a reason that has not changed: it is one
+string doing two jobs — the chapter suffix *and* the landing page's whole title — and the
+two want different lengths. So the report's version could only be had by post-processing
+the built HTML, i.e. by writing a second tool to undo what `head_meta.py` does and deleting
+the guard that stops it. The landing page keeps the book's full title, as it did.
+
+### Still owed from §26
+
+The post-deploy `curl -I` on `/images/cover.png`, and the answer-engine question §26 leaves
+open. Neither is this section; both are the next one.
