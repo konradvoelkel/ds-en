@@ -3226,3 +3226,153 @@ the PDF" — they do — but "should a reader on chapter 23 be able to click thr
 without going back to the front page". The German does not do it, and §26's argument for
 keeping the cover off the chapter nodes is about structured data, not about links, so it
 does not settle this. Konrad's call.
+
+---
+
+## 30. Two ds-skript commits past the pin: three claims adopted, and a mechanism this host does not have (2026-10-27)
+
+The review TRANSLATION.md §9 asks for, done for the two commits that had accumulated since
+the pin stopped at `a7edebda` with `4ddb3fd` on 2026-10-19. The mirror's head was
+`b037bc9f`, two commits ahead, both from 2026-10-20 and both outside the mirrored files:
+
+| Commit | Touches | What it does |
+|---|---|---|
+| `a0ba57d` | `tools/inject_jsonld.py`, `tools/structured-data.json` | `audience`, `publisher` and the 31 chapters as `hasPart` on the book node |
+| `b037bc9` | `.gitlab-ci.yml`, `tools/precompress.py` | a `.br` beside every `.gz` in the artifact, brotli at quality 11 |
+
+The upstream check ran on the dispatch for those commits (run 39414768251, 2026-10-20
+11:24 UTC) and reported nothing, which is correct and is exactly the blind spot §9
+describes: no mirrored block moved. `tools/sync.py check b037bc9f` says the same, 0 stale
+regions, and `sync/reports/b037bc9f.md` is the 42-byte report that `bee8ac45.md` and
+`e229a9d.md` already are. So the pin moves on an empty report, and the two commits were
+read by hand, which is the whole point of the rule.
+
+### `a0ba57d`: audience, publisher and the chapters as `hasPart` — adopted, all three
+
+What the German commit adds to its book node, and why each holds here unchanged:
+
+* **`audience`**: an `EducationalAudience` with `educationalRole: student`. Beside
+  `educationalLevel`, which both editions already had, it says whom the book is for. Same
+  book, same readers; a template constant in `structured-data.json`.
+* **`publisher`**: a reference to the `#author` node, and the German commit's reasoning is
+  worth repeating because the critique behind it had proposed the university: that would
+  be false. The book is self-published — `llms.txt` here has said so in as many words since
+  §21, *"published by their author, not books issued by a commercial publisher"* — and a
+  `publisher: Heinrich Heine University` would claim an editorial role nobody holds: no
+  editing, no ISBN, no sign-off. The author's `affiliation` is the claim about the
+  university that is true, and it was already there. Same line as the `Course` and
+  `provider` that `inject_jsonld.py` already declines.
+* **`hasPart`**: the chapters, as `Chapter` nodes with `position`, `name` and `url`, read
+  from the build rather than maintained — the German reads `config.json`'s page list, so a
+  new chapter joins the structured data on its own. Here the toc was already being read
+  out of `config.json` for `position` (§17), so the list is the same walk.
+
+Two things differ, both because of §17, which ds-skript has no counterpart to yet:
+
+1. **The entries reference the chapter nodes.** This edition's twenty-nine chapter pages
+   each carry a `Chapter` node with an `@id` of `.../<slug>/#chapter` and an `isPartOf` the
+   book. `hasPart` is the inverse of that relation, so each entry is that `@id` with
+   `@type`, `position`, `name` and `url` beside it: the landing page and the chapter pages
+   describe one graph of thirty identified nodes, not thirty identified nodes plus
+   twenty-nine anonymous ones that happen to share URLs with them. The German's entries are
+   anonymous because it has nothing to reference; see "One thing the other way".
+2. **The name comes from the chapter page's `og:title`, not from `config.json`.** That is
+   the tag the chapter's own node is named from (§17: nothing in the node is computed
+   twice). Two documents naming one `@id` from two sources are two claims about one entity
+   the moment the sources disagree — and `head_meta.py` rewrites titles, so they can.
+   Reading both from the same tag makes the disagreement impossible rather than unlikely,
+   and it ties `hasPart` to the job order the same way the chapter nodes are tied: the tool
+   refuses a name that still carries the project suffix.
+
+`position` in the list is the chapter node's own, 2 to 30 with the landing page as page 1
+of the book, for the same reason: one entity, one number. The chapters' `description`s are
+not carried, as in the German: 4,375 bytes for the twenty-nine (measured in `config.json`)
+that already stand on each chapter's own page, as its meta description and in its node.
+
+**Measured on a local build** — the deploy chain run on a copy up to this step, then the
+old tool (`fd1da31`) and the new one on twins of it:
+
+| | old | new | |
+|---|---|---|---|
+| landing page `ld+json` block | 5,889 B | 15,076 B | +9,187 B, of which the list is 7,745 B standalone |
+| the block, gzipped | 1,787 B | 2,919 B | +1,132 B |
+| `index.html`, gzipped | 32,237 B | 33,472 B | +1,235 B on the wire per first visit |
+| book-node keys | | | `audience`, `hasPart`, `publisher` added; nothing removed, every other value identical |
+| chapter pages agreeing with their entry | | 29 / 29 | `@id`, `position` and `name` |
+
+A second run writes nothing and passes. The tool's postcondition compares the list against
+the twenty-nine chapter pages — not against the toc, and not against itself — so a chapter
+the toc has dropped or renamed fails there. The artifact gate in `pages.yml` repeats the
+three checks on the built site, "whatever produced it", as it does for the rest of the
+block.
+
+**Five breakages, made on purpose** on the landing page's block, each run against both:
+
+| Broken | tool | gate |
+|---|---|---|
+| one chapter dropped from `hasPart` | red | red |
+| `publisher` set to the university | red | red |
+| `audience` removed | red | red |
+| two chapters' positions swapped | red | red |
+| one chapter renamed in the list only | red | **green, then red** |
+
+The last row is the reason the table is here. The gate as first written compared `@id`
+and `position` and let a renamed entry through; the tool caught it because it compares the
+name. The gate now compares the same three, and the row went red before any of this was
+committed. The lesson is §26's: a gate is only as good as the case it was made to fail on,
+and a gate that has never been red has not been tested.
+
+### `b037bc9`: brotli beside gzip — does not apply, measured
+
+ds-skript's `tools/precompress.py` exists because **GitLab Pages compresses nothing on its
+own** — their own measurement, 2026-10-16: no `content-encoding`, not even for
+`Accept-Encoding: gzip, deflate, br` — but it serves a `.gz` or `.br` that lies beside a
+file. The German job already laid a `.gz` beside every text file; `b037bc9` adds the `.br`,
+measured there at 39 % less than gzip on a landing-page visit (1,469 → 893 kB) and 21 %
+over the whole artifact.
+
+This edition is published by GitHub Pages, and that host is the other way round. Measured
+on the live site on 2026-10-27:
+
+| Request | `content-encoding` | `content-length` |
+|---|---|---|
+| `/`, `Accept-Encoding: identity` | — | 150,609 |
+| `/`, `Accept-Encoding: gzip` | gzip | 32,841 |
+| `/`, `Accept-Encoding: br, gzip` | gzip | 32,841 |
+| `/`, `Accept-Encoding: br` | — | 150,609 |
+| `/myst-theme.css`, `Accept-Encoding: br` | — | 23,782 |
+| `/myst-theme.css`, `Accept-Encoding: gzip` | gzip | 9,491 |
+| `/index.html.gz` | | 404 |
+
+Two facts, and together they decide it. **The gzip is the host's own**: nothing in
+`pages.yml` writes a sibling file, the artifact has none, and the landing page arrives
+gzipped all the same — 150,609 → 32,841, the same ratio the German measured for its
+sibling (153,464 → 33,670). And **the host never answers brotli**, whatever the client
+offers: `br` alone gets the identity encoding, `br, gzip` gets gzip. A server that does not
+negotiate `br` has no way to deliver a `.br`, sibling or not, so the one thing not measured
+here — whether GitHub Pages would serve a sibling if one were there — is moot. A `.br` in
+this artifact would be weight that nothing serves; a `.gz` would at best duplicate what the
+CDN already does.
+
+So this is the case §9 predicted: *"most will not apply — the deploy targets genuinely
+differ."* It is also the first concrete cost of the host chosen in §3 that this file has
+had to write down: brotli is a thing the VPS could have done and GitHub Pages cannot, and
+on the German's numbers it is worth about 39 % of the bytes of a first visit. Not a reason
+to move — §3's reasons stand — but named, so that the next person tempted to port
+`precompress.py` across reads this first. `pages.yml` now carries a comment at the place
+the step would go.
+
+### One thing the other way
+
+ds-skript's `hasPart` entries are anonymous `Chapter` nodes because its chapter pages carry
+no structured data yet — §17 has no counterpart there. The day it adopts per-chapter nodes,
+two things from this round want to travel with them: the entries should reference the
+chapter `@id`s rather than restate the chapters, and the name should come from the same
+tag the chapter node is named from, not from `config.json`. Until then the German graph is
+consistent as it stands. For the handover when §17 goes across, not before.
+
+### The pin
+
+`sync/upstream.json` → `b037bc9f`, 2026-10-20; thirty manifests regenerated; `align`
+30/30; `check` answers "up to date". Unchanged by this round and still open from §10:
+`llms_txt.py` here reads `myst.yml` where ds-skript's reads `config.json`.

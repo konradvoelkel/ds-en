@@ -415,12 +415,14 @@ jobs:
           python3 tools/head_meta.py "$SITE" _build/html --base "$BASE_URL" --lang en \
             --drop-modulepreload
 
-          # Structured data: the book on the landing page, and a Chapter +
-          # LearningResource with a BreadcrumbList on each of the 29 chapter pages, every
-          # one of them pointing at the single book node (.../#work) and the single author
-          # node (.../#author). MyST emits none, and it cannot live in landing-page.md: a
-          # {raw} html directive there would be an extra block and break alignment with
-          # the German original. python3 is preinstalled on ubuntu-latest.
+          # Structured data: the book on the landing page -- with its author as publisher,
+          # its audience, and its 29 chapters in hasPart (ds-skript a0ba57d, adopted
+          # 2026-10-27, SEO-NOTES.md §30) -- and a Chapter + LearningResource with a
+          # BreadcrumbList on each of the 29 chapter pages, every one of them pointing at
+          # the single book node (.../#work) and the single author node (.../#author).
+          # MyST emits none, and it cannot live in landing-page.md: a {raw} html directive
+          # there would be an extra block and break alignment with the German original.
+          # python3 is preinstalled on ubuntu-latest.
           #
           # After head_meta.py, where it used to run before it: a chapter's name and
           # description are read out of the og:title and og:description that step leaves
@@ -442,6 +444,14 @@ jobs:
           # the minified shape it is anchored on has moved -- which is the way round it has
           # to fail, because nothing else here would notice the 359 kB coming back.
           python3 tools/thebe_gate.py _build/html
+
+          # No precompression step, deliberately. ds-skript's tools/precompress.py lays
+          # a .gz and, since b037bc9, a .br beside every text file, because GitLab Pages
+          # compresses nothing on its own and serves a sibling if one is there. GitHub
+          # Pages is the other way round: it gzips on the fly -- measured 2026-10-27,
+          # 150,609 -> 32,841 bytes on the landing page with no sibling anywhere in this
+          # artifact -- and never answers `Accept-Encoding: br`, whatever the client
+          # offers. A .br here would be artifact weight that nothing serves. SEO-NOTES §30.
 
       - name: Refuse to publish a site that would load nothing, or that crawlers cannot use
         run: |
@@ -564,6 +574,19 @@ jobs:
               if node.get("author", {}).get("@id") != author:
                   sys.exit(f"::error::{node.get('name')} on the landing page credits "
                            f"{node.get('author', {}).get('@id')}, not {author}")
+          # Self-published, for students, and made of exactly these chapters: ds-skript
+          # a0ba57d, adopted 2026-10-27 (SEO-NOTES.md §30). The publisher is the author's
+          # own node -- a university in that slot would claim an editorial role nobody
+          # holds -- and hasPart has to name, by @id and position, exactly the Chapter
+          # nodes the chapter pages in this artifact carry, or the landing page and the
+          # chapters describe two different books.
+          publisher, audience = data.get("publisher"), data.get("audience")
+          if not isinstance(publisher, dict) or publisher.get("@id") != author:
+              sys.exit(f"::error::the book's publisher is {publisher!r}, expected a "
+                       f"reference to {author}")
+          if not isinstance(audience, dict) or audience.get("@type") != "EducationalAudience":
+              sys.exit(f"::error::the book's audience is {audience!r}, not an EducationalAudience")
+          parts = []
           chapters = 0
           for page in sorted(glob.glob("_build/html/*/index.html")):
               graph = blocks(page).get("@graph", [])
@@ -577,8 +600,20 @@ jobs:
               if not any(n.get("@type") == "BreadcrumbList" for n in graph):
                   sys.exit(f"::error::{page} has no BreadcrumbList")
               chapters += 1
+              parts.append((chapter["@id"], chapter["position"], chapter["name"]))
+          # By name as well: an entry that calls a chapter something its own page does
+          # not is two claims about one @id, and the tool's postcondition already
+          # refuses it -- the gate missed exactly that case when it was first tried
+          # against a renamed entry (SEO-NOTES.md §30), so it compares the same three.
+          listed = [(p.get("@id"), p.get("position"), p.get("name"))
+                    for p in data.get("hasPart") or []]
+          if sorted(listed, key=str) != sorted(parts, key=str):
+              sys.exit(f"::error::the book's hasPart names {len(listed)} chapters, the artifact "
+                       f"has {chapters}; missing {sorted(set(parts) - set(listed), key=str)[:3]}, "
+                       f"not in the artifact {sorted(set(listed) - set(parts), key=str)[:3]}")
           print(f"JSON-LD ok: {data['@type']} at {data['url']}, as of "
                 f"{data['dateModified'][:10]}, with {chapters} chapters of {work} by {author}, "
+                f"all in its hasPart, published by its author, "
                 f"and {len(others)} further works by the same author: "
                 f"{', '.join(n.get('name', '?') for n in others)}")
           EOF

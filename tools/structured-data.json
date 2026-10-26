@@ -34,6 +34,10 @@
  "license": "https://creativecommons.org/licenses/by-sa/4.0/",
  "learningResourceType": "Lecture notes",
  "educationalLevel": "Undergraduate",
+ "audience": {
+  "@type": "EducationalAudience",
+  "educationalRole": "student"
+ },
  "copyrightYear": 2026,
  "teaches": [
   "Probability spaces, random variables and distributions",
@@ -91,6 +95,9 @@
    "name": "Heinrich Heine University Düsseldorf",
    "url": "https://www.hhu.de"
   }
+ },
+ "publisher": {
+  "@id": "__SITE__/#author"
  },
  "translationOfWork": {
   "@type": "Book",

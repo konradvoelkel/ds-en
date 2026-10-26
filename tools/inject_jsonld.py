@@ -73,6 +73,48 @@ is a claim about a page's contents, three nodes sharing an `author` is a claim a
 world, and the second one is the one being made.
 
 
+Who it is for, who publishes it, and what it is made of
+-------------------------------------------------------
+
+Three properties on the book node, adopted from ds-skript `a0ba57d` (2026-10-20) in the
+review TRANSLATION.md section 9 asks for; SEO-NOTES.md §30 has the measurement and the two
+places this edition differs. Two are template constants in `structured-data.json`, one is
+generated:
+
+* `audience`: an `EducationalAudience` with `educationalRole: student`. Beside the
+  `educationalLevel` that was already there, it says *whom* the book is for.
+* `publisher`: a reference to `#author`, **not** to the university. The critique behind
+  the German commit proposed the HHU; that would be false. The book is self-published --
+  `llms.txt` says so in as many words -- and a `publisher: Heinrich Heine University`
+  would claim an editorial role nobody holds: no editing, no ISBN, no sign-off. The
+  author's `affiliation` is the claim about the university that is true, and it is
+  already there. Same line as the `Course`/`provider` not claimed above.
+* `hasPart`: the twenty-nine chapters, each a reference to the `Chapter` node its own
+  page already carries -- the `@id` `.../<slug>/#chapter` -- with `position`, `name` and
+  `url` beside the reference, so that a consumer reading this one document learns the
+  reading order without fetching twenty-nine more.
+
+`hasPart` is the inverse of the `isPartOf` every chapter already states, and like
+`position` it is **read from the build, not maintained**: the order from the toc in
+`config.json`, and each chapter's `name` from the `og:title` of its built page, which is
+the tag the chapter's own node is named from. Not from `config.json`'s `title`, which is
+where the German reads it: two documents naming one `@id` from two sources is two claims
+about one entity the moment the sources disagree, and reading both from the same tag makes
+that impossible rather than merely unlikely. The postcondition compares the list against
+the chapter pages, not against the toc and not against itself, so a chapter the toc has
+dropped or renamed fails here instead of standing.
+
+`position` in the list is the chapter node's own -- 2 to 30, the landing page being page
+1 of the book -- for the same reason: one entity, one number.
+
+Not carried: the chapters' `description`s. Each stands on its own page as the meta
+description and in that page's `Chapter` node, and twenty-nine copies on the landing page
+would be 4.4 kB (measured in config.json, 2026-10-27) that say nothing a crawler does not
+find at the URL beside them. The list itself grows the landing page's block from 5.9 to
+15.1 kB of pretty-printed JSON, which is 1.1 kB more on the wire once gzipped -- measured
+on the built page, old tool against new, same day.
+
+
 The cover
 ---------
 
@@ -199,7 +241,8 @@ Running it twice
 Idempotent per page: a page that already carries a `ld+json` block is left alone, so a
 second run is a no-op. The postconditions at the end are checked on all thirty pages
 either way -- exactly one block each, every chapter's `isPartOf` resolving to the book's
-`@id` -- so markup MyST has moved under us fails even on a run that wrote nothing.
+`@id`, the book's `hasPart` naming exactly the chapters that were built -- so markup MyST
+has moved under us fails even on a run that wrote nothing.
 """
 
 from __future__ import annotations
@@ -270,6 +313,45 @@ def sibling_nodes(site: str, book: dict) -> list[dict]:
     return nodes
 
 
+def part_nodes(
+    site: str, root: Path, pages: list[tuple[str, str | None]], suffix: str | None
+) -> list[dict]:
+    """The chapters as the book's `hasPart`, each a reference to the node its own page
+    carries. See "Who it is for, who publishes it, and what it is made of".
+
+    The name is read from the chapter page's og:title -- the same tag `chapter_graph`
+    names the chapter's own node from -- and not from config.json, so the two documents
+    cannot disagree about what the entity is called. That ties this to the job order the
+    same way the chapter nodes are tied: head_meta.py has to have trimmed the suffix.
+    """
+    nodes: list[dict] = []
+    for position, (slug, _) in enumerate(pages, 1):
+        if not slug:
+            continue  # the landing page is the book, not a part of it
+        target = root / slug / "index.html"
+        if not target.exists():
+            raise SystemExit(f"✗ the toc names {slug}, but {target} is not built")
+        name = meta(target.read_text(encoding="utf-8"), "property", "og:title")
+        if not name:
+            raise SystemExit(f"✗ {target} has no og:title to name the chapter with")
+        if suffix and name.endswith(suffix):
+            raise SystemExit(
+                f'✗ {target} still has the title suffix "{suffix.strip()}" in its '
+                f"og:title -- did head_meta.py run first?"
+            )
+        url = f"{site}/{slug}/"
+        nodes.append({
+            "@type": "Chapter",
+            "@id": f"{url}#chapter",
+            "position": position,
+            "name": name,
+            "url": url,
+        })
+    if not nodes:
+        raise SystemExit("✗ the toc names no chapter besides the landing page")
+    return nodes
+
+
 def chapter_graph(
     site: str, slug: str, part: str | None, position: int, doc: str, book: dict
 ) -> dict:
@@ -326,9 +408,17 @@ def cover_file(root: Path, book: dict, site: str) -> Path | None:
     return path
 
 
-def landing_graph(site: str, root: Path, doc: str, book: dict) -> dict | None:
-    """The book node, with the date of the newest change in it, and beside it the
-    author's other two works. See "Three works, one author" and "The cover"."""
+def landing_graph(
+    site: str,
+    root: Path,
+    doc: str,
+    book: dict,
+    pages: list[tuple[str, str | None]],
+    suffix: str | None,
+) -> dict | None:
+    """The book node, with the date of the newest change in it and its chapters in
+    `hasPart`, and beside it the author's other two works. See "Three works, one
+    author", "The cover" and "Who it is for, who publishes it, and what it is made of"."""
     # The card is *checked* here and no longer written into the node -- see "The cover"
     # in the docstring for why the book's `image` is the portrait cover instead. It stays
     # checked because an absolute og:image on this page is the proof that head_meta.py
@@ -343,6 +433,9 @@ def landing_graph(site: str, root: Path, doc: str, book: dict) -> dict | None:
         return None
     if cover_file(root, book, site) is None:
         return None
+    # The chapters, read from their built pages; publisher and audience are template
+    # constants and already in `book`.
+    book["hasPart"] = part_nodes(site, root, pages, suffix)
     # ...but the date written here is the *book's*, not this page's. See the docstring.
     book["dateModified"] = freshness.book_date(root)
     # The context moves up to the graph, as it does on a chapter page; a node inside a
@@ -372,6 +465,8 @@ def check(site: str, root: Path, pages: list[tuple[str, str | None]], book: dict
     and a summary line reporting "as of ?" about a site that is correctly dated says the
     wrong thing about the one value the whole ordering with freshness.py exists for.
     """
+    parts: list | None = None  # the landing page's hasPart, compared after the loop
+    seen: list[dict] = []      # what the chapter pages actually carry
     for position, (slug, _) in enumerate(pages, 1):
         target = root / "index.html" if not slug else root / slug / "index.html"
         doc = target.read_text(encoding="utf-8")
@@ -425,6 +520,26 @@ def check(site: str, root: Path, pages: list[tuple[str, str | None]], book: dict
                 return 1
             if cover_file(root, found, site) is None:
                 return 1
+            # Self-published, for students, made of these chapters: the three claims
+            # adopted from ds-skript a0ba57d. The first two are template constants and
+            # are checked on the page all the same -- a block written by an earlier run
+            # of this script predates them. hasPart is collected here and compared once
+            # every chapter page has been read, below.
+            publisher = found.get("publisher")
+            if not isinstance(publisher, dict) or publisher.get("@id") != book["author"]["@id"]:
+                print(
+                    f"✗ the book's publisher is {publisher!r}; expected a reference to "
+                    f"{book['author']['@id']} -- the book is self-published"
+                )
+                return 1
+            audience = found.get("audience")
+            if not isinstance(audience, dict) or audience.get("@type") != "EducationalAudience":
+                print(f"✗ the book node's audience is {audience!r}, not an EducationalAudience")
+                return 1
+            parts = found.get("hasPart")
+            if not isinstance(parts, list):
+                print(f"✗ the book node has no hasPart list: {parts!r}")
+                return 1
             book["dateModified"] = found.get("dateModified", "?")
             continue
         nodes = {
@@ -454,6 +569,32 @@ def check(site: str, root: Path, pages: list[tuple[str, str | None]], book: dict
             if not chapter.get(field):
                 print(f"✗ {target} has an empty {field} -- did head_meta.py run first?")
                 return 1
+        seen.append({
+            "@type": "Chapter",
+            "@id": chapter["@id"],
+            "position": chapter["position"],
+            "name": chapter["name"],
+            "url": chapter["url"],
+        })
+    # The book's hasPart against the chapter pages -- not against the toc, and not
+    # against itself: each entry has to be the node its chapter page carries, same @id,
+    # same position, same name, or the landing page and the chapters describe two books.
+    if parts is None:
+        print("✗ the landing page was not among the pages checked; its hasPart is unverified")
+        return 1
+    if parts != seen:
+        have = {p.get("@id") for p in parts}
+        want = {s["@id"] for s in seen}
+        missing, extra = sorted(want - have), sorted(have - want)
+        print(
+            f"✗ the book's hasPart names {len(parts)} chapters, the build has {len(seen)}"
+            + (f"; missing {missing[:3]}" if missing else "")
+            + (f"; not in the build {extra[:3]}" if extra else "")
+            + ("; same chapters, but a position or a name differs from the chapter's own page"
+               if not missing and not extra else "")
+        )
+        return 1
+    book["hasPart"] = parts
     return 0
 
 
@@ -499,7 +640,7 @@ def main() -> int:
             return 1
 
         if not slug:
-            payload = landing_graph(site, root, doc, book)
+            payload = landing_graph(site, root, doc, book, pages, suffix)
             if payload is None:
                 return 1
         else:
@@ -530,7 +671,8 @@ def main() -> int:
         return rc
     print(
         f"✓ structured data on {len(pages)} pages: {written} written, {skipped} already "
-        f"had a block; one Book ({book['@id']}), {len(pages) - 1} chapters, "
+        f"had a block; one Book ({book['@id']}) with its {len(pages) - 1} chapters in "
+        f"hasPart and its author as publisher, "
         f"{len(sibling_nodes(site, book))} further works by the same author "
         f"({book['author']['@id']}), cover {book['image']['width']}x"
         f"{book['image']['height']} at {book['image']['url']}, "
