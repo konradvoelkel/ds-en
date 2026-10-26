@@ -3376,3 +3376,38 @@ consistent as it stands. For the handover when §17 goes across, not before.
 `sync/upstream.json` → `b037bc9f`, 2026-10-20; thirty manifests regenerated; `align`
 30/30; `check` answers "up to date". Unchanged by this round and still open from §10:
 `llms_txt.py` here reads `myst.yml` where ds-skript's reads `config.json`.
+
+### 30a. Deployed, and the live block is the local one to the byte (2026-10-27, same night)
+
+Pushed as `a744af2`; `pages` run 40423042408, success: build 2 min 39 s, deploy 8 s, the
+runner's clock saying 23:58 UTC on the 26th. The runner printed both of the new lines:
+
+```
+✓ structured data on 30 pages: 30 written, 0 already had a block; one Book (…/#work)
+  with its 29 chapters in hasPart and its author as publisher, 2 further works …
+JSON-LD ok: ['Book', 'LearningResource'] at …/, as of 2026-10-26, with 29 chapters of
+  …/#work by …/#author, all in its hasPart, published by its author, and 2 further works …
+```
+
+Measured on the live site, all thirty pages fetched, minutes after the deploy:
+
+| | local build (§30) | live |
+|---|---|---|
+| landing page `ld+json` block | 15,076 B | **15,076 B** |
+| the block, gzipped | 2,919 B | **2,919 B** |
+| landing page over the wire, gzip | 33,472 B | 34,100 B (was 32,841 before the deploy: +1,259 B) |
+| `publisher` | `{"@id": "…/#author"}` | the same |
+| `audience` | `EducationalAudience`, `student` | the same |
+| `hasPart` | 29 entries, positions 2–30 | the same |
+| chapter pages agreeing with their entry, by `@id`, `position` and `name` | 29 / 29 | **29 / 29** |
+
+The block is byte-identical to the local build's, which is what reading the names out of
+the built pages rather than out of a file buys: there was nothing on the runner for the
+list to differ by. The 628 B by which the live page's gzip exceeds the local estimate is
+the rest of the page — fingerprinted asset names and the date stamp differ between the two
+builds — and not the block.
+
+The one thing a local build could not make sure of was the gate on the runner, with the
+name comparison in it that §30 added after the renamed-entry case slipped through; it ran
+green there, which is the only place it counts. Whether any consumer reads `hasPart` or
+`publisher` is the weeks-out question §27 already owns, and it is not answered here.
