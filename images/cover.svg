@@ -1,0 +1,146 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="2100" viewBox="0 0 1400 2100"
+     role="img" aria-label="Book cover: Data Science — from stochastics to machine learning with Python. a free open textbook by Konrad Völkel · 2026.">
+  <title>Data Science — from stochastics to machine learning with Python</title>
+  <desc>Cover of the open textbook "Data Science" by Konrad Völkel, 2026. An open book is drawn below the title, a wireframe globe and the Python logo on its right-hand page. A band across the top-right corner reads "now in English!". Licensed CC BY-SA 4.0.</desc>
+
+  <defs>
+    <clipPath id="cover-edge"><rect width="1400" height="2100"/></clipPath>
+  </defs>
+
+  <rect width="1400" height="2100" fill="#b5cbd6"/>
+
+  <!-- The corner flash. A rotated band clipped to the board, not a filled triangle:
+       a triangle has no inner edge, and the inner edge is what makes it read as a
+       sticker on a cover rather than a corner that has been coloured in. -->
+  <g clip-path="url(#cover-edge)">
+    <g transform="translate(1400 0) rotate(45)">
+      <rect x="-450.0" y="150" width="900"
+            height="186" fill="#831990"/>
+      <text x="0" y="262"
+            text-anchor="middle"
+            font-family="Inter Display, Inter, sans-serif" font-weight="700"
+            font-size="54" fill="#2edc17"
+            font-style="italic">now in English!</text>
+    </g>
+  </g>
+
+  <!-- Title. Inter Display is the optical size cut for large type: tighter spacing and
+       smaller apertures than Inter, which is drawn for body text and looks loose here.
+       The negative tracking is Inter Display's own recommendation above ~48 px. -->
+  <text x="118" y="610" font-family="Inter Display, Inter, sans-serif"
+        font-weight="800" font-size="186" letter-spacing="-5" fill="#101418">Data Science</text>
+
+  <text x="118" y="800" font-family="Inter Display, Inter, sans-serif"
+        font-weight="300" font-size="104" letter-spacing="-1.5" fill="#003964">
+    <tspan x="118" dy="0">from stochastics to</tspan>
+    <tspan x="118" dy="126">machine learning</tspan>
+    <tspan x="118" dy="126">with Python</tspan>
+  </text>
+
+  <g transform="translate(355.0 1205) scale(23.0)">
+<defs xmlns="http://www.w3.org/2000/svg" xmlns:ns1="http://www.w3.org/1999/xlink">
+  <linearGradient id="linearGradient6897">
+   <stop stop-color="#800000" offset="0" />
+   <stop stop-color="#800000" stop-opacity="0" offset="1" />
+  </linearGradient>
+  <linearGradient id="linearGradient11307" x1="89.137" x2="147.78" y1="111.92" y2="168.1" gradientUnits="userSpaceOnUse">
+   <stop stop-color="#ffe052" offset="0" />
+   <stop stop-color="#ffc331" offset="1" />
+  </linearGradient>
+  <linearGradient id="linearGradient9521" x1="55.549" x2="110.15" y1="77.07" y2="131.85" gradientUnits="userSpaceOnUse">
+   <stop stop-color="#387eb8" offset="0" />
+   <stop stop-color="#366994" offset="1" />
+  </linearGradient>
+  <radialGradient id="radialGradient6899" cx="32.949" cy="288.02" r=".19489" gradientTransform="matrix(.92734 0 0 1.0116 2.38 -3.9355)" gradientUnits="userSpaceOnUse" ns1:href="#linearGradient6897" />
+  <radialGradient id="radialGradient6899-9" cx="32.949" cy="288.02" r=".19489" gradientTransform="matrix(.92734 0 0 1.0116 2.5106 -3.5309)" gradientUnits="userSpaceOnUse" ns1:href="#linearGradient6897" />
+  <radialGradient id="radialGradient6899-3" cx="32.949" cy="288.02" r=".19489" gradientTransform="matrix(.92734 0 0 1.0116 2.9049 -3.2611)" gradientUnits="userSpaceOnUse" ns1:href="#linearGradient6897" />
+  <radialGradient id="radialGradient6899-7" cx="32.949" cy="288.02" r=".19489" gradientTransform="matrix(.92734 0 0 1.0116 3.2785 -3.1366)" gradientUnits="userSpaceOnUse" ns1:href="#linearGradient6897" />
+  <radialGradient id="radialGradient6899-91" cx="32.949" cy="288.02" r=".19489" gradientTransform="matrix(.92734 0 0 1.0116 3.6728 -3.012)" gradientUnits="userSpaceOnUse" ns1:href="#linearGradient6897" />
+  <radialGradient id="radialGradient6899-0" cx="32.949" cy="288.02" r=".19489" gradientTransform="matrix(.92734 0 0 1.0116 4.0879 -3.0535)" gradientUnits="userSpaceOnUse" ns1:href="#linearGradient6897" />
+  <radialGradient id="radialGradient6899-6" cx="32.949" cy="288.02" r=".19489" gradientTransform="matrix(.92734 0 0 1.0116 4.4615 -3.2611)" gradientUnits="userSpaceOnUse" ns1:href="#linearGradient6897" />
+  <radialGradient id="radialGradient6899-37" cx="32.949" cy="288.02" r=".19489" gradientTransform="matrix(.92734 0 0 1.0116 4.7313 -3.6139)" gradientUnits="userSpaceOnUse" ns1:href="#linearGradient6897" />
+  <radialGradient id="radialGradient6899-92" cx="32.949" cy="288.02" r=".19489" gradientTransform="matrix(.92734 0 0 1.0116 4.9181 -4.029)" gradientUnits="userSpaceOnUse" ns1:href="#linearGradient6897" />
+  <radialGradient id="radialGradient6899-93" cx="32.949" cy="288.02" r=".19489" gradientTransform="matrix(.92734 0 0 1.0116 2.7597 -6.1874)" gradientUnits="userSpaceOnUse" ns1:href="#linearGradient6897" />
+  <radialGradient id="radialGradient6899-5" cx="32.949" cy="288.02" r=".19489" gradientTransform="matrix(.92734 0 0 1.0116 2.7804 -5.8138)" gradientUnits="userSpaceOnUse" ns1:href="#linearGradient6897" />
+  <radialGradient id="radialGradient6899-50" cx="32.949" cy="288.02" r=".19489" gradientTransform="matrix(.92734 0 0 1.0116 4.1502 -6.2911)" gradientUnits="userSpaceOnUse" ns1:href="#linearGradient6897" />
+  <radialGradient id="radialGradient6899-936" cx="32.949" cy="288.02" r=".19489" gradientTransform="matrix(.92734 0 0 1.0116 4.1709 -5.8968)" gradientUnits="userSpaceOnUse" ns1:href="#linearGradient6897" />
+  <radialGradient id="radialGradient6899-39" cx="32.949" cy="288.02" r=".19489" gradientTransform="matrix(.92734 0 0 1.0116 3.6106 -4.7138)" gradientUnits="userSpaceOnUse" ns1:href="#linearGradient6897" />
+ </defs>
+<g xmlns="http://www.w3.org/2000/svg" transform="translate(0,-282)">
+  <path d="m25.884 296.86c-3.0133-0.3127-6.043-0.51484-9.0715-0.60601-1.1576-0.1392-2.326 0.71699-3.4334 0.19775-1.2752-0.6382-2.7372-0.23547-4.0951-0.19815-2.1454 0.13643-4.2901 0.45368-6.442 0.38882-1.045-0.32463-0.00141-1.7586-0.013063-2.546 0.74736-2.9328 1.4159-5.8927 2.3094-8.7842 0.94549-0.22125 1.0661-1.3974 2.1039-1.685 2.53-1.4726 5.7489-2.0187 8.49-0.79889 0.85258 0.7094 1.7987 0.0909 2.6877-0.16184 2.4823-0.74229 5.4106-0.96344 7.6555 0.55678 0.85535 0.56927 1.6317 1.3643 2.0982 2.2419-0.38533 3.3823-0.92866 6.75-1.5927 10.089-0.1534 0.39024-0.1543 1.3126-0.69688 1.3059zm0.04125-0.6792c0.71036-3.1914 1.1572-6.4393 1.6152-9.6757 0.34318-0.50375-0.2658-2.1714-0.38763-0.92245-0.40328 3.0026-0.70127 6.0206-1.1542 9.0155-0.2682 1.4867-1.6657 0.64314-2.5769 0.34771-2.7785-0.71628-5.8074-0.67357-8.4902 0.39917-0.84247-0.059-1.6336-0.59852-2.517-0.6201-2.792-0.33783-5.5994 0.15881-8.3373 0.67633-1.0296 0.30065-0.21637-1.5266-0.16286-2.0852 0.62123-2.5629 1.2407-5.1264 1.8865-7.6832-0.69297 0.3683-0.62778 1.8799-0.98992 2.6786-0.64872 2.595-1.357 5.1803-1.8803 7.8032 0.99326 0.1815 2.0408-0.0567 3.0506-0.0832 2.1491-0.13673 4.2964-0.4505 6.452-0.38444 1.079 0.41971 2.1117 0.63963 3.241 0.22113 1.8389-0.26549 3.6977 0.0613 5.5418 0.12068 1.49 0.0708 2.9772 0.268 4.4658 0.29961l0.16496-0.0424 0.07854-0.0654zm-0.48378-1.3085c-0.80129-0.70987-1.9058-0.99605-2.8787-1.4235-1.6223-0.56547-3.348-1.3922-5.0917-0.85535-0.84746 0.23417-1.6915 0.5983-2.3462 1.1945-0.24747 0.62715-0.22562 1.3273 0.58506 0.78696 2.9796-0.88395 6.2443-0.8113 9.149 0.3196 0.13173 7e-3 0.59056 0.24259 0.58252-0.0223zm0.1265-0.74066c0.43581-3.2517 0.82861-6.5104 1.1778-9.7725-1.5125-1.6012-3.8936-1.9272-5.9946-1.682-1.3526 0.17091-2.7349 0.48142-3.9329 1.1325-0.5338 3.0498-1.0575 6.1054-1.5576 9.1619 1.0948-0.58807 2.2942-1.0796 3.5654-1.0235 1.799 0.0668 3.4497 0.9096 5.0982 1.5501 0.53587 0.12512 1.1471 0.75774 1.6437 0.63355zm-8.1003-3.974c-11.645 4.5596-5.8225 2.2798 0 0zm-1.1417-0.85611c-10.884 5.1304-5.442 2.5652 0 0zm6.3659-4.2292c-15.128 7.9498-7.5639 3.9749 0 0zm-8.1594 9.287c0.0044-0.99276-1.3896-1.0741-2.1198-1.4152-2.7473-0.78457-5.9104-0.34068-8.1921 1.4193-0.43589 0.98851 1.151 0.10619 1.7342 0.18766 2.5305-0.3715 5.1506-0.64888 7.6726-0.0842 0.31624 0.0162 0.97322 0.58779 0.9051-0.10749zm0.25846-1.7544c0.50089-2.9286 1.0567-5.8514 1.5018-8.7874-0.62119-0.80618-1.8307-0.97988-2.8132-1.1123-2.4332-0.19686-4.926 0.51873-6.9142 1.9261-0.75656 2.8941-1.4264 5.8129-2.1567 8.7147 0.10214 0.4403 1.1466-0.49394 1.6655-0.55248 2.699-1.0932 5.854-0.93496 8.4184 0.4516 0.31707 0.21305 0.19448-0.48409 0.2983-0.64024z" stroke-width=".045085" />
+  <g transform="matrix(.039732 0 0 .039732 3.1773 273.19)">
+   <g transform="translate(428.42 184.26)">
+    <path d="m99.75 67.469c-28.032 2e-6 -26.281 12.156-26.281 12.156l0.03125 12.594h26.75v3.7812h-37.375s-17.938-2.0343-17.938 26.25c-2e-6 28.284 15.656 27.281 15.656 27.281h9.3438v-13.125s-0.50365-15.656 15.406-15.656h26.531s14.906 0.24096 14.906-14.406v-24.219c0-2e-6 2.2632-14.656-27.031-14.656zm-14.75 8.4688c2.6614-2e-6 4.8125 2.1511 4.8125 4.8125 2e-6 2.6614-2.1511 4.8125-4.8125 4.8125-2.6614 2e-6 -4.8125-2.1511-4.8125-4.8125-2e-6 -2.6614 2.1511-4.8125 4.8125-4.8125z" color="#000000" fill="url(#linearGradient9521)" />
+    <path d="m100.55 177.31c28.032 0 26.281-12.156 26.281-12.156l-0.0312-12.594h-26.75v-3.7812h37.375s17.938 2.0343 17.938-26.25c1e-5 -28.284-15.656-27.281-15.656-27.281h-9.3438v13.125s0.50366 15.656-15.406 15.656h-26.531s-14.906-0.24096-14.906 14.406v24.219s-2.2632 14.656 27.031 14.656zm14.75-8.4688c-2.6614 0-4.8125-2.1511-4.8125-4.8125s2.1511-4.8125 4.8125-4.8125 4.8125 2.1511 4.8125 4.8125c1e-5 2.6614-2.1511 4.8125-4.8125 4.8125z" color="#000000" fill="url(#linearGradient11307)" />
+   </g>
+  </g>
+  <path id="path3859" d="m6.9453 288.07 1.7954-0.80321 1.8426-0.47246 1.4647-0.0945 1.6064 0.18899 1.0394 0.56697" fill="none" />
+  <path id="path3859-4" d="m5.9492 291.59 1.97-0.79894 2.0218-0.46995 1.6071-0.094 1.7626 0.18798 1.1405 0.56396" fill="none" />
+  <g fill="#000000" font-family="sans-serif" letter-spacing="0px" word-spacing="0px">
+   </g>
+  <g transform="matrix(.85812 .21025 -.21025 .85812 54.487 36.842)">
+   <path d="m32.106 284.51v4.9111h4.3431" fill="none" stroke="#000" stroke-dasharray="0.49500001, 0.165" stroke-dashoffset=".2805" stroke-miterlimit="5" stroke-width=".165" style="paint-order:normal" />
+   <g>
+    <ellipse cx="32.935" cy="287.44" rx=".18073" ry=".19716" fill="url(#radialGradient6899)" />
+    <ellipse cx="33.065" cy="287.84" rx=".18073" ry=".19716" fill="url(#radialGradient6899-9)" />
+    <ellipse cx="33.46" cy="288.11" rx=".18073" ry=".19716" fill="url(#radialGradient6899-3)" />
+    <ellipse cx="33.833" cy="288.24" rx=".18073" ry=".19716" fill="url(#radialGradient6899-7)" />
+    <ellipse cx="34.228" cy="288.36" rx=".18073" ry=".19716" fill="url(#radialGradient6899-91)" />
+    <ellipse cx="34.643" cy="288.32" rx=".18073" ry=".19716" fill="url(#radialGradient6899-0)" />
+    <ellipse cx="35.016" cy="288.11" rx=".18073" ry=".19716" fill="url(#radialGradient6899-6)" />
+    <ellipse cx="35.286" cy="287.76" rx=".18073" ry=".19716" fill="url(#radialGradient6899-37)" />
+    <ellipse cx="35.473" cy="287.35" rx=".18073" ry=".19716" fill="url(#radialGradient6899-92)" />
+    <ellipse cx="33.314" cy="285.19" rx=".18073" ry=".19716" fill="url(#radialGradient6899-93)" />
+    <ellipse cx="33.335" cy="285.56" rx=".18073" ry=".19716" fill="url(#radialGradient6899-5)" />
+    <ellipse cx="34.705" cy="285.08" rx=".18073" ry=".19716" fill="url(#radialGradient6899-50)" />
+    <ellipse cx="34.726" cy="285.48" rx=".18073" ry=".19716" fill="url(#radialGradient6899-936)" />
+    <ellipse cx="34.165" cy="286.66" rx=".18073" ry=".19716" fill="url(#radialGradient6899-39)" />
+   </g>
+  </g>
+  <path id="path7382" d="m17.273 280.09 0.95618-0.46577 0.81452-0.26616 0.77911-0.0998 0.60204-0.0665 0.67287 0.0998 0.88535 0.19961" fill="none" />
+  <g>
+   <path transform="matrix(.26458 0 0 .26458 0 282)" d="m16.123 48.386c-0.36672-0.15309-0.46274-0.51831-0.29755-1.1318 0.12562-0.46652 0.27045-0.59747 1.7427-1.5758 4.2477-2.8225 8.7845-4.5212 14.225-5.326 1.8288-0.27054 6.1249-0.37173 8.0978-0.19072 3.3607 0.30833 4.9909 0.66229 8.7669 1.9035 3.6179 1.1893 4.2717 1.4906 5.1926 2.3929 0.79812 0.78203 0.9927 1.258 0.99385 2.4311 0.0013 1.2342-0.30615 1.3224-2.0827 0.59785-1.4854-0.6058-5.2391-1.2272-9.0519-1.4986-4.6807-0.33311-11.225 0.01337-17.912 0.94826-1.2184 0.17035-2.7947 0.36494-3.5029 0.43241-0.70817 0.06748-2.0409 0.31654-2.9617 0.55348-1.9257 0.49554-2.8225 0.62498-3.2098 0.4633z" fill="#520" style="paint-order:normal" />
+   <path transform="matrix(.26458 0 0 .26458 0 282)" d="m94.304 48.764c-0.41669-0.12747-1.5881-0.51797-2.6031-0.86779-3.1747-1.0941-6.7304-1.8821-10.719-2.3756-2.5861-0.31994-9.2581-0.32149-11.868-0.0028-4.0727 0.49737-8.8349 1.5314-10.19 2.2126-1.124 0.56501-1.4819 0.60819-1.8651 0.225-0.26996-0.26996-0.31919-0.4352-0.31919-1.0713 0-1.0114 0.37924-2.1901 0.83681-2.601 0.73982-0.66436 2.819-1.9762 4.0339-2.545 1.5182-0.7109 4.5434-1.7248 5.9253-1.9859 3.0093-0.56856 5.8-0.32296 9.9221 0.87325 3.2625 0.94675 12.534 4.4912 15.048 5.7526 1.1538 0.57901 2.5181 1.4338 3.3641 2.1077 0.6698 0.53358-0.21562 0.691-1.565 0.27824z" fill="#d45500" style="paint-order:normal" />
+   <path transform="matrix(.26458 0 0 .26458 0 282)" d="m15.979 48.231c-0.19463-0.19463-0.19405-0.75342 0.0012-1.182 0.22667-0.49748 2.8552-2.1844 5.2768-3.3865 2.9885-1.4835 6.0064-2.4549 9.7227-3.1293 1.4255-0.2587 1.9759-0.28686 5.6821-0.29071 4.5138-0.0047 5.6256 0.10469 8.4512 0.83142 1.7876 0.45976 5.3957 1.6398 6.7598 2.2108 1.1643 0.48738 2.2184 1.3332 2.6043 2.0897 0.25606 0.50191 0.3779 2.0534 0.18568 2.3644-0.14092 0.22802-0.56329 0.16174-1.8973-0.29774-1.3979-0.48147-3.7061-0.93911-6.5072-1.2902-2.6031-0.32625-10.628-0.32501-14.079 0.0022-3.9755 0.37695-11.146 1.3227-12.627 1.6653-2.672 0.6184-3.2956 0.69041-3.5734 0.41263z" fill="#d45500" style="paint-order:normal" />
+   <path transform="matrix(.26458 0 0 .26458 0 282)" d="m93.231 53.801c-0.8681-0.06088-3.6807-0.27968-6.2503-0.48623-2.5696-0.20655-5.8652-0.43787-7.3236-0.51405-1.4584-0.076182-4.5552-0.27744-6.8817-0.44723-6.8874-0.50266-12.086-0.40735-14.332 0.26275-3.1583 0.94256-6.0701 0.75627-10.243-0.65536l-1.3555-0.45853-4.1127 0.07688c-4.1066 0.07677-4.9992 0.13389-13.078 0.83693-2.3612 0.20548-5.2591 0.43674-6.4397 0.51389-1.1806 0.07716-3.0841 0.22428-4.23 0.32694-3.0144 0.27006-5.6002 0.34676-6.7339 0.19973-0.54376-0.07052-1.0136-0.15312-1.044-0.18357-0.06608-0.06608 0.83493-4.2993 1.7936-8.4266 1.0397-4.4765 5.1853-20.806 5.4693-21.544 0.13682-0.35542 0.48-1.7585 0.76261-3.118 0.58494-2.8138 0.89394-3.8948 1.3965-4.8852 0.34915-0.68811 1.1339-1.5768 1.1339-1.2841 0 0.08363-0.62138 2.637-1.3808 5.6742-0.75946 3.0372-2.3493 9.528-3.5331 14.424-1.1837 4.8961-2.332 9.6122-2.5518 10.48-0.92779 3.6649-1.0778 4.9103-0.68335 5.6731 0.33231 0.64261 0.74379 0.65957 3.4792 0.14336 13.043-2.4614 21.084-3.1132 28.977-2.3488 2.6124 0.25302 2.7963 0.29392 5.9346 1.3205 1.4584 0.47706 3.0516 0.93329 3.5405 1.0138 0.7989 0.13165 0.94689 0.12159 1.4625-0.09944 1.6823-0.72112 5.5328-1.8011 8.129-2.2801 6.1606-1.1365 13.314-1.0677 19.824 0.1907 2.4337 0.47045 3.463 0.75312 5.5244 1.5171 2.5606 0.94901 3.7207 1.2287 4.7816 1.1528 1.4558-0.10416 2.2647-0.77818 2.8188-2.3486 0.32344-0.91672 1.3292-8.3412 2.9792-21.991 1.2217-10.107 1.7322-13.936 1.9099-14.326 0.0836-0.1835 0.23571-0.31428 0.34178-0.29385 0.31516 0.06069 0.77538 1.1269 0.97437 2.2574 0.19435 1.1041 0.16245 1.6793-0.14641 2.6401-0.10046 0.31252-0.49793 2.8126-0.88327 5.5558-0.97539 6.9437-1.7026 11.702-2.5762 16.857-1.2527 7.3917-2.6184 14.218-2.9012 14.502-0.18412 0.18455-2.4366 0.21996-4.5524 0.07158z" fill="#a80" style="paint-order:normal" />
+  </g>
+ </g>
+    <g fill="none" stroke="#4a5578" stroke-width="0.085" opacity=".85">
+      <circle cx="19.27" cy="3.94" r="2.670"/>
+      <ellipse cx="19.27" cy="3.94" rx="2.670" ry="0.801"/>
+      <ellipse cx="19.27" cy="3.94" rx="0.801" ry="2.670"/>
+      <ellipse cx="19.27" cy="3.94" rx="1.762" ry="2.670"/>
+      <line x1="19.27" y1="1.270" x2="19.27" y2="6.610"/>
+      <ellipse cx="19.27" cy="2.552" rx="2.281" ry="0.684"/>
+      <ellipse cx="19.27" cy="5.328" rx="2.281" ry="0.684"/>
+      <ellipse cx="19.27" cy="1.644" rx="1.362" ry="0.409"/>
+      <ellipse cx="19.27" cy="6.236" rx="1.362" ry="0.409"/>
+    </g>
+  </g>
+
+  <!-- A hairline, which is the cheapest thing on a cover that says someone set it:
+       it closes the drawing and opens the imprint block under it. -->
+  <line x1="118" y1="1700" x2="1282" y2="1700"
+        stroke="#003964" stroke-width="2" opacity=".35"/>
+
+  <text x="118" y="1800" font-family="Inter, sans-serif" font-weight="500"
+        font-size="58" fill="#003964">a free open textbook</text>
+
+  <text x="118" y="1930" font-family="Inter, sans-serif" font-weight="300"
+        font-size="58" fill="#45596b">Konrad Völkel · 2026</text>
+
+  <!-- The imprint line. A cover without one looks like a poster; this book's
+       publisher is its address. -->
+  <text x="118" y="2010" font-family="Inter, sans-serif" font-weight="400"
+        font-size="38" letter-spacing="1" fill="#45596b" opacity=".8">datascience.konradvoelkel.com</text>
+
+  <!-- The licence, set rather than badged. The official button is 267 x 50 of raster
+       whose three glyphs are illegible below about 120 px wide, and a cover is read at
+       300 px tall; the words survive that and the glyphs do not. -->
+  <g transform="translate(1282 1930)">
+    <rect x="-296" y="-56" width="296" height="78" rx="12" fill="#003964" opacity=".92"/>
+    <text x="-148" y="-1" text-anchor="middle" font-family="Inter, sans-serif"
+          font-weight="600" font-size="40" letter-spacing=".5"
+          fill="#b5cbd6">CC BY-SA 4.0</text>
+  </g>
+</svg>
