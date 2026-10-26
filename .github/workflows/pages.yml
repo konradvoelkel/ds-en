@@ -169,10 +169,23 @@ jobs:
       - name: A PDF that is too small is not a PDF
         # latexmk runs in force mode: it reports errors and produces a file anyway, and
         # MyST passes that on as success. So a failed PDF does not arrive as a failure, it
-        # arrives as a stub -- 84 kB instead of 19 MB, every figure missing. Deleted here,
-        # before the HTML build, so MyST does not attach a download button to it. The
-        # floor is deliberately far below the real size: this is a smoke test for a
-        # collapsed build, not a size assertion.
+        # arrives as a stub -- 1642 kB instead of 19 MB, figures missing. The floor is
+        # deliberately far below the real size: this is a smoke test for a collapsed
+        # build, not a size assertion.
+        #
+        # A collapsed PDF now FAILS the build. It used to warn and delete the stub, on the
+        # reasoning that a broken PDF must not take the website down with it -- and that
+        # reasoning is what let c8c48bc ship a 1642 kB book for eight days and twelve
+        # deploys. The warning was printed every single time and read none of them, which
+        # makes it not a guard but a comment. §28.
+        #
+        # The distinction is deliberate and is the whole content of this step: a stub that
+        # was *produced* means the LaTeX run went wrong while reporting success, i.e. the
+        # build is lying about what it made, and there is no safe way to publish around
+        # that. No PDF at all is a different event -- latexmk or TeX fell over outright, it
+        # is visible in the step above, and the site is merely missing its download
+        # button. That stays a warning, so a TeX outage still cannot block a correction to
+        # the website itself from shipping.
         run: |
           pdf=exports/ds-en.pdf
           if [ ! -f "$pdf" ]; then
@@ -181,13 +194,13 @@ jobs:
           fi
           bytes=$(stat -c%s "$pdf")
           if [ "$bytes" -lt 5000000 ]; then
-            echo "::warning::the PDF is only $((bytes / 1024)) kB -- a 318-page book with"
-            echo "::warning::figures is ~19 MB, so this build collapsed. Check the latexmk"
-            echo "::warning::log for 'Cannot determine size of graphic'. Not publishing it."
-            rm -f "$pdf"
-          else
-            echo "PDF looks complete: $((bytes / 1024 / 1024)) MB"
+            echo "::error::the PDF is only $((bytes / 1024)) kB -- a 318-page book with"
+            echo "::error::figures is ~19 MB, so this build collapsed. Check the latexmk"
+            echo "::error::log for 'Cannot determine size of graphic', and SEO-NOTES §28"
+            echo "::error::for the WebP case this guard was turned into an error over."
+            exit 1
           fi
+          echo "PDF looks complete: $((bytes / 1024 / 1024)) MB"
 
       - name: Build the book
         # Without BASE_URL every asset path points at the domain root -- or, when the site
