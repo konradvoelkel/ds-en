@@ -280,6 +280,23 @@ jobs:
           # under paths of arbitrary depth.
           sed "s|__SITE__|$SITE|g" _site/404.html > _build/html/404.html
 
+          # The book cover, at a path that does not move. MyST copies only the images a
+          # page references, under a content hash, and nothing references this one: it is
+          # not a figure in the book, it is the picture of the book, named by the JSON-LD
+          # on the landing page as Book.image (tools/inject_jsonld.py, "The cover"). A
+          # fingerprinted URL cannot play that part -- it would change on every
+          # regeneration, and the node gives it an @id of .../#cover -- so it is copied
+          # verbatim to /images/cover.png and the template hardcodes that URL. The tool
+          # fails the build if the file is not here, which is the half of the claim that
+          # markup alone cannot check.
+          #
+          # The PNG only. images/cover.svg sets its title as <text> in Inter rather than
+          # as paths (tools/cover.py, "Text is text, not outlines"), so a browser without
+          # Inter renders the cover in whatever it falls back to; publishing it would
+          # offer a broken cover beside a correct one. It stays a source file.
+          mkdir -p _build/html/images
+          cp images/cover.png _build/html/images/cover.png
+
           # Raw Markdown per chapter, the <link rel="alternate"> that points at it, and
           # llms.txt / llms-full.txt. MyST publishes HTML and a JSON payload; neither is
           # what a research tool wants to read.
@@ -442,8 +459,32 @@ jobs:
           if data is None:
               sys.exit(f"::error::the landing page's JSON-LD has no node for {want}; "
                        f"it names {[n.get('url') for n in graph]}")
-          if not str(data.get("image", "")).startswith("http"):
-              sys.exit("::error::JSON-LD image is not an absolute URL")
+          # The cover. Three claims, and the last one is the only one a validator cannot
+          # make: the ImageObject is absolute and portrait, and the bytes in the artifact
+          # at that URL are a PNG of exactly the size the markup says. Valid markup
+          # pointing at a 404, or at an image of another shape, is the way this can fail
+          # while parsing perfectly -- §17 is this site's own lesson about that.
+          cover = data.get("image")
+          if not isinstance(cover, dict) or not str(cover.get("url", "")).startswith("http"):
+              sys.exit(f"::error::the book's image is not an ImageObject with an "
+                       f"absolute url: {cover!r}")
+          if cover.get("height", 0) <= cover.get("width", 0):
+              sys.exit(f"::error::the cover is declared {cover.get('width')}x"
+                       f"{cover.get('height')}, which is not portrait; see tools/cover.py")
+          if not cover["url"].startswith(want):
+              sys.exit(f"::error::the cover {cover['url']} is not on {want}")
+          f = pathlib.Path("_build/html") / cover["url"][len(want):]
+          if not f.exists():
+              sys.exit(f"::error::the book node claims a cover at {cover['url']}, and "
+                       f"{f} is not in the artifact; see the cp in the step above")
+          ihdr = f.read_bytes()[:24]
+          if ihdr[:8] != b"\x89PNG\r\n\x1a\n" or ihdr[12:16] != b"IHDR":
+              sys.exit(f"::error::{f} is not a PNG")
+          cw = int.from_bytes(ihdr[16:20], "big")
+          ch = int.from_bytes(ihdr[20:24], "big")
+          if (cw, ch) != (cover["width"], cover["height"]):
+              sys.exit(f"::error::the cover in the artifact is {cw}x{ch}, but the "
+                       f"JSON-LD says {cover['width']}x{cover['height']}")
           if not str(data.get("dateModified", "")).startswith("20"):
               sys.exit(f"::error::JSON-LD dateModified is {data.get('dateModified')!r}; "
                        "freshness.py must run before inject_jsonld.py")
@@ -493,6 +534,11 @@ jobs:
           # Every chapter must have a Markdown twin, or llms.txt points at 404s.
           mds=$(find _build/html -name index.md | wc -l)
           [ "$pages" = "$mds" ] || fail "$pages pages but $mds Markdown sources"
+          # llms.txt names the cover; the JSON-LD gate above proves the file is there, so
+          # this is only the other half -- that the file written for models to read did
+          # not lose the line when its header was next edited.
+          grep -q "$SITE/images/cover.png" _build/html/llms.txt \
+            || fail "llms.txt no longer names the cover"
 
           # The PDF is allowed to fail; say so loudly rather than leaving it to be noticed
           # weeks later by a student who wanted the download.

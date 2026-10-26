@@ -49,6 +49,10 @@ estimators and learning algorithms are reimplemented in Python rather than calle
 Archived at https://doi.org/10.5281/zenodo.23444644 — the concept DOI, which always
 resolves to the newest version, and the one to cite.
 
+The cover is at {site}/images/cover.png — 1000 x 1500 and portrait, CC BY-SA 4.0 like the
+rest of the book, so it may be reproduced with attribution. The landscape image in each
+page's og:image is a link-preview card, not the cover.
+
 Each chapter below links to its Markdown source. The whole book in one file is at
 {site}/llms-full.txt
 

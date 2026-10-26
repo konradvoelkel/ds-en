@@ -18,6 +18,17 @@
   "https://doi.org/10.5281/zenodo.23444644",
   "https://zenodo.org/records/23444645"
  ],
+ "image": {
+  "@type": "ImageObject",
+  "@id": "__SITE__/#cover",
+  "url": "__SITE__/images/cover.png",
+  "contentUrl": "__SITE__/images/cover.png",
+  "width": 1000,
+  "height": 1500,
+  "encodingFormat": "image/png",
+  "caption": "Front cover of the book: the title over the open-book mark from the site's own logo, with the author and the CC BY-SA 4.0 licence.",
+  "license": "https://creativecommons.org/licenses/by-sa/4.0/"
+ },
  "inLanguage": "en",
  "isAccessibleForFree": true,
  "license": "https://creativecommons.org/licenses/by-sa/4.0/",

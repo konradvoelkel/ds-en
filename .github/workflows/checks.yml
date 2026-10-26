@@ -77,10 +77,22 @@ jobs:
         # so --verify asserts the properties no renderer can disagree about -- a 216x108
         # PNG whose alpha channel is in use, still matching the source's aspect ratio.
         # Undersized, opaque or reshaped are the three ways it can go wrong.
+        #
+        # The cover is the one file that is both cases at once, so it gets both gates.
+        # images/cover.svg is *written* as text -- inlined geometry from logo-wide.svg
+        # plus a few <text> elements, no renderer involved -- so re-generating it here
+        # gives the same bytes and --check catches a hand-edit exactly, as for the
+        # diagram. images/cover.png is *rendered* from it by rsvg-convert against the
+        # installed Inter, which no runner has, so --verify asserts instead what no
+        # renderer can disagree about: the PNG is there, wide enough, and still portrait
+        # 2:3. A landscape or squashed re-export is the bug -- the cover's whole job is
+        # to be the shape an answer engine reads as a book cover (SEO-NOTES.md §26).
         run: |
           python3 tools/social_card.py --verify
           python3 tools/course_diagram.py --check
           python3 tools/logo_raster.py --verify
+          python3 tools/cover.py --check
+          python3 tools/cover.py --verify
 
       - name: Committed figures are still optimised
         # The repository's own images, not the build's -- pages.yml re-encodes the

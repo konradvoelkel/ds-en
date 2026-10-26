@@ -2530,3 +2530,239 @@ data would see on the connection PSI is modelling, and say how many runs landed 
 
 TBT in this round: 6 / 222 ms home, 550 / 44 ms expectation-variance, 373 / 92 ms
 statistical-tests. Same spread as §24's, same caution.
+
+---
+
+## 26. The cover is in the graph, and `thumbnailUrl` is not (2026-10-26)
+
+§21 named the failure and §21 named the fix in one sentence: *"with no card of his own on a
+page, the slot does not stay empty — it gets filled with somebody else's work, under his
+name."* The slot there was `og:image` on two sibling sites. There is a second slot, on this
+site, and until today it was filled with the wrong *shape* rather than with nothing:
+`Book.image` on the landing page was `images/social-card.png`, 1200 × 630, landscape. That
+is the correct image for a Twitter or LinkedIn preview and it is not a book cover, and
+`Book.image` is where an answer engine deciding whether a thing is a book goes looking for
+one.
+
+`tools/cover.py` and `images/cover.png` — 1000 × 1500, portrait 2:3, the site's own
+open-book mark with a wireframe globe in place of the 421 kB shaded one — were written in a
+pass of their own earlier today and landed as `77e23ba`. Nothing in the build or the markup
+referenced them: a cover that only exists in `images/` is a cover no parser can find. This
+section is the wiring, and the three decisions it needed.
+
+### What changed, in six files
+
+| File | Change |
+|---|---|
+| `tools/structured-data.json` | `image` is now an `ImageObject`: `@id` `.../#cover`, `url` and `contentUrl` `.../images/cover.png`, `width` 1000, `height` 1500, `encodingFormat`, `caption`, `license` |
+| `tools/inject_jsonld.py` | stops writing the card into `image`; checks instead that the file the node claims is in the build, and that it is portrait |
+| `tools/llms_txt.py` | one line in the header naming the cover URL, its size and its licence |
+| `.github/workflows/pages.yml` | copies `images/cover.png` to `/images/cover.png`; the artifact gate asserts the claim against the bytes |
+| `.github/workflows/checks.yml` | `cover.py --check` and `--verify` beside the card's and the logo's |
+| `tools/optimize_images.py` | `cover.png` joins `social-card.png` in `GENERATED` |
+
+### `image`: the cover replaces the card rather than joining it
+
+A node may carry several `image` values, and the tempting shape was both — cover first, card
+second, each with its dimensions, and let the consumer pick by aspect ratio. It is one value,
+the cover, for a reason that is about consumers rather than about schema: nearly everything
+that reads `image` reads the first value, or any value, and offering a landscape banner at all
+leaves the §21 failure available at a lower probability. There is nothing to trade away by
+removing it. **The card is not demoted; it is unmoved.** `og:image` and `twitter:image` are
+where every social preview actually reads, `head_meta.py` still pins them to the card on all
+thirty pages, and nothing in this change touches them — measured on the local build below.
+
+One nice consequence. The card has to be *discovered* at build time, because MyST fingerprints
+asset filenames and the hash changes whenever `social_card.py` is re-run; that is why
+`inject_jsonld.py` read it back out of `og:image`. The cover is copied verbatim to a path that
+does not move, so its URL is a constant in the template and stable enough to be an `@id`. The
+`og:image` read stays, demoted to what it always also was: the proof that `head_meta.py` and
+the origin rewrite have both run on the landing page.
+
+### `thumbnailUrl`: measured, and no
+
+Not set, and this is the one of the three decisions that is settled by documentation rather
+than by judgement:
+
+* **schema.org** (checked against `schemaorg-current-https.jsonld`, fetched 2026-10-26)
+  defines `thumbnailUrl` as "A thumbnail image relevant to the Thing", on `CreativeWork`,
+  with `rangeIncludes` **`URL` only**. It cannot carry `width` and `height`, so it cannot say
+  the one thing that makes the cover useful — its shape.
+* **Google's `Book` documentation** names neither `image` nor `thumbnailUrl` in its required
+  or recommended properties, for the work or for the edition. Its book feature is a `DataFeed`
+  of editions with `isbn`, `bookFormat` and `potentialAction` (a `ReadAction` or `BorrowAction`),
+  which this book is not and is not going to become.
+* There is exactly **one** cover raster. A `thumbnailUrl` today would be the same 1000 × 1500
+  file under a second property: a second URL for a consumer to choose between, and no new
+  information.
+
+What would change it: a genuinely smaller raster. `tools/cover.py --png-width` already writes
+one, so the day a `cover-small.png` is committed the property has something true to say and
+goes in — with a second shape check in `checks.yml` beside the first.
+
+### The chapters do not carry the cover
+
+The argument for is real and was not dismissed: Google reads one document at a time, so an
+engine citing `/relative-entropy/` sees a `Chapter` node with no portrait image anywhere in
+it. The argument against is that a chapter is not the book.
+
+It is decided by a line this repository had already drawn, one property up. A chapter's node
+*does* restate `inLanguage`, `isAccessibleForFree` and `license` from the book — because those
+are true of the chapter — and it *does not* restate the author's name, profiles or affiliation,
+only the `@id`, because "the identity is shared, the properties are a fetch of the landing page
+away" (`inject_jsonld.py`, "One book, twenty-nine chapters, one author"). The cover falls on
+the second side of that line without ambiguity: it depicts the work, not the part, and the
+part's route to the work is the `isPartOf` it already carries. Putting it on twenty-nine
+`Chapter` nodes would assert twenty-nine times that this picture is a picture of that chapter —
+the "thirty books" mistake one property down.
+
+A chapter page is not imageless either. Its `og:image` is the card, which is the right shape
+for a link preview of a chapter, which is what a chapter gets linked as.
+
+### `og:image` stays; the landing page gains a line in `llms.txt`, not an `<img>`
+
+`llms.txt` already had the "About the author" block §21 added, so the file written for models
+to read is where the cover goes for the audience that cannot read JSON-LD:
+
+> The cover is at `…/images/cover.png` — 1000 x 1500 and portrait, CC BY-SA 4.0 like the rest
+> of the book, so it may be reproduced with attribution. The landscape image in each page's
+> og:image is a link-preview card, not the cover.
+
+The second sentence is there because the distinction is the whole point and a model that has
+both URLs and no guidance will pick the wrong one half the time.
+
+**A plain `<img>` in `landing-page.md` was considered and is Konrad's call, not a side
+effect.** Two things stand in front of it, and neither is a stylistic objection:
+
+* TRANSLATION.md §1. A new block in the English edition is allowed, but only as a declared
+  English-only addition in `sync/additions/landing-page.md.json`, "kept rare: this is a
+  translation, not a rewrite". It is the same rule that keeps the JSON-LD block itself out of
+  `landing-page.md`. An `<img>` would need either its own block or a `{raw} html` directive,
+  which is a block too.
+* `head_meta.py`'s own guard. `social_card()` **exits the build** if the landing page's
+  `og:image` is not the project thumbnail, with the message "the landing page has acquired a
+  figure. Which image is the book's card is a decision; make it in `myst.yml`" — because MyST
+  prefers a page's first figure over `project.thumbnail`. A figure on the landing page is
+  therefore not an addition, it is a decision about the card, and the build says so.
+
+So the structured data and `llms.txt` carry it, the reader's page is unchanged, and the one
+route that would put a cover in front of a human on the landing page stays open and
+undecided.
+
+### The build: a path that does not move, and the PNG only
+
+`pages.yml` copies `images/cover.png` to `_build/html/images/cover.png` and the template
+hardcodes that URL. MyST copies only the images a page *references*, under a content hash, and
+nothing references this one — it is not a figure in the book, it is a picture of the book. A
+fingerprinted URL could not play the part anyway: the node gives the cover an `@id`, and an
+identifier that changes on every regeneration is not one.
+
+`images/cover.svg` is **not** published. Its title is set as `<text>` in Inter rather than as
+outlines (`cover.py`, "Text is text, not outlines"), so a browser without Inter renders the
+cover in whatever it falls back to. Publishing it would offer a broken cover beside a correct
+one. It stays a source file, which is what it was written to be.
+
+### Four gates, and all four were made to fail on purpose
+
+Four new, and one that had to move:
+
+1. `checks.yml` runs `cover.py --check` (byte-exact on the SVG, which is written as text, like
+   `course_diagram.py`) **and** `--verify` (shape only on the PNG, which is rendered, like the
+   card and the logo). The cover is the one artefact that is both cases at once.
+2. `inject_jsonld.py` resolves the node's own `image.url` against the build directory and fails
+   if the file is not there, and fails if the declared height is not greater than the declared
+   width.
+3. The `pages.yml` artifact gate makes the same two assertions on the page it is about to
+   publish, and then the one neither a tool nor a validator can make: it reads the IHDR of the
+   file at that URL and compares it to the numbers in the markup.
+4. `grep` for the cover URL in `llms.txt`, so the line cannot quietly disappear the next time
+   that header is edited.
+
+`optimize_images.py` is the one that moved rather than being added. `cover.png` has to join
+`social-card.png` in `GENERATED`, or `--check` goes red asking for a palette pass that the next
+`cover.py --check` would then report as an out-of-date cover. The arithmetic is five times the
+card's — 161 kB → 52 kB, a saving of 109 kB — and it is still an *easier* call than the card's
+was, because of who pays: no page loads the cover, so it is fetched once by a crawler that went
+looking for it, while the card is fetched by every link preview. If the 109 kB is ever wanted it
+belongs inside `cover.py`'s render step, where the next regeneration keeps it.
+
+### Measured on a local build
+
+Full pipeline, in `pages.yml`'s order, with `mystmd` **1.11.0** (the pin in
+`requirements.txt`; the machine's own `myst` is 1.10.1, so it was installed beside it for this):
+`myst build --html`, the origin rewrites, `freshness.py`, the cover copy, `llms_txt.py`,
+`hreflang.py`, `vendor_assets.py`, `head_meta.py --drop-modulepreload`, `inject_jsonld.py`,
+`thebe_gate.py`.
+
+```
+✓ structured data on 30 pages: 30 written, 0 already had a block; one Book
+  (https://datascience.konradvoelkel.com/#work), 29 chapters, 2 further works by the
+  same author (…/#author), cover 1000x1500 at …/images/cover.png, as of 2026-10-19
+```
+
+* 30 pages, exactly one `ld+json` block each, all parse.
+* The landing `@graph` is three nodes, the book found by `@id`, `image` an `ImageObject` with
+  all seven properties; `thumbnailUrl` absent.
+* `_build/html/images/cover.png` exists, 161,275 bytes, IHDR 1000 × 1500, **byte-identical to
+  `images/cover.png`**.
+* 29 `Chapter` nodes, every one `isPartOf` `…/#work`, and 0 of 29 carrying `image` or
+  `thumbnailUrl` — the decision above, asserted rather than assumed.
+* Landing `og:image` is still `social-card-162f417f…png`; **0 of 30 pages** have an `og:image`
+  naming the cover.
+* `llms.txt` and `llms-full.txt` each name the cover URL once.
+* The `pages.yml` JSON-LD gate, extracted and run against the build: green.
+* And served rather than only listed, because a path on disk is not a URL: `python3 -m
+  http.server` over `_build/html`, `GET /images/cover.png` → **200, `image/png`, 161,275
+  bytes**. The directory name `images` collides with no chapter slug, which is the only way a
+  new top-level directory could have gone wrong here.
+
+Then the part that matters more than the green run — each gate was made to go red:
+
+| Broken on purpose | Reported by |
+|---|---|
+| cover not copied into the artifact | both `inject_jsonld.py` and the artifact gate, naming the `cp` |
+| `width`/`height` swapped to 1500 × 1000 | both, "which is not portrait" |
+| the artifact's cover replaced with a 600 × 900 PNG | the artifact gate: "is 600x900, but the JSON-LD says 1000x1500" |
+
+### The external check, and what it does not say
+
+**Schema Markup Validator** (`validator.schema.org`, the landing page's block submitted as a
+code snippet, 2026-10-26): **0 errors, 0 warnings.** The `ImageObject` is read as a node of its
+own under `…/#cover` with all seven properties; the integer `width` and `height` come back as
+`"1000"` and `"1500"`, i.e. accepted as the `Distance` their range asks for rather than
+rejected.
+
+§17 is the standing reminder that this is not enough — a three-level breadcrumb validated there
+and rendered nothing. So, measured the same day, on the **live** site, before this change is
+deployed:
+
+* **Rich Results Test, `https://datascience.konradvoelkel.com/`** — crawled successfully
+  2026-10-26 16:17: **"No items detected."**
+* The control, one minute later, because a test that answers "nothing" on every page is not a
+  measurement: **Rich Results Test, `…/expectation-variance/`** — crawled 2026-10-26 16:18:
+  **"Breadcrumbs: 1 valid item detected."**
+
+So the test works and the site does have something it renders; it is just not on the landing
+page and it is not the book. That is not a finding about the cover, and it is not a regression;
+it is the baseline, and it is
+exactly what the `Book` documentation above predicts. The landing page's `@graph` — one book,
+three works, a reconciled `Person`, a Zenodo DOI — is **not eligible for any Google rich result
+and never was**, because `Book` only becomes one through a Book-Actions feed with ISBNs. Adding
+`image` to it cannot make Google render anything, and nothing here claims it will. What it does
+is fill the property that answer engines read, which is the audience §21 was about: ChatGPT and
+Perplexity, not a Google rich snippet. **So the §17 lesson applies here in reverse** — the
+danger is not a schema change that validates and renders nothing, it is reading a clean
+validator as evidence of a result that was never on offer.
+
+### Not verified
+
+* **Nothing is deployed.** The 200 above came from `http.server` on this machine; GitHub Pages
+  has never served this path. The post-deploy check is one `curl -I
+  https://datascience.konradvoelkel.com/images/cover.png`, and it is the one claim in this
+  section that a local build cannot make for itself.
+* Whether any answer engine actually picks the cover up. §21's measurement was a conversation
+  with ChatGPT; the counterpart to it is the same question asked again some weeks after this
+  deploys, and it belongs in a §27 rather than being guessed at here.
+* The Rich Results Test was run on the live page, i.e. on the *old* markup. Re-running it after
+  the deploy is worth five minutes, to confirm "No items detected" has not become an error —
+  but on the documentation above, an error is not expected either.

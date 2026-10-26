@@ -73,6 +73,54 @@ is a claim about a page's contents, three nodes sharing an `author` is a claim a
 world, and the second one is the one being made.
 
 
+The cover
+---------
+
+`Book.image` was the social card -- 1200 x 630, landscape, read back out of `og:image`.
+That is the right image for a Twitter or LinkedIn preview and the wrong one for the slot
+it was in: what an answer engine reaches for in `Book.image` is a *cover*, and a cover is
+portrait. SEO-NOTES.md §21 is the case where that mattered -- asked about this author's
+books, an answer engine attached other people's book covers, because the pages it cited
+offered it nothing of the right shape.
+
+So `image` is now `images/cover.png`, an `ImageObject` with `width` 1000, `height` 1500
+and the absolute URL, written in `structured-data.json` rather than read back out of the
+page. The contrast with the card is the whole reason it can be a template constant: the
+card is an asset MyST fingerprints, so its URL changes on every regeneration and has to
+be discovered; the cover is copied to a fixed path by `pages.yml` precisely so that its
+URL is stable enough to be an `@id` (`.../#cover`) and a committed string.
+
+The card is not demoted, it is unmoved: `og:image` and `twitter:image` are where every
+social preview actually reads, `head_meta.py` still pins them to the card on all thirty
+pages, and nothing here touches them. Only the node that a *book* panel reads changed.
+
+`thumbnailUrl` is deliberately not set beside it. schema.org defines it as "a thumbnail
+image relevant to the Thing" and expects a bare `URL`, so it cannot carry `width` and
+`height`; and Google's Book documentation names neither `image` nor `thumbnailUrl` in its
+required or recommended properties -- its book feature is a feed of editions with ISBNs
+and `potentialAction`, which this book is not. There is exactly one cover raster, so a
+`thumbnailUrl` today would be the same 1000 x 1500 file under a second property, i.e. a
+second URL for a consumer to choose between and no new information. If a genuinely
+smaller raster is ever committed (`tools/cover.py --png-width` already writes one), the
+property has something true to say and goes in then.
+
+
+The chapters do not carry the cover
+-----------------------------------
+
+A chapter's node restates `inLanguage`, `isAccessibleForFree` and `license` from the book,
+and that is not inconsistency: those are true *of the chapter*. The cover is not. It
+depicts the work, and the chapter's route to the work is the `isPartOf` it already has.
+
+The argument the other way is real -- Google reads one document at a time, so an engine
+citing one chapter sees no portrait image at all -- and it is the same argument this file
+already answered for `author`, with the same answer: the identity is shared, the
+properties are a fetch of the landing page away. Putting the cover on twenty-nine Chapter
+nodes would assert twenty-nine times that this picture is a picture of that chapter, which
+is the "thirty books" mistake one property down. A chapter page is not imageless either:
+`og:image` is the card, which is the shape a link preview of a chapter wants.
+
+
 BreadcrumbList
 --------------
 
@@ -109,13 +157,17 @@ part name.
 What is read back, rather than computed twice
 ---------------------------------------------
 
-Four values are read out of the built page instead of being recomputed here, which is
-what ties this script to its place in the job:
+Four things are read out of the built page instead of being recomputed here, which is
+what ties this script to its place in the job. Three of them go into the markup; the
+first used to, and is now kept as the check it also always was:
 
-* the card URL, from `og:image`, because MyST fingerprints asset filenames and the hash
-  changes whenever the card is regenerated -- and because `head_meta.py` may have
-  *replaced* it with the generic card for a page whose figure is too small to be one
-  (its section 6);
+* the card URL, from `og:image` -- which until the cover arrived *was* the book's `image`,
+  because MyST fingerprints asset filenames and the hash changes whenever the card is
+  regenerated, and because `head_meta.py` may have *replaced* it with the generic card
+  for a page whose figure is too small to be one (its section 6). It is now read as a
+  precondition rather than copied into the node: see "The cover". An absolute `og:image`
+  on the landing page is this page's equivalent of the trimmed title suffix below -- the
+  proof that `head_meta.py` and the origin rewrite have both run;
 * `article:modified_time`, which `freshness.py` wrote from `git log` of the chapter's
   source file, as the chapter's `dateModified`;
 * `og:title` as the chapter's `name` and `og:description` as its `description`, both as
@@ -251,17 +303,46 @@ def chapter_graph(
     return {"@context": "https://schema.org", "@graph": [chapter, breadcrumbs]}
 
 
+def cover_file(root: Path, book: dict, site: str) -> Path | None:
+    """The built file the book node's `image` claims, or None with the reason printed.
+
+    The claim is `<site>/images/cover.png` and it is made in the template, so the only
+    thing that can be wrong here is that the file is not in the artifact -- which is
+    exactly the failure a schema change cannot be trusted not to have: valid markup
+    pointing at a 404. Derived from the node rather than hardcoded, so moving the cover
+    is one line in structured-data.json plus the copy step in pages.yml.
+    """
+    url = book.get("image", {}).get("url", "")
+    if not url.startswith(f"{site}/"):
+        print(f"✗ the book node's image is {url!r}, not a URL on {site}")
+        return None
+    path = root / url[len(site) + 1:]
+    if not path.exists():
+        print(
+            f"✗ the book node claims a cover at {url}, but {path} is not in the build "
+            f"-- the step in pages.yml that copies images/cover.png has not run"
+        )
+        return None
+    return path
+
+
 def landing_graph(site: str, root: Path, doc: str, book: dict) -> dict | None:
-    """The book node, with the preview card and the date of the newest change in it,
-    and beside it the author's other two works. See "Three works, one author"."""
+    """The book node, with the date of the newest change in it, and beside it the
+    author's other two works. See "Three works, one author" and "The cover"."""
+    # The card is *checked* here and no longer written into the node -- see "The cover"
+    # in the docstring for why the book's `image` is the portrait cover instead. It stays
+    # checked because an absolute og:image on this page is the proof that head_meta.py
+    # vetted the card and that the origin was written into the build, and because the
+    # cost of keeping the check is two comparisons.
     card = re.search(r'<meta property="og:image" content="([^"]+)"', doc)
     if not card:
-        print(f"✗ {root / 'index.html'} has no og:image to point the structured data at")
+        print(f"✗ {root / 'index.html'} has no og:image -- did head_meta.py run first?")
         return None
     if not card.group(1).startswith("http"):
         print(f"✗ the landing page still has a relative og:image: {card.group(1)}")
         return None
-    book["image"] = card.group(1)
+    if cover_file(root, book, site) is None:
+        return None
     # ...but the date written here is the *book's*, not this page's. See the docstring.
     book["dateModified"] = freshness.book_date(root)
     # The context moves up to the graph, as it does on a chapter page; a node inside a
@@ -327,6 +408,23 @@ def check(site: str, root: Path, pages: list[tuple[str, str | None]], book: dict
                     print(f"✗ {node.get('name')} on the landing page is not credited to "
                           f"{book['author']['@id']}")
                     return 1
+            # The cover, checked on the page rather than on the template: a block written
+            # by an earlier run of this script, or a template edit that dropped the node,
+            # both land here. Portrait is the property the image exists for -- see
+            # tools/cover.py -- so it is asserted and not assumed from the file's name.
+            img = found.get("image")
+            if not isinstance(img, dict) or img.get("@type") != "ImageObject":
+                print(f"✗ the landing page's book node has no ImageObject image: {img!r}")
+                return 1
+            if img.get("height", 0) <= img.get("width", 0):
+                print(
+                    f"✗ the book's cover is declared {img.get('width')}x"
+                    f"{img.get('height')}, which is not portrait; a landscape image in "
+                    f"Book.image is the banner this node exists to stop being used"
+                )
+                return 1
+            if cover_file(root, found, site) is None:
+                return 1
             book["dateModified"] = found.get("dateModified", "?")
             continue
         nodes = {
@@ -434,7 +532,9 @@ def main() -> int:
         f"✓ structured data on {len(pages)} pages: {written} written, {skipped} already "
         f"had a block; one Book ({book['@id']}), {len(pages) - 1} chapters, "
         f"{len(sibling_nodes(site, book))} further works by the same author "
-        f"({book['author']['@id']}), as of {book.get('dateModified', '?')[:10]}"
+        f"({book['author']['@id']}), cover {book['image']['width']}x"
+        f"{book['image']['height']} at {book['image']['url']}, "
+        f"as of {book.get('dateModified', '?')[:10]}"
     )
     return 0
 

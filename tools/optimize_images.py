@@ -123,9 +123,19 @@ MIN_GAIN_RATIO = 0.02
 # worth less than nothing. (CI runs --verify, which only asserts 1200x630 and would not
 # have caught this; it showed up in --check, which is local-only.)
 #
-# course-structure.svg has the same arrangement but is not a PNG, so it never arrives
-# here in the first place.
-GENERATED = {"social-card.png"}
+# cover.png is the same arrangement one step looser, and the arithmetic is bigger: the
+# palette pass takes it from 161 kB to 52 kB, five times the card's saving. It is still
+# left alone, and the reason it is an easier call rather than a harder one is who pays.
+# No page loads the cover -- it is referenced only from the landing page's JSON-LD and
+# from llms.txt, i.e. fetched once by a crawler that went looking for it -- while the
+# card is fetched by every link preview. So the 109 kB is not on any reader's path, and
+# tools/cover.py --check stays the thing that says whether the committed cover is the
+# cover the generator writes. If the 109 kB is ever wanted, it belongs inside cover.py's
+# render step, where the next regeneration keeps it. (SEO-NOTES.md §26.)
+#
+# course-structure.svg and cover.svg have the same arrangement but are not PNGs, so they
+# never arrive here in the first place.
+GENERATED = {"social-card.png", "cover.png"}
 
 
 def unfingerprint(name: str) -> str:
