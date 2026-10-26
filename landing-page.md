@@ -51,6 +51,9 @@ Every piece of mathematics you need for the exercises is in these notes, or amon
 
 ## Reading these notes
 
+You are reading the web edition. The same book is also available as a [PDF to
+download](https://datascience.konradvoelkel.com/ds-en.pdf).
+
 These are one of three sets of lecture notes by [Konrad
 Völkel](https://www.konradvoelkel.com/), all free to read. The other two are in German:
 [Einführung in Python](https://eipy-skript-7dd28c.pages.cs.uni-duesseldorf.de/), which

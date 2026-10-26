@@ -2,10 +2,6 @@
   "file": "landing-page.md",
   "drops": [
     {
-      "block": "20",
-      "reason": "link to the PDF build of the German edition"
-    },
-    {
       "block": "21",
       "reason": "the German edition's pointer at this English one. Reflecting it here would be a book telling its own readers that it exists; the provenance note at the foot of this page already says where the original lives, which is the direction that carries information. Added upstream in f7253683 together with the hreflang pair."
     },

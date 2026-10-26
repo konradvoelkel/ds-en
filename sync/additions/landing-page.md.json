@@ -2,39 +2,39 @@
   "file": "landing-page.md",
   "additions": [
     {
-      "block": "24",
+      "block": "25",
       "reason": "English-only: the `## How to cite` heading. The German edition has no DOI."
     },
     {
-      "block": "25",
+      "block": "26",
       "reason": "English-only: why to cite the DOI rather than the address"
     },
     {
-      "block": "26",
+      "block": "27",
       "reason": "English-only: the citation itself, as a blockquote"
     },
     {
-      "block": "27",
+      "block": "28",
       "reason": "English-only: the BibTeX entry"
     },
     {
-      "block": "28",
+      "block": "29",
       "reason": "English-only: the note that each version has its own DOI"
     },
     {
-      "block": "35",
+      "block": "36",
       "reason": "translator's note: opening of the :::{note} about this edition"
     },
     {
-      "block": "36",
+      "block": "37",
       "reason": "translator's note: what this edition is and where the German original lives"
     },
     {
-      "block": "37",
+      "block": "38",
       "reason": "translator's note: that the translation is machine-made"
     },
     {
-      "block": "38",
+      "block": "39",
       "reason": "translator's note: closing of the :::{note}"
     }
   ]

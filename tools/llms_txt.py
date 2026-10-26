@@ -53,6 +53,10 @@ The cover is at {site}/images/cover.png — 1000 x 1500 and portrait, CC BY-SA 4
 rest of the book, so it may be reproduced with attribution. The landscape image in each
 page's og:image is a link-preview card, not the cover.
 
+The whole book is also published as one PDF, at {site}/ds-en.pdf, typeset for print --
+the same text as these pages. For reading or quoting, prefer the Markdown below: the PDF
+is a 16 MB typeset artefact of the same material.
+
 Each chapter below links to its Markdown source. The whole book in one file is at
 {site}/llms-full.txt
 
