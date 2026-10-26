@@ -2998,3 +2998,47 @@ itself from shipping.
 * **Whether 318 pages is right.** It matches the page count the template produced before
   `c8c48bc`; nobody has read the four figures in the rebuilt PDF to confirm they are the
   intended images rather than merely present.
+
+### 28a. The runner ran it, and the PDF is whole on the live site (2026-10-26, same hour)
+
+Pushed as `734d3ea`; `pages` run 40356151634, success. Both of §28's "Not verified" bullets
+are now measured, which is the whole reason this subsection exists.
+
+**Pillow's WebP decoding is present on `ubuntu-latest`.** That was the one claim a local build
+could not make, and the argument for Pillow was an argument, not a measurement. From the run:
+
+```
+WebP the LaTeX export can read     webp_for_pdf: 4 PNG twins written, 3 source files repointed
+Put the WebP back ...              webp_for_pdf: 3 source files restored byte-identical, 4 PNG twins deleted
+A PDF that is too small ...        PDF looks complete: 15 MB
+Refuse to publish ...              PDF: 16M
+```
+
+No `Cannot determine size of graphic` anywhere in the log, where there were four.
+
+**The download button is back, and the file behind it is the book.** The landing page's
+`exports` names `/build/ds-en-d74e49f5efd854efc47730e2ba22b2b5.pdf`, which answers `HTTP/2
+200`, `application/pdf`, **15,975,505 bytes**, produced by `xdvipdfmx`, **319 pages**. (Note:
+319 on the runner against 318 from the local build of the same tree. One page, unexplained, and
+not chased — it is well inside what a stamped date reflowing the title page could do, but
+nobody has shown that it is that.)
+
+**And the four figures are in it, not merely absent from the error log.** `pdfimages -list` on
+the downloaded file, at exactly the sizes `prepare` wrote:
+
+| page | dimensions | figure |
+|---|---|---|
+| 99 | 1226 × 1648 | `ProbOnto2.5` |
+| 101 | 1600 × 983 | `ds-process-oneill` |
+| 222 | 1600 × 900 | `case_a_dual_proj` |
+| 223 | 1600 × 900 | `case_b_dual_proj` |
+
+All `rgb`, three components, so the flattening in `prepare` did what it says. This closes
+§28's second bullet: the figures are the intended images at the intended shape, and not a
+PDF that is merely large.
+
+**The web kept its WebP.** All three chapters still serve `.webp` for these figures on the live
+site — checked on `descriptive-statistics`, `dimensionality-reduction` and
+`important-continuous-distributions` — so `restore` holds end to end and the 89% is intact.
+
+What is still owed, unchanged: the answer-engine question §26 leaves open, which is weeks out.
