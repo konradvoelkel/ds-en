@@ -2759,13 +2759,42 @@ validator as evidence of a result that was never on offer.
 * **Nothing is deployed.** The 200 above came from `http.server` on this machine; GitHub Pages
   has never served this path. The post-deploy check is one `curl -I
   https://datascience.konradvoelkel.com/images/cover.png`, and it is the one claim in this
-  section that a local build cannot make for itself.
+  section that a local build cannot make for itself. — *Done the same hour; see §26a.*
 * Whether any answer engine actually picks the cover up. §21's measurement was a conversation
   with ChatGPT; the counterpart to it is the same question asked again some weeks after this
   deploys, and it belongs in a §27 rather than being guessed at here.
 * The Rich Results Test was run on the live page, i.e. on the *old* markup. Re-running it after
   the deploy is worth five minutes, to confirm "No items detected" has not become an error —
   but on the documentation above, an error is not expected either.
+
+### 26a. Deployed, and the one check a local build could not make (2026-10-26, same hour)
+
+Pushed as part of `52843f4`; `pages` run 40352397655, build 2m15s, deploy 14s, both green,
+and `checks` run 40352397638 green with `cover.py --check` and `--verify` in it for the first
+time. Measured against the live site at 15:47 Z, which closes the first bullet above:
+
+```
+curl -I https://datascience.konradvoelkel.com/images/cover.png
+HTTP/2 200   content-type: image/png   content-length: 161275
+last-modified: Mon, 26 Oct 2026 15:47:38 GMT   etag: "6adf761a-275fb"
+```
+
+The bytes, not just the status: 161,275 downloaded, PNG magic, IHDR **1000 × 1500**, and
+**byte-identical to `images/cover.png`** in the repository. The live landing page carries one
+`ld+json` block whose book node has the `ImageObject` with all seven properties and no
+`thumbnailUrl`, and the live `llms.txt` names the cover on line 12. So the chain holds
+end to end: generator → committed PNG → `cp` → artifact gate → served URL → the markup that
+claims it.
+
+**One thing the deploy log says that has nothing to do with the cover, and is not new.** The
+`pages` build printed *"the PDF is only 1642 kB — a 318-page book with figures is ~19 MB, so
+this build collapsed. Check the latexmk log for 'Cannot determine size of graphic'. Not
+publishing it."* The floor from the correction at the top of this file did its job and the
+site deployed without a download button. Checked before blaming this change for it: **the
+same two lines appear in all twelve `pages` runs back to 2026-10-18**, and the live landing
+page carries no `.pdf` href. So the PDF has been collapsing in CI for eight days, silently,
+behind a warning nobody was reading — it is unrelated to the cover, it is not recorded in the
+audit's STATUS.md, and it wants a section of its own.
 
 ## 27. The report of 2026-10-26, and the two of its three points that stay undone (2026-10-26)
 
@@ -2864,3 +2893,7 @@ the guard that stops it. The landing page keeps the book's full title, as it did
 
 The post-deploy `curl -I` on `/images/cover.png`, and the answer-engine question §26 leaves
 open. Neither is this section; both are the next one.
+
+*Amended the same hour:* the first of the two is done — `52843f4` deployed and the live
+check is §26a. What is still owed is the answer-engine question alone, which is weeks out,
+plus the collapsed PDF §26a turned up on the way, which is nobody's section yet.
