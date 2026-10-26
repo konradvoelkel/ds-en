@@ -3072,6 +3072,10 @@ crawler follows it, and on the 29 chapter pages the string `.pdf` does not occur
 file §28a verified end to end is reachable in exactly one way: notice an unlabelled icon,
 click it, read the menu.
 
+> *The sentence about the chapter pages is wrong, and so is the paragraph below it.
+> Both came from one bad glob. Corrected in §29a, written an hour later against the
+> deployed site; the rest of this section stands.*
+
 **This corrects §9b.** That section weighed `Disallow: /build/*.pdf` on the premise that
 "the site links the PDF from every chapter's download button". It links it from nowhere, and
 the button is on the landing page alone. §9b's conclusion — do not disallow — is unchanged
@@ -3157,3 +3161,68 @@ is down here, nothing deploys at all. The lever, if that ever bites, is the one 
 * Whether the chapter pages should carry the link too. The German does not, the 29 chapter
   pages are `Chapter` nodes that reach the book through `isPartOf`, and the same argument
   that kept the cover off them (§26) applies — but it has not been put to Konrad.
+
+### 29a. Deployed, and two claims in §29 were wrong (2026-10-26, same hour)
+
+Pushed as `0d197be`; `pages` run 40367327387, success. The runner printed both halves of the
+new output:
+
+```
+A PDF that is too small ...        PDF looks complete: 15 MB
+Refuse to publish ...              PDF: 16M at /ds-en.pdf, linked from the landing page
+```
+
+Measured against the live site:
+
+* The landing page renders `<a target="_blank" rel="noreferrer"
+  href="https://datascience.konradvoelkel.com/ds-en.pdf">`, server-side, in `## Reading
+  these notes`. Not a button, not payload: an anchor a crawler follows.
+* `curl -I /ds-en.pdf` → `HTTP/2 200`, `application/pdf`, **15,975,505 bytes**, **319
+  pages** — the same file §28a measured.
+* **The two copies are the same bytes.** The theme's fingerprinted
+  `/build/ds-en-211094991100c205836b3d4bb60bd9d5.pdf` and the fixed `/ds-en.pdf` both
+  hash to `e9d34dc0…`. The 16 MB is duplicated in the artifact, exactly as §29 said it
+  would be, and the duplicate is the same book and not a stale one.
+* `llms.txt` names it, once.
+
+### The correction, which is the reason this subsection is not just a green tick
+
+Two statements in §29 are false, and both came from one bad measurement:
+
+```
+grep -rlo '\.pdf' _build/html/*.html     # matches index.html only
+```
+
+That glob reaches the top level of the build and nothing else. Every chapter is at
+`<slug>/index.html`, one directory down, so the chapter pages were never looked at. What
+they actually carry, measured on the deployed `/statistical-tests/`:
+
+* **six** mentions of `ds-en.pdf`, all of them the project-level `exports` entry in the
+  hydration payload — not zero, as §29 says;
+* **zero** `<a href>` to it, which is the part §29 got right;
+* and the same `<button aria-label="Download this book">` the landing page has. The button
+  is on all thirty pages.
+
+So **§29's correction of §9b is withdrawn.** §9b said the site "links the PDF from every
+chapter's download button", and the "every chapter" half was right — it is the word *links*
+that does not survive contact with the DOM, because a button drawn after hydration from a
+JSON payload is not a link and no crawler follows it. That distinction is the one that
+matters for the `Disallow` question, and it points the same way §9b already decided: do not
+disallow. Right conclusion, sharper reason, and §29 was wrong to say the premise was wrong.
+
+What is genuinely unique to the landing page, as of this deploy, is the *anchor* — one
+rendered link on one page out of thirty.
+
+**The lesson, which is the same one §26a and §28 taught in other clothes:** a measurement
+that returns a convenient answer gets checked twice. `grep -rlo … *.html` on a MyST build
+cannot see the book; `grep -rlo … --include=index.html .` can. §29 was written and committed
+inside twenty minutes on the strength of the first one.
+
+### Still open, now better informed
+
+Whether the chapter pages should carry the anchor too. They already carry the button and the
+payload entry, so the question is narrower than §29 framed it: not "should they know about
+the PDF" — they do — but "should a reader on chapter 23 be able to click through to it
+without going back to the front page". The German does not do it, and §26's argument for
+keeping the cover off the chapter nodes is about structured data, not about links, so it
+does not settle this. Konrad's call.
