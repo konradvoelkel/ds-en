@@ -2897,3 +2897,104 @@ open. Neither is this section; both are the next one.
 *Amended the same hour:* the first of the two is done — `52843f4` deployed and the live
 check is §26a. What is still owed is the answer-engine question alone, which is weeks out,
 plus the collapsed PDF §26a turned up on the way, which is nobody's section yet.
+
+## 28. The PDF had been a 1642 kB stub for eight days, and it was WebP (2026-10-26)
+
+§26a caught it in the deploy log of `52843f4` and handed it on: *"the PDF is only 1642 kB —
+a 318-page book with figures is ~19 MB, so this build collapsed"*, in all twelve `pages`
+runs back to 2026-10-18, with no `.pdf` href on the live landing page. Its lead was *"the
+SVG rasterisation the §4 correction already fixed once with librsvg2-bin"*. **That lead is
+wrong, and so is the comment in `pages.yml` it comes from.** SVG is fine. It is WebP.
+
+### The measurement
+
+Read out of the generated LaTeX rather than the log, because MyST's "Preview:" truncates
+the filenames at ~90 characters and the four errors name no file:
+
+| `\includegraphics` in the export | chapter | tex line |
+|---|---|---|
+| `files/ds-process-oneill-….webp` | descriptive-statistics | `:7` |
+| `files/case_a_dual_proj-….webp` | dimensionality-reduction | `:27` |
+| `files/case_b_dual_proj-….webp` | dimensionality-reduction | `:34` |
+| `files/ProbOnto2.5-….webp` | important-continuous-distributions | `:398` |
+
+Four WebPs in the book, four `Cannot determine size of graphic`, one per WebP. xelatex
+cannot read WebP, and **mystmd 1.11.0 hands it to `\includegraphics` unconverted.**
+
+**The contrast in the same directory is what proves it is MyST and not the toolchain.**
+`pca-variation-<hash>.gif` sits beside a `pca-variation-<hash>.png` that MyST wrote, and
+the `.tex` references the PNG — which is why the book's one GIF throws nothing. The four
+SVGs each have a `.pdf` twin, which is `librsvg2-bin` doing exactly the job §9's correction
+gave it. The four WebPs have **no twin at all**. MyST has a GIF rule and an SVG rule and no
+WebP rule.
+
+And ImageMagick was never missing anything: `convert images/ds-process-oneill.webp t.png`
+gives `PNG 1600x983` without complaint. So the TeX step's claim that "imagemagick lets MyST
+convert GIF/WebP figures for the LaTeX export" is half true — GIF yes, WebP no — and the
+half that is false is the half that mattered.
+
+**It was also catchable here, which contradicts the other belief in that comment.** "The
+local build only worked because Inkscape happened to be installed" is true of the SVG case
+and false of this one: a local `myst build --pdf` reproduces it identically — four errors,
+the same four lines, a 1635 kB PDF against the runner's 1642 kB. Eight days, and any local
+PDF build would have shown it.
+
+**The regression has a commit.** From the run history either side of it:
+
+```
+2026-10-17 23:45  88c5664  PDF looks complete: 15 MB
+2026-10-18 00:08  c8c48bc  the PDF is only 1642 kB   ← "WebP for the four images that
+2026-10-18 00:26  73eb2c7  the PDF is only 1642 kB      were most of the weight"
+```
+
+So `c8c48bc` bought ~89% off four web figures with the whole PDF edition, and §15's
+reopening of the WebP decision "on its merits" was decided without this one on the table.
+
+### The fix: `tools/webp_for_pdf.py`, either side of the PDF export
+
+`prepare` writes a PNG twin per referenced WebP and repoints the references; `restore` puts
+the references back and deletes the twins. It runs around `myst build --pdf` only, so the
+web build never sees a PNG — the WebP is why the figure payload is what it is, and reverting
+the four to PNG in `images/` would pay for the PDF with every reader's bandwidth.
+
+Three decisions in it worth keeping:
+
+* **Pillow, not the ImageMagick this workflow already installs.** ImageMagick's WebP support
+  on Ubuntu is a delegate to `dwebp` from the `webp` package, which `--no-install-recommends`
+  does not pull in. Whether the conversion works on the runner would therefore depend on a
+  package nobody listed — which is the librsvg2-bin bug exactly, and once is enough. Pillow
+  carries libwebp inside its wheel and is pinned in `requirements.txt` already.
+* **It refuses to overwrite a committed PNG twin.** `restore` deletes what `prepare` wrote,
+  so `prepare` must only ever write files that did not exist, or a real figure would be
+  deleted at the end of a build.
+* **It restores byte-identically or fails.** The manifest records each source file's digest
+  before and after the rewrite, and `restore` refuses to paste a stale copy over a file that
+  changed underneath it. Verified by `git status` reporting nothing after a full cycle.
+
+Measured locally on `1315337` + this change: **0 sizing errors, 318 pages, 15,922,007 bytes**
+— against 15 MB before `c8c48bc`, so the PDF is whole again.
+
+### The guard is now an error, and that is the bigger half
+
+"A PDF that is too small is not a PDF" warned and deleted the stub, on the reasoning that a
+broken PDF must not take the website down with it. That reasoning is what gave this bug eight
+days: the warning was printed twelve times and read zero times, which makes it a comment and
+not a guard. A collapsed PDF now **fails the build**.
+
+The distinction the step draws is deliberate. A stub that was *produced* means the LaTeX run
+went wrong while reporting success — the build is lying about what it made, and there is no
+safe way to publish around that. *No* PDF at all is a different event: latexmk or TeX fell
+over outright, it is plain in the step above, and the site is only missing its download
+button. That stays a warning, so a TeX outage still cannot block a correction to the website
+itself from shipping.
+
+### Not verified
+
+* **Nothing is deployed.** The 15.9 MB PDF and the restored tree are from this machine. The
+  runner has never run `webp_for_pdf.py`, and the one claim a local build cannot make is that
+  Pillow's WebP decoding is there on `ubuntu-latest` — which is the argument for Pillow, not a
+  measurement of it. First `pages` run after this lands is the test, and a failure now fails
+  loudly by construction.
+* **Whether 318 pages is right.** It matches the page count the template produced before
+  `c8c48bc`; nobody has read the four figures in the rebuilt PDF to confirm they are the
+  intended images rather than merely present.
