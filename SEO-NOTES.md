@@ -3042,3 +3042,118 @@ site — checked on `descriptive-statistics`, `dimensionality-reduction` and
 `important-continuous-distributions` — so `restore` holds end to end and the 89% is intact.
 
 What is still owed, unchanged: the answer-engine question §26 leaves open, which is weeks out.
+
+## 29. The PDF was in the page's data and not in its markup, so nobody could find it (2026-10-26)
+
+Reported by Konrad within the hour of §28a putting the PDF back on the live site: *"I could
+not find a clickable PDF link in the web version; it is either buried in text or
+non-existant."* Both halves are right, and the second is the finding.
+
+### Measured on the live landing page
+
+`document.querySelectorAll('a[href*=".pdf"]')` returns **zero elements**. What exists is one
+control:
+
+```
+<button aria-label="Download this book" class="myst-fm-downloads-button relative ml-2 -mr-1">
+```
+
+an icon with no visible text, in the row of small icons above the title beside the CC
+badges. The PDF's URL occurs three times in the served `index.html`, and all three are
+inside the Remix hydration payload:
+
+```
+"exports":[{"format":"pdf","filename":"ds-en.pdf",
+            "url":"/build/ds-en-8c2dfc9c9496066a1b625efe1021ac16.pdf"}]
+```
+
+That is data the theme reads to draw the button after hydration. It is not a link, no
+crawler follows it, and on the 29 chapter pages the string `.pdf` does not occur at all. The
+file §28a verified end to end is reachable in exactly one way: notice an unlabelled icon,
+click it, read the menu.
+
+**This corrects §9b.** That section weighed `Disallow: /build/*.pdf` on the premise that
+"the site links the PDF from every chapter's download button". It links it from nowhere, and
+the button is on the landing page alone. §9b's conclusion — do not disallow — is unchanged
+and now has one more reason under it: a PDF that nothing links to was never at risk of
+outranking the chapters it duplicates.
+
+### The cause is not the theme. The sentence was translated away
+
+The German original says it in words, in the place Konrad guessed at, `## Das Skript lesen`:
+
+> Sie lesen die Web-Ausgabe. Dasselbe Buch gibt es auch als [PDF zum
+> Herunterladen](https://voelkel.pages.cs.uni-duesseldorf.de/ds-skript/ds-skript.pdf).
+
+That is block 20 of `landing-page.md`, and `sync/drops/landing-page.md.json` dropped it with
+the reason *"link to the PDF build of the German edition"*. Right on its own terms: the URL
+in it is ds-skript's PDF on the HHU GitLab, and reflecting it here would have sent an English
+reader to the German book. What it missed is that this edition builds a PDF of its own — so
+the drop did not remove a wrong link, it removed the only sentence in either edition that
+tells a reader the PDF is there.
+
+The block is restored, pointing at this edition's PDF, and `tools/sync.py manifest` re-pairs
+it: German 20 ↔ English 20, with every English-only block below shifted by one in
+`sync/additions/landing-page.md.json`. `align` is 30/30 again. The gain beyond the link is
+that the sentence is *coupled* — if ds-skript rewrites it, `check` reports the English as
+stale, which a translator's addition in the same words would never have done.
+
+### `/ds-en.pdf`, because the published name has a hash in it
+
+MyST publishes the export under a content hash, `/build/ds-en-<32 hex>.pdf`, and that name
+changes whenever the PDF does, which is every build that touches a figure. No sentence in
+the book can name it. So `pages.yml` copies `exports/ds-en.pdf` to `_build/html/ds-en.pdf`,
+next to the cover's copy and for the same reason, and the markdown links the absolute
+`https://datascience.konradvoelkel.com/ds-en.pdf`. `llms.txt` gains a line naming it too,
+with a pointer to the Markdown as the better source for quoting.
+
+Two costs, both stated rather than discovered later:
+
+* **The artifact carries the same 16 MB twice, under two names.** The fingerprinted copy
+  stays, because the download button reads it from the payload and deleting it would trade
+  a link for a button. 16 MB against GitHub Pages' 1 GB is worth a URL that can be written
+  down, posted in a Moodle course, or cited.
+* **The absolute URL hardcodes the origin**, which every other URL on this site derives from
+  `SITE_ORIGIN`. The first gate below is what keeps that honest: move the site without
+  moving this line and the build fails instead of shipping a link into the old domain.
+
+### Four gates, and all four were made to go red on purpose
+
+In the "Refuse to publish" step, against the built artifact:
+
+| gate | red when |
+|---|---|
+| `grep href="$SITE/ds-en.pdf" index.html` | the landing page renders no `<a>` — **not** merely that the string is absent |
+| `test -f _build/html/ds-en.pdf` | the copy did not happen and the link is a 404 |
+| `sha256sum` of it against `exports/ds-en.pdf` | the published file is from a different build than the one the size floor measured |
+| `grep "$SITE/ds-en.pdf" llms.txt` | the header was edited and lost the line |
+
+The first is the one worth the care. `grep` for the bare URL passes on a page where the URL
+appears only in the hydration payload — which is precisely the state this section exists to
+fix. Tested: with the rendered anchor stripped and **five** other mentions of `ds-en.pdf`
+left in the file, the `href=` form still fails. The other three were failed by deleting the
+copy, by truncating it to 9 MB, and by rewriting the line in `llms.txt`.
+
+### A missing PDF is now an error too, which reverses half of §28
+
+§28 made a *collapsed* PDF fail the build and deliberately left *no PDF at all* a warning,
+reasoning that the site would then merely be missing its download button and that a TeX
+outage must not block a correction to the website itself from shipping.
+
+That reasoning held only while the button was the one thing naming the PDF, because MyST
+omits the button when there is no export: no file, no link, no broken promise. A sentence in
+the book is a promise that does not retract itself, and a missing file turns it into a 404 on
+the front page. So the warning is an error, and the cost is accepted knowingly — while TeX
+is down here, nothing deploys at all. The lever, if that ever bites, is the one link in
+`landing-page.md`.
+
+### Not verified
+
+* **Nothing is deployed.** The anchor, the four gates and the byte-identical copy were all
+  measured on a local `myst build --html` and a simulated gate run on this machine. The
+  first `pages` run after this lands is the test.
+* The live site still shows the old landing page, so the icon-only state above is what a
+  reader gets until then.
+* Whether the chapter pages should carry the link too. The German does not, the 29 chapter
+  pages are `Chapter` nodes that reach the book through `isPartOf`, and the same argument
+  that kept the cover off them (§26) applies — but it has not been put to Konrad.
