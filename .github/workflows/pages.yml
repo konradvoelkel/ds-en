@@ -122,6 +122,30 @@ jobs:
           python3 -c "import yaml" 2>/dev/null || python3 -m pip install --quiet pyyaml
           python3 tools/freshness.py --stamp-source
 
+      - name: WebP the LaTeX export can read
+        # xelatex cannot read WebP and MyST does not convert it, although it converts the
+        # book's GIF and its SVGs. So the four WebP figures reached \includegraphics as
+        # .webp, failed with "Cannot determine size of graphic", and -- latexmk being in
+        # force mode -- came out as a 1642 kB stub that MyST reported as a success. That
+        # is what c8c48bc did to a complete 15 MB PDF on 2026-10-18, and it went eight
+        # days and twelve deploys without being read. SEO-NOTES.md §28 has the diagnosis.
+        #
+        # Writes a PNG twin per WebP and repoints the references, for the PDF export only;
+        # the restore below puts the WebP back before the HTML build, because the WebP is
+        # 89% smaller and that is the whole reason §9d chose it for the web.
+        #
+        # Pillow, not the imagemagick this workflow installs: ImageMagick's WebP support
+        # on Ubuntu is a delegate to `dwebp` from the `webp` package, which
+        # --no-install-recommends does not pull in, so whether it works here depends on a
+        # package nobody listed. That is precisely the librsvg2-bin bug above. Pillow
+        # ships libwebp in its own wheel, and is pinned for the figure step either way.
+        run: |
+          pil=$(grep '^pillow==' requirements.txt | cut -d= -f3)
+          [ -n "$pil" ] || { echo "::error::no pillow pin in requirements.txt"; exit 1; }
+          python3 -m pip install --quiet "pillow==$pil"
+          python3 -c "import yaml" 2>/dev/null || python3 -m pip install --quiet pyyaml
+          python3 tools/webp_for_pdf.py prepare
+
       - name: Build the PDF edition
         # Before the HTML build, not after: MyST attaches the finished export to the site
         # and renders the download button from it. Built after, the PDF would be published
@@ -133,6 +157,14 @@ jobs:
         # says so in the log rather than letting it pass unnoticed.
         continue-on-error: true
         run: myst build --pdf
+
+      - name: Put the WebP back before the web build sees the PNGs
+        # Always, even when the PDF export failed: the HTML build is next and a PNG where
+        # the markup should say WebP is 89% of a figure's weight back on every reader.
+        # `if: always()` rather than the default, because the PDF step is
+        # continue-on-error and a *later* failure must not leave the tree converted.
+        if: always()
+        run: python3 tools/webp_for_pdf.py restore
 
       - name: A PDF that is too small is not a PDF
         # latexmk runs in force mode: it reports errors and produces a file anyway, and
