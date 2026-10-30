@@ -3594,3 +3594,147 @@ Not measured: whether every plain URL had turned over once `max-age=600` ran out
 02:03 UTC; the cache-busted copies say what the origin serves, and the CDN has nothing else
 to serve after that. The trailing-slash round (`de0c3bc`) is running as its own session, as
 §31 proposed.
+
+
+## 32. Chapter links onto the URL that answers 200: three places, and the sidebar stays on the slug (2026-10-30)
+
+The round §31 set aside: ds-skript `de0c3bc` (2026-10-29), ported as `tools/trailing_slash.py`
+and wired into `pages.yml` twice — writing, last of the steps that write into the pages, and
+`--check` under the artifact gate beside `freshness.py --check`. The German commit was the
+specification; what it found transfers, and three things it could not know about this host
+and this theme were measured here before the docstring was written.
+
+### The problem, as this host serves it
+
+MyST links a chapter as `/kmeans`; GitHub Pages answers that with a **301** to `/kmeans/`,
+`cache-control: max-age=600`. Measured live this morning (§31): 16 chapter hrefs on the served
+`/kmeans/`, all without the slash, 14 after hydration, all without; 0.194 s through the
+redirect against 0.115 s direct. Re-measured tonight on `/kernel-methods`, five runs on one
+connection, `curl -L`:
+
+| | runs (s) | median |
+|---|---|---|
+| `/kernel-methods` (301, then 200) | 0.148 0.322 0.189 0.187 0.226 | 0.189 |
+| `/kernel-methods/` (200) | 0.125 0.118 0.123 0.130 0.163 | 0.123 |
+
+**And it is two redirects per click, not one.** In a static build the theme gives every Link
+`reloadDocument` (chunk-LS4ALTVG.js, `staticBuild ? {Link: props => <Link {...props}
+reloadDocument/>}`), so a chapter click is a full document load; before it, Remix prefetches
+the route on hover with `<slug>?_data=routes/$`, which a static host can only answer with the
+HTML. Both requests go through the 301 without the slash. Read off the server log of a local
+copy served by Python's `http.server`, which redirects a directory the way GitHub Pages does:
+
+| copy | hover (prefetch) | click (document) |
+|---|---|---|
+| before | `/statistical-tests?_data=…` **301**, `/statistical-tests/?_data=…` 200 | `/statistical-tests` **301**, `/statistical-tests/` 200 |
+| after | `/statistical-models/?_data=…` 200 | `/statistical-models/` 200 |
+
+The live host answers the same four the same way (`curl`: both slashless forms 301). Canonical,
+sitemap, `og:url` and hreflang have carried the slash since §1 and §10, so nothing here is
+about indexing; it is four requests per click becoming two.
+
+### Three places, and when the markup alone stops being enough here
+
+The German measured, with a proxy, that a slash in the markup alone is gone from the DOM
+after hydration: its hydration fails (React #418) and the re-render reads the href from the
+payload. This edition's hydration succeeds (§20), so the same fixture was built from this
+build — slash in the markup, payload and page JSON as MyST wrote them — and watched in a
+browser on `/kmeans/`:
+
+| moment | chapter hrefs with the slash |
+|---|---|
+| after hydration (7 s) | 14 of 14 — React 18 leaves the served attributes alone |
+| after the theme toggle | **0 of 14** — every href now from the payload |
+
+So the window is longer here and closes on the first interaction that re-renders the page.
+The tool writes the markup (what a crawler and a reader without JavaScript get), the payload
+(`window.__remixContext`: mdast `link.url` and `page.footer.navigation.{prev,next}.url`, in
+the loaderData routes) and `<slug>.json`.
+
+**The page JSON is not what a click renders, and the writeup says so rather than repeating
+the German's reason.** With `reloadDocument` there is no client-side navigation to render
+from it, and nothing fetched a `.json` on a hover or a click either: the hover card is built
+from `config.json`'s page entry (`pages.find(s => s.slug === …)`), and the prefetch asks for
+`?_data=`. The JSON is written for the readers it does have — a cross-page reference fetches
+its target's `dataUrl`, MyST's own tooling reads the files — and for the reason `head_meta.py`
+sets `page.domain` in it (§31): two copies of one value can only drift.
+
+### The sidebar stays on the slug, measured here as there
+
+The German found that a slash on `config.projects[].pages[].slug` — the only handle for the
+sidebar's hrefs — costs the hover cards of every link in the article and the open group of
+the current page. The bundle here does both the same way: the card's lookup splits the link
+URL on `/` and compares the first segment with the slug (`VX` in chunk-LS4ALTVG.js), so a
+URL with the slash still finds its page and a slug with one never would; the sidebar's
+"is this the current page" strips a trailing slash from the *location* and compares with
+`"/" + slug`. On the processed build, `/kmeans/`:
+
+| moment | article | footer | sidebar |
+|---|---|---|---|
+| after hydration | 4 of 4 with the slash | 2 of 2 | 8 of 8 |
+| after the theme toggle | 4 of 4 | 2 of 2 | **0 of 8** — back to the slug |
+
+The four article links are `a.hover-link` before and after, and the card opens on hover with
+the target's title and description, after the re-render too. So 6 of 14
+keep the slash on a hydrated page after its first re-render, where the German kept 285 of
+502; every one of the 14 keeps it in the served document, which is what a crawler reads. The
+rest is a patch to the theme, not to the artifact.
+
+### The tool, measured on a local build
+
+The deploy chain replayed on a copy of the 2026-10-26 build, with `process.sh` and `gate.sh`
+generated from `pages.yml`'s two `run:` blocks by a YAML read (so the local run is the
+runner's commands, not a transcription of them; `exports/ds-en.pdf` substituted by its path,
+the new tool's line taken out of the first block and run by hand so that its own effect could
+be measured). Chain 4.0 s, gate 1.2 s.
+
+| | |
+|---|---|
+| hrefs given the slash in the markup | **400** over 30 pages (on `/kmeans/`: 14, of which 6 inside `<main>` — 4 article, 2 footer — and 8 in the sidebar) |
+| fields in the hydration payload | **247**: 190 mdast links, 57 footer entries |
+| fields in the 30 page JSON | **247**, the same |
+| files changed | 60: the 30 pages and their 30 JSON; `config.json`, `public.json`, `myst.search.json`, `myst.xref.json` untouched |
+| bytes | HTML 20,766,413 → 20,767,060 (**+647 B**, one per slash); JSON 10,185,032 → 10,185,279 (**+247 B**) — the payload and the JSON re-serialise to the byte, because `head_meta.py` had already written them compactly |
+| the 64 html+json files, after | 4 byte-identical to before, 60 identical once the added slashes are undone — nothing else moved |
+| second run | 0 / 0 / 0, every file byte-identical, `--check` green |
+| the tool | 1.17 s for 30 pages |
+| left alone, counted | fragment, query, `.md` and capitalised chapter hrefs: 0 of each in the artifact; absolute chapter URLs: 87 (canonical, hreflang, `og:url`, the Markdown alternate, JSON-LD), all with the slash already |
+| the gate | green, with the new `--check` line between `freshness.py --check` and the summary |
+
+Where the port departs from the German, each on purpose: `--base` may be empty, because the
+site is at the domain root; the `internal` flag on a link node is not required — all 190 carry
+it, so it selects nothing the URL rule does not, and a node without it would be the one
+combination the markup fixes and the payload leaves behind; the markup rewrite runs outside
+the payload's span, found with `head_meta.py`'s `read_payload`, rather than relying on
+`href="` never occurring inside JSON; the payload is edited through `edit_payload` and walked
+through `routes`, imported — one parser, one place its `raw_decode` lesson lives; the page JSON
+are the files beside the pages that carry an `mdast`, counted against the pages; a slug with a
+slash in it, or an empty one, is refused rather than given a second slash; and there is no
+hydration guard, because §20.
+
+### Breakages, made on purpose
+
+Eighteen cases on a three-page twin of the processed build (landing, kmeans, data-protection,
+their JSON, `config.json`), each planted fresh, the writing form and `--check` run on each:
+
+| planted | write | check |
+|---|---|---|
+| nothing | green | green |
+| a markup href turned back to `/kmeans` | corrects it | **red** "links /kmeans without the slash" |
+| a payload `link.url` turned back | corrects it | **red** "1 links and 0 footer entries without the slash in its hydration payload" |
+| a payload `footer.navigation.next.url` turned back | corrects it | **red** "0 links and 1 footer entries" |
+| a page JSON `link.url` turned back | corrects it | **red** "kmeans.json has 1 chapter URLs without the slash" |
+| `href="/not-a-chapter"`, `/kmeans#section`, `/kmeans?x=1`, `/kmeans.md`, `https://…/kmeans`, `/Kmeans` | each left exactly as planted, green | green |
+| `config.json` missing / without `projects[0].pages` / naming no slug | **red** before anything is written | **red** |
+| a slug `kmeans/` in `config.json` | **red** "a slug with a slash in it" | **red** |
+| the payload made undecodable | **red** | **red** |
+| `kmeans.json` removed | **red** "2 page JSON carry an mdast but there are 3 pages" | **red** |
+| a page cut off after the payload | **red** "does not end with </html>" | **red** |
+
+The slug case is the one the suite taught: before the guard, a slug ending in a slash made
+the tool write `/kmeans//` and pass. Eighteen of eighteen as expected afterwards.
+
+**Not verified:** the deploy, left for Konrad to trigger. What it should show: the runner
+printing `trailing_slash: 30 pages, 29 chapters; 400 hrefs …` and the gate's
+`✓ trailing_slash --check` line; on the live `/kmeans/`, every chapter href in the served HTML
+with the slash and a click that is two requests with 200. §32a when it has run.

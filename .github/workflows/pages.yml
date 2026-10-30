@@ -451,6 +451,24 @@ jobs:
           # to fail, because nothing else here would notice the 359 kB coming back.
           python3 tools/thebe_gate.py _build/html
 
+          # Every chapter link onto the URL that answers 200. MyST writes `/kmeans`; GitHub
+          # Pages answers that with a 301 to `/kmeans/` (max-age=600) -- measured live on
+          # 2026-10-30, 0.194 s through the redirect against 0.115 s direct, about 80 ms on
+          # the first click of every internal link -- and a click is a full document
+          # load here, the theme's own choice for a static build, after a prefetch on
+          # hover that goes through the same 301. Written in three places, because a
+          # href fixed in the markup alone survives the hydration and not the first
+          # re-render after it (measured in a browser: 14 of 14, then 0 of 14), and the
+          # page JSON carries the same fields as the payload: the markup,
+          # `window.__remixContext` (mdast link.url and the footer's prev/next) and
+          # <slug>.json. Only slugs from the build's own
+          # config.json, only the bare `/<slug>` form. The sidebar's hrefs come from the
+          # slug and stay without: a slash there costs the hover cards of every link in
+          # the article and the open group of the current page (measured in ds-skript
+          # de0c3bc; the bundle here reads the same way). Last of the steps that write
+          # into the pages, so that nothing after it puts a href back. SEO-NOTES.md §32.
+          python3 tools/trailing_slash.py _build/html --base "$BASE_URL"
+
           # No precompression step, deliberately. ds-skript's tools/precompress.py lays
           # a .gz and, since b037bc9, a .br beside every text file, because GitLab Pages
           # compresses nothing on its own and serves a sibling if one is there. GitHub
@@ -898,6 +916,11 @@ jobs:
           # silently failed to land is the kind of thing only a measurement finds -- the
           # page looks identical either way.
           python3 tools/freshness.py _build/html --check
+
+          # No chapter link left pointing at the redirecting form, in any of the three
+          # places the step above writes -- markup, hydration payload, page JSON -- and
+          # re-read from the artifact, as the dates are.
+          python3 tools/trailing_slash.py _build/html --base "$BASE_URL" --check
 
           echo "$pages pages, $canon canonicals, $locs sitemap entries, $mds Markdown, $hrefl hreflang, all absolute, CNAME $want_host"
 
