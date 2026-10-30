@@ -1,7 +1,7 @@
 {
  "source": "pandas.ipynb",
  "target": "pandas.ipynb",
- "upstream": "b037bc9f2a80fcb195f7bfd0b9f57d21550dfdc9",
+ "upstream": "886c1d1db2b240d3f8bd4702a11c4dbd1bd85de9",
  "blocks": [
   {
    "de": "c0.0",
@@ -329,7 +329,7 @@
   {
    "de": "c25",
    "kind": "code",
-   "digest": "cbb797749baba927",
+   "digest": "228256639d4c953c",
    "en": "c25",
    "preview": "# SELECT day, AVG(tip), COUNT(*) FROM tips GROUP BY day; tips.groupby(\"d…"
   },
@@ -350,7 +350,7 @@
   {
    "de": "c28",
    "kind": "code",
-   "digest": "3a0ba525638aace3",
+   "digest": "55b39c99587d994d",
    "en": "c28",
    "preview": "# SELECT smoker, day, COUNT(*), AVG(tip) FROM tips GROUP BY smoker, day;…"
   },

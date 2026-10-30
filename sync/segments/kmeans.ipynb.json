@@ -1,7 +1,7 @@
 {
  "source": "kmeans.ipynb",
  "target": "kmeans.ipynb",
- "upstream": "b037bc9f2a80fcb195f7bfd0b9f57d21550dfdc9",
+ "upstream": "886c1d1db2b240d3f8bd4702a11c4dbd1bd85de9",
  "blocks": [
   {
    "de": "c0.0",
@@ -161,225 +161,218 @@
   {
    "de": "c13.0",
    "kind": "prose",
-   "digest": "f6dcccf76d646da2",
-   "en": "c13.0",
-   "preview": "<!-- [kmeans-in-action.mp4](kmeans-in-action.mp4) -->"
-  },
-  {
-   "de": "c14.0",
-   "kind": "prose",
    "digest": "fa6c9769f4e01447",
-   "en": "c14.0",
+   "en": "c13.0",
    "preview": "Man sieht hier, dass wir das Verfahren erneut durchführen können, mit de…"
   },
   {
-   "de": "c14.1",
+   "de": "c13.1",
    "kind": "heading",
    "digest": "5266599004eabb3b",
-   "en": "c14.1",
+   "en": "c13.1",
    "preview": "## Vektorisierte k-Means-Implementierung"
+  },
+  {
+   "de": "c14",
+   "kind": "code",
+   "digest": "b4d9331c9ae2d8d1",
+   "en": "c14",
+   "preview": "def kmeans(data, k, centroids): alldistances = np.array([np.linalg.norm(…"
   },
   {
    "de": "c15",
    "kind": "code",
-   "digest": "b4d9331c9ae2d8d1",
-   "en": "c15",
-   "preview": "def kmeans(data, k, centroids): alldistances = np.array([np.linalg.norm(…"
-  },
-  {
-   "de": "c16",
-   "kind": "code",
    "digest": "6a570ef5659df866",
-   "en": "c16",
+   "en": "c15",
    "preview": "# Weil es jetzt so einfach geht: k = 5 data = x # sepal length, sepal wi…"
   },
   {
-   "de": "c17.0",
+   "de": "c16.0",
    "kind": "heading",
    "digest": "0cf623f434893989",
-   "en": "c17.0",
+   "en": "c16.0",
    "preview": "## Konvergierende k-Means-Implementierung"
   },
   {
-   "de": "c18",
+   "de": "c17",
    "kind": "code",
    "digest": "5ab593d904390dbd",
-   "en": "c18",
+   "en": "c17",
    "preview": "np.random.seed(2222) # 3-means bis zur Konvergenz: def convergent_kmeans…"
   },
   {
-   "de": "c19.0",
+   "de": "c18.0",
    "kind": "heading",
    "digest": "5329030fa9455c06",
-   "en": "c19.0",
+   "en": "c18.0",
    "preview": "## Welches k ist das richtige?"
   },
   {
-   "de": "c20",
+   "de": "c19",
    "kind": "code",
    "digest": "fe87c0963f32008a",
-   "en": "c20",
+   "en": "c19",
    "preview": "np.random.seed(11111) max_k_to_try = 20 assert max_k_to_try <= len(data)…"
   },
   {
-   "de": "c21.0",
+   "de": "c20.0",
    "kind": "heading",
    "digest": "9c61a02e7f1ab875",
-   "en": "c21.0",
+   "en": "c20.0",
    "preview": "## Robustes k-Means und Elbow plot"
   },
   {
-   "de": "c22",
+   "de": "c21",
    "kind": "code",
    "digest": "73a6c758a6099e13",
-   "en": "c22",
+   "en": "c21",
    "preview": "def robust_kmeans(data, k, howmany=20): score = 100000000 for i in range…"
   },
   {
-   "de": "c23.0",
+   "de": "c22.0",
    "kind": "heading",
    "digest": "d1adc8e50aac6d13",
-   "en": "c23.0",
+   "en": "c22.0",
    "preview": "## Beispiel mit anderen Daten"
+  },
+  {
+   "de": "c23",
+   "kind": "code",
+   "digest": "e2b4dd49dc7c7690",
+   "en": "c23",
+   "preview": "import scipy.stats as st def ringe(n, radius=(8, 9)): rs = st.multivaria…"
   },
   {
    "de": "c24",
    "kind": "code",
-   "digest": "e2b4dd49dc7c7690",
-   "en": "c24",
-   "preview": "import scipy.stats as st def ringe(n, radius=(8, 9)): rs = st.multivaria…"
-  },
-  {
-   "de": "c25",
-   "kind": "code",
    "digest": "aac752e586ebc00d",
-   "en": "c25",
+   "en": "c24",
    "preview": "merged_sample = np.concatenate([sample, secondsample]) final_classificat…"
   },
   {
-   "de": "c26.0",
+   "de": "c25.0",
    "kind": "heading",
    "digest": "6cd442f80a7c08a8",
-   "en": "c26.0",
+   "en": "c25.0",
    "preview": "## kmeans++"
   },
   {
-   "de": "c26.1",
+   "de": "c25.1",
    "kind": "prose",
    "digest": "d19fec24bba57bfc",
-   "en": "c26.1",
+   "en": "c25.1",
    "preview": "Um dem Problem schlechter initialer Zentroide entgegen zu wirken, kann m…"
+  },
+  {
+   "de": "c26",
+   "kind": "code",
+   "digest": "e28aee8e54236046",
+   "en": "c26",
+   "preview": "def kmeanspp(data, k): centroid_indices = [np.random.choice(len(data))] …"
   },
   {
    "de": "c27",
    "kind": "code",
-   "digest": "e28aee8e54236046",
+   "digest": "0c78c0bb4b092cfd",
    "en": "c27",
-   "preview": "def kmeanspp(data, k): centroid_indices = [np.random.choice(len(data))] …"
+   "preview": "centroids = kmeanspp(sample, 3) point_classification, new_centroids = km…"
   },
   {
-   "de": "c28",
-   "kind": "code",
-   "digest": "0c78c0bb4b092cfd",
-   "en": "c28",
-   "preview": "centroids = kmeanspp(sample, 3) point_classification, new_centroids = km…"
+   "de": "c28.0",
+   "kind": "heading",
+   "digest": "ebdcf03228419478",
+   "en": "c28.0",
+   "preview": "## Trivia"
+  },
+  {
+   "de": "c28.1",
+   "kind": "prose",
+   "digest": "50cc32fee45833aa",
+   "en": "c28.1",
+   "preview": "Was man über k-Means noch wissen sollte:"
+  },
+  {
+   "de": "c28.2",
+   "kind": "prose",
+   "digest": "f12c7505ade8763e",
+   "en": "c28.2",
+   "preview": "* Die durchschnittliche Laufzeitkomplexität ist in $O(k*n*T)$ mit $n$ de…"
   },
   {
    "de": "c29.0",
    "kind": "heading",
-   "digest": "ebdcf03228419478",
+   "digest": "a394ec2939811fcc",
    "en": "c29.0",
-   "preview": "## Trivia"
+   "preview": "## k-Means in scikit-learn"
   },
   {
    "de": "c29.1",
    "kind": "prose",
-   "digest": "50cc32fee45833aa",
-   "en": "c29.1",
-   "preview": "Was man über k-Means noch wissen sollte:"
-  },
-  {
-   "de": "c29.2",
-   "kind": "prose",
-   "digest": "f12c7505ade8763e",
-   "en": "c29.2",
-   "preview": "* Die durchschnittliche Laufzeitkomplexität ist in $O(k*n*T)$ mit $n$ de…"
-  },
-  {
-   "de": "c30.0",
-   "kind": "heading",
-   "digest": "a394ec2939811fcc",
-   "en": "c30.0",
-   "preview": "## k-Means in scikit-learn"
-  },
-  {
-   "de": "c30.1",
-   "kind": "prose",
    "digest": "82bb4efc45622d1d",
-   "en": "c30.1",
+   "en": "c29.1",
    "preview": "Man muss natürlich das Rad nicht neu erfinden, `scikit-learn` bringt k-M…"
+  },
+  {
+   "de": "c30",
+   "kind": "code",
+   "digest": "d2415cfd1b5f4ce6",
+   "en": "c30",
+   "preview": "from sklearn.cluster import KMeans # Ist natürlich viel schneller, weil …"
   },
   {
    "de": "c31",
    "kind": "code",
-   "digest": "d2415cfd1b5f4ce6",
-   "en": "c31",
-   "preview": "from sklearn.cluster import KMeans # Ist natürlich viel schneller, weil …"
-  },
-  {
-   "de": "c32",
-   "kind": "code",
    "digest": "0a365bbdf68fc040",
-   "en": "c32",
+   "en": "c31",
    "preview": "# Das gibt's auch noch: from sklearn.cluster import MiniBatchKMeans #fro…"
   },
   {
-   "de": "c33.0",
+   "de": "c32.0",
    "kind": "heading",
    "digest": "8d466334c1df4189",
-   "en": "c33.0",
+   "en": "c32.0",
    "preview": "## Wo k-Means an seine Grenzen kommt"
   },
   {
-   "de": "c33.1",
+   "de": "c32.1",
    "kind": "prose",
    "digest": "873d65bb547917ad",
-   "en": "c33.1",
+   "en": "c32.1",
    "preview": "Der Zuweisungsschritt ordnet jeden Punkt dem nächstgelegenen Zentroid zu…"
   },
   {
-   "de": "c33.2",
+   "de": "c32.2",
    "kind": "prose",
    "digest": "d7e2307b680744ec",
-   "en": "c33.2",
+   "en": "c32.2",
    "preview": "Daraus folgen die typischen Schwächen, an denen man k-Means erkennt:"
   },
   {
-   "de": "c33.3",
+   "de": "c32.3",
    "kind": "prose",
    "digest": "7019ef88b16c639b",
-   "en": "c33.3",
+   "en": "c32.3",
    "preview": "* **Nichtkonvexe Cluster.** Zwei ineinander liegende Ringe, zwei Halbmon…"
   },
   {
-   "de": "c33.4",
+   "de": "c32.4",
    "kind": "prose",
    "digest": "c2495447770ed4fb",
-   "en": "c33.4",
+   "en": "c32.4",
    "preview": "Dazu kommt, was wir schon kennen: $k$ muss vorher gewählt werden, und da…"
   },
   {
-   "de": "c34",
+   "de": "c33",
    "kind": "code",
    "digest": "93929727b9cb5f89",
-   "en": "c34",
+   "en": "c33",
    "preview": "from sklearn.datasets import make_blobs # drei Blobs: verschieden groß u…"
   },
   {
-   "de": "c35.0",
+   "de": "c34.0",
    "kind": "prose",
    "digest": "397cb941a1c67eca",
-   "en": "c35.0",
+   "en": "c34.0",
    "preview": "Die Grenzen sind Geraden, die Zellen konvex — und k-Means investiert zwe…"
   }
  ]

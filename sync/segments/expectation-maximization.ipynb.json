@@ -1,7 +1,7 @@
 {
  "source": "expectation-maximization.ipynb",
  "target": "expectation-maximization.ipynb",
- "upstream": "b037bc9f2a80fcb195f7bfd0b9f57d21550dfdc9",
+ "upstream": "886c1d1db2b240d3f8bd4702a11c4dbd1bd85de9",
  "blocks": [
   {
    "de": "c0.0",
@@ -1001,9 +1001,9 @@
   {
    "de": "c32.1",
    "kind": "prose",
-   "digest": "213562f0ee70996d",
+   "digest": "a44a44e2c784f27c",
    "en": "c32.1",
-   "preview": "Wir werden jetzt die GMM (Gaussian Mixture Model)-Implementierung von Sc…"
+   "preview": "Wir werden jetzt die GMM (Gaussian Mixture Model)-Implementierung von sc…"
   },
   {
    "de": "c33",

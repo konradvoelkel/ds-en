@@ -3411,3 +3411,141 @@ The one thing a local build could not make sure of was the gate on the runner, w
 name comparison in it that §30 added after the renamed-entry case slipped through; it ran
 green there, which is the only place it counts. Whether any consumer reads `hasPart` or
 `publisher` is the weeks-out question §27 already owns, and it is not answered here.
+
+## 31. Twenty ds-skript commits past the pin: 28 stale regions, eight already right here, and one URL this host also ships wrong (2026-10-30)
+
+The round TRANSLATION.md §9 asks for, ten days after §30 moved the pin to `b037bc9f`. The
+mirror's head is `886c1d1d`: twenty commits, fifteen from 2026-10-29 and all fifteen outside
+the mirrored files, five from 2026-10-30 and all five inside them. `tools/sync.py check
+886c1d1d` wrote `sync/reports/886c1d1d.md`, 780 lines: **28 stale regions in eleven mirrored
+files**, 27 replacements and one deletion. `upstream.yml` did not run for these — it runs on
+a dispatch from ds-skript, and none arrived for the twenty — so the round began by hand, on
+the question "any upstream changes?", which §9 names as the other way it may begin.
+
+### The five content commits, and what the 28 regions came to
+
+Four of the five act on findings this edition handed over in `UPSTREAM-NOTES.md` — ds-skript
+numbers them UP-9 to UP-15 — and the fifth is the spelling sweep those findings also asked
+for. Per commit, the regions the report listed and the ones that cost an English edit:
+
+| Commit | What ds-skript did | Regions | Changed here |
+|---|---|---|---|
+| `17547e6` | one spelling, `scikit-learn`: 21 places in nine files, two alt texts | 17 | 12 regions, 14 blocks in five files; and the landing page's own `description` |
+| `95ff5ed` | `W` → `Omega` in code; `transform_unit_to_dice` → `transform_unit_to_die` | 3 | 2: the function, four occurrences. `Omega` was copied *from* here |
+| `886c1d1` | kernel-methoden seeded: `np.random.seed(1234)`, two `random_state=0` | 3 | 3, the stored outputs left as upstream left them |
+| `dff547a` | kmeans: the comment-only cell goes; kernel-methoden: a space and two commas | 3 | 1: the cell, 36 → 35 cells |
+| `68b0b33` | pandas: `np.size` → `"size"` at `agg`, twice | 2 | 2 |
+
+Twenty regions changed, **eight did not**, and the eight are the point of reading the report
+rather than applying it: the three `scikit-learn` in `model-selection` and one each in
+`expectation-maximization` and `titanic-eda-numpy` were lower-case here from the first
+translation; `Omega` in `programming-stochastics` was this edition's change, which `95ff5ed`
+says it took from here; the space in `kernel-methods` c14.12 was never missing in the
+English, and the two commas of c14.17/c14.18 are German syntax. They are on the list because
+the German digest moved, which is what the list is — a list of German changes, not of
+English work — and the regenerated manifests record them as current.
+
+Three capitalised spellings stay, the same three ds-skript kept: the list item in
+`intro-python` (**Scikit-learn**, where Numpy and SciPy stand the same way), the sentence
+start in `dimensionality-reduction` ("Scikit-learn gives the explained variance"), and the
+legend label `"Scikit-learn fit"` in `linear-regression`, where the change would cost a
+re-execution and a new figure. The two alt texts were already lower-case in `alt-texts.yml`,
+so ds-skript's surprise — four `Scikit-learn` left in its built HTML after a sweep that was
+clean over every cell — did not repeat here; TRANSLATION.md §9 now names the file.
+
+Nothing was re-executed, as upstream: `68b0b33` showed the pandas outputs byte-identical
+under the string form, and `886c1d1` chose to leave the kernel figures as one draw of many
+rather than re-encode two animations and five figures for the same statement. The kmeans
+cell could go because `alt_texts.py` keys by cell id, here as there. Checks after the edits:
+`nbtext.py check` and `syntax` on the eight notebooks; `check_english.py` 0 findings over
+30 files; `alt_texts.py --complete` 156 in place; `check_links.py` 24 exact, 3 collapsed,
+0 to fix; `check_pdf_articles.py` consistent.
+
+### The fifteen tooling commits, each decided
+
+| Commit(s) | What ds-skript did | Here |
+|---|---|---|
+| `04608f5` | ships its Search Console verification file under the property's path | a file for another property; nothing to copy |
+| `d0c3e4c` | `page.domain` in the hydration payload and the page JSON → the real origin | **applies, adopted** — next subsection |
+| `a28f52b`, `a5df7ea`, `b800524` | `tools/hydration.py`: a MutationObserver that puts canonical, hreflang, the six card tags, `article:modified_time` and the Markdown alternate back after React re-renders the head; `og:image` through the payload instead | do not apply. The guard answers a hydration that fails, and this edition's does not (§20). Re-measured in a browser on the live `/kmeans/` today, *after* hydration: 1 canonical, 3 hreflang, og:url, og:site_name, article:modified_time all present, 10 of 11 figures lazy, 11 of 11 sized |
+| `c389644` | `loading="lazy"` had been written after the `/` of a self-closing tag, 171 figures, since 2026-10-16 | does not apply: `with_attrs()` here was written for that tag end, and the live page has 0 `"/ loading` |
+| `82e5d8f`, `4880871`, `9a61d19` | width/height on every figure; then the same as a `<style>` the guard keeps across the re-render; a docstring note on where `lazy` can be measured | already here since §18–§19, attributes and the stylesheet in a cascade layer. The note is right: `loading="lazy"` is provable in the requests, not in a DOM a re-render has rebuilt |
+| `c9ba94d` | reserves the outline's height before mount, citing this edition's `88c5664` | already here. One refinement not taken: the German reserves 24 px for an `h4` entry where `OUTLINE_ROW_PX` here is 32 for every heading. The error is one-sided — too much costs white space and moves nothing, too little lets the content jump — 8 px per `h4`, and the German's own worst page was capped anyway. Not measured here; left |
+| `f2c4b4a` | `og:site_name` had carried the page title with its suffix for thirteen days, read off the landing page's `<title>`, which its docstring wrongly said was the project title alone | does not apply: here the landing page's `<title>` *is* the project title, which is what `project_title()` relies on, and the live tag reads "Data Science Lecture Notes from Konrad Völkel". The lesson travels: check the value, not the presence — the new postcondition below does |
+| `de0c3bc` | chapter links get the trailing slash in markup, payload and page JSON; the sidebar stays without, by measurement | **applies, and is its own round** — below |
+| `f7ccf9f`, `72b6b48`, `a6b7c33` | `_redirects` rewrites so that `/ds-skript/kmeans` answers 200; probed on the deployed instance and withdrawn: GitLab resolves the directory and redirects before any rule runs | do not apply: GitHub Pages has no `_redirects`, and its 301 for `/kmeans` is the host's own, not configurable. The German's conclusion holds here for the same reason: no way to answer the slashless form with 200 while MyST writes a directory per chapter |
+
+### `d0c3e4c`: `page.domain`, adopted
+
+Measured on the live site, 2026-10-30: `http://localhost:3000` **once in every one of the
+thirty pages**, in `state.loaderData.routes/*.page.domain` of the hydration payload, and
+once at the root of each of the thirty `<slug>.json` beside them — sixty occurrences the
+artifact gate could not see, because it grepped `sitemap.xml` and `robots.txt` by name, the
+two files §1 had found the same string in. Inert today: ds-skript read the bundle and no
+route module reads the field. But it is the same class as the localhost sitemap, in a
+document `head_meta.py` already edits, and the field the next person would build a URL from.
+
+`head_meta.py` now sets it in both places — the payload through the same `edit_payload`
+the title and the card go through, so the completeness postcondition covers it; the JSON
+re-serialised compactly, the form MyST wrote — and checks the **value** against the origin
+on every page and every page JSON afterwards. The gate in `pages.yml` greps the whole
+artifact (`-I`, so the images and the PDF are skipped), for `localhost:3000` and not
+`localhost`: a chapter may well explain opening a notebook on `localhost:8888`.
+
+Measured on a local build, the deploy chain run on a copy up to this step:
+
+| | |
+|---|---|
+| files carrying `localhost:3000` before `head_meta.py` | 60: 30 html, 30 json (sitemap and robots already rewritten by the step above it) |
+| after | **0** |
+| per page JSON | +16 B, the field alone — verified byte for byte, the landing page's three legitimate uses of the origin (the PDF link twice, the BibTeX `url`) untouched |
+| second run | byte-identical, every html, json and css file; the tool reports `0 page.domain set (0/30 page JSON)` |
+| the whole tool, 30 pages | 1.9 s |
+
+Breakages made on purpose, with the fix disabled unless the row says otherwise:
+
+| Planted | tool | gate |
+|---|---|---|
+| nothing (control) | green | green |
+| payload `page.domain` = `https://example.org` | **red**: "says page.domain is …, expected …" | green — no localhost in it, which is why the tool checks the value |
+| the same, fix on | corrected, green | green |
+| payload without the field | **red**: "has no page.domain" | — |
+| page JSON back to `localhost:3000` | **red** | **red** |
+| the same, fix on | corrected, green | green |
+| site argument without a scheme | **red** before anything is written | — |
+
+### `de0c3bc`: the trailing slash, which applies and is a round of its own
+
+Measured live today: `/kmeans` → **301** → `/kmeans/`, `cache-control: max-age=600`. The
+served `/kmeans/` has 16 chapter hrefs, every one without the slash; after hydration 14,
+every one without. Five runs on one connection: 0.194 s through the redirect against
+0.115 s direct — about 80 ms on the first click of every internal link, then cached for ten
+minutes. Canonical, sitemap, og:url and hreflang have carried the slash since §1 and §10, so
+this is not an indexing question; it is a round trip per click.
+
+ds-skript's port is three places — markup, payload, the page JSON — because a href fixed in
+the markup alone is overwritten from the payload on hydration (measured there with a marker
+per field), 354 lines with a `--check`, and one limit found in the theme: the sidebar's
+hrefs are built from the slug, and a slash there costs the hover cards of every link in the
+article and the open group of the current page, so 285 of 502 hrefs end up with the slash
+and the sidebar does not. All of that transfers; none of it belongs in a round that already
+carries thirty manifests, twenty re-translations and a payload fix. Proposed as its own
+task, with the German commit as the specification.
+
+### One thing the other way
+
+`4880871` settles a question UPSTREAM-NOTES left open on 2026-10-18 — whether ds-skript's
+React #418 has the cause §20 found here, in two post-processing steps. It does not: with a
+proxy serving an edited page against the real bundle, the error stays with every tag and
+guard of its own removed and the payload turned back to the built values. So the cause
+there is something else and undiagnosed, and the guard is its workaround, confirmed
+necessary by the Search Console's rendered view. Written into UPSTREAM-NOTES with the date;
+§20 has the probe that got the fiber out of the minified bundle, if a diagnosis is wanted.
+
+### The pin
+
+`sync/upstream.json` → `886c1d1d`, 2026-10-30; thirty manifests regenerated; `align` 30/30;
+`check` answers "up to date"; `sync/reports/886c1d1d.md` kept as the round's input. Still
+open from §10: `llms_txt.py` here reads `myst.yml` where ds-skript's reads `config.json`.
+**Not verified:** the deploy. The widened gate and the new postconditions have run only on
+the local copy; §31a when the runner has.

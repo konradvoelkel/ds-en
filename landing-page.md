@@ -1,7 +1,7 @@
 ---
 title: "Data Science: from stochastics to machine learning with Python"
 short_title: "Lecture notes"
-description: "Lecture notes on data science: probability spaces, distributions, estimators and tests, with Numpy, Pandas and Scikit-learn, and the algorithms implemented."
+description: "Lecture notes on data science: probability spaces, distributions, estimators and tests, with Numpy, Pandas and scikit-learn, and the algorithms implemented."
 thumbnail: images/social-card.png
 ---
 
@@ -11,7 +11,7 @@ These notes are an introduction to data science that begins with stochastics and
 
 The course rests on three pillars. The first is the *background from statistics*: probability spaces, random variables and distributions, expected value and variance, estimators and tests. Without this language there is no saying what a statistical model claims and when it may be trusted.
 
-The second pillar is *programming practice with Python*. We work with toy data small enough to take in completely, and learn Numpy, Scipy, Matplotlib, Pandas and Scikit-Learn on it. The exercise sheets are where what you have read becomes something you can do.
+The second pillar is *programming practice with Python*. We work with toy data small enough to take in completely, and learn Numpy, Scipy, Matplotlib, Pandas and scikit-learn on it. The exercise sheets are where what you have read becomes something you can do.
 
 The third pillar is *algorithms and data structures*: we reimplement the most important estimators and learning algorithms ourselves, so that we understand what happens when you call `model.fit()`.
 

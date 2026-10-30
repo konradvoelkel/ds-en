@@ -1,7 +1,7 @@
 {
  "source": "explorative-analyse-mit-numpy.ipynb",
  "target": "titanic-eda-numpy.ipynb",
- "upstream": "b037bc9f2a80fcb195f7bfd0b9f57d21550dfdc9",
+ "upstream": "886c1d1db2b240d3f8bd4702a11c4dbd1bd85de9",
  "blocks": [
   {
    "de": "c0.0",
@@ -21,9 +21,9 @@
   {
    "de": "c0.2",
    "kind": "prose",
-   "digest": "4c8916929459aa5a",
+   "digest": "42b62f4a33d5d4fa",
    "en": "c0.1",
-   "preview": "In diesem Notebook nutzen wir nur Numpy (kein Pandas, Scikit-learn o.ä.)…"
+   "preview": "In diesem Notebook nutzen wir nur Numpy (kein Pandas, scikit-learn o.ä.)…"
   },
   {
    "de": "c0.3",

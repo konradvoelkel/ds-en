@@ -1,7 +1,7 @@
 {
  "source": "wichtigste-stetige-verteilungen.ipynb",
  "target": "important-continuous-distributions.ipynb",
- "upstream": "b037bc9f2a80fcb195f7bfd0b9f57d21550dfdc9",
+ "upstream": "886c1d1db2b240d3f8bd4702a11c4dbd1bd85de9",
  "blocks": [
   {
    "de": "c0.0",
@@ -308,7 +308,7 @@
   {
    "de": "c26.2",
    "kind": "prose",
-   "digest": "9ec56868a7a64809",
+   "digest": "d23d33f32a12caff",
    "en": "c26.2",
    "preview": "Ein sehr einfacher und daher sehr instruktiver Datensatz ist Fisher-Ande…"
   },

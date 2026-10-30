@@ -1,7 +1,7 @@
 {
  "source": "kernel-methoden.ipynb",
  "target": "kernel-methods.ipynb",
- "upstream": "b037bc9f2a80fcb195f7bfd0b9f57d21550dfdc9",
+ "upstream": "886c1d1db2b240d3f8bd4702a11c4dbd1bd85de9",
  "blocks": [
   {
    "de": "c0.0",
@@ -35,9 +35,9 @@
   {
    "de": "c1",
    "kind": "code",
-   "digest": "13115b0ff97e2dff",
+   "digest": "68071231a6b76b22",
    "en": "c1",
-   "preview": "import numpy as np import scipy.stats as st # craft synthetic data: def …"
+   "preview": "import numpy as np import scipy.stats as st np.random.seed(1234) # scipy…"
   },
   {
    "de": "c2",
@@ -98,7 +98,7 @@
   {
    "de": "c9",
    "kind": "code",
-   "digest": "d3ed05a70fb0c1c8",
+   "digest": "c8905e53e2717c2b",
    "en": "c9",
    "preview": "def radial(x, y): \"\"\"Quadrierter Abstand von (x,y) zum Ursprung: eine ei…"
   },
@@ -231,9 +231,9 @@
   {
    "de": "c14.12",
    "kind": "prose",
-   "digest": "dc0d2a5a77a97c75",
+   "digest": "b6859796d09f2343",
    "en": "c14.12",
-   "preview": "was für normierte Vektoren $a,b$ (also ${\\lVert a \\rVert} = 1$ und${\\lVe…"
+   "preview": "was für normierte Vektoren $a,b$ (also ${\\lVert a \\rVert} = 1$ und ${\\lV…"
   },
   {
    "de": "c14.13",
@@ -266,14 +266,14 @@
   {
    "de": "c14.17",
    "kind": "prose",
-   "digest": "5f71ecf4e53f3596",
+   "digest": "851156a1470645b9",
    "en": "c14.17",
    "preview": "Man spricht auch von einem **Mercer**-Kernel und nennt allgemeiner Funkt…"
   },
   {
    "de": "c14.18",
    "kind": "prose",
-   "digest": "f550dbff80ed072f",
+   "digest": "b5f96daf177edb2a",
    "en": "c14.18",
    "preview": "Man spricht allgemein von der **Kernel-Methode**, wenn man einen Algorit…"
   },
@@ -364,7 +364,7 @@
   {
    "de": "c22",
    "kind": "code",
-   "digest": "b2ee8ef4b413ef4b",
+   "digest": "679afde62aaf42e3",
    "en": "c22",
    "preview": "# The following may need more than 16 GB of RAM, # if the sample is larg…"
   },

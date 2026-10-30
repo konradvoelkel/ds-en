@@ -1,7 +1,7 @@
 {
  "source": "landing-page.md",
  "target": "landing-page.md",
- "upstream": "b037bc9f2a80fcb195f7bfd0b9f57d21550dfdc9",
+ "upstream": "886c1d1db2b240d3f8bd4702a11c4dbd1bd85de9",
  "blocks": [
   {
    "de": "0",
@@ -34,7 +34,7 @@
   {
    "de": "4",
    "kind": "prose",
-   "digest": "b5db0fb72099800d",
+   "digest": "5231dff254c21c4e",
    "en": "4",
    "preview": "Die zweite Säule ist die *Programmierübung mit Python*. Wir arbeiten mit…"
   },

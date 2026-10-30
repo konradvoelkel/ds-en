@@ -1,7 +1,7 @@
 {
  "source": "model-selection.ipynb",
  "target": "model-selection.ipynb",
- "upstream": "b037bc9f2a80fcb195f7bfd0b9f57d21550dfdc9",
+ "upstream": "886c1d1db2b240d3f8bd4702a11c4dbd1bd85de9",
  "blocks": [
   {
    "de": "c0.0",
@@ -69,9 +69,9 @@
   {
    "de": "c1.5",
    "kind": "prose",
-   "digest": "634d55b9f24d4e68",
+   "digest": "8787a34b4e360c4c",
    "en": "c1.5",
-   "preview": "(Grafik aus der [Scikit-Learn-Dokumentation](https://scikit-learn.org/st…"
+   "preview": "(Grafik aus der [scikit-learn-Dokumentation](https://scikit-learn.org/st…"
   },
   {
    "de": "c2",
@@ -209,9 +209,9 @@
   {
    "de": "c8.4",
    "kind": "prose",
-   "digest": "ba027c758e423e5e",
+   "digest": "b4832ba4be456560",
    "en": "c8.4",
-   "preview": "Mit Scikit-learn kann man `TimeSeriesSplit` verwenden, dessen Syntax und…"
+   "preview": "Mit scikit-learn kann man `TimeSeriesSplit` verwenden, dessen Syntax und…"
   },
   {
    "de": "c9.0",
@@ -223,9 +223,9 @@
   {
    "de": "c9.1",
    "kind": "prose",
-   "digest": "ef12823103fd1841",
+   "digest": "c20561b575cc96fc",
    "en": "c9.1",
-   "preview": "Auszug [aus der Scikit-learn-Dokumentation](https://scikit-learn.org/sta…"
+   "preview": "Auszug [aus der scikit-learn-Dokumentation](https://scikit-learn.org/sta…"
   },
   {
    "de": "c9.2",

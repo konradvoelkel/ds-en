@@ -1,7 +1,7 @@
 {
  "source": "lineare-regression.ipynb",
  "target": "linear-regression.ipynb",
- "upstream": "b037bc9f2a80fcb195f7bfd0b9f57d21550dfdc9",
+ "upstream": "886c1d1db2b240d3f8bd4702a11c4dbd1bd85de9",
  "blocks": [
   {
    "de": "c0.0",
@@ -434,14 +434,14 @@
   {
    "de": "c21.2",
    "kind": "prose",
-   "digest": "70a64b2c433c0369",
+   "digest": "3336ab06b9310c32",
    "en": "c21.2",
-   "preview": "Darum betrachten wir nun die multilineare Regression mit Scikit-learn:"
+   "preview": "Darum betrachten wir nun die multilineare Regression mit scikit-learn:"
   },
   {
    "de": "c22.0",
    "kind": "directive",
-   "digest": "b3578a45a6b8f2bc",
+   "digest": "0ac7809dad130397",
    "en": "c22.0",
    "preview": "```{admonition} Achtung: Begriffe anderswo :class: warning Die Wörter di…"
   },
@@ -462,9 +462,9 @@
   {
    "de": "c25.0",
    "kind": "prose",
-   "digest": "6095750f99d1ed14",
+   "digest": "7edf367b9c93fe10",
    "en": "c25.0",
-   "preview": "Aus der Scikit-learn-Dokumentation:"
+   "preview": "Aus der scikit-learn-Dokumentation:"
   },
   {
    "de": "c25.1",
@@ -476,9 +476,9 @@
   {
    "de": "c25.2",
    "kind": "prose",
-   "digest": "17d95630c2093528",
+   "digest": "aa864785f8315bf8",
    "en": "c25.2",
-   "preview": "So gesehen ist Scikit-learn nicht 'besser' als Scipy, sondern einfach ei…"
+   "preview": "So gesehen ist scikit-learn nicht 'besser' als Scipy, sondern einfach ei…"
   },
   {
    "de": "c26.0",

@@ -405,6 +405,12 @@ jobs:
           # <link rel=preload as=image> MyST writes for every figure, because a preloaded
           # image is fetched whatever loading="lazy" says. Runs after the canonical step:
           # og:url is given the same URL the canonical has.
+          # Also sets `page.domain` in the hydration payload and in the <slug>.json beside
+          # each page to the origin -- MyST writes "http://localhost:3000" there, the same
+          # way it does in sitemap.xml above, once per page and once per JSON. Nothing in
+          # the theme reads the field today (ds-skript d0c3e4c read the bundle), so this
+          # changes nothing a browser does; it closes the one place the "no localhost URL
+          # survives" gate below could not yet be made to cover. SEO-NOTES.md §31.
           # --drop-modulepreload: the theme emits nineteen <link rel="modulepreload">
           # naming 1,407 KiB of gzipped JavaScript, fetched at High priority -- the same
           # bucket as the stylesheets that block the first paint. Measured A/B on the
@@ -465,8 +471,16 @@ jobs:
           # Everything below guards the step above. Written as if/then/fi, not as
           # "check && fail": a bare "&& fail" as the last statement of the script makes the
           # step fail precisely when the check passes.
-          if grep -rq "localhost:3000" _build/html/sitemap.xml _build/html/robots.txt; then
-            fail "a localhost URL survived in sitemap.xml or robots.txt"
+          # The whole artifact, not only the two files MyST is known to write its dev
+          # server's origin into. Since 2026-10-30 head_meta.py also sets `page.domain` in
+          # every hydration payload and in every <slug>.json beside the pages (ds-skript
+          # d0c3e4c, adopted in SEO-NOTES.md §31), and this is what makes the claim hold
+          # "whatever produced it". The string is localhost:3000 and not localhost: a
+          # chapter may well explain opening a notebook on localhost:8888. -I skips the
+          # images and the PDF; measured on a local build, nothing but .html, .json,
+          # sitemap.xml and robots.txt ever carried it, 62 files out of the whole tree.
+          if grep -rIq "localhost:3000" _build/html; then
+            fail "a localhost URL survived in: $(grep -rIl 'localhost:3000' _build/html | head -5 | tr '\n' ' ')"
           fi
 
           pages=$(find _build/html -name index.html | wc -l)

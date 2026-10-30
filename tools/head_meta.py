@@ -316,13 +316,43 @@ first and what the audit measured. The fix that would also hold after hydration 
 theme.
 
 
+The dev-server origin in the payload
+------------------------------------
+
+MyST runs its own dev server during the static build and writes that server's origin,
+"http://localhost:3000", into three kinds of file: sitemap.xml and robots.txt, which
+pages.yml has rewritten since 2026-10-14, and -- once per page, in `page.domain` of the
+hydration payload and again at the root of the `<slug>.json` beside it -- the pages
+themselves. Measured on the live site on 2026-10-30: one occurrence in every one of the
+thirty documents, and one in each of the thirty page JSON.
+
+Nothing reads it today. ds-skript (d0c3e4c, 2026-10-29) read the bundle: every `.domain`
+in it is a d3 scale, a Plotly axis or a gettext domain, and the two chunks that render the
+head do not contain the word. So setting it changes nothing a browser does. It is set
+because it is a wrong URL in a document this file already edits, in the same class as the
+localhost sitemap -- the one that left the whole site effectively uncrawlable for a while
+(SEO-NOTES.md §1) -- and because with it the artifact gate in pages.yml can say "no
+localhost URL anywhere" instead of "none in two named files". The field gets the
+**origin** without the base path: that is what MyST puts there, and the one use the theme
+has for such a value is `${origin}${location.pathname}`, where the pathname carries the
+base path already.
+
+Written through `edit_payload`, like the title and the card, so the completeness
+postcondition below covers it. The JSON files are re-serialised compactly, the form MyST
+wrote them in -- verified byte-identical on a build with nothing else changed, so the
+diff is the one field. The postcondition checks the **value** against the origin, not the
+absence of `localhost`: a field that is wrong in a different way would otherwise pass,
+which is how ds-skript's og:site_name carried the wrong name for thirteen days (f2c4b4a).
+
+
 Running it twice
 ----------------
 
 It is idempotent, and it checks postconditions rather than its own edits: every page must
 end up with an og:url, no chapter title may still carry the suffix, no page with no
 jupyter output may still link a jupyter stylesheet, no page may still carry an empty
-keywords meta, every figure that may be sized must carry the size of the file on disk --
+keywords meta, every payload's `page.domain` and every page JSON's `domain` must be the
+origin, every figure that may be sized must carry the size of the file on disk --
 in its attributes *and* in the stylesheet, each checked against the file rather than
 against what this run computed -- and every og:image must be a card that passes the rule
 above. A second run is a no-op that still passes, while markup MyST has moved under us
@@ -337,6 +367,7 @@ import json
 import pathlib
 import re
 import sys
+import urllib.parse
 
 from PIL import Image
 
@@ -609,6 +640,69 @@ def set_payload_card(doc: str, card: str) -> tuple[str, bool]:
         return changed
 
     return edit_payload(doc, mutate)
+
+
+def site_origin(site: str) -> str:
+    """Scheme and host of the site, without the base path: what `page.domain` holds."""
+    parts = urllib.parse.urlsplit(site)
+    if not parts.scheme or not parts.netloc:
+        sys.exit(f"::error::cannot read an origin off {site!r}; expected https://host[/base]")
+    return f"{parts.scheme}://{parts.netloc}"
+
+
+def payload_domain(doc: str) -> str | None:
+    """What the payload says `page.domain` is; None when there is no payload or no page."""
+    found = read_payload(doc)
+    if found is None:
+        return None
+    for route in routes(found[0]):
+        page = route.get("page")
+        if isinstance(page, dict) and "domain" in page:
+            return page["domain"]
+    return None
+
+
+def set_payload_domain(doc: str, origin: str) -> tuple[str, bool]:
+    """Point `page.domain` in the hydration payload at the real origin.
+
+    See "The dev-server origin in the payload" in the docstring. Any value other than the
+    origin is replaced, not only the localhost one: a second run is a no-op, and a value
+    that is wrong in some other way is corrected rather than kept.
+    """
+
+    def mutate(payload: dict) -> bool:
+        changed = False
+        for route in routes(payload):
+            page = route.get("page")
+            if isinstance(page, dict) and "domain" in page and page["domain"] != origin:
+                page["domain"] = origin
+                changed = True
+        return changed
+
+    return edit_payload(doc, mutate)
+
+
+def set_json_domain(root: pathlib.Path, origin: str) -> tuple[int, int]:
+    """The same field at the root of MyST's `<slug>.json` beside each page.
+
+    Re-serialised compactly, the form MyST wrote -- byte-identical on an unchanged build,
+    so the only diff is the field. Returns (files carrying the field, files changed).
+    """
+    carrying = changed = 0
+    for f in sorted(root.glob("*.json")):
+        try:
+            data = json.loads(f.read_text(encoding="utf-8"))
+        except ValueError:
+            sys.exit(f"::error::{f} is not JSON")
+        if not isinstance(data, dict) or "domain" not in data:
+            continue
+        carrying += 1
+        if data["domain"] == origin:
+            continue
+        data["domain"] = origin
+        f.write_text(json.dumps(data, separators=(",", ":"), ensure_ascii=False), encoding="utf-8")
+        changed += 1
+    return carrying, changed
 
 
 def head_tags(
@@ -1389,6 +1483,7 @@ def main() -> None:
     args = ap.parse_args()
 
     site = args.site.rstrip("/")
+    origin = site_origin(site)
     root = pathlib.Path(args.html_dir)
     index = root / "index.html"
     if not index.exists():
@@ -1403,6 +1498,7 @@ def main() -> None:
     n_chrome_sized = n_named = 0
     chrome_ratios: dict[str, tuple[int, int]] = {}
     n_modulepreload = 0
+    n_domain = 0
     chapters = 0
     outlines: dict[str, tuple[int, int]] = {}
     sizes: dict[str, tuple[int, int]] = {}
@@ -1475,6 +1571,10 @@ def main() -> None:
             # payload, which still names the figure. Same trap as the title above.
             doc, _ = set_payload_card(doc, card)
 
+        # The dev-server origin in the payload; the docstring section of that name.
+        doc, changed_domain = set_payload_domain(doc, origin)
+        n_domain += changed_domain
+
         f.write_text(doc, encoding="utf-8")
 
     # One stylesheet for the whole book, written once the pages have been read: the same
@@ -1482,6 +1582,7 @@ def main() -> None:
     # shows it. See section 7.
     write_figure_css(root, sizes, ratios, chrome_ratios)
     write_outline_css(root)
+    json_carrying, json_changed = set_json_domain(root, origin)
 
     # Postconditions, not a tally of this run's edits: a second run is a legitimate
     # no-op, while markup that has moved under us must still fail.
@@ -1517,6 +1618,14 @@ def main() -> None:
             r'"(?:project|config)":\{[^{}]*"title":"' + re.escape(name), doc
         ):
             sys.exit(f"::error::{f} would get its title suffix back on hydration")
+        # page.domain, by value and not by the absence of localhost: a field that is wrong
+        # in a different way must fail too. The broader "no localhost:3000 anywhere" is
+        # the artifact gate's in pages.yml, which runs after every step that writes.
+        domain = payload_domain(doc)
+        if domain is None:
+            sys.exit(f"::error::{f} has no page.domain in its hydration payload")
+        if domain != origin:
+            sys.exit(f"::error::{f} says page.domain is {domain}, expected {origin}")
         # Present *and* inert, which is the opposite of what this asserted before
         # 2026-10-18. A missing tag is the failure now: see section 5. Both counts are
         # checked, because a page carrying one of the two means `vendor_assets.py` has
@@ -1632,6 +1741,18 @@ def main() -> None:
                     f"hydration payload; it would get the rejected figure back"
                 )
 
+    # ...and the page JSON, re-read rather than trusted. One per page: a build that stops
+    # writing them, or writes them without the field, is a build to look at.
+    for f in sorted(root.glob("*.json")):
+        data = json.loads(f.read_text(encoding="utf-8"))
+        if isinstance(data, dict) and "domain" in data and data["domain"] != origin:
+            sys.exit(f"::error::{f} says domain is {data['domain']}, expected {origin}")
+    if json_carrying != len(pages):
+        sys.exit(
+            f"::error::{json_carrying} page JSON carry a domain field but there are "
+            f"{len(pages)} pages; MyST's <slug>.json output has changed shape"
+        )
+
     # Anything that could not be measured at all, named rather than counted: today there
     # is nothing here, and something arriving in this list is something to read.
     for rel, src, why in unsized:
@@ -1648,6 +1769,7 @@ def main() -> None:
         f"{n_css} jupyter stylesheets made inert, {n_keywords} empty keywords metas dropped, "
         f"{n_cards} og:image replaced with {card}, "
         f"{n_outline} outlines reserved{span}, "
+        f"{n_domain} page.domain set to {origin} ({json_changed}/{json_carrying} page JSON), "
         f"{n_chrome_sized} chrome images given a ratio, {n_named} controls named"
         + (f", {n_modulepreload} modulepreloads dropped" if n_modulepreload else "")
     )

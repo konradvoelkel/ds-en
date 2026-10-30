@@ -1,12 +1,12 @@
 {
  "source": "dimensionsreduktion.ipynb",
  "target": "dimensionality-reduction.ipynb",
- "upstream": "b037bc9f2a80fcb195f7bfd0b9f57d21550dfdc9",
+ "upstream": "886c1d1db2b240d3f8bd4702a11c4dbd1bd85de9",
  "blocks": [
   {
    "de": "c0.0",
    "kind": "prose",
-   "digest": "95f1c0b2dca7f438",
+   "digest": "159d781d2eb07e08",
    "en": "c0.0",
    "preview": "--- title: \"Dimensionsreduktion: Hauptkomponentenanalyse (PCA)\" short_ti…"
   },
@@ -49,9 +49,9 @@
   {
    "de": "c1.4",
    "kind": "prose",
-   "digest": "f16a2e6c617c042a",
+   "digest": "1d35f8ac8bd6ef27",
    "en": "c1.4",
-   "preview": "In Scikit-Learn heißen die ersten beiden Schritte genau so (`PCA().fit(x…"
+   "preview": "In scikit-learn heißen die ersten beiden Schritte genau so (`PCA().fit(x…"
   },
   {
    "de": "c1.5",
@@ -84,7 +84,7 @@
   {
    "de": "c1.9",
    "kind": "prose",
-   "digest": "47fc45a7a29df6cc",
+   "digest": "59193d729265d740",
    "en": "c1.9",
    "preview": "Fall (b) ist der realistische: Eine Koordinate ist nie exakt konstant, s…"
   },
@@ -259,9 +259,9 @@
   {
    "de": "c2.17",
    "kind": "prose",
-   "digest": "63447f53fa9baedd",
+   "digest": "691a5e8e6818cd81",
    "en": "c2.17",
-   "preview": "Numpy und Scikit-Learn greifen auf LAPACK zurück, was in Fortran geschri…"
+   "preview": "Numpy und scikit-learn greifen auf LAPACK zurück, was in Fortran geschri…"
   },
   {
    "de": "c3",
@@ -364,14 +364,14 @@
   {
    "de": "c13.0",
    "kind": "heading",
-   "digest": "9334cfb322b3198c",
+   "digest": "93647e755793ba43",
    "en": "c13.0",
-   "preview": "### Berechnung mit Scikit-learn"
+   "preview": "### Berechnung mit scikit-learn"
   },
   {
    "de": "c13.1",
    "kind": "prose",
-   "digest": "421fe8b75133de23",
+   "digest": "b3ef874dff06d670",
    "en": "c13.1",
    "preview": "Wir müssen uns noch nicht einmal die Mühe machen, selbst die Singulärwer…"
   },
@@ -532,9 +532,9 @@
   {
    "de": "c25.5",
    "kind": "prose",
-   "digest": "a518a0898ad0513b",
+   "digest": "feaf66a64ab1eb87",
    "en": "c25.5",
-   "preview": "In Python kann man das mit Scikit-Learn machen, indem man ein `Scaler`-O…"
+   "preview": "In Python kann man das mit scikit-learn machen, indem man ein `Scaler`-O…"
   },
   {
    "de": "c26",

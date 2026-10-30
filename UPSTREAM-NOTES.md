@@ -63,21 +63,47 @@ paragraph. Silent, so a non-forced build would not have caught it either.
   leftover from building a 2×2 grid without disabling the unused subplot.
 * **`stochastik-programmieren.ipynb`** calls the sample space `W` in code while the prose of
   the same cell writes it $\Omega$, and passes it as the `Omega` parameter of `P`.
-  *Changed in this edition*, since the code had to be touched anyway.
+  *Changed in this edition*, since the code had to be touched anyway. **Fixed upstream** in
+  ds-skript `95ff5ed` (2026-10-30), copied from this edition's cell 4.
 * **`stochastik-programmieren.ipynb`**: `transform_unit_to_dice` returns one die's pips, so
   the name wants to be `transform_unit_to_die`. Left alone here: the name is already
-  English, and renaming it is an edit to the German book, not a translation.
+  English, and renaming it is an edit to the German book, not a translation. **Fixed
+  upstream** in `95ff5ed` (2026-10-30), four occurrences, with the outputs shown to be
+  unchanged rather than assumed; this edition followed the same day (the sync to
+  `886c1d1d`), which is the order the sentence before asked for.
 * **`kernel-methoden.ipynb`**: a missing space in block c14.12 (`und${\lVert b \rVert}`,
-  which renders as "und$\lVert b\rVert$"), and block c14.18 is ungrammatical.
-* **Scikit-Learn / Scikit-learn** are spelled both ways across the book.
-* **`pandas.ipynb` and `data-cleaning.ipynb`** pass `np.size` to `agg`, which is deprecated
-  in current pandas.
+  which renders as "und$\lVert b\rVert$"), and block c14.18 is ungrammatical. **Fixed
+  upstream** in `dff547a` (2026-10-30): the space, and two commas in c14.17/c14.18 — a
+  relative clause closed, and *dieses* → *diese* because the inner products are plural.
+  The English had both right already, so nothing moved here.
+* **Scikit-Learn / Scikit-learn** are spelled both ways across the book. **Fixed upstream**
+  in `17547e6` (2026-10-30): the project's own spelling, `scikit-learn`, at 21 places in
+  nine files and in two alt texts, capitalised only where a sentence or a list item begins
+  and in the legend label *Scikit-learn fit*, which a change would have cost a
+  re-execution. This edition followed in the same sync, eighteen places. The German slides
+  (`slides/*.tex`) still write Scikit-Learn; left for their Phase B.
+* **`pandas.ipynb`** passes `np.size` to `agg` twice, a route pandas has announced it will
+  remove. (This entry used to name `data-cleaning.ipynb` too; it already used the string —
+  checked in `68b0b33`, and true of the English copy as well.) **Fixed upstream** in
+  `68b0b33` (2026-10-30) as the string `"size"`, with cells 25 and 28 re-run in a fresh
+  process and their `repr` and `_repr_html_` shown byte-identical to the stored outputs, so
+  nothing was re-executed into the file. pandas 3.0.6 does not even warn yet.
 * **`kmeans.ipynb`** block c13.0 is an HTML comment holding a link to
-  `kmeans-in-action.mp4`, a file that is not in the repository.
-* **Three notebooks are unseeded** where the others are seeded (`kernel-methoden.ipynb`:
-  the sample, `KMeans(n_init=1)`, `train_test_split`), so their figures change on every
-  re-execution. The repo's stated convention is that seeds are left as they are, which
-  reads as a decision about existing seeds rather than about these.
+  `kmeans-in-action.mp4`, a file that is not in the repository. **Fixed upstream** in
+  `dff547a` (2026-10-30): the cell is gone — the cell before it draws exactly that animation
+  with `matplotlib.animation`, so the comment never announced anything that was missing.
+  Deleted here too, 36 → 35 cells; `alt_texts.py` keys by cell id, so nothing moved.
+* **`kernel-methoden.ipynb` is unseeded** at three places where the other notebooks are
+  seeded (the sample, `KMeans(n_init=1)`, `train_test_split`), so its figures change on
+  every re-execution. The repo's stated convention is that seeds are left as they are,
+  which reads as a decision about existing seeds rather than about these. **Fixed
+  upstream** in `886c1d1` (2026-10-30), reading the convention the same way:
+  `np.random.seed(1234)` before the sample — scipy's `.rvs` draws from numpy's global
+  generator, so one seed covers all three draws — and `random_state=0` on the `KMeans` and
+  the `train_test_split`. The stored outputs were deliberately *not* regenerated, so the
+  figures stay one draw of many until someone re-executes and runs `alt_texts.py --apply`;
+  adopted here the same way. Left open there, as Konrad's decision: the `KMeans(...)` calls
+  without `random_state` in four notebooks that are otherwise seeded.
 
 ## Six formulae that do not render, in both editions
 
@@ -399,6 +425,16 @@ longer follows: the cause is in the post-processing, so the question there is wh
 ds-skript runs the same two steps. Unverified from here, and worth half an hour in that
 repository — the cheap check is whether a chapter's hydrated `<head>` still carries its
 canonical, and whether its stylesheet links appear once or twice.
+
+**Answered by ds-skript itself, 2026-10-29** (`4880871`, `a28f52b`): with a proxy serving an
+edited page against the real bundle, #418 there stays with every tag and guard of its own
+removed and the payload turned back to the built values. So it does not run the two steps
+that caused it here, and the cause there is something else, undiagnosed. Its answer is a
+workaround, not a diagnosis: `tools/hydration.py`, a MutationObserver that puts canonical,
+hreflang, the card tags, `article:modified_time` and the Markdown alternate back after React
+has re-rendered the head — and the Search Console's rendered view confirmed it was needed,
+Google's copy of a chapter lacking all of them. `SEO-NOTES.md` §20 here has the probe that
+found the mismatching fiber in the minified bundle, if a diagnosis is wanted.
 
 ## The in-article table of contents is server-rendered empty, and fills 340 px after mount
 

@@ -1,7 +1,7 @@
 {
  "source": "stochastik-programmieren.ipynb",
  "target": "programming-stochastics.ipynb",
- "upstream": "b037bc9f2a80fcb195f7bfd0b9f57d21550dfdc9",
+ "upstream": "886c1d1db2b240d3f8bd4702a11c4dbd1bd85de9",
  "blocks": [
   {
    "de": "c0.0",
@@ -48,9 +48,9 @@
   {
    "de": "c4",
    "kind": "code",
-   "digest": "b21e7e41b52562d3",
+   "digest": "798a7d561a09ee11",
    "en": "c4",
-   "preview": "W = {1, 2, 3, 4, 5, 6} gerade = set((x*2 for x in range(1,4))) print(\"Ge…"
+   "preview": "Omega = {1, 2, 3, 4, 5, 6} gerade = set((x*2 for x in range(1,4))) print…"
   },
   {
    "de": "c5.0",
@@ -104,9 +104,9 @@
   {
    "de": "c8",
    "kind": "code",
-   "digest": "8f00467f7f2f1ec8",
+   "digest": "8ebcaf1f3550d6f2",
    "en": "c8",
-   "preview": "from math import floor def transform_unit_to_dice(x): return floor(1 + 6…"
+   "preview": "from math import floor def transform_unit_to_die(x): return floor(1 + 6*…"
   },
   {
    "de": "c9.0",
@@ -132,7 +132,7 @@
   {
    "de": "c11.1",
    "kind": "prose",
-   "digest": "bcdfcdd337ad52da",
+   "digest": "89dd4cb2322dd0d4",
    "en": "c11.1",
    "preview": "Wir wollen aber festhalten: gegeben eine gleichverteilte \"Zufallsvariabl…"
   },

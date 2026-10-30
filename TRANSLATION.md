@@ -179,7 +179,10 @@ invisible to it, by construction, not by oversight:
   `text/plain`. On 2026-10-16 the original wrote descriptions into all 156 of its figures,
   touching eighteen files, and the staleness report showed five regions, all of them
   headings. This is the same blind spot as the entries above, but closer in: it is *inside*
-  a mirrored file.
+  a mirrored file. And the descriptions themselves are kept in `alt-texts.yml`, which is
+  prose that no sweep over the cells sees: ds-skript's spelling sweep of 2026-10-30
+  (`17547e6`) was clean over every cell and still left four `Scikit-learn` in its built
+  HTML, all four from `alt-texte.yml`. A sweep over the book's wording includes that file.
 
 **This has already cost us once.** On 2026-10-14 the original fixed its sitemap,
 `robots.txt`, canonical URLs and `og:image` (ds-skript `d929f14`, `6e75f56`, `c3e74d3`).
