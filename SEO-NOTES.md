@@ -3549,3 +3549,48 @@ necessary by the Search Console's rendered view. Written into UPSTREAM-NOTES wit
 open from §10: `llms_txt.py` here reads `myst.yml` where ds-skript's reads `config.json`.
 **Not verified:** the deploy. The widened gate and the new postconditions have run only on
 the local copy; §31a when the runner has.
+
+### 31a. Deployed, and the sentence in §31 about the dispatch was wrong (2026-10-30, same night)
+
+Pushed as `08bfc73`; `pages` run 40988169170, success: build 3 min 7 s, deploy 11 s, done
+01:53:33 UTC; `checks` 40988169158 green. The runner's `head_meta.py` line ends in
+`30 page.domain set to https://datascience.konradvoelkel.com (30/30 page JSON)`, and the
+widened gate passed — the first run on which it grepped the whole artifact rather than two
+files.
+
+Measured on the live site, cache-busted with `?v=08bfc73`: the CDN answers
+`cache-control: max-age=600`, and a minute after the deploy it was still serving 21 of the
+30 plain URLs from before it, `x-cache: HIT`. The query string asks the origin, which is
+what the CDN serves once the ten minutes are up.
+
+| | local build (§31) | live |
+|---|---|---|
+| `page.domain` in the payload, 30 pages | origin | **origin, 30 / 30** |
+| `domain` in the 30 `<slug>.json` | origin | **origin, 30 / 30** |
+| `localhost:3000` anywhere in a page | 0 | 0 — the whole `/kmeans/` document, read in the browser after hydration |
+| landing page, the second pillar | "Pandas and scikit-learn on it" | the same |
+| `programming-stochastics` | `transform_unit_to_die` | 8 occurrences, markup and payload; 0 `_dice` |
+
+And the thing every payload edit has had to prove since §20: `/kmeans/` **hydrates** on the
+live site with the edited payload. Six seconds in: 6 stylesheet links and 0 duplicated,
+canonical, 3 hreflang, og:url, og:site_name and article:modified_time all in the DOM, 10 of
+11 figures lazy, the theme's toggle rendered, and `window.__remixContext` reading the
+origin in `page.domain`. The card's hash differs from the local build's, as in §30a: the
+card is rendered on the runner.
+
+**The correction.** §31 says `upstream.yml` did not run for these twenty commits because no
+dispatch arrived. It did. ds-skript pushed at 00:48 UTC; the dispatch ran at 01:04 UTC (run
+40983614460, by which time the GitHub mirror had caught up), `sync.py check` found the same
+28 regions, and the run opened **issue #8**, "Upstream ds-skript moved to 886c1d1" — sixteen
+minutes before this round began on the question "any upstream changes?". The round never
+looked at the issue list. So the one thing the machinery exists for, telling the person
+that the original moved, had worked, and the round found out from `git fetch` instead and
+wrote down that it had not. The mechanism is fine; the habit is not: the first command of a
+round is `gh issue list --label upstream`, and TRANSLATION.md §9 already names the issue as
+the trigger. Issue #8 carries the same report as `sync/reports/886c1d1d.md` and is answered
+by `08bfc73`.
+
+Not measured: whether every plain URL had turned over once `max-age=600` ran out, at about
+02:03 UTC; the cache-busted copies say what the origin serves, and the CDN has nothing else
+to serve after that. The trailing-slash round (`de0c3bc`) is running as its own session, as
+§31 proposed.
