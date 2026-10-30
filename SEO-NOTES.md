@@ -3738,3 +3738,70 @@ the tool write `/kmeans//` and pass. Eighteen of eighteen as expected afterwards
 printing `trailing_slash: 30 pages, 29 chapters; 400 hrefs …` and the gate's
 `✓ trailing_slash --check` line; on the live `/kmeans/`, every chapter href in the served HTML
 with the slash and a click that is two requests with 200. §32a when it has run.
+
+### 32a. Deployed, and the live page does what the local one did (2026-10-30, the morning after)
+
+Merged onto `95fd748` and pushed as `59f1d7a`; `pages` run 41017756083, success: build 2 min
+6 s, deploy 12 s, done 07:06:10 UTC; `checks` 41017755998 green. The runner's two lines are
+the local ones to the number:
+
+```
+trailing_slash: 30 pages, 29 chapters; 400 hrefs in the markup, 247 fields in the payload (190 links, 57 footer), 247 in the 30 page JSON given the slash; the sidebar's slug left alone
+✓ trailing_slash --check: 30 pages, 29 chapters, 30 page JSON; no chapter link without the slash in markup, payload or page JSON
+```
+
+a second apart on the runner, as the 1.17 s measured here said. `head_meta.py`'s line still
+ends in `30 page.domain set to … (30/30 page JSON)`, so §31's fix survived the step that now
+runs after it.
+
+Measured on the live site 25 s after the run finished, cache-busted with `?v=59f1d7a`, every
+page and every page JSON read with the tool's own `fix_fields` and href rule — the same
+script run against the old build a few minutes earlier had found exactly the 400, 247 and
+247 it was about to fix:
+
+| | local build (§32) | live |
+|---|---|---|
+| chapter hrefs in the markup, outside the payload, 30 pages | 400 with the slash | **400 with, 0 without** |
+| `link.url` and `footer.navigation.*.url` in the payload | 247 | **247 with, 0 without** |
+| the same in the 30 `<slug>.json` | 247 | **247 with, 0 without** |
+| `domain` in the 30 `<slug>.json` | origin | origin, 30 / 30 |
+| every page ends in `</html>`, every payload decodes | yes | yes |
+
+Unlike §31a, the plain `/kmeans/` was already the new build a minute after the deploy
+(`last-modified 07:06:05`, `age: 71`); the other 29 plain URLs were not checked, and the
+cache-busted copies say what the origin serves either way.
+
+**In a browser, on the live `/kmeans/`.** What §32 measured on a local copy, repeated on
+the deployed page:
+
+| moment | article | footer | sidebar |
+|---|---|---|---|
+| after hydration (8 s) | 4 of 4 with the slash, all `a.hover-link` | 2 of 2 | 8 of 8 |
+| after the theme toggle (`html.light` → `html.dark`) | 4 of 4, all `a.hover-link` | 2 of 2 | **0 of 8** — the slug |
+
+Hovering the article's "Kernel methods" link opens the card with the target's title and
+description ("From the radial basis function through a geometric transform …"), after the
+re-render. The browser's network log on that hover: `/kernel-methods/?_data=root` 200 and
+`/kernel-methods/?_data=routes%2F%24` 200 — two prefetches, the parent route's data as well
+as the leaf's, where §32's server-log table lists one; both with the slash, neither
+redirected. The click: `/kernel-methods/` 200, and the Navigation Timing entry of the page
+that loaded says `redirectCount: 0`, `responseEnd` 30 ms. Before this deploy the same hover
+and click went through the 301 first, and the two slashless forms still do: `curl` of
+`/kmeans?_data=routes/$` answers 301 and `/kmeans/?_data=routes/$` 200 `text/html`, as §32
+says — the pages just no longer send anyone there.
+
+Timed again, five runs on one connection, `curl -L`, a minute after the deploy:
+
+| | runs (s) | median |
+|---|---|---|
+| `/kmeans` (301, then 200) | 0.290 0.166 0.167 0.139 0.153 | 0.166 |
+| `/kmeans/` (200) | 0.151 0.167 0.114 0.141 0.125 | 0.141 |
+
+A narrower gap than the morning's 80 ms, with the 301 itself now `x-cache: HIT`; the
+redirect costs what the CDN's round trip costs, and the pages no longer pay it.
+
+Not measured: the hover cards and the sidebar's fallback on pages other than `/kmeans/` (the
+same bundle, the same code path); whether every plain URL had turned over by 07:16 UTC.
+What §32 left open is answered: the runner printed the two lines, the served HTML carries
+the slash on every chapter href, and a click is requests that answer 200 — three of them,
+counting both prefetches, and no 301 among them.
