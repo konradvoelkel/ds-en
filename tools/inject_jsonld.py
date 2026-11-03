@@ -24,7 +24,7 @@ an `@id` of its own (`.../<slug>/#chapter`) and an `isPartOf` pointing at the on
 node, which already has a stable `@id` of `.../#work`. The author is the same move one
 level down: the `Person` is written out once, on the landing page, with an `@id` of
 `.../#author`, and each chapter references that `@id` instead of repeating the name,
-the six `sameAs` profiles and the affiliation thirty times.
+the `sameAs` profiles and the affiliation thirty times.
 
 So the graph says what the site is -- one work, twenty-nine parts of it, one author --
 and every chapter becomes an entity an answer engine can cite by URL rather than an
