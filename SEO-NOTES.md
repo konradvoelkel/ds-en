@@ -3887,3 +3887,26 @@ Alongside, not a finding: ds-skript moved one commit past the pin, `926d3bb` (20
 the author's Wikidata, GND and VIAF `sameAs`), which `3a9a62a` had already carried into this
 edition by hand. `sync.py check` found 0 stale regions; the pin moved to `926d3bb7`, the thirty
 manifests changed their `upstream` line and nothing else.
+
+### 33a. Deployed, and Google's test on the live page reads the five fields (2026-11-10, an hour later)
+
+Pushed as `cf3694f` with the pin commit `4925926` on top; `pages` run 42864174686, success:
+build 2 min 22 s, deploy 9 s, done 17:24:28 UTC; `checks` 42864174499 green. The runner's
+`inject_jsonld.py` line is the one from before, 30 written, and the gate's `JSON-LD ok` line
+followed it.
+
+Live, cache-busted with `?v=cf3694f`, 34 s after the run: the landing block is 15,585 bytes,
+the 351 more that §33 measured on the copy; the cover has 13 properties, `creator` the
+author's `@id` with the name, `creditText`, `copyrightNotice` and `acquireLicensePage` as the
+template says, the `#licence` anchor on the page, and the plain URL was already the new build
+(`last-modified 17:24:25`, `age: 1`).
+
+**Rich Results Test on the live URL** (the cache-busted form, crawled 18:25:07 CET, thirteen
+minutes after the test that showed the four): *1 valid item detected — Image Metadata*, and
+the *non-critical issues detected* line is gone; `cover.png` expanded, no missing field,
+and the creator rendered as the **whole author node** — honorific, job title, the eleven
+`sameAs`, the affiliation — under the inline name: Google merged the two by `@id`, as the
+code input had already suggested with the one `url` it had to merge.
+
+What remains is Google's, not ours: Search Console's report re-reads the page on its next
+crawl, and the mail's "validate fix" button asks for that crawl sooner.
