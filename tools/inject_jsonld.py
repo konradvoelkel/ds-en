@@ -147,6 +147,37 @@ smaller raster is ever committed (`tools/cover.py --png-width` already writes on
 property has something true to say and goes in then.
 
 
+The cover's licence fields
+--------------------------
+
+Search Console wrote on 2026-11-10 that the site has "4 Image Metadata structured data
+issues", all non-critical: the cover's `ImageObject` is missing `acquireLicensePage`,
+`creator`, `creditText` and `copyrightNotice`. The rule behind the four is Google's image
+licence feature. An `ImageObject` with `contentUrl` and any one of `creator`, `creditText`,
+`copyrightNotice` or `license` is a candidate, and "once you include one of these
+properties, the other three properties become recommended", with `acquireLicensePage`
+recommended beside them. The cover had `license` and none of the other four. The licence
+badge in Google Images was never the point -- the cover is there for the book panel, above
+-- but the node is a candidate all the same, and four warnings are what a candidate with
+one field of five gets.
+
+So the template carries all five. `creator` is the author, written as a `Person` with the
+author node's `@id` *and* a `name`: the `@id` makes it the same node as `author` to a
+reader that flattens the graph, the `name` is for the one that does not -- Google's table
+lists `creator.name` as a recommended property of its own, its examples nest the name, and
+it says nothing about `@id` references. `creditText` is the name alone, which is what the
+field is ("the name of the person and/or organization that is credited for the image").
+`copyrightNotice` names the owner, `© 2026 Konrad Völkel`, and not the licence: the licence
+is `license`. `acquireLicensePage` is the landing page's Licence section, `…/#licence`.
+Google wants "a URL to a page where the user can find information on how to license that
+image", and that section is where the CC BY-SA terms and the third-party exceptions are
+stated; the deed itself is `license`, and Google's own example keeps the two as different
+URLs. The anchor is a heading id MyST derives from the heading text, so the postcondition
+looks for `id="licence"` in the landing page: rename the heading and the run fails rather
+than ship a link to nothing. SEO-NOTES.md §33 has the mail, the Rich Results Test before
+and after, and the measurement on the build.
+
+
 The chapters do not carry the cover
 -----------------------------------
 
@@ -519,6 +550,33 @@ def check(site: str, root: Path, pages: list[tuple[str, str | None]], book: dict
                 )
                 return 1
             if cover_file(root, found, site) is None:
+                return 1
+            # The four licence fields Search Console asked for on 2026-11-10, checked on
+            # the page: see "The cover's licence fields". A template edit that drops one
+            # brings the four warnings back; a renamed Licence heading would leave
+            # acquireLicensePage pointing at an anchor the page no longer has.
+            for key in ("creator", "creditText", "copyrightNotice", "acquireLicensePage"):
+                if not img.get(key):
+                    print(f"✗ the cover's ImageObject has no {key}; Search Console lists it as missing")
+                    return 1
+            creator = img["creator"]
+            if (
+                not isinstance(creator, dict)
+                or creator.get("@id") != book["author"]["@id"]
+                or not creator.get("name")
+            ):
+                print(
+                    f"✗ the cover's creator is {creator!r}; expected the author node's @id "
+                    "with a name"
+                )
+                return 1
+            acquire = str(img["acquireLicensePage"])
+            anchor = acquire[len(f"{site}/#"):] if acquire.startswith(f"{site}/#") else ""
+            if not anchor or f'id="{anchor}"' not in doc:
+                print(
+                    f"✗ the cover's acquireLicensePage is {acquire!r}; expected a section of "
+                    f"the landing page, and the page has no id=\"{anchor}\""
+                )
                 return 1
             # Self-published, for students, made of these chapters: the three claims
             # adopted from ds-skript a0ba57d. The first two are template constants and

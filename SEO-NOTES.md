@@ -3805,3 +3805,85 @@ same bundle, the same code path); whether every plain URL had turned over by 07:
 What §32 left open is answered: the runner printed the two lines, the served HTML carries
 the slash on every chapter href, and a click is requests that answer 200 — three of them,
 counting both prefetches, and no 301 among them.
+
+
+## 33. Four fields on the cover: Search Console's Image Metadata report (2026-11-10)
+
+The mail, 2026-11-10: *"Search Console has identified that your site is affected by 4 Image
+Metadata structured data issue(s)"*, all four non-critical — `Missing field
+"acquireLicensePage"`, `"creator"`, `"creditText"`, `"copyrightNotice"`. Four fields, and one
+node: the only `ImageObject` this site emits is the cover on the landing page (§21, `…/#cover`).
+A chapter page has none (0 occurrences of the word on `/kmeans/`), and ds-skript's block has
+none at all, so the German edition cannot get this mail.
+
+### Why a book cover is an "Image Metadata" candidate
+
+Google's image licence feature ("Image metadata in Google Images") reads any `ImageObject`
+that has `contentUrl` and at least one of `creator`, `creditText`, `copyrightNotice` or
+`license`; and *"once you include one of these properties, the other three properties become
+recommended in the Rich Results Test"*, with `acquireLicensePage` recommended beside them.
+The cover has carried `license` since §21 — put there because it is true, not for the
+Licensable badge — so the node is a candidate with one field of five, and four warnings are
+what that gets. The Rich Results Test on the live URL (crawled 18:12 CET): *1 valid item
+detected — Image Metadata — non-critical issues detected*; expanded, `cover.png` with the four
+fields listed as `(optional)` and the node exactly as the template wrote it, nine properties.
+
+### What goes in, and why these values
+
+| field | value | Google's definition, and the choice |
+|---|---|---|
+| `creator` | `Person`, the author node's `@id` **and** `name` | "The creator of the image … usually the photographer"; `creator.name` is its own recommended row and every example nests the name, nothing is said about `@id` references. So both: the `@id` makes it the author to a reader that flattens the graph, the `name` is for one that does not. **Measured:** the test's rendering of the item shows the creator with a `url` that is only on the author node — Google merged the two by `@id`. The inline name costs 20 bytes and covers the reader that would not. |
+| `creditText` | `Konrad Völkel` | "The name of the person and/or organization that is credited for the image when it's published." The name, nothing else. |
+| `copyrightNotice` | `© 2026 Konrad Völkel` | "Identifies the current owner of the copyright." The owner, not the licence — the licence is `license`. The year is the template's `copyrightYear`. |
+| `acquireLicensePage` | `…/#licence` | "A URL to a page where the user can find information on how to license that image"; the examples are a checkout page or "a general page that explains how to contact you". The landing page's Licence section is where the CC BY-SA terms and the three third-party exceptions are stated, which is what a reuser needs. The deed is `license`, and Google's own example keeps the two as different URLs. The anchor is the heading id MyST derives from "Licence"; it is on the live page and the local build, and the postcondition below looks for it. |
+
+Not chosen: IPTC metadata inside the PNG. Google reads either, structured data wins on a
+conflict, and `cover.py` regenerates the file — the fields would then live in two places with
+nothing keeping them equal. Not chosen either: dropping `license` so that the node stops being
+a candidate. It is true, and the badge costs nothing.
+
+### Measured on the build
+
+The deploy chain replayed on a copy of the 2026-10-26 build, `process.sh` and `gate.sh`
+generated from `pages.yml`'s two `run:` blocks by a YAML read (the PDF step substituted by
+the local export).
+
+| | |
+|---|---|
+| `inject_jsonld.py`, first run | 30 written; cover node 13 properties, `acquireLicensePage` resolving to an `id="licence"` the page has |
+| second run | 0 written, 30 already had a block |
+| the landing block | 15,234 B live → 15,585 B (**+351 B**) |
+| the rest of the chain, `thebe_gate.py` and `trailing_slash.py` | green, the same numbers as §32 |
+| the gate | the JSON-LD block passes; the run stops at the PDF hash, because the local export is not the PDF the runner checked (a replay artefact, not a finding); the checks after it, run on their own: green through `trailing_slash --check` and the summary line |
+
+**The postcondition** in `inject_jsonld.py`, checked on the page and not on the template: the
+four fields present, `creator` a dict with the author's `@id` and a `name`, `acquireLicensePage`
+a section of the landing page whose `id` the page has. Six cases planted on the copy's block:
+
+| planted | result |
+|---|---|
+| nothing | green |
+| `creditText` dropped | **red** "has no creditText; Search Console lists it as missing" |
+| `creator` without `name` | **red** "expected the author node's @id with a name" |
+| `creator` with another `@id` | **red**, the same |
+| `acquireLicensePage` → `#license` (American spelling, no such anchor) | **red** "the page has no id=\"license\"" |
+| `acquireLicensePage` → the author's homepage | **red** "expected a section of the landing page" |
+
+### The external check
+
+**Rich Results Test, code input** (the generated block cut to the book node with its cover,
+typed into the editor — its code box is an editor that ignores a set value): *1 valid item
+detected — Image Metadata*, no issues line; `cover.png` expanded shows all thirteen
+properties, the creator as `Person` with name, id and the author's url. Before, on the live
+URL, the same item with four `(optional)` missings. Search Console's own report re-reads the
+page on its next crawl; the mail's "validate fix" is the thing to press once the deploy is
+live.
+
+**Not verified:** the deploy. §33a when it has run: the runner's `inject_jsonld.py` line
+unchanged in count, the live block 351 bytes longer with the four fields, and the Rich Results
+Test on the live URL without the issues line.
+
+Alongside, not a finding: ds-skript moved one commit past the pin, `926d3bb` (2026-11-03,
+the author's Wikidata, GND and VIAF `sameAs`), which `3a9a62a` had already carried into this
+edition by hand. `sync.py check` found 0 stale regions; the pin moved to `926d3bb7`, the thirty
+manifests changed their `upstream` line and nothing else.

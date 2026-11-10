@@ -504,3 +504,12 @@ and worth having in German as well, because the two graphs then agree, and the G
 edition is the one a German-language query reaches first. See SEO-NOTES.md §21 for the
 whole finding, including the parts that belong to eipy-skript and eidl-skript rather than
 to either Data Science edition.
+
+*Added 2026-11-10.* One more thing the German block does not have, and so does not have
+wrong: this edition's book node carries the cover as an `ImageObject` with a `license`
+(`tools/structured-data.json`, SEO-NOTES.md §21), and Search Console wrote that the node is
+missing `acquireLicensePage`, `creator`, `creditText` and `copyrightNotice` — Google's image
+licence feature treats any `ImageObject` with one of those five fields as a candidate and
+recommends the rest. The template now carries all five (SEO-NOTES.md §33). ds-skript's block
+has no `ImageObject` at all, so it gets no such report; the day it adopts the cover, the five
+fields come with it, and `inject_jsonld.py`'s postcondition here checks for them on the page.

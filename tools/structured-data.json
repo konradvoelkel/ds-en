@@ -27,7 +27,15 @@
   "height": 1500,
   "encodingFormat": "image/png",
   "caption": "Front cover of the book: the title over the open-book mark from the site's own logo, with the author and the CC BY-SA 4.0 licence.",
-  "license": "https://creativecommons.org/licenses/by-sa/4.0/"
+  "license": "https://creativecommons.org/licenses/by-sa/4.0/",
+  "creator": {
+   "@type": "Person",
+   "@id": "__SITE__/#author",
+   "name": "Konrad Völkel"
+  },
+  "creditText": "Konrad Völkel",
+  "copyrightNotice": "© 2026 Konrad Völkel",
+  "acquireLicensePage": "__SITE__/#licence"
  },
  "inLanguage": "en",
  "isAccessibleForFree": true,
