@@ -513,3 +513,54 @@ licence feature treats any `ImageObject` with one of those five fields as a cand
 recommends the rest. The template now carries all five (SEO-NOTES.md §33). ds-skript's block
 has no `ImageObject` at all, so it gets no such report; the day it adopts the cover, the five
 fields come with it, and `inject_jsonld.py`'s postcondition here checks for them on the page.
+
+
+## The site theme is a moving branch, and the next German pipeline builds v2 (2026-11-16)
+
+Not a bug in the German book; a trap in its `myst.yml` that this edition walked into first.
+`site.template: book-theme` (line 170 there) is not a version. MyST resolves the name to
+`https://github.com/myst-templates/book-theme/archive/refs/heads/main.zip`, whatever `main`
+holds on the day of the build, and on 2026-11-10 at 19:35 UTC `main` went from the v1.4.1
+release commit (`23f2df5`, 2026-09-21) straight to v2.0.0. ds-skript's last commit, `926d3bb`,
+is from 2026-11-03, a week before. Its next pipeline fetches v2.
+
+**mystmd 1.11.0, which ds-skript pins as well, builds v2 without an error** — and in another
+layout. Measured on this edition's `checks` artifact for `b3f5678`: 30 pages and a sitemap,
+every local reference resolving, but no `config.json`, no `build/`, no
+`window.__remixContext`, and the pages link their KaTeX, Font Awesome and Matplotlib
+stylesheets from `cdn.jsdelivr.net` and `cdnjs.cloudflare.com` again — the requests
+`vendor_assets.py` exists to remove. Everything the German post-processing reads is v1's
+Remix output.
+
+What I expect there, read off `.gitlab-ci.yml` at `926d3bb` and **not run**: the build job
+passes — the formula count, the font copy, the Google Fonts check and `optimize_images.py` do
+not need v1's layout, and `optimize_images.py` only warns about a missing `build/`, as it did
+here — and the `pages` job then fails somewhere between `head_meta.py` and `freshness.py`,
+which opens `config.json`. So a red pipeline with a traceback three tools away from the cause,
+and the site staying on the state of 3 November. That is the good case; it holds only because
+the chain is long.
+
+What this edition did (`61cfb37`, `621145d`, SEO-NOTES.md §34), and what the German wants as
+well:
+
+- **The pin.** `site.template` is the zip of one commit,
+  `https://github.com/myst-templates/book-theme/archive/23f2df5493e23dfb1d9433c8aa64c87beb4232a3.zip`.
+  The theme repository has no tags, so the commit is the only handle. Compared here against
+  the last build before the break: every tool's summary line identical.
+- **The check.** After `myst build --html`, fail if `_build/html/config.json` is absent, with a
+  message that says "not the v1 layout". In the German it belongs in the build job, right after
+  `uv run myst build --html`, where the cause is.
+- **The rule.** The theme pin moves with `tools/` and the gate, not with mystmd: v2 has no
+  hydration payload, so `head_meta.py`'s payload edits, `trailing_slash.py`'s three places,
+  the hydration guard and `thebe_gate.py` all want rethinking. Moving it is a port.
+
+The same line stands in eipy-skript and eidl-skript, both on mystmd 1.11.0. Their pipelines
+were not read. If their chain after the build is shorter than this one, nothing stops a v2
+site from being published as it comes: another look, and the CDN requests back.
+
+One smaller thing the same day. This edition's author node has twelve `sameAs` entries since
+`b3f5678` — the English HHU team page added, Google Scholar on `.com` rather than `.de` —
+because it and konradvoelkel.com's `Person` node were made to state the union of their lists.
+ds-skript `926d3bb` still has the eleven with `scholar.google.de`, and `3a9a62a` here had
+promised the list "worded identically in all four lecture scripts". Either the other three
+follow or the difference is meant; nothing records which.

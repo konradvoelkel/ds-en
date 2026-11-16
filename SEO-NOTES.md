@@ -3958,4 +3958,5 @@ over the v2 site, so a PR moving the pin would have passed and broken the deploy
 
 **Not checked:** whether the v2 pages render and behave in a browser. **Open elsewhere:**
 ds-skript, eipy-skript and eidl-skript still say `template: book-theme` with mystmd 1.11.0, so
-their next pipelines build v2 sites (reported to Konrad, not recorded in UPSTREAM-NOTES.md).
+their next pipelines build v2 sites (reported to Konrad, and in UPSTREAM-NOTES.md since the
+same evening, with what the German pipeline is expected to do).
