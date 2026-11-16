@@ -214,7 +214,18 @@ jobs:
         # Without BASE_URL every asset path points at the domain root -- or, when the site
         # is served from a subpath, at the wrong place entirely. The published site then
         # loads nothing at all while still answering 200, so it fails quietly.
-        run: myst build --html
+        #
+        # `myst build --html` exits 0 even when the site theme cannot run: on 2026-11-16 the
+        # unpinned book-theme had become v2.0.0, mystmd 1.11.0 never started its theme server,
+        # and _build/html was simply not there. The next step then died on a traceback about
+        # config.json. The check below says what happened instead (SEO-NOTES.md §34).
+        run: |
+          myst build --html
+          [ -f _build/html/config.json ] || {
+            echo "::error::myst build --html wrote no site (no _build/html/config.json) and exited 0."
+            echo "::error::Usually the site theme: myst.yml pins book-theme to one commit; it must suit the mystmd pin in requirements.txt (SEO-NOTES.md §34)."
+            exit 1
+          }
 
       - name: Re-encode the figures
         # Measured on the live site 2026-10-16: 21.3 MB of images over 30 pages, and a
