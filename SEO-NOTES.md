@@ -3911,37 +3911,51 @@ code input had already suggested with the one `url` it had to merge.
 What remains is Google's, not ours: Search Console's report re-reads the page on its next
 crawl, and the mail's "validate fix" button asks for that crawl sooner.
 
-## 34. The site theme is pinned: book-theme v2 broke every build silently (2026-11-16)
+## 34. The site theme is pinned: book-theme v2 changed the output layout under the chain (2026-11-16)
 
 Written from the personal-website session, which had pushed `b3f5678` (author `sameAs` aligned
-with konradvoelkel.com) and found its Pages run red.
+with konradvoelkel.com) and found its Pages run red. The first version of this section (in
+`61cfb37`) got the mechanism wrong; the review by this repository's own session corrected it,
+and this is the corrected text. The commit message of `61cfb37` keeps the wrong version.
 
 **What happened.** `myst.yml` said `site: template: book-theme`. MyST resolves that name to
 `https://github.com/myst-templates/book-theme/archive/refs/heads/main.zip`, i.e. whatever the
-theme's `main` branch holds on the day of the build. On 2026-11-10 at 19:35 UTC `main` became
-v2.0.0 (release commits `0895140`, then `39551f8` on 11-12), two hours after this repository's
-last green Pages run (17:30, built with v1.4.x). mystmd 1.11.0, the version `requirements.txt`
-pins, cannot run v2: it logs `myst.yml 'options.21' extra key ignored: multiple`, starts its
-content server, never starts the theme server, and **exits 0 without writing `_build/html`**.
-The first step that noticed was `freshness.py`, with `FileNotFoundError: _build/html/config.json`.
-A re-run failed identically; nothing was flaky. Reproduced locally with `.venv/bin/myst` 1.11.0:
-the name gives no `config.json`, the pinned commit gives the full site. The live site was never
-affected -- Pages kept serving the 10.11. build -- but every push since 10.11. 19:35 would have
-failed, and this was the first.
+theme's `main` branch holds on the day of the build. On 2026-11-10 at 19:35 UTC `main` went from
+`23f2df5` ("v1.4.1", 2026-09-21) straight to `0895140` (v2.0.0), later `39551f8` -- two hours
+after this repository's last green Pages run (17:30). v2 is a rewrite: `template.yml` gained a
+`render: node ... renderer/server/index.js` beside `start`, and the theme ships `renderer/` and
+`server/` instead of `build/` and `server.js`. **mystmd 1.11.0 builds it without complaint**
+(the warning `options.21 extra key ignored: multiple` is only v2's new `redirects` option, which
+1.11.0's validator does not know): the `checks` run of `b3f5678` was green and its artifact is a
+self-consistent site, 30 `index.html`, a sitemap, all local references resolving. Reproduced
+locally with `.venv/bin/myst` 1.11.0: 190 files, 30 pages, no `config.json`, no `build/`.
+
+What could not digest it is **this repository's post-processing**, written against v1's Remix
+output: `config.json`, the `build/_shared` chunks, `window.__remixContext`. In the Pages run
+`optimize_images` warned that `_build/html/build` was missing and `freshness.py` died on
+`config.json`. A re-run failed identically; nothing was flaky. The live site was never affected
+(Pages kept serving the 10.11. build), but every push after 10.11. 19:35 would have failed, and
+`b3f5678` was the first.
 
 **The pin.** `site.template` is now the zip of one commit,
-`23f2df5493e23dfb1d9433c8aa64c87beb4232a3`, the theme's "v1.4.1" release build (the theme repo
-has no tags; its `main` history is one release commit per version). That is the same rule as the
-mystmd pin above it (`pages.yml`, "Install mystmd, at the version this repository pins"): one
-number, changed on purpose. **Move the theme and mystmd together, never one alone** -- v2 of the
-theme presumably wants a newer mystmd, and that pair is an upgrade with its own check of the
-built HTML (the URL rewrites in `pages.yml` and `inject_jsonld.py` read the theme's output).
+`23f2df5493e23dfb1d9433c8aa64c87beb4232a3`, the theme's v1.4.1 release build (the theme repo has
+no tags; its `main` history is one release commit per version, and nothing lies between
+`23f2df5` and v2). That is what every build up to 10.11. used, and the review compared run
+`43911550185` against the last green run before the break (`42865700025`): all tool summary
+lines identical apart from build times, the template fetch lines and the social-card hash, and
+the live page references the same content-hashed bundles. A side effect: no metadata query to
+`api.mystmd.org` any more.
 
-**The guard.** `myst build --html` exiting 0 over nothing is the same failure shape as the PDF
-stub in section 28: a tool that reports success over a missing artefact. "Build the book" now
-fails on its own line when `_build/html/config.json` is absent, and says where to look.
+**What moves together.** Not the theme and mystmd -- 1.11.0 builds v2. The theme pin moves with
+`tools/` and the gate: v2 has no hydration payload, so `head_meta`'s payload edits,
+`trailing_slash`'s three places, `thebe_gate` and §20 all need rethinking. Moving the pin is a
+port, not a version bump.
 
-What this does not cover: `api.mystmd.org` is still queried for template metadata on other
-names, and the zip comes from GitHub at build time -- a deleted commit would fail the build,
-loudly now, not silently.
+**The guard.** "Build the book" in both `pages.yml` and `checks.yml` now fails on its own line
+when `_build/html/config.json` is absent -- a marker for "not the v1 layout", not for "no site".
+`checks.yml` matters most: it is the only workflow that runs on pull requests, and it was green
+over the v2 site, so a PR moving the pin would have passed and broken the deploy after merge.
 
+**Not checked:** whether the v2 pages render and behave in a browser. **Open elsewhere:**
+ds-skript, eipy-skript and eidl-skript still say `template: book-theme` with mystmd 1.11.0, so
+their next pipelines build v2 sites (reported to Konrad, not recorded in UPSTREAM-NOTES.md).

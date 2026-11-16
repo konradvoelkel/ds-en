@@ -130,7 +130,15 @@ jobs:
           echo "mystmd $v"
 
       - name: Build the book
-        run: myst build --html
+        # Same layout check as in pages.yml: this is the only workflow that runs on pull
+        # requests, so without it a PR moving the theme pin shows green here and breaks the
+        # deploy after merge (SEO-NOTES.md §34).
+        run: |
+          myst build --html
+          [ -f _build/html/config.json ] || {
+            echo "::error::_build/html has no config.json: the build is not in the book-theme v1 layout the deploy expects (SEO-NOTES.md §34)."
+            exit 1
+          }
 
       - uses: actions/upload-artifact@v4
         with:

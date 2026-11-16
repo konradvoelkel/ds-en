@@ -215,15 +215,15 @@ jobs:
         # is served from a subpath, at the wrong place entirely. The published site then
         # loads nothing at all while still answering 200, so it fails quietly.
         #
-        # `myst build --html` exits 0 even when the site theme cannot run: on 2026-11-16 the
-        # unpinned book-theme had become v2.0.0, mystmd 1.11.0 never started its theme server,
-        # and _build/html was simply not there. The next step then died on a traceback about
-        # config.json. The check below says what happened instead (SEO-NOTES.md §34).
+        # The steps after this one read book-theme v1's output layout (config.json, build/
+        # chunks, the hydration payload). Theme v2 builds without error but in another layout,
+        # and on 2026-11-16 that surfaced only as a traceback in freshness.py. The check says
+        # what happened instead (SEO-NOTES.md §34). checks.yml carries the same check.
         run: |
           myst build --html
           [ -f _build/html/config.json ] || {
-            echo "::error::myst build --html wrote no site (no _build/html/config.json) and exited 0."
-            echo "::error::Usually the site theme: myst.yml pins book-theme to one commit; it must suit the mystmd pin in requirements.txt (SEO-NOTES.md §34)."
+            echo "::error::_build/html has no config.json: the build is not in the book-theme v1 layout the steps after it expect."
+            echo "::error::Usually the site theme moved: myst.yml pins book-theme to one commit, and moving it means porting tools/ and the gate (SEO-NOTES.md §34)."
             exit 1
           }
 

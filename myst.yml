@@ -166,9 +166,10 @@ site:
     style: _site/custom-style.css
   # Pinned to one commit of myst-templates/book-theme, not the name `book-theme`: the name
   # resolves to the `main` branch, which became v2.0.0 on 2026-11-10 19:35 UTC. mystmd
-  # 1.11.0 (requirements.txt) cannot run v2 -- "options.21 extra key ignored: multiple",
-  # the theme server never starts, `myst build --html` leaves no _build/html, and every
-  # Pages run from 2026-11-16 failed at freshness.py. 23f2df5 is the theme's v1.4.1
-  # release build, the one the site was built with until then. Move it together with the
-  # mystmd pin, never alone (SEO-NOTES.md §34).
+  # 1.11.0 builds v2 fine, but v2 is a rewrite with a different output layout (no
+  # config.json, no build/ chunks, no Remix hydration payload), and the post-processing in
+  # tools/ and pages.yml is written against v1's layout -- the Pages run of 2026-11-16 died
+  # in freshness.py on the missing config.json. 23f2df5 is the theme's v1.4.1 release build,
+  # the one every build used until then. Moving it is a port of tools/ and the gate, not a
+  # version bump (SEO-NOTES.md §34).
   template: https://github.com/myst-templates/book-theme/archive/23f2df5493e23dfb1d9433c8aa64c87beb4232a3.zip
